@@ -49,6 +49,9 @@ $rules = [
     'phpdoc_separation' => ['groups' => [
         ['phpstan-template', 'phpstan-template-covariant', 'phpstan-extends', 'phpstan-implements', 'phpstan-var', 'psalm-var', 'phpstan-param', 'psalm-param', 'phpstan-return', 'psalm-return'],
         ['psalm-suppress', 'phpstan-ignore-next-line'],
+        ['Assert\\*'],
+        ['ODM\\*'],
+        ['ORM\\*'],
     ]],
     'php_unit_strict' => true,
     'php_unit_test_case_static_method_calls' => true,
