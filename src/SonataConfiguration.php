@@ -67,11 +67,9 @@ final class SonataConfiguration
     }
 
     /**
-     * @param mixed $default
-     *
      * @return mixed
      */
-    public function getOption(string $name, $default = null)
+    public function getOption(string $name, mixed $default = null)
     {
         return $this->options[$name] ?? $default;
     }

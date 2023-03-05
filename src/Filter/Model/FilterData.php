@@ -23,13 +23,10 @@ final class FilterData
      */
     private $value;
 
-    /**
-     * @param mixed $value
-     */
     private function __construct(
         private ?int $type,
         private bool $hasValue,
-        $value = null
+        mixed $value = null
     ) {
         if ($hasValue) {
             $this->value = $value;
@@ -71,10 +68,7 @@ final class FilterData
         return $this->value;
     }
 
-    /**
-     * @param mixed $value
-     */
-    public function changeValue($value): self
+    public function changeValue(mixed $value): self
     {
         return self::fromArray([
             'type' => $this->getType(),

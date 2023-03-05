@@ -989,10 +989,9 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * @param mixed   $data
      * @param mixed[] $headers
      */
-    final protected function renderJson($data, int $status = Response::HTTP_OK, array $headers = []): JsonResponse
+    final protected function renderJson(mixed $data, int $status = Response::HTTP_OK, array $headers = []): JsonResponse
     {
         return new JsonResponse($data, $status, $headers);
     }

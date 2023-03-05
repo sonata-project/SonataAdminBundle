@@ -326,12 +326,11 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param mixed $subject
      *
      * @phpstan-param class-string $class
      * @phpstan-param class-string $adminClass
      */
-    private function shouldApplyExtension(string $type, $subject, string $class, string $adminClass): bool
+    private function shouldApplyExtension(string $type, mixed $subject, string $class, string $adminClass): bool
     {
         $classReflection = new \ReflectionClass($class);
         $adminClassReflection = new \ReflectionClass($adminClass);

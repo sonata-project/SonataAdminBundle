@@ -124,13 +124,11 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * @param mixed $element
      *
      * @throws \RuntimeException
-     *
      * @return mixed
      */
-    public function renderRelationElement($element, FieldDescriptionInterface $fieldDescription)
+    public function renderRelationElement(mixed $element, FieldDescriptionInterface $fieldDescription)
     {
         if (!\is_object($element)) {
             return $element;
