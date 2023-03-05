@@ -21,16 +21,14 @@ use Twig\TwigFilter;
 
 final class RenderElementExtension extends AbstractExtension
 {
-    private RenderElementRuntime $renderElementRuntime;
-
     /**
      * NEXT_MAJOR: Remove this constructor.
      *
      * @internal This class should only be used through Twig
      */
-    public function __construct(RenderElementRuntime $renderElementRuntime)
-    {
-        $this->renderElementRuntime = $renderElementRuntime;
+    public function __construct(
+        private RenderElementRuntime $renderElementRuntime
+    ) {
     }
 
     /**

@@ -22,14 +22,12 @@ use Twig\TemplateWrapper;
 
 final class RenderElementRuntime implements RuntimeExtensionInterface
 {
-    private PropertyAccessorInterface $propertyAccessor;
-
     /**
      * @internal This class should only be used through Twig
      */
-    public function __construct(PropertyAccessorInterface $propertyAccessor)
-    {
-        $this->propertyAccessor = $propertyAccessor;
+    public function __construct(
+        private PropertyAccessorInterface $propertyAccessor
+    ) {
     }
 
     /**
@@ -145,7 +143,7 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
                 throw new \RuntimeException(sprintf(
                     'You must define an `associated_property` option or create a `%s::__toString` method'
                     .' to the field option %s from service %s is ',
-                    \get_class($element),
+                    $element::class,
                     $fieldDescription->getName(),
                     $fieldDescription->getAdmin()->getCode()
                 ));
@@ -162,7 +160,7 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
             throw new \TypeError(sprintf(
                 'The option "associated_property" must be a string, a callable or a %s, %s given.',
                 PropertyPathInterface::class,
-                \is_object($propertyPath) ? 'instance of '.\get_class($propertyPath) : \gettype($propertyPath)
+                \is_object($propertyPath) ? 'instance of '.$propertyPath::class : \gettype($propertyPath)
             ));
         }
 

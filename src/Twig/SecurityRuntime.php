@@ -53,7 +53,7 @@ final class SecurityRuntime implements RuntimeExtensionInterface
                 if ($this->securityChecker->isGranted($oneRole, $object)) {
                     return true;
                 }
-            } catch (AuthenticationCredentialsNotFoundException $e) {
+            } catch (AuthenticationCredentialsNotFoundException) {
                 // empty on purpose
             }
         }

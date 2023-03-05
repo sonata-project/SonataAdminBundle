@@ -32,18 +32,6 @@ final class AdminObjectAclData
     private static array $ownerPermissions = ['MASTER', 'OWNER'];
 
     /**
-     * @var AdminInterface<object>
-     */
-    private AdminInterface $admin;
-
-    private object $object;
-
-    /**
-     * @var \Traversable<UserInterface|string> Users to set ACL for
-     */
-    private \Traversable $aclUsers;
-
-    /**
      * @var \Traversable<string> Roles to set ACL for
      */
     private \Traversable $aclRoles;
@@ -60,11 +48,6 @@ final class AdminObjectAclData
     private ?MutableAclInterface $acl = null;
 
     /**
-     * @phpstan-var class-string
-     */
-    private string $maskBuilderClass;
-
-    /**
      * @param AdminInterface<object>             $admin
      * @param \Traversable<UserInterface|string> $aclUsers
      * @param \Traversable<string>|null          $aclRoles
@@ -72,17 +55,13 @@ final class AdminObjectAclData
      * @phpstan-param class-string $maskBuilderClass
      */
     public function __construct(
-        AdminInterface $admin,
-        object $object,
-        \Traversable $aclUsers,
-        string $maskBuilderClass,
+        private AdminInterface $admin,
+        private object $object,
+        private \Traversable $aclUsers,
+        private string $maskBuilderClass,
         ?\Traversable $aclRoles = null
     ) {
-        $this->admin = $admin;
-        $this->object = $object;
-        $this->aclUsers = $aclUsers;
         $this->aclRoles = $aclRoles ?? new \ArrayIterator();
-        $this->maskBuilderClass = $maskBuilderClass;
         if (!$admin->isAclEnabled()) {
             throw new \InvalidArgumentException('The admin must have ACL enabled.');
         }

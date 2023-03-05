@@ -34,12 +34,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 final class AclSecurityHandler implements AclSecurityHandlerInterface
 {
-    private TokenStorageInterface $tokenStorage;
-
-    private AuthorizationCheckerInterface $authorizationChecker;
-
-    private MutableAclProviderInterface $aclProvider;
-
     /**
      * @var string[]
      */
@@ -56,27 +50,17 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     private array $objectPermissions = [];
 
     /**
-     * @phpstan-var class-string<MaskBuilderInterface>
-     */
-    private string $maskBuilderClass;
-
-    /**
      * @param string|string[] $superAdminRoles
      *
      * @phpstan-param class-string<MaskBuilderInterface> $maskBuilderClass
      */
     public function __construct(
-        TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker,
-        MutableAclProviderInterface $aclProvider,
-        string $maskBuilderClass,
+        private TokenStorageInterface $tokenStorage,
+        private AuthorizationCheckerInterface $authorizationChecker,
+        private MutableAclProviderInterface $aclProvider,
+        private string $maskBuilderClass,
         $superAdminRoles
     ) {
-        $this->tokenStorage = $tokenStorage;
-        $this->authorizationChecker = $authorizationChecker;
-        $this->aclProvider = $aclProvider;
-        $this->maskBuilderClass = $maskBuilderClass;
-
         // NEXT_MAJOR: Keep only the elseif part and add typehint.
         if (\is_array($superAdminRoles)) {
             @trigger_error(sprintf(
@@ -92,7 +76,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
             throw new \TypeError(sprintf(
                 'Argument 1 passed to "%s()" must be of type "array" or "string", %s given.',
                 __METHOD__,
-                \is_object($superAdminRoles) ? 'instance of "'.\get_class($superAdminRoles).'"' : '"'.\gettype($superAdminRoles).'"'
+                \is_object($superAdminRoles) ? 'instance of "'.$superAdminRoles::class.'"' : '"'.\gettype($superAdminRoles).'"'
             ));
         }
     }
@@ -137,7 +121,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
             // NEXT_MAJOR: Remove the method isAnyGranted and use $this->authorizationChecker->isGranted instead.
             return $this->isAnyGranted($this->superAdminRoles) ||
                 $this->isAnyGranted($attributes, $object);
-        } catch (AuthenticationCredentialsNotFoundException $e) {
+        } catch (AuthenticationCredentialsNotFoundException) {
             return false;
         }
     }
@@ -190,7 +174,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         try {
             $acl = $this->aclProvider->findAcl($objectIdentity);
-        } catch (AclNotFoundException $e) {
+        } catch (AclNotFoundException) {
             return null;
         }
 
@@ -205,7 +189,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         } catch (NotAllAclsFoundException $e) {
             /** @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls */
             $acls = $e->getPartialResult();
-        } catch (AclNotFoundException $e) { // if only one oid, this error is thrown
+        } catch (AclNotFoundException) { // if only one oid, this error is thrown
             /** @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls */
             $acls = new \SplObjectStorage();
         }

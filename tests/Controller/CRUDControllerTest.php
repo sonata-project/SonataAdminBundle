@@ -274,7 +274,7 @@ final class CRUDControllerTest extends TestCase
             ->method('generateObjectUrl')
             ->willReturnCallback(
                 static function (string $name, object $object, array $parameters = []): string {
-                    $result = sprintf('%s_%s', \get_class($object), $name);
+                    $result = sprintf('%s_%s', $object::class, $name);
                     if ([] !== $parameters) {
                         $result .= '?'.http_build_query($parameters);
                     }
@@ -1937,7 +1937,7 @@ final class CRUDControllerTest extends TestCase
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
 
         $object = new \stdClass();
-        $class = \get_class($object);
+        $class = $object::class;
 
         $this->admin
             ->method('getObject')

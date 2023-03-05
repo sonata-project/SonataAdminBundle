@@ -25,29 +25,17 @@ final class RouteCollection implements RouteCollectionInterface
      */
     private array $elements = [];
 
-    private string $baseCodeRoute;
-
-    private string $baseRouteName;
-
-    private string $baseControllerName;
-
-    private string $baseRoutePattern;
-
     /**
      * @var array<string, Route|callable():Route>
      */
     private array $cachedElements = [];
 
     public function __construct(
-        string $baseCodeRoute,
-        string $baseRouteName,
-        string $baseRoutePattern,
-        string $baseControllerName
+        private string $baseCodeRoute,
+        private string $baseRouteName,
+        private string $baseRoutePattern,
+        private string $baseControllerName
     ) {
-        $this->baseCodeRoute = $baseCodeRoute;
-        $this->baseRouteName = $baseRouteName;
-        $this->baseRoutePattern = $baseRoutePattern;
-        $this->baseControllerName = $baseControllerName;
     }
 
     public function getRouteName(string $name): string
@@ -70,7 +58,7 @@ final class RouteCollection implements RouteCollectionInterface
         $code = $this->getCode($name);
 
         if (!isset($defaults['_controller'])) {
-            $actionJoiner = false !== strpos($this->baseControllerName, ':') ? ':' : '::';
+            $actionJoiner = str_contains($this->baseControllerName, ':') ? ':' : '::';
 
             $defaults['_controller'] = $this->baseControllerName.$actionJoiner.$this->actionify($code);
         }
@@ -199,7 +187,7 @@ final class RouteCollection implements RouteCollectionInterface
 
         // if this is a service rather than just a controller name, the suffix
         // Action is not automatically appended to the method name
-        if (false === strpos($this->baseControllerName, ':')) {
+        if (!str_contains($this->baseControllerName, ':')) {
             $action .= 'Action';
         }
 

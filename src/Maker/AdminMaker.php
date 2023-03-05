@@ -34,13 +34,6 @@ use Symfony\Component\DependencyInjection\Container;
  */
 final class AdminMaker extends AbstractMaker
 {
-    private string $projectDirectory;
-
-    /**
-     * @var array<string, ModelManagerInterface<object>>
-     */
-    private array $availableModelManagers;
-
     private string $skeletonDirectory;
 
     /**
@@ -89,17 +82,16 @@ final class AdminMaker extends AbstractMaker
      */
     private ModelManagerInterface $modelManager;
 
-    private string $defaultController;
-
     /**
-     * @param array<string, ModelManagerInterface<object>> $modelManagers
+     * @param array<string, ModelManagerInterface<object>> $availableModelManagers
      */
-    public function __construct(string $projectDirectory, array $modelManagers, string $defaultController)
+    public function __construct(
+        private string $projectDirectory,
+        private array $availableModelManagers,
+        private string $defaultController
+    )
     {
-        $this->projectDirectory = $projectDirectory;
-        $this->availableModelManagers = $modelManagers;
         $this->skeletonDirectory = sprintf('%s/../Resources/skeleton', __DIR__);
-        $this->defaultController = $defaultController;
     }
 
     public static function getCommandName(): string
@@ -217,7 +209,7 @@ final class AdminMaker extends AbstractMaker
     {
         return Container::underscore(sprintf(
             'admin.%s',
-            str_replace('\\', '.', 'Admin' === substr($adminClassBasename, -5) ?
+            str_replace('\\', '.', str_ends_with($adminClassBasename, 'Admin') ?
                 substr($adminClassBasename, 0, -5) : $adminClassBasename)
         ));
     }

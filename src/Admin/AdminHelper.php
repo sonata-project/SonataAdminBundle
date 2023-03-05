@@ -35,11 +35,9 @@ class AdminHelper
      */
     private const FORM_FIELD_DELETE = '_delete';
 
-    private PropertyAccessorInterface $propertyAccessor;
-
-    public function __construct(PropertyAccessorInterface $propertyAccessor)
-    {
-        $this->propertyAccessor = $propertyAccessor;
+    public function __construct(
+        private PropertyAccessorInterface $propertyAccessor
+    ) {
     }
 
     public function getChildFormBuilder(FormBuilderInterface $formBuilder, string $elementId): ?FormBuilderInterface
@@ -140,7 +138,7 @@ class AdminHelper
 
             try {
                 $value = $fieldDescription->getValue($form->getData());
-            } catch (NoValueException $e) {
+            } catch (NoValueException) {
                 $value = null;
             }
 
@@ -180,7 +178,7 @@ class AdminHelper
                 throw new \TypeError(sprintf(
                     'Collection must be an instance of %s or array, %s given.',
                     \ArrayAccess::class,
-                    \is_object($collection) ? 'instance of "'.\get_class($collection).'"' : '"'.\gettype($collection).'"'
+                    \is_object($collection) ? 'instance of "'.$collection::class.'"' : '"'.\gettype($collection).'"'
                 ));
             }
 

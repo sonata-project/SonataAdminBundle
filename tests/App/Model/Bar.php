@@ -15,17 +15,11 @@ namespace Sonata\AdminBundle\Tests\App\Model;
 
 final class Bar implements EntityInterface
 {
-    private string $id;
-
-    private ?Foo $foo = null;
-
-    private ?Baz $baz = null;
-
-    public function __construct(string $id, ?Foo $foo = null, ?Baz $baz = null)
-    {
-        $this->id = $id;
-        $this->foo = $foo;
-        $this->baz = $baz;
+    public function __construct(
+        private string $id,
+        private ?Foo $foo = null,
+        private ?Baz $baz = null
+    ) {
     }
 
     public function getId(): string

@@ -458,7 +458,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         try {
             $this->compile();
-        } catch (\RuntimeException $e) {
+        } catch (\RuntimeException) {
             static::fail('An expected exception has been raised.');
         }
     }

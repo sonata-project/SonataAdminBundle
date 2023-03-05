@@ -24,16 +24,14 @@ use Twig\TwigFunction;
  */
 final class GroupExtension extends AbstractExtension
 {
-    private GroupRuntime $groupRuntime;
-
     /**
      * NEXT_MAJOR: Remove this constructor.
      *
      * @internal This class should only be used through Twig
      */
-    public function __construct(GroupRuntime $groupRuntime)
-    {
-        $this->groupRuntime = $groupRuntime;
+    public function __construct(
+        private GroupRuntime $groupRuntime
+    ) {
     }
 
     /**

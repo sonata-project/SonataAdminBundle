@@ -21,14 +21,10 @@ use Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerInterface;
  */
 final class RoutesCacheWarmUp implements CacheWarmerInterface
 {
-    private RoutesCache $cache;
-
-    private Pool $pool;
-
-    public function __construct(RoutesCache $cache, Pool $pool)
-    {
-        $this->cache = $cache;
-        $this->pool = $pool;
+    public function __construct(
+        private RoutesCache $cache,
+        private Pool $pool
+    ) {
     }
 
     public function isOptional(): bool

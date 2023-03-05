@@ -26,11 +26,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
  */
 final class AdminVoter implements VoterInterface
 {
-    private RequestStack $requestStack;
-
-    public function __construct(RequestStack $requestStack)
-    {
-        $this->requestStack = $requestStack;
+    public function __construct(
+        private RequestStack $requestStack
+    ) {
     }
 
     public function matchItem(ItemInterface $item): ?bool

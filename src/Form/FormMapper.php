@@ -35,28 +35,16 @@ use Symfony\Component\Form\FormTypeInterface;
  */
 final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
 {
-    private FormContractorInterface $builder;
-
-    private FormBuilderInterface $formBuilder;
-
     /**
-     * @var AdminInterface<object>
+     * @param AdminInterface<object> $admin
      *
-     * @phpstan-var AdminInterface<T>
-     */
-    private AdminInterface $admin;
-
-    /**
      * @phpstan-param AdminInterface<T> $admin
      */
     public function __construct(
-        FormContractorInterface $formContractor,
-        FormBuilderInterface $formBuilder,
-        AdminInterface $admin
+        private FormContractorInterface $builder,
+        private FormBuilderInterface $formBuilder,
+        private AdminInterface $admin
     ) {
-        $this->builder = $formContractor;
-        $this->admin = $admin;
-        $this->formBuilder = $formBuilder;
     }
 
     public function getAdmin(): AdminInterface

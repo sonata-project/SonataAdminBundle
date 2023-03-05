@@ -51,44 +51,19 @@ final class Pool
 {
     public const DEFAULT_ADMIN_KEY = 'default';
 
-    private ContainerInterface $container;
-
     /**
-     * @var string[]
-     */
-    private array $adminServiceCodes = [];
-
-    /**
-     * @var array<string, array<string, mixed>>
-     *
-     * @phpstan-var array<string, Group>
-     */
-    private array $adminGroups = [];
-
-    /**
-     * @var array<string, string[]>
-     *
-     * @phpstan-var array<class-string, string[]>
-     */
-    private array $adminClasses = [];
-
-    /**
-     * @param string[]                            $adminServices
+     * @param string[]                            $adminServiceCodes
      * @param array<string, array<string, mixed>> $adminGroups
      * @param array<class-string, string[]>       $adminClasses
      *
      * @phpstan-param array<string, Group> $adminGroups
      */
     public function __construct(
-        ContainerInterface $container,
-        array $adminServices = [],
-        array $adminGroups = [],
-        array $adminClasses = []
+        private ContainerInterface $container,
+        private array $adminServiceCodes = [],
+        private array $adminGroups = [],
+        private array $adminClasses = []
     ) {
-        $this->container = $container;
-        $this->adminServiceCodes = $adminServices;
-        $this->adminGroups = $adminGroups;
-        $this->adminClasses = $adminClasses;
     }
 
     /**
@@ -231,7 +206,7 @@ final class Pool
     {
         try {
             $this->getAdminByAdminCode($adminCode);
-        } catch (\InvalidArgumentException $e) {
+        } catch (\InvalidArgumentException) {
             return false;
         }
 
@@ -288,7 +263,7 @@ final class Pool
                     $closest = $adminServiceCode;
                     $shortest = $lev;
                 }
-                if ($lev <= \strlen($adminServiceCode) / 3 || false !== strpos($adminServiceCode, $code)) {
+                if ($lev <= \strlen($adminServiceCode) / 3 || str_contains($adminServiceCode, $code)) {
                     $alternatives[$adminServiceCode] = $lev;
                 }
             }

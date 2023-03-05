@@ -19,16 +19,14 @@ use Twig\TwigFunction;
 
 final class SecurityExtension extends AbstractExtension
 {
-    private SecurityRuntime $securityRuntime;
-
     /**
      * NEXT_MAJOR: Remove this constructor.
      *
      * @internal This class should only be used through Twig
      */
-    public function __construct(SecurityRuntime $securityRuntime)
-    {
-        $this->securityRuntime = $securityRuntime;
+    public function __construct(
+        private SecurityRuntime $securityRuntime
+    ) {
     }
 
     /**

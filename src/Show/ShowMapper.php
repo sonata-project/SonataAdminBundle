@@ -31,33 +31,17 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
  */
 final class ShowMapper extends BaseGroupedMapper
 {
-    private ShowBuilderInterface $builder;
-
-    /**
-     * @var FieldDescriptionCollection<FieldDescriptionInterface>
-     */
-    private FieldDescriptionCollection $list;
-
-    /**
-     * @var AdminInterface<object>
-     *
-     * @phpstan-var AdminInterface<T>
-     */
-    private AdminInterface $admin;
-
     /**
      * @param FieldDescriptionCollection<FieldDescriptionInterface> $list
+     * @param AdminInterface<object>                                $admin
      *
      * @phpstan-param AdminInterface<T> $admin
      */
     public function __construct(
-        ShowBuilderInterface $showBuilder,
-        FieldDescriptionCollection $list,
-        AdminInterface $admin
+        private ShowBuilderInterface $builder,
+        private FieldDescriptionCollection $list,
+        private AdminInterface $admin
     ) {
-        $this->admin = $admin;
-        $this->builder = $showBuilder;
-        $this->list = $list;
     }
 
     public function getAdmin(): AdminInterface

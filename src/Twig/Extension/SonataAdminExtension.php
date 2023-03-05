@@ -23,16 +23,14 @@ use Twig\TwigFilter;
  */
 final class SonataAdminExtension extends AbstractExtension
 {
-    private SonataAdminRuntime $sonataAdminRuntime;
-
     /**
      * NEXT_MAJOR: Remove this constructor.
      *
      * @internal This class should only be used through Twig
      */
-    public function __construct(SonataAdminRuntime $sonataAdminRuntime)
-    {
-        $this->sonataAdminRuntime = $sonataAdminRuntime;
+    public function __construct(
+        private SonataAdminRuntime $sonataAdminRuntime
+    ) {
     }
 
     /**

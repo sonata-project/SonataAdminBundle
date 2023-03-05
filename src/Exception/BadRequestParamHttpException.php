@@ -24,7 +24,11 @@ final class BadRequestParamHttpException extends BadRequestHttpException
      * @param string|string[] $expectedTypes
      * @param mixed           $value
      */
-    public function __construct(string $name, $expectedTypes, $value)
+    public function __construct(
+        string $name,
+        $expectedTypes,
+        $value
+    )
     {
         if (!\is_array($expectedTypes)) {
             $expectedTypes = [$expectedTypes];
@@ -34,7 +38,7 @@ final class BadRequestParamHttpException extends BadRequestHttpException
             'Expected request parameter "%s" of type "%s", %s given',
             $name,
             implode('|', $expectedTypes),
-            \is_object($value) ? 'instance of "'.\get_class($value).'"' : '"'.\gettype($value).'"'
+            \is_object($value) ? 'instance of "'.$value::class.'"' : '"'.\gettype($value).'"'
         );
 
         parent::__construct($message);

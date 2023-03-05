@@ -84,7 +84,7 @@ final class AdminType extends AbstractType
 
                     try {
                         $subject = $propertyAccessor->getValue($parentSubject, $parentPath.$path);
-                    } catch (NoSuchIndexException $e) {
+                    } catch (NoSuchIndexException) {
                         // no object here, we create a new one
                         $subject = $admin->getNewInstance();
 

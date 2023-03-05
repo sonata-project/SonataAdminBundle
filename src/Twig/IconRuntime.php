@@ -19,17 +19,17 @@ final class IconRuntime implements RuntimeExtensionInterface
 {
     public function parseIcon(string $icon): string
     {
-        if ('' === $icon || 0 === strpos($icon, '<')) {
+        if ('' === $icon || str_starts_with($icon, '<')) {
             return $icon;
         }
 
         if (
-            0 !== strpos($icon, 'fa ')
-            && 0 !== strpos($icon, 'fas ')
-            && 0 !== strpos($icon, 'far ')
-            && 0 !== strpos($icon, 'fab ')
-            && 0 !== strpos($icon, 'fal ')
-            && 0 !== strpos($icon, 'fad ')
+            !str_starts_with($icon, 'fa ')
+            && !str_starts_with($icon, 'fas ')
+            && !str_starts_with($icon, 'far ')
+            && !str_starts_with($icon, 'fab ')
+            && !str_starts_with($icon, 'fal ')
+            && !str_starts_with($icon, 'fad ')
         ) {
             throw new \InvalidArgumentException(sprintf('The icon format "%s" is not supported.', $icon));
         }

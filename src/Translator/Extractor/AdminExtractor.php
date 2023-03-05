@@ -44,18 +44,14 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
 
     private ?MessageCatalogue $catalogue = null;
 
-    private Pool $adminPool;
-
     private ?LabelTranslatorStrategyInterface $labelStrategy = null;
 
     private ?string $domain = null;
 
-    private BreadcrumbsBuilderInterface $breadcrumbsBuilder;
-
-    public function __construct(Pool $adminPool, BreadcrumbsBuilderInterface $breadcrumbsBuilder)
-    {
-        $this->adminPool = $adminPool;
-        $this->breadcrumbsBuilder = $breadcrumbsBuilder;
+    public function __construct(
+        private Pool $adminPool,
+        private BreadcrumbsBuilderInterface $breadcrumbsBuilder
+    ) {
     }
 
     /**

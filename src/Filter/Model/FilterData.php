@@ -18,23 +18,19 @@ namespace Sonata\AdminBundle\Filter\Model;
  */
 final class FilterData
 {
-    private ?int $type;
-
     /**
      * @var mixed
      */
     private $value;
 
-    private bool $hasValue;
-
     /**
      * @param mixed $value
      */
-    private function __construct(?int $type, bool $hasValue, $value = null)
-    {
-        $this->type = $type;
-        $this->hasValue = $hasValue;
-
+    private function __construct(
+        private ?int $type,
+        private bool $hasValue,
+        $value = null
+    ) {
         if ($hasValue) {
             $this->value = $value;
         }
@@ -51,7 +47,7 @@ final class FilterData
             if (!\is_int($data['type']) && (!\is_string($data['type']) || !is_numeric($data['type']))) {
                 throw new \InvalidArgumentException(sprintf(
                     'The "type" parameter MUST be of type "integer" or "null", %s given.',
-                    \is_object($data['type']) ? 'instance of "'.\get_class($data['type']).'"' : '"'.\gettype($data['type']).'"'
+                    \is_object($data['type']) ? 'instance of "'.$data['type']::class.'"' : '"'.\gettype($data['type']).'"'
                 ));
             }
 

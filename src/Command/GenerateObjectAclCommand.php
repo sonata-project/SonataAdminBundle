@@ -34,25 +34,16 @@ final class GenerateObjectAclCommand extends QuestionableCommand
 
     private string $userModelClass = '';
 
-    private Pool $pool;
-
     /**
-     * An array of object ACL manipulators indexed by their service ids.
-     *
-     * @var ObjectAclManipulatorInterface[]
-     */
-    private array $aclObjectManipulators = [];
-
-    /**
-     * @param ObjectAclManipulatorInterface[] $aclObjectManipulators
+     * @param ObjectAclManipulatorInterface[] $aclObjectManipulators an array of object ACL manipulators indexed by their service ids
      *
      * @internal This class should only be used through the console
      */
-    public function __construct(Pool $pool, array $aclObjectManipulators)
+    public function __construct(
+        private Pool $pool,
+        private array $aclObjectManipulators
+    )
     {
-        $this->pool = $pool;
-        $this->aclObjectManipulators = $aclObjectManipulators;
-
         parent::__construct();
     }
 

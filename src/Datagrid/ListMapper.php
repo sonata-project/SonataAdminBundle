@@ -39,33 +39,17 @@ final class ListMapper implements MapperInterface
     public const TYPE_BATCH = 'batch';
     public const TYPE_SELECT = 'select';
 
-    private ListBuilderInterface $builder;
-
-    /**
-     * @var FieldDescriptionCollection<FieldDescriptionInterface>
-     */
-    private FieldDescriptionCollection $list;
-
-    /**
-     * @var AdminInterface<object>
-     *
-     * @phpstan-var AdminInterface<T>
-     */
-    private AdminInterface $admin;
-
     /**
      * @param FieldDescriptionCollection<FieldDescriptionInterface> $list
+     * @param AdminInterface<object>                                $admin
      *
      * @phpstan-param AdminInterface<T> $admin
      */
     public function __construct(
-        ListBuilderInterface $listBuilder,
-        FieldDescriptionCollection $list,
-        AdminInterface $admin
+        private ListBuilderInterface $builder,
+        private FieldDescriptionCollection $list,
+        private AdminInterface $admin
     ) {
-        $this->admin = $admin;
-        $this->builder = $listBuilder;
-        $this->list = $list;
     }
 
     public function getAdmin(): AdminInterface

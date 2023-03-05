@@ -23,8 +23,6 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
  */
 final class RoleSecurityHandler implements SecurityHandlerInterface
 {
-    private AuthorizationCheckerInterface $authorizationChecker;
-
     /**
      * @var string[]
      */
@@ -33,10 +31,11 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
     /**
      * @param string|string[] $superAdminRoles
      */
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker, $superAdminRoles)
+    public function __construct(
+        private AuthorizationCheckerInterface $authorizationChecker,
+        $superAdminRoles
+    )
     {
-        $this->authorizationChecker = $authorizationChecker;
-
         // NEXT_MAJOR: Keep only the elseif part and add typehint.
         if (\is_array($superAdminRoles)) {
             @trigger_error(sprintf(
@@ -52,7 +51,7 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
             throw new \TypeError(sprintf(
                 'Argument 1 passed to "%s()" must be of type "array" or "string", %s given.',
                 __METHOD__,
-                \is_object($superAdminRoles) ? 'instance of "'.\get_class($superAdminRoles).'"' : '"'.\gettype($superAdminRoles).'"'
+                \is_object($superAdminRoles) ? 'instance of "'.$superAdminRoles::class.'"' : '"'.\gettype($superAdminRoles).'"'
             ));
         }
     }
@@ -77,7 +76,7 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
         $useAll = false;
         foreach ($attributes as $pos => $attribute) {
             // If the attribute is not already a ROLE_ we generate the related role.
-            if (\is_string($attribute) && 0 !== strpos($attribute, 'ROLE_')) {
+            if (\is_string($attribute) && !str_starts_with($attribute, 'ROLE_')) {
                 $attributes[$pos] = sprintf($this->getBaseRole($admin), $attribute);
                 // All the admin related role are available when you have the `_ALL` role.
                 $useAll = true;
@@ -91,7 +90,7 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
             return $this->isAnyGranted($this->superAdminRoles)
                 || $this->isAnyGranted($attributes, $object)
                 || $useAll && $this->isAnyGranted([$allRole], $object);
-        } catch (AuthenticationCredentialsNotFoundException $e) {
+        } catch (AuthenticationCredentialsNotFoundException) {
             return false;
         }
     }

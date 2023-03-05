@@ -20,11 +20,9 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 final class AdminValueResolver implements CompatibleValueResolverInterface
 {
-    private AdminFetcherInterface $adminFetcher;
-
-    public function __construct(AdminFetcherInterface $adminFetcher)
-    {
-        $this->adminFetcher = $adminFetcher;
+    public function __construct(
+        private AdminFetcherInterface $adminFetcher
+    ) {
     }
 
     // TODO: Deprecate this method when dropping support of Symfony < 6.2
@@ -42,7 +40,7 @@ final class AdminValueResolver implements CompatibleValueResolverInterface
 
         try {
             $admin = $this->adminFetcher->get($request);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (\InvalidArgumentException) {
             return false;
         }
 
@@ -66,7 +64,7 @@ final class AdminValueResolver implements CompatibleValueResolverInterface
 
         try {
             $admin = $this->adminFetcher->get($request);
-        } catch (\InvalidArgumentException $exception) {
+        } catch (\InvalidArgumentException) {
             return [];
         }
 

@@ -22,10 +22,6 @@ use Symfony\Component\Routing\RouterInterface;
  */
 final class DefaultRouteGenerator implements RouteGeneratorInterface
 {
-    private RouterInterface $router;
-
-    private RoutesCache $cache;
-
     /**
      * @var array<string, string>
      */
@@ -36,10 +32,10 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
      */
     private array $loaded = [];
 
-    public function __construct(RouterInterface $router, RoutesCache $cache)
-    {
-        $this->router = $router;
-        $this->cache = $cache;
+    public function __construct(
+        private RouterInterface $router,
+        private RoutesCache $cache
+    ) {
     }
 
     public function generate(string $name, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string
@@ -97,7 +93,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
             $parameters['puniqid'] = $admin->getParentFieldDescription()->getAdmin()->getUniqId();
         }
 
-        if ('update' === $name || '|update' === substr($name, -7)) {
+        if ('update' === $name || str_ends_with($name, '|update')) {
             $parameters['uniqid'] = $admin->getUniqId();
             $parameters['code'] = $admin->getCode();
         }
@@ -136,8 +132,8 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
 
         // Someone provided the full name
         if (
-            0 === strpos($name, sprintf('%s|', $codePrefix)) // Child admin route already prefixed
-            || 0 === strpos($name, sprintf('%s.', $codePrefix)) // admin route already prefixed
+            str_starts_with($name, sprintf('%s|', $codePrefix)) // Child admin route already prefixed
+            || str_starts_with($name, sprintf('%s.', $codePrefix)) // admin route already prefixed
         ) {
             return $name;
         }

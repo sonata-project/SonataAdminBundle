@@ -40,28 +40,16 @@ final class PersistenceEvent extends Event
     public const TYPE_POST_REMOVE = 'post_remove';
 
     /**
-     * @var AdminInterface<object>
+     * @param AdminInterface<object> $admin
      *
-     * @phpstan-var AdminInterface<T>
-     */
-    private AdminInterface $admin;
-
-    /**
-     * @phpstan-var T
-     */
-    private object $object;
-
-    private string $type;
-
-    /**
      * @phpstan-param AdminInterface<T> $admin
      * @phpstan-param T $object
      */
-    public function __construct(AdminInterface $admin, object $object, string $type)
-    {
-        $this->admin = $admin;
-        $this->object = $object;
-        $this->type = $type;
+    public function __construct(
+        private AdminInterface $admin,
+        private object $object,
+        private string $type
+    ) {
     }
 
     /**

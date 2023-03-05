@@ -40,30 +40,17 @@ final class ConfigureEvent extends Event
     public const TYPE_LIST = 'list';
 
     /**
-     * @var AdminInterface<object>
+     * @param AdminInterface<object>  $admin
+     * @param MapperInterface<object> $mapper
      *
-     * @phpstan-var AdminInterface<T>
-     */
-    private AdminInterface $admin;
-
-    /**
-     * @var MapperInterface<object>
-     *
-     * @phpstan-var MapperInterface<T>
-     */
-    private MapperInterface $mapper;
-
-    private string $type;
-
-    /**
      * @phpstan-param AdminInterface<T> $admin
      * @phpstan-param MapperInterface<T> $mapper
      */
-    public function __construct(AdminInterface $admin, MapperInterface $mapper, string $type)
-    {
-        $this->admin = $admin;
-        $this->mapper = $mapper;
-        $this->type = $type;
+    public function __construct(
+        private AdminInterface $admin,
+        private MapperInterface $mapper,
+        private string $type
+    ) {
     }
 
     public function getType(): string

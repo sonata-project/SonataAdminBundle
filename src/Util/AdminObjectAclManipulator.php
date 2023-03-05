@@ -38,20 +38,13 @@ final class AdminObjectAclManipulator
     public const ACL_USERS_FORM_NAME = 'acl_users_form';
     public const ACL_ROLES_FORM_NAME = 'acl_roles_form';
 
-    private FormFactoryInterface $formFactory;
-
-    /**
-     * @phpstan-var class-string<MaskBuilderInterface>
-     */
-    private string $maskBuilderClass;
-
     /**
      * @phpstan-param class-string<MaskBuilderInterface> $maskBuilderClass
      */
-    public function __construct(FormFactoryInterface $formFactory, string $maskBuilderClass)
-    {
-        $this->formFactory = $formFactory;
-        $this->maskBuilderClass = $maskBuilderClass;
+    public function __construct(
+        private FormFactoryInterface $formFactory,
+        private string $maskBuilderClass
+    ) {
     }
 
     /**
@@ -200,7 +193,7 @@ final class AdminObjectAclManipulator
             foreach ($data->getUserPermissions() as $permission) {
                 try {
                     $checked = $acl->isGranted([$masks[$permission]], [$securityIdentity]);
-                } catch (NoAceFoundException $e) {
+                } catch (NoAceFoundException) {
                     $checked = false;
                 }
 

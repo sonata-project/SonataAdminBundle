@@ -22,8 +22,6 @@ use Symfony\Component\Form\FormBuilderInterface;
  */
 final class FormBuilderIterator extends \RecursiveArrayIterator
 {
-    private FormBuilderInterface $formBuilder;
-
     private string $prefix;
 
     /**
@@ -31,11 +29,12 @@ final class FormBuilderIterator extends \RecursiveArrayIterator
      */
     private \ArrayIterator $iterator;
 
-    public function __construct(FormBuilderInterface $formBuilder, ?string $prefix = null)
+    public function __construct(
+        private FormBuilderInterface $formBuilder,
+        ?string $prefix = null
+    )
     {
         parent::__construct();
-
-        $this->formBuilder = $formBuilder;
         $this->prefix = $prefix ?? $formBuilder->getName();
         $this->iterator = new \ArrayIterator(self::getKeys($formBuilder));
     }

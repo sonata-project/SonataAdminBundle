@@ -29,23 +29,13 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 final class ModelsToArrayTransformer implements DataTransformerInterface
 {
     /**
-     * @phpstan-var ModelManagerInterface<T>
-     */
-    private ModelManagerInterface $modelManager;
-
-    /**
-     * @phpstan-var class-string<T>
-     */
-    private string $class;
-
-    /**
      * @phpstan-param ModelManagerInterface<T> $modelManager
      * @phpstan-param class-string<T>          $class
      */
-    public function __construct(ModelManagerInterface $modelManager, string $class)
-    {
-        $this->modelManager = $modelManager;
-        $this->class = $class;
+    public function __construct(
+        private ModelManagerInterface $modelManager,
+        private string $class
+    ) {
     }
 
     /**

@@ -337,7 +337,7 @@ class CRUDController extends AbstractController
                     $errorMessage = $this->handleModelManagerThrowable($e);
 
                     $isFormValid = false;
-                } catch (LockException $e) {
+                } catch (LockException) {
                     $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', [
                         '%name%' => $this->escapeHtml($this->admin->toString($existingObject)),
                         '%link_start%' => sprintf('<a href="%s">', $this->admin->generateObjectUrl('edit', $existingObject)),
@@ -432,7 +432,7 @@ class CRUDController extends AbstractController
 
             try {
                 $data = json_decode($encodedData, true, 512, \JSON_THROW_ON_ERROR);
-            } catch (\JsonException $exception) {
+            } catch (\JsonException) {
                 throw new BadRequestHttpException('Unable to decode batch data');
             }
 
@@ -1223,7 +1223,7 @@ class CRUDController extends AbstractController
         foreach ($pool->getAdminServiceCodes() as $code) {
             try {
                 $admin = $pool->getInstance($code);
-            } catch (\Exception $e) {
+            } catch (\Exception) {
                 continue;
             }
 
@@ -1408,7 +1408,7 @@ class CRUDController extends AbstractController
                 throw $this->createNotFoundException(sprintf(
                     'Unable to find the %s object id of the admin "%s".',
                     $admin->getClassnameLabel(),
-                    \get_class($admin)
+                    $admin::class
                 ));
             }
 
@@ -1457,7 +1457,7 @@ class CRUDController extends AbstractController
         if (null === $parentAdminObject) {
             throw new \RuntimeException(sprintf(
                 'No object was found in the admin "%s" for the id "%s".',
-                \get_class($parentAdmin),
+                $parentAdmin::class,
                 $parentId
             ));
         }

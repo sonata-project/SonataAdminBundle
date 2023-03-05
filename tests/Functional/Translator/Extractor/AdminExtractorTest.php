@@ -26,7 +26,7 @@ final class AdminExtractorTest extends KernelTestCase
             $tester->execute(['locale' => 'en']);
         } catch (\Throwable $t) {
             // until https://github.com/symfony/symfony/issues/48422 is fixed
-            if (false !== strpos($t->getMessage(), 'Undefined property: PhpParser\Node\VariadicPlaceholder')) {
+            if (str_contains($t->getMessage(), 'Undefined property: PhpParser\Node\VariadicPlaceholder')) {
                 static::markTestSkipped();
             }
 

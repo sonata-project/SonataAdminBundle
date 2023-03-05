@@ -33,25 +33,6 @@ use Symfony\Component\Form\Exception\UnexpectedTypeException;
 final class ModelToIdPropertyTransformer implements DataTransformerInterface
 {
     /**
-     * @phpstan-var ModelManagerInterface<T>
-     */
-    private ModelManagerInterface $modelManager;
-
-    /**
-     * @phpstan-var class-string<T>
-     */
-    private string $className;
-
-    /**
-     * @var string|string[]
-     *
-     * @phpstan-var P
-     */
-    private $property;
-
-    private bool $multiple;
-
-    /**
      * @var callable|null
      *
      * @phpstan-var null|callable(T, P): string
@@ -67,20 +48,16 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
      * @phpstan-param null|callable(T, P): string $toStringCallback
      */
     public function __construct(
-        ModelManagerInterface $modelManager,
-        string $className,
-        $property,
-        bool $multiple = false,
+        private ModelManagerInterface $modelManager,
+        private string $className,
+        private $property,
+        private bool $multiple = false,
         ?callable $toStringCallback = null
     ) {
         if ('' === $property) {
             throw new InvalidArgumentException('The property must be non empty.');
         }
 
-        $this->modelManager = $modelManager;
-        $this->className = $className;
-        $this->property = $property;
-        $this->multiple = $multiple;
         $this->toStringCallback = $toStringCallback;
     }
 
@@ -145,7 +122,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
         }
 
         if ($this->multiple) {
-            if (!\is_array($value) && substr(\get_class($value), -1 * \strlen($this->className)) === $this->className) {
+            if (!\is_array($value) && substr($value::class, -1 * \strlen($this->className)) === $this->className) {
                 throw new InvalidArgumentException(
                     'A multiple selection must be passed a collection not a single value.'
                     .' Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true"'
@@ -162,7 +139,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
                 );
             }
         } else {
-            if (!\is_array($value) && substr(\get_class($value), -1 * \strlen($this->className)) === $this->className) {
+            if (!\is_array($value) && substr($value::class, -1 * \strlen($this->className)) === $this->className) {
                 $collection = [$value];
             } elseif (is_iterable($value)) {
                 throw new InvalidArgumentException(

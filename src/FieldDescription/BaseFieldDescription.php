@@ -403,7 +403,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
                         Expected object|null, got %s.
                         EXCEPTION,
                     $fieldName,
-                    \get_class($object),
+                    $object::class,
                     $this->getName(),
                     \gettype($child)
                 ));
@@ -420,7 +420,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             throw new \TypeError(sprintf(
                 'The option "accessor" must be a string, a callable or a %s, %s given.',
                 PropertyPathInterface::class,
-                \is_object($accessor) ? 'instance of '.\get_class($accessor) : \gettype($accessor)
+                \is_object($accessor) ? 'instance of '.$accessor::class : \gettype($accessor)
             ));
         }
 

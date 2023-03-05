@@ -19,16 +19,14 @@ use Twig\TwigFilter;
 
 final class IconExtension extends AbstractExtension
 {
-    private IconRuntime $iconRuntime;
-
     /**
      * NEXT_MAJOR: Remove this constructor.
      *
      * @internal This class should only be used through Twig
      */
-    public function __construct(IconRuntime $iconRuntime)
-    {
-        $this->iconRuntime = $iconRuntime;
+    public function __construct(
+        private IconRuntime $iconRuntime
+    ) {
     }
 
     public function getFilters(): array

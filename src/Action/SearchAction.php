@@ -21,20 +21,11 @@ use Twig\Environment;
 
 final class SearchAction
 {
-    private Pool $pool;
-
-    private TemplateRegistryInterface $templateRegistry;
-
-    private Environment $twig;
-
     public function __construct(
-        Pool $pool,
-        TemplateRegistryInterface $templateRegistry,
-        Environment $twig
+        private Pool $pool,
+        private TemplateRegistryInterface $templateRegistry,
+        private Environment $twig
     ) {
-        $this->pool = $pool;
-        $this->templateRegistry = $templateRegistry;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response

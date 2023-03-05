@@ -1569,25 +1569,12 @@ final class AdminTest extends TestCase
             ->expects(static::exactly(3))
             ->method('create')
             ->willReturnCallback(static function (string $adminClass, string $name, array $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription): FieldDescriptionInterface {
-                switch ($name) {
-                    case 'foo':
-                        $fieldDescription = $fooFieldDescription;
-
-                        break;
-
-                    case 'bar':
-                        $fieldDescription = $barFieldDescription;
-
-                        break;
-
-                    case 'baz':
-                        $fieldDescription = $bazFieldDescription;
-
-                        break;
-
-                    default:
-                        throw new \RuntimeException(sprintf('Unknown filter name "%s"', $name));
-                }
+                $fieldDescription = match ($name) {
+                    'foo' => $fooFieldDescription,
+                    'bar' => $barFieldDescription,
+                    'baz' => $bazFieldDescription,
+                    default => throw new \RuntimeException(sprintf('Unknown filter name "%s"', $name)),
+                };
 
                 $fieldDescription->setName($name);
 

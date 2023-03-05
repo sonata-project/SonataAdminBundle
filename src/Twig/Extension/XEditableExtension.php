@@ -35,16 +35,14 @@ final class XEditableExtension extends AbstractExtension
         FieldDescriptionInterface::TYPE_URL => 'url',
     ];
 
-    private XEditableRuntime $xEditableRuntime;
-
     /**
      * NEXT_MAJOR: Remove this constructor.
      *
      * @internal This class should only be used through Twig
      */
-    public function __construct(XEditableRuntime $xEditableRuntime)
-    {
-        $this->xEditableRuntime = $xEditableRuntime;
+    public function __construct(
+        private XEditableRuntime $xEditableRuntime
+    ) {
     }
 
     /**

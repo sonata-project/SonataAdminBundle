@@ -44,7 +44,7 @@ final class FormBuilderIteratorTest extends TestCase
     {
         $this->builder->add('name', TextType::class);
         $iterator = new FormBuilderIterator($this->builder);
-        static::assertInstanceOf(\get_class($iterator), $iterator->getChildren());
+        static::assertInstanceOf($iterator::class, $iterator->getChildren());
         static::assertSame('name_name', $iterator->key());
     }
 

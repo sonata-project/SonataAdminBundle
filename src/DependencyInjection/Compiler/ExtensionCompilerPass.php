@@ -131,7 +131,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                     throw new \TypeError(sprintf(
                         'Tag attribute "model_class" for service "%s" must be of type string, %s given.',
                         $id,
-                        \is_object($class) ? \get_class($class) : \gettype($class)
+                        get_debug_type($class)
                     ));
                 }
 
@@ -227,7 +227,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                         throw new \TypeError(sprintf(
                             'Tag attribute "model_class" for service "%s" must be of type string, %s given.',
                             $id,
-                            \is_object($class) ? \get_class($class) : \gettype($class)
+                            get_debug_type($class)
                         ));
                     }
 

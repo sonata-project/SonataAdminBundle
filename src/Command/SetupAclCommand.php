@@ -30,18 +30,14 @@ final class SetupAclCommand extends Command
     protected static $defaultName = 'sonata:admin:setup-acl';
     protected static $defaultDescription = 'Install ACL for Admin Classes';
 
-    private Pool $pool;
-
-    private AdminAclManipulatorInterface $aclManipulator;
-
     /**
      * @internal This class should only be used through the console
      */
-    public function __construct(Pool $pool, AdminAclManipulatorInterface $aclManipulator)
+    public function __construct(
+        private Pool $pool,
+        private AdminAclManipulatorInterface $aclManipulator
+    )
     {
-        $this->pool = $pool;
-        $this->aclManipulator = $aclManipulator;
-
         parent::__construct();
     }
 
