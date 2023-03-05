@@ -20,15 +20,12 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 final class SecurityRuntime implements RuntimeExtensionInterface
 {
-    private ?AuthorizationCheckerInterface $securityChecker = null;
-
     /**
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        ?AuthorizationCheckerInterface $securityChecker = null
+        private ?AuthorizationCheckerInterface $securityChecker = null
     ) {
-        $this->securityChecker = $securityChecker;
     }
 
     /**

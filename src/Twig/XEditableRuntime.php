@@ -34,23 +34,14 @@ final class XEditableRuntime implements RuntimeExtensionInterface
     ];
 
     /**
-     * @var string[]
-     */
-    private array $xEditableTypeMapping = [];
-
-    private TranslatorInterface $translator;
-
-    /**
      * @param string[] $xEditableTypeMapping
      *
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        TranslatorInterface $translator,
-        array $xEditableTypeMapping = self::FIELD_DESCRIPTION_MAPPING
+        private TranslatorInterface $translator,
+        private array $xEditableTypeMapping = self::FIELD_DESCRIPTION_MAPPING
     ) {
-        $this->translator = $translator;
-        $this->xEditableTypeMapping = $xEditableTypeMapping;
     }
 
     /**

@@ -326,7 +326,6 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     *
      * @phpstan-param class-string $class
      * @phpstan-param class-string $adminClass
      */

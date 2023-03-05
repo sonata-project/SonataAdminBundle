@@ -77,7 +77,6 @@ interface FieldDescriptionInterface
     /**
      * Returns the value represented by the provided name.
      *
-     *
      * @return mixed
      */
     public function getOption(string $name, mixed $default = null);

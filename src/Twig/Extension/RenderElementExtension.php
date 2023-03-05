@@ -122,9 +122,6 @@ final class RenderElementExtension extends AbstractExtension
      * @deprecated since sonata-project/admin-bundle version 4.7 use RenderElementRuntime::renderViewElementCompare() instead
      *
      * render a compared view element.
-     *
-     * @param mixed $baseObject
-     * @param mixed $compareObject
      */
     public function renderViewElementCompare(
         Environment $environment,
@@ -148,8 +145,8 @@ final class RenderElementExtension extends AbstractExtension
      *
      * @deprecated since sonata-project/admin-bundle version 4.7 use RenderElementRuntime::renderRelationElement() instead
      *
-     *
      * @throws \RuntimeException
+     *
      * @return mixed
      */
     public function renderRelationElement(mixed $element, FieldDescriptionInterface $fieldDescription)
