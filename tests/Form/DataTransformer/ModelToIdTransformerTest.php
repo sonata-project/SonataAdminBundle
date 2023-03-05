@@ -31,11 +31,9 @@ final class ModelToIdTransformerTest extends TestCase
     }
 
     /**
-     * @param int|string $value
-     *
      * @dataProvider getReverseTransformValues
      */
-    public function testReverseTransform($value): void
+    public function testReverseTransform(int|string $value): void
     {
         $className = \stdClass::class;
         $transformer = new ModelToIdTransformer($this->modelManager, $className);

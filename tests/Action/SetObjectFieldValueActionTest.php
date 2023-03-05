@@ -150,12 +150,12 @@ final class SetObjectFieldValueActionTest extends TestCase
     }
 
     /**
-     * @param \DateTimeZone|string|false|null $timezone
-     *
      * @dataProvider getTimeZones
      */
-    public function testSetObjectFieldValueActionWithDate($timezone, \DateTimeZone $expectedTimezone): void
-    {
+    public function testSetObjectFieldValueActionWithDate(
+        \DateTimeZone|string|false|null $timezone,
+        \DateTimeZone $expectedTimezone
+    ): void {
         $object = new Bafoo();
         $request = new Request([
             '_sonata_admin' => 'sonata.post.admin',

@@ -32,10 +32,8 @@ final class BatchAdminController extends CRUDController
      * Returns true if $idx contains 123 and 456.
      *
      * @param string[] $idx
-     *
-     * @return bool|string
      */
-    public function batchActionFooIsRelevant(array $idx, bool $allElements)
+    public function batchActionFooIsRelevant(array $idx, bool $allElements): bool|string
     {
         if (isset($idx[0], $idx[1]) && '123' === $idx[0] && '456' === $idx[1]) {
             return true;

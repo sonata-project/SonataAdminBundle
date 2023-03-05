@@ -79,8 +79,13 @@ final class RoleSecurityHandlerTest extends TestCase
      *
      * @dataProvider getIsGrantedTests
      */
-    public function testIsGranted(bool $expected, $superAdminRoles, string $adminCode, $operation, ?object $object = null): void
-    {
+    public function testIsGranted(
+        bool $expected,
+        string|array $superAdminRoles,
+        string $adminCode,
+        string|Expression|array $operation,
+        ?object $object = null
+    ): void {
         $handler = $this->getRoleSecurityHandler($superAdminRoles);
 
         $this->admin
@@ -242,7 +247,7 @@ final class RoleSecurityHandlerTest extends TestCase
     /**
      * @param string|string[] $superAdminRoles
      */
-    private function getRoleSecurityHandler($superAdminRoles): RoleSecurityHandler
+    private function getRoleSecurityHandler(string|array $superAdminRoles): RoleSecurityHandler
     {
         return new RoleSecurityHandler($this->authorizationChecker, $superAdminRoles);
     }

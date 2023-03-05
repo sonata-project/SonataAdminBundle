@@ -46,7 +46,7 @@ final class ArrayToModelTransformerTest extends TestCase
      *
      * @dataProvider getReverseTransformTests
      */
-    public function testReverseTransform($value): void
+    public function testReverseTransform(\stdClass|array|null $value): void
     {
         $transformer = new ArrayToModelTransformer($this->modelManager, \stdClass::class);
 

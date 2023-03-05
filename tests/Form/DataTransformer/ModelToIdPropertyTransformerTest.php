@@ -145,11 +145,9 @@ final class ModelToIdPropertyTransformerTest extends TestCase
     }
 
     /**
-     * @param mixed $params
-     *
      * @dataProvider getReverseTransformMultipleInvalidTypeTests
      */
-    public function testReverseTransformMultipleInvalidTypeTests($params, string $type): void
+    public function testReverseTransformMultipleInvalidTypeTests(mixed $params, string $type): void
     {
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 

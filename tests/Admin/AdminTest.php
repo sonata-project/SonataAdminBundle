@@ -1652,11 +1652,9 @@ final class AdminTest extends TestCase
     }
 
     /**
-     * @param int|string $id
-     *
      * @dataProvider provideGetSubject
      */
-    public function testGetSubjectFailed($id): void
+    public function testGetSubjectFailed(int|string $id): void
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
@@ -1674,11 +1672,9 @@ final class AdminTest extends TestCase
     }
 
     /**
-     * @param int|string $id
-     *
      * @dataProvider provideGetSubject
      */
-    public function testGetSubject($id): void
+    public function testGetSubject(int|string $id): void
     {
         $model = new Post();
 
