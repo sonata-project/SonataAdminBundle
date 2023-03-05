@@ -31,7 +31,7 @@ final class SecurityRuntime implements RuntimeExtensionInterface
     /**
      * @param string|string[] $role
      */
-    public function isGrantedAffirmative($role, ?object $object = null, ?string $field = null): bool
+    public function isGrantedAffirmative(string|array $role, ?object $object = null, ?string $field = null): bool
     {
         if (null === $this->securityChecker) {
             return false;
