@@ -217,7 +217,7 @@ final class RouteCollection implements RouteCollectionInterface
     /**
      * @param Route|callable():Route $element
      */
-    private function addElement(string $code, $element): void
+    private function addElement(string $code, Route|callable $element): void
     {
         $this->elements[$code] = $element;
         $this->updateCachedElement($code);
