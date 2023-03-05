@@ -58,5 +58,9 @@ final class AuditManagerTest extends TestCase
     }
 }
 
-class Foo1 {}
-class Foo2 {}
+class Foo1
+{
+}
+class Foo2
+{
+}

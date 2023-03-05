@@ -2321,5 +2321,9 @@ final class AdminTest extends TestCase
     }
 }
 
-class PostExtended1 {}
-class PostExtended2 {}
+class PostExtended1
+{
+}
+class PostExtended2
+{
+}
