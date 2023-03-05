@@ -34,8 +34,7 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
     public function __construct(
         private AuthorizationCheckerInterface $authorizationChecker,
         $superAdminRoles
-    )
-    {
+    ) {
         // NEXT_MAJOR: Keep only the elseif part and add typehint.
         if (\is_array($superAdminRoles)) {
             @trigger_error(sprintf(

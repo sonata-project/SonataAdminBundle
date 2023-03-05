@@ -89,8 +89,7 @@ final class AdminMaker extends AbstractMaker
         private string $projectDirectory,
         private array $availableModelManagers,
         private string $defaultController
-    )
-    {
+    ) {
         $this->skeletonDirectory = sprintf('%s/../Resources/skeleton', __DIR__);
     }
 

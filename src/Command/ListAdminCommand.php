@@ -34,8 +34,7 @@ final class ListAdminCommand extends Command
      */
     public function __construct(
         private Pool $pool
-    )
-    {
+    ) {
         parent::__construct();
     }
 

@@ -24,8 +24,7 @@ final class Foo implements EntityInterface
         private string $id,
         private string $name,
         private array $elements = []
-    )
-    {
+    ) {
         $this->referenced = null;
     }
 

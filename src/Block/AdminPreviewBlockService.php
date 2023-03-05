@@ -32,8 +32,7 @@ final class AdminPreviewBlockService extends AbstractBlockService
     public function __construct(
         Environment $twig,
         private Pool $pool
-    )
-    {
+    ) {
         parent::__construct($twig);
     }
 

@@ -27,8 +27,7 @@ final class AdminPoolLoader extends Loader
 
     public function __construct(
         private Pool $pool
-    )
-    {
+    ) {
         // Remove this check when dropping support for support of symfony/symfony-config < 5.3.
         // @phpstan-ignore-next-line
         if (method_exists(parent::class, '__construct')) {

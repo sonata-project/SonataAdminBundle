@@ -28,8 +28,7 @@ final class BadRequestParamHttpException extends BadRequestHttpException
         string $name,
         $expectedTypes,
         $value
-    )
-    {
+    ) {
         if (!\is_array($expectedTypes)) {
             $expectedTypes = [$expectedTypes];
         }
