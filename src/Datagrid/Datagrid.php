@@ -323,7 +323,7 @@ final class Datagrid implements DatagridInterface
 
         foreach ($this->getFilters() as $filter) {
             // NEXT_MAJOR: Keep the if part.
-            if (method_exists($filter, 'getFormOptions')) { // @phpstan-ignore-line
+            if (method_exists($filter, 'getFormOptions')) {
                 $type = FilterDataType::class;
                 $options = $filter->getFormOptions();
             } else {

@@ -56,15 +56,16 @@ final class DatagridMapperTest extends TestCase
     {
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
-        /** @var ProxyQueryInterface<object> $proxyQuery */
+        /** @var ProxyQueryInterface<object>&MockObject $proxyQuery */
         $proxyQuery = $this->createMock(ProxyQueryInterface::class);
-        /** @var PagerInterface<ProxyQueryInterface<object>> $pager */
+        /** @var PagerInterface<ProxyQueryInterface<object>>&MockObject $pager */
         $pager = $this->createMock(PagerInterface::class);
         $fieldDescriptionCollection = new FieldDescriptionCollection();
         $formBuilder = $this->getMockBuilder(FormBuilder::class)
                      ->disableOriginalConstructor()
                      ->getMock();
 
+        /** @psalm-suppress InvalidArgument */
         $this->datagrid = new Datagrid($proxyQuery, $fieldDescriptionCollection, $pager, $formBuilder, []);
 
         $this->admin = $this->createMock(AdminInterface::class);

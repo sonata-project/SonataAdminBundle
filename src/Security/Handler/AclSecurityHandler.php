@@ -187,7 +187,10 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
             /** @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls */
             $acls = $this->aclProvider->findAcls(iterator_to_array($oids), $sids);
         } catch (NotAllAclsFoundException $e) {
-            /** @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls */
+            /**
+             * @phpstan-ignore-next-line https://github.com/phpstan/phpstan/discussions/8996
+             * @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls
+             */
             $acls = $e->getPartialResult();
         } catch (AclNotFoundException) { // if only one oid, this error is thrown
             /** @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls */
