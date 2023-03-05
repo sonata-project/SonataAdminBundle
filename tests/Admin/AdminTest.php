@@ -69,7 +69,6 @@ use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\PostCategory;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
-use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Tests\Fixtures\FieldDescription\FieldDescription;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
@@ -643,20 +642,6 @@ final class AdminTest extends TestCase
 
         $s = new FooToString();
         static::assertSame('salut', $admin->toString($s));
-    }
-
-    public function testToStringNull(): void
-    {
-        if (\PHP_VERSION_ID >= 80000) {
-            static::markTestSkipped('PHP 8.0 does not allow __toString() method to return null');
-        }
-
-        $admin = new PostAdmin();
-        $admin->setModelManager($this->createStub(ModelManagerInterface::class));
-
-        // To string method is implemented, but returns null
-        $s = new FooToStringNull();
-        static::assertNotEmpty($admin->toString($s));
     }
 
     public function testIsAclEnabled(): void
