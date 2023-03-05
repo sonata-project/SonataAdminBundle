@@ -24,7 +24,7 @@
     ],
     "homepage": "https://docs.sonata-project.org/projects/SonataAdminBundle",
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.0",
         "ext-json": "*",
         "doctrine/collections": "^1.6 || ^2.0",
         "doctrine/common": "^3.0",
