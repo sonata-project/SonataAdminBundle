@@ -35,10 +35,8 @@ final class AuditManagerTest extends TestCase
 
         $auditManager = new AuditManager($container);
 
-        /** @var class-string $foo1 */
-        $foo1 = 'Foo\Foo1';
-        /** @var class-string $foo2 */
-        $foo2 = 'Foo\Foo2';
+        $foo1 = Foo1::class;
+        $foo2 = Foo2::class;
 
         static::assertFalse($auditManager->hasReader($foo1));
 
@@ -51,12 +49,14 @@ final class AuditManagerTest extends TestCase
     public function testGetReaderWithException(): void
     {
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('The class "Foo\Foo" does not have any reader manager');
+        $this->expectExceptionMessage(sprintf('The class "%s" does not have any reader manager', Foo1::class));
 
         $auditManager = new AuditManager(new Container());
 
-        /** @var class-string $foo */
-        $foo = 'Foo\Foo';
+        $foo = Foo1::class;
         $auditManager->getReader($foo);
     }
 }
+
+class Foo1 {}
+class Foo2 {}

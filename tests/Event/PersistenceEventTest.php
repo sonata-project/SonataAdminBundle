@@ -34,7 +34,6 @@ final class PersistenceEventTest extends TestCase
 
     protected function setUp(): void
     {
-        /** @var object $object */
         $object = new \stdClass();
 
         $this->admin = $this->createMock(AdminInterface::class);

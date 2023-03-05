@@ -518,7 +518,6 @@ class CRUDController extends AbstractController
         $this->admin->preBatchAction($action, $query, $idx, $allElements);
         foreach ($this->admin->getExtensions() as $extension) {
             // NEXT_MAJOR: Remove the if-statement around the call to `$extension->preBatchAction()`
-            // @phpstan-ignore-next-line
             if (method_exists($extension, 'preBatchAction')) {
                 $extension->preBatchAction($this->admin, $action, $query, $idx, $allElements);
             }

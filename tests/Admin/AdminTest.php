@@ -697,10 +697,8 @@ final class AdminTest extends TestCase
         $admin->setSubject(new BlogPost());
         static::assertSame(BlogPost::class, $admin->getClass());
 
-        /** @var class-string $postExtended1 */
-        $postExtended1 = 'NewsBundle\Entity\PostExtended1';
-        /** @var class-string $postExtended2 */
-        $postExtended2 = 'NewsBundle\Entity\PostExtended2';
+        $postExtended1 = PostExtended1::class;
+        $postExtended2 = PostExtended2::class;
 
         $admin->setSubClasses([
             'extended1' => $postExtended1,
@@ -729,7 +727,7 @@ final class AdminTest extends TestCase
         );
         static::assertSame('extended1', $admin->getActiveSubclassCode());
         static::assertSame(
-            'NewsBundle\Entity\PostExtended1',
+            PostExtended1::class,
             $admin->getClass(),
             'getClass() should return the name of the sub class when passed through a request query parameter.'
         );
@@ -750,10 +748,8 @@ final class AdminTest extends TestCase
 
         $admin->setRequest(new Request(['subclass' => 'inject']));
 
-        /** @var class-string $postExtended1 */
-        $postExtended1 = 'NewsBundle\Entity\PostExtended1';
-        /** @var class-string $postExtended2 */
-        $postExtended2 = 'NewsBundle\Entity\PostExtended2';
+        $postExtended1 = PostExtended1::class;
+        $postExtended2 = PostExtended2::class;
 
         $admin->setSubClasses([
             'extended1' => $postExtended1,
@@ -775,8 +771,7 @@ final class AdminTest extends TestCase
         $admin = new PostAdmin();
         $admin->setModelClass(Post::class);
 
-        /** @var class-string $postExtended1 */
-        $postExtended1 = 'NewsBundle\Entity\PostExtended1';
+        $postExtended1 = PostExtended1::class;
         $admin->setSubClasses(['extended1' => $postExtended1]);
 
         $request = new Request(['subclass' => 'extended1']);
@@ -2338,3 +2333,6 @@ final class AdminTest extends TestCase
         static::assertSame($sourceIterator, $admin->getDataSourceIterator());
     }
 }
+
+class PostExtended1 {}
+class PostExtended2 {}
