@@ -44,10 +44,7 @@ final class XEditableRuntime implements RuntimeExtensionInterface
     ) {
     }
 
-    /**
-     * @return string|bool
-     */
-    public function getXEditableType(?string $type)
+    public function getXEditableType(?string $type): string|bool
     {
         if (null === $type) {
             return false;
