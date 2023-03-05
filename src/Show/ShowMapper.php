@@ -52,11 +52,9 @@ final class ShowMapper extends BaseGroupedMapper
     /**
      * @throws \LogicException
      *
-     * @return static
-     *
      * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
-    public function add(string $name, ?string $type = null, array $fieldDescriptionOptions = []): self
+    public function add(string $name, ?string $type = null, array $fieldDescriptionOptions = []): static
     {
         if (!$this->shouldApply()) {
             return $this;
@@ -105,10 +103,7 @@ final class ShowMapper extends BaseGroupedMapper
         return $this->list->has($key);
     }
 
-    /**
-     * @return static
-     */
-    public function remove(string $key): self
+    public function remove(string $key): static
     {
         $this->getAdmin()->removeShowFieldDescription($key);
         $this->getAdmin()->removeFieldFromShowGroup($key);
@@ -122,10 +117,7 @@ final class ShowMapper extends BaseGroupedMapper
         return array_keys($this->list->getElements());
     }
 
-    /**
-     * @return static
-     */
-    public function reorder(array $keys): self
+    public function reorder(array $keys): static
     {
         $this->getAdmin()->reorderShowGroup($this->getCurrentGroupName(), $keys);
 

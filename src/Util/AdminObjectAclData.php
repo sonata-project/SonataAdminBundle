@@ -98,10 +98,7 @@ final class AdminObjectAclData
         return $this->aclRoles;
     }
 
-    /**
-     * @return static
-     */
-    public function setAcl(MutableAclInterface $acl): self
+    public function setAcl(MutableAclInterface $acl): static
     {
         $this->acl = $acl;
 
@@ -121,10 +118,7 @@ final class AdminObjectAclData
         return $this->masks;
     }
 
-    /**
-     * @return static
-     */
-    public function setAclUsersForm(FormInterface $form): self
+    public function setAclUsersForm(FormInterface $form): static
     {
         $this->aclUsersForm = $form;
 
@@ -136,10 +130,7 @@ final class AdminObjectAclData
         return $this->aclUsersForm;
     }
 
-    /**
-     * @return static
-     */
-    public function setAclRolesForm(FormInterface $form): self
+    public function setAclRolesForm(FormInterface $form): static
     {
         $this->aclRolesForm = $form;
 

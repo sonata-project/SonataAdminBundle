@@ -24,7 +24,7 @@ final class Bafoo
         return $this->dateProp;
     }
 
-    public function setDateProp(\DateTime $dateProp): self
+    public function setDateProp(\DateTime $dateProp): static
     {
         $this->dateProp = $dateProp;
 
@@ -36,7 +36,7 @@ final class Bafoo
         return $this->datetimeProp;
     }
 
-    public function setDatetimeProp(\DateTime $datetimeProp): self
+    public function setDatetimeProp(\DateTime $datetimeProp): static
     {
         $this->datetimeProp = $datetimeProp;
 

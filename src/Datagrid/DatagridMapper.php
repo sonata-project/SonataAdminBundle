@@ -54,8 +54,6 @@ final class DatagridMapper implements MapperInterface
      *
      * @throws \LogicException
      *
-     * @return static
-     *
      * @phpstan-param class-string|null $type
      * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
@@ -64,7 +62,7 @@ final class DatagridMapper implements MapperInterface
         ?string $type = null,
         array $filterOptions = [],
         array $fieldDescriptionOptions = []
-    ): self {
+    ): static {
         if (
             isset($fieldDescriptionOptions['role'])
             && \is_string($fieldDescriptionOptions['role'])
@@ -109,10 +107,7 @@ final class DatagridMapper implements MapperInterface
         return array_keys($this->datagrid->getFilters());
     }
 
-    /**
-     * @return static
-     */
-    public function remove(string $key): self
+    public function remove(string $key): static
     {
         $this->getAdmin()->removeFilterFieldDescription($key);
         $this->datagrid->removeFilter($key);
@@ -120,10 +115,7 @@ final class DatagridMapper implements MapperInterface
         return $this;
     }
 
-    /**
-     * @return static
-     */
-    public function reorder(array $keys): self
+    public function reorder(array $keys): static
     {
         $this->datagrid->reorderFilters($keys);
 
