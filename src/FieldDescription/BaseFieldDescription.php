@@ -177,12 +177,12 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->name;
     }
 
-    final public function getOption(string $name, $default = null)
+    final public function getOption(string $name, mixed $default = null)
     {
         return $this->options[$name] ?? $default;
     }
 
-    final public function setOption(string $name, $value): void
+    final public function setOption(string $name, mixed $value): void
     {
         $this->options[$name] = $value;
     }
