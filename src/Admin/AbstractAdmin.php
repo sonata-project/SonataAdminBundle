@@ -831,7 +831,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         try {
             $admin = $pool->getAdminByFieldDescription($fieldDescription);
-        } catch (AdminClassNotFoundException $exception) {
+        } catch (AdminClassNotFoundException) {
             // Using a fieldDescription with no admin class for the target model is a valid case.
             // Since there is no easy way to check for this case, we catch the exception instead.
             return;
@@ -1062,7 +1062,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             throw new \LogicException(sprintf(
                 'Admin "%s" does not allow this subject: %s, use the one register with this admin class %s',
                 static::class,
-                \get_class($subject),
+                $subject::class,
                 $this->getModelClass()
             ));
         }
@@ -1627,7 +1627,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $key = array_search($extension, $this->extensions, true);
         if (false === $key) {
             throw new \InvalidArgumentException(
-                sprintf('The extension "%s" was not set to the "%s" admin.', \get_class($extension), self::class)
+                sprintf('The extension "%s" was not set to the "%s" admin.', $extension::class, self::class)
             );
         }
 
@@ -2280,7 +2280,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                     } catch (AccessException $e) {
                         // @todo: Catching and checking AccessException here as BC for symfony/property-access < 5.1.
                         //        Catch UninitializedPropertyException and remove the check when dropping support < 5.1
-                        if (AccessException::class !== \get_class($e) && !$e instanceof UninitializedPropertyException) {
+                        if (AccessException::class !== $e::class && !$e instanceof UninitializedPropertyException) {
                             throw $e; // Re-throw. We only want to "ignore" pure AccessException (Sf < 5.1) and UninitializedPropertyException (Sf >= 5.1)
                         }
                         $value = null;

@@ -52,7 +52,7 @@ final class FilterFactoryTest extends TestCase
             ->method('initialize');
 
         $container = new Container();
-        $fqcn = \get_class($filter);
+        $fqcn = $filter::class;
         $container->set($fqcn, $filter);
 
         $filter = new FilterFactory($container);

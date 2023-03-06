@@ -33,10 +33,7 @@ final class Foo
         return $this->bar;
     }
 
-    /**
-     * @param mixed $bar
-     */
-    public function setBar($bar): void
+    public function setBar(mixed $bar): void
     {
         $this->bar = $bar;
     }
@@ -49,10 +46,7 @@ final class Foo
         return $this->baz;
     }
 
-    /**
-     * @param mixed $baz
-     */
-    public function setBaz($baz): void
+    public function setBaz(mixed $baz): void
     {
         $this->baz = $baz;
     }

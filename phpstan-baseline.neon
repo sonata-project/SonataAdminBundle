@@ -9,9 +9,6 @@ parameters:
         - # https://github.com/phpstan/phpstan-strict-rules/issues/130
             message: '#^Call to static method PHPUnit\\Framework\\Assert::.* will always evaluate to true\.$#'
             path: tests/
-        - # This error is made on purpose for php version < 8
-            message: '#^Method Sonata\\AdminBundle\\Tests\\Fixtures\\Entity\\FooToStringNull\:\:__toString\(\) should return string but returns null\.$#'
-            path: tests/Fixtures/Entity/FooToStringNull.php
         - # The phpstan-param is less precise than the psalm-param https://github.com/phpstan/phpstan/issues/4703
             message: '#^Parameter \#1 \$value of method Sonata\\AdminBundle\\Form\\DataTransformer\\ModelsToArrayTransformer\<T of object\>\:\:reverseTransform\(\) expects array\<int\|string\>\|null, array\<mixed, array\<string\>\|int\|string\> given\.$#'
             path: src/Form/DataTransformer/ModelToIdPropertyTransformer.php

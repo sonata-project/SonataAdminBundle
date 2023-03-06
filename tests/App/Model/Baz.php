@@ -15,11 +15,9 @@ namespace Sonata\AdminBundle\Tests\App\Model;
 
 final class Baz implements EntityInterface
 {
-    private string $id;
-
-    public function __construct(string $id)
-    {
-        $this->id = $id;
+    public function __construct(
+        private string $id
+    ) {
     }
 
     public function getId(): string

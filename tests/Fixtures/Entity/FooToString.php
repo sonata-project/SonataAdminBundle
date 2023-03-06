@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
-final class FooToString
+final class FooToString implements \Stringable
 {
     public function __toString(): string
     {

@@ -13,51 +13,33 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 
-final class Foo
+final class Foo implements \Stringable
 {
-    /**
-     * @var string|int|null
-     */
-    private $bar;
+    private string|int|null $bar = null;
 
-    /**
-     * @var string|int|null
-     */
-    private $baz;
+    private string|int|null $baz = null;
 
     public function __toString(): string
     {
         return (string) $this->bar;
     }
 
-    /**
-     * @return int|string|null
-     */
-    public function getBar()
+    public function getBar(): int|string|null
     {
         return $this->bar;
     }
 
-    /**
-     * @param string|int $bar
-     */
-    public function setBar($bar): void
+    public function setBar(string|int $bar): void
     {
         $this->bar = $bar;
     }
 
-    /**
-     * @return int|string|null
-     */
-    public function getBaz()
+    public function getBaz(): int|string|null
     {
         return $this->baz;
     }
 
-    /**
-     * @param string|int $baz
-     */
-    public function setBaz($baz): void
+    public function setBaz(string|int $baz): void
     {
         $this->baz = $baz;
     }

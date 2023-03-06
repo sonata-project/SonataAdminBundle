@@ -19,11 +19,9 @@ use Symfony\Component\HttpFoundation\Request;
 
 final class AdminFetcher implements AdminFetcherInterface
 {
-    private Pool $pool;
-
-    public function __construct(Pool $pool)
-    {
-        $this->pool = $pool;
+    public function __construct(
+        private Pool $pool
+    ) {
     }
 
     public function get(Request $request): AdminInterface

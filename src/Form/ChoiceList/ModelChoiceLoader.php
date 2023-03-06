@@ -26,27 +26,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  */
 final class ModelChoiceLoader implements ChoiceLoaderInterface
 {
-    /**
-     * @var ModelManagerInterface<object>
-     */
-    private ModelManagerInterface $modelManager;
-
-    private PropertyAccessorInterface $propertyAccessor;
-
-    /**
-     * @phpstan-var class-string
-     */
-    private string $class;
-
-    private ?string $property = null;
-
-    private ?object $query = null;
-
-    /**
-     * @var object[]|null
-     */
-    private ?array $choices = null;
-
     private ?ChoiceListInterface $choiceList = null;
 
     /**
@@ -56,25 +35,15 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
      * @phpstan-param class-string $class
      */
     public function __construct(
-        ModelManagerInterface $modelManager,
-        PropertyAccessorInterface $propertyAccessor,
-        string $class,
-        ?string $property = null,
-        ?object $query = null,
-        ?array $choices = null
+        private ModelManagerInterface $modelManager,
+        private PropertyAccessorInterface $propertyAccessor,
+        private string $class,
+        private ?string $property = null,
+        private ?object $query = null,
+        private ?array $choices = null
     ) {
-        $this->modelManager = $modelManager;
-        $this->propertyAccessor = $propertyAccessor;
-        $this->class = $class;
-        $this->property = $property;
-        $this->choices = $choices;
-
-        if (null !== $query) {
-            if (!$this->modelManager->supportsQuery($query)) {
-                throw new InvalidArgumentException('The model manager does not support the query.');
-            }
-
-            $this->query = $query;
+        if (null !== $query && !$this->modelManager->supportsQuery($query)) {
+            throw new InvalidArgumentException('The model manager does not support the query.');
         }
     }
 

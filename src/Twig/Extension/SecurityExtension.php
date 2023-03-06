@@ -19,16 +19,14 @@ use Twig\TwigFunction;
 
 final class SecurityExtension extends AbstractExtension
 {
-    private SecurityRuntime $securityRuntime;
-
     /**
      * NEXT_MAJOR: Remove this constructor.
      *
      * @internal This class should only be used through Twig
      */
-    public function __construct(SecurityRuntime $securityRuntime)
-    {
-        $this->securityRuntime = $securityRuntime;
+    public function __construct(
+        private SecurityRuntime $securityRuntime
+    ) {
     }
 
     /**
@@ -48,7 +46,7 @@ final class SecurityExtension extends AbstractExtension
      *
      * @param string|string[] $role
      */
-    public function isGrantedAffirmative($role, ?object $object = null, ?string $field = null): bool
+    public function isGrantedAffirmative(string|array $role, ?object $object = null, ?string $field = null): bool
     {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'

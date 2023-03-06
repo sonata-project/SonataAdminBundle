@@ -51,11 +51,9 @@ final class TraversableToCollectionTest extends TestCase
     }
 
     /**
-     * @param mixed $value
-     *
      * @dataProvider provideInvalidValues
      */
-    public function testFailedTransform(string $invalidType, $value): void
+    public function testFailedTransform(string $invalidType, mixed $value): void
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(sprintf(

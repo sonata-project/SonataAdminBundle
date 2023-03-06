@@ -85,7 +85,7 @@ final class AppendFormFieldElementActionTest extends TestCase
         $renderer = $this->configureFormRenderer();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getClass')->willReturn(\get_class($object));
+        $this->admin->method('getClass')->willReturn($object::class);
         $this->admin->expects(static::once())->method('setSubject')->with($object);
         $this->admin->method('getFormTheme')->willReturn([]);
         $this->helper->method('appendFormFieldElement')->with($this->admin, $object, 'element_42')->willReturn([
@@ -93,7 +93,7 @@ final class AppendFormFieldElementActionTest extends TestCase
             $form,
         ]);
         $this->helper->method('getChildFormView')->with($formView, 'element_42')->willReturn($formView);
-        $modelManager->method('find')->with(\get_class($object), 42)->willReturn($object);
+        $modelManager->method('find')->with($object::class, 42)->willReturn($object);
         $form->method('createView')->willReturn($formView);
         $renderer->expects(static::once())->method('setTheme')->with($formView);
         $renderer->method('searchAndRenderBlock')->with($formView, 'widget')->willReturn('block');

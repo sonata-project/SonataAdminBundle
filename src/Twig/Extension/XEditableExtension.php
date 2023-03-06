@@ -35,16 +35,14 @@ final class XEditableExtension extends AbstractExtension
         FieldDescriptionInterface::TYPE_URL => 'url',
     ];
 
-    private XEditableRuntime $xEditableRuntime;
-
     /**
      * NEXT_MAJOR: Remove this constructor.
      *
      * @internal This class should only be used through Twig
      */
-    public function __construct(XEditableRuntime $xEditableRuntime)
-    {
-        $this->xEditableRuntime = $xEditableRuntime;
+    public function __construct(
+        private XEditableRuntime $xEditableRuntime
+    ) {
     }
 
     /**
@@ -68,10 +66,8 @@ final class XEditableExtension extends AbstractExtension
      * NEXT_MAJOR: Remove this method.
      *
      * @deprecated since sonata-project/admin-bundle version 4.7 use XEditableRuntime::getXEditableType() instead
-     *
-     * @return string|bool
      */
-    public function getXEditableType(?string $type)
+    public function getXEditableType(?string $type): string|bool
     {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'

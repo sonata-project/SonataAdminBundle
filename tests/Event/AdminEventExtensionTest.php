@@ -204,7 +204,6 @@ final class AdminEventExtensionTest extends TestCase
                         return false;
                     }
 
-                    // @phpstan-ignore-next-line
                     if (BatchActionEvent::TYPE_PRE_BATCH_ACTION !== $event->getType()) {
                         return false;
                     }

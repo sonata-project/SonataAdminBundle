@@ -29,30 +29,15 @@ use Symfony\Component\Form\FormFactoryInterface;
  */
 final class DatagridBuilder implements DatagridBuilderInterface
 {
-    private FormFactoryInterface $formFactory;
-
-    /**
-     * @var PagerInterface<ProxyQueryInterface<object>>
-     */
-    private PagerInterface $pager;
-
-    /**
-     * @var ProxyQueryInterface<object>
-     */
-    private ProxyQueryInterface $proxyQuery;
-
     /**
      * @param PagerInterface<ProxyQueryInterface<object>> $pager
      * @param ProxyQueryInterface<object>                 $proxyQuery
      */
     public function __construct(
-        FormFactoryInterface $formFactory,
-        PagerInterface $pager,
-        ProxyQueryInterface $proxyQuery
+        private FormFactoryInterface $formFactory,
+        private PagerInterface $pager,
+        private ProxyQueryInterface $proxyQuery
     ) {
-        $this->formFactory = $formFactory;
-        $this->pager = $pager;
-        $this->proxyQuery = $proxyQuery;
     }
 
     public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void

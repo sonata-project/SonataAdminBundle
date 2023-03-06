@@ -20,14 +20,12 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 final class BreadcrumbsRuntime implements RuntimeExtensionInterface
 {
-    private BreadcrumbsBuilderInterface $breadcrumbsBuilder;
-
     /**
      * @internal This class should only be used through Twig
      */
-    public function __construct(BreadcrumbsBuilderInterface $breadcrumbsBuilder)
-    {
-        $this->breadcrumbsBuilder = $breadcrumbsBuilder;
+    public function __construct(
+        private BreadcrumbsBuilderInterface $breadcrumbsBuilder
+    ) {
     }
 
     /**

@@ -29,13 +29,11 @@ use Twig\Environment;
  */
 final class AdminPreviewBlockService extends AbstractBlockService
 {
-    private Pool $pool;
-
-    public function __construct(Environment $twig, Pool $pool)
-    {
+    public function __construct(
+        Environment $twig,
+        private Pool $pool
+    ) {
         parent::__construct($twig);
-
-        $this->pool = $pool;
     }
 
     public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response

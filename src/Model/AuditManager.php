@@ -27,11 +27,9 @@ final class AuditManager implements AuditManagerInterface
      */
     private array $readers = [];
 
-    private ContainerInterface $container;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        private ContainerInterface $container
+    ) {
     }
 
     public function setReader(string $serviceId, array $classes): void

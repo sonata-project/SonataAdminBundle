@@ -30,15 +30,12 @@ final class ExplainAdminCommand extends Command
     protected static $defaultName = 'sonata:admin:explain';
     protected static $defaultDescription = 'Explain an admin service';
 
-    private Pool $pool;
-
     /**
      * @internal This class should only be used through the console
      */
-    public function __construct(Pool $pool)
-    {
-        $this->pool = $pool;
-
+    public function __construct(
+        private Pool $pool
+    ) {
         parent::__construct();
     }
 
@@ -58,13 +55,13 @@ final class ExplainAdminCommand extends Command
 
         $output->writeln('<comment>AdminBundle Information</comment>');
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'id', $admin->getCode()));
-        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Admin', \get_class($admin)));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Admin', $admin::class));
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'Model', $admin->getClass()));
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'Controller', $admin->getBaseControllerName()));
-        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Model Manager', \get_class($admin->getModelManager())));
-        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Form Builder', \get_class($admin->getFormBuilder())));
-        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Datagrid Builder', \get_class($admin->getDatagridBuilder())));
-        $output->writeln(sprintf('<info>% -20s</info> : %s', 'List Builder', \get_class($admin->getListBuilder())));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Model Manager', $admin->getModelManager()::class));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Form Builder', $admin->getFormBuilder()::class));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'Datagrid Builder', $admin->getDatagridBuilder()::class));
+        $output->writeln(sprintf('<info>% -20s</info> : %s', 'List Builder', $admin->getListBuilder()::class));
 
         if ($admin->isChild()) {
             $output->writeln(sprintf('<info>% -15s</info> : %s', 'Parent', $admin->getParent()->getCode()));

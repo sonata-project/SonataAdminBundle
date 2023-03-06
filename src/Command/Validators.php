@@ -53,7 +53,7 @@ final class Validators
     {
         $adminClassBasename = str_replace('/', '\\', $adminClassBasename);
 
-        if (false !== strpos($adminClassBasename, ':')) {
+        if (str_contains($adminClassBasename, ':')) {
             throw new \InvalidArgumentException(sprintf(
                 'The admin class name must not contain a ":" (colon sign)'
                 .' ("%s" given, expecting something like PostAdmin")',
@@ -71,7 +71,7 @@ final class Validators
     {
         $controllerClassBasename = str_replace('/', '\\', $controllerClassBasename);
 
-        if (false !== strpos($controllerClassBasename, ':')) {
+        if (str_contains($controllerClassBasename, ':')) {
             throw new \InvalidArgumentException(sprintf(
                 'The controller class name must not contain a ":" (colon sign)'
                 .' ("%s" given, expecting something like PostAdminController")',
@@ -79,7 +79,7 @@ final class Validators
             ));
         }
 
-        if ('Controller' !== substr($controllerClassBasename, -10)) {
+        if (!str_ends_with($controllerClassBasename, 'Controller')) {
             throw new \InvalidArgumentException('The controller class name must end with "Controller".');
         }
 

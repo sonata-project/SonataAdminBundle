@@ -23,11 +23,9 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class AdminVoterTest extends TestCase
 {
     /**
-     * @param mixed $itemData
-     *
      * @dataProvider provideData
      */
-    public function testMatching($itemData, ?string $voterData, ?string $route, ?bool $expected): void
+    public function testMatching(mixed $itemData, ?string $voterData, ?string $route, ?bool $expected): void
     {
         $item = $this->createMock(ItemInterface::class);
         $item

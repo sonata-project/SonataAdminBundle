@@ -30,11 +30,9 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 final class RetrieveAutocompleteItemsAction
 {
-    private AdminFetcherInterface $adminFetcher;
-
-    public function __construct(AdminFetcherInterface $adminFetcher)
-    {
-        $this->adminFetcher = $adminFetcher;
+    public function __construct(
+        private AdminFetcherInterface $adminFetcher
+    ) {
     }
 
     /**
@@ -61,7 +59,7 @@ final class RetrieveAutocompleteItemsAction
         try {
             // subject will be empty to avoid unnecessary database requests and keep autocomplete function fast
             $admin->setSubject($admin->getNewInstance());
-        } catch (AbstractClassException $e) {
+        } catch (AbstractClassException) {
             // in case the subject is an abstract entity, we continue because the admin subject is non-mandatory here
         }
 
@@ -139,7 +137,7 @@ final class RetrieveAutocompleteItemsAction
                         'To retrieve autocomplete items, you MUST add the filter "%s"'
                         .' to the %s::configureDatagridFilters() method.',
                         $prop,
-                        \get_class($targetAdmin)
+                        $targetAdmin::class
                     ));
                 }
 
@@ -149,7 +147,7 @@ final class RetrieveAutocompleteItemsAction
                         'To retrieve autocomplete items with multiple properties,'
                         .' the filter "%s" of the admin "%s" MUST implements "%s".',
                         $filter->getName(),
-                        \get_class($targetAdmin),
+                        $targetAdmin::class,
                         ChainableFilterInterface::class
                     ));
                 }
@@ -171,7 +169,7 @@ final class RetrieveAutocompleteItemsAction
                     'To retrieve autocomplete items, you MUST add the filter "%s"'
                     .' to the %s::configureDatagridFilters() method.',
                     $property,
-                    \get_class($targetAdmin)
+                    $targetAdmin::class
                 ));
             }
 

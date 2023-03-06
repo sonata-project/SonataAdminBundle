@@ -77,7 +77,7 @@ final class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
             $property->setAccessible(true);
             $types = $property->getValue($extension);
             \assert(\is_array($types));
-            $property->setValue($extension, [\get_class($type) => current($types)]);
+            $property->setValue($extension, [$type::class => current($types)]);
         }
 
         $extensions[] = $extension;

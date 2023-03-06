@@ -27,7 +27,7 @@ class BCHelper
     public static function getClass(object $object): string
     {
         $classFromDoctrine = ClassUtils::getClass($object);
-        $class = \get_class($object);
+        $class = $object::class;
 
         if ($class !== $classFromDoctrine) {
             @trigger_error(sprintf(

@@ -15,37 +15,19 @@ namespace Sonata\AdminBundle\Model;
 
 final class Revision
 {
-    /**
-     * @var int|string
-     */
-    private $id;
-
-    private \DateTimeInterface $dateTime;
-
-    private ?string $username = null;
-
-    /**
-     * @param int|string $id
-     */
-    public function __construct($id, \DateTimeInterface $dateTime, ?string $username)
-    {
-        $this->id = $id;
-        $this->dateTime = $dateTime;
-        $this->username = $username;
+    public function __construct(
+        private int|string $id,
+        private \DateTimeInterface $dateTime,
+        private ?string $username
+    ) {
     }
 
-    /**
-     * @return int|string
-     */
-    public function getId()
+    public function getId(): int|string
     {
         return $this->id;
     }
 
-    /**
-     * @return int|string
-     */
-    public function getRev()
+    public function getRev(): int|string
     {
         return $this->id;
     }

@@ -29,23 +29,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 final class FormTypeFieldExtension extends AbstractTypeExtension
 {
     /**
-     * @var array<string, string>
-     */
-    private array $defaultClasses = [];
-
-    /**
-     * @var array<string, mixed>
-     */
-    private array $options = [];
-
-    /**
      * @param array<string, string> $defaultClasses
      * @param array<string, mixed>  $options
      */
-    public function __construct(array $defaultClasses, array $options)
-    {
-        $this->defaultClasses = $defaultClasses;
-        $this->options = $options;
+    public function __construct(
+        private array $defaultClasses,
+        private array $options
+    ) {
     }
 
     /**
@@ -216,7 +206,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
 
         try {
             $value = $fieldDescription->getValue($object);
-        } catch (NoValueException $e) {
+        } catch (NoValueException) {
             if ($fieldDescription->hasAssociationAdmin()) {
                 $value = $fieldDescription->getAssociationAdmin()->getNewInstance();
             }
@@ -228,7 +218,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
     private function getClass(FormBuilderInterface $formBuilder): string
     {
         foreach ($this->getTypes($formBuilder) as $type) {
-            $name = \get_class($type);
+            $name = $type::class;
 
             if (isset($this->defaultClasses[$name])) {
                 return $this->defaultClasses[$name];

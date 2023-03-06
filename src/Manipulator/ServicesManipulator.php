@@ -21,17 +21,15 @@ use Symfony\Component\Yaml\Yaml;
  */
 final class ServicesManipulator
 {
-    private string $file;
-
     private string $template = '    %s:
         class: %s
         tags:
             - { name: sonata.admin, model_class: %s, controller: %s, manager_type: %s, group: admin, label: %s }
 ';
 
-    public function __construct(string $file)
-    {
-        $this->file = $file;
+    public function __construct(
+        private string $file
+    ) {
     }
 
     /**

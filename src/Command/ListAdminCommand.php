@@ -29,15 +29,12 @@ final class ListAdminCommand extends Command
     protected static $defaultName = 'sonata:admin:list';
     protected static $defaultDescription = 'List all admin services available';
 
-    private Pool $pool;
-
     /**
      * @internal This class should only be used through the console
      */
-    public function __construct(Pool $pool)
-    {
-        $this->pool = $pool;
-
+    public function __construct(
+        private Pool $pool
+    ) {
         parent::__construct();
     }
 

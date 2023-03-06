@@ -21,25 +21,13 @@ use Twig\Environment;
 final class DashboardAction
 {
     /**
-     * @var array<array<string, mixed>>
-     */
-    private array $dashboardBlocks = [];
-
-    private TemplateRegistryInterface $templateRegistry;
-
-    private Environment $twig;
-
-    /**
      * @param array<array<string, mixed>> $dashboardBlocks
      */
     public function __construct(
-        array $dashboardBlocks,
-        TemplateRegistryInterface $templateRegistry,
-        Environment $twig
+        private array $dashboardBlocks,
+        private TemplateRegistryInterface $templateRegistry,
+        private Environment $twig
     ) {
-        $this->dashboardBlocks = $dashboardBlocks;
-        $this->templateRegistry = $templateRegistry;
-        $this->twig = $twig;
     }
 
     public function __invoke(Request $request): Response

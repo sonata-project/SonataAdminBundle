@@ -21,17 +21,9 @@ use Sonata\Exporter\ExporterInterface;
  */
 final class AdminExporter
 {
-    /**
-     * @var ExporterInterface service from the exporter bundle
-     */
-    private ExporterInterface $exporter;
-
-    /**
-     * @param ExporterInterface $exporter will be used to get global settings
-     */
-    public function __construct(ExporterInterface $exporter)
-    {
-        $this->exporter = $exporter;
+    public function __construct(
+        private ExporterInterface $exporter
+    ) {
     }
 
     /**

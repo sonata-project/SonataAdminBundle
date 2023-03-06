@@ -29,11 +29,9 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 final class AdminEventExtension extends AbstractAdminExtension
 {
-    private EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(EventDispatcherInterface $eventDispatcher)
-    {
-        $this->eventDispatcher = $eventDispatcher;
+    public function __construct(
+        private EventDispatcherInterface $eventDispatcher
+    ) {
     }
 
     public function configureFormFields(FormMapper $form): void

@@ -69,7 +69,6 @@ use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\PostCategory;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
-use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToStringNull;
 use Sonata\AdminBundle\Tests\Fixtures\FieldDescription\FieldDescription;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
@@ -645,20 +644,6 @@ final class AdminTest extends TestCase
         static::assertSame('salut', $admin->toString($s));
     }
 
-    public function testToStringNull(): void
-    {
-        if (\PHP_VERSION_ID >= 80000) {
-            static::markTestSkipped('PHP 8.0 does not allow __toString() method to return null');
-        }
-
-        $admin = new PostAdmin();
-        $admin->setModelManager($this->createStub(ModelManagerInterface::class));
-
-        // To string method is implemented, but returns null
-        $s = new FooToStringNull();
-        static::assertNotEmpty($admin->toString($s));
-    }
-
     public function testIsAclEnabled(): void
     {
         $postAdmin = new PostAdmin();
@@ -697,10 +682,8 @@ final class AdminTest extends TestCase
         $admin->setSubject(new BlogPost());
         static::assertSame(BlogPost::class, $admin->getClass());
 
-        /** @var class-string $postExtended1 */
-        $postExtended1 = 'NewsBundle\Entity\PostExtended1';
-        /** @var class-string $postExtended2 */
-        $postExtended2 = 'NewsBundle\Entity\PostExtended2';
+        $postExtended1 = PostExtended1::class;
+        $postExtended2 = PostExtended2::class;
 
         $admin->setSubClasses([
             'extended1' => $postExtended1,
@@ -729,7 +712,7 @@ final class AdminTest extends TestCase
         );
         static::assertSame('extended1', $admin->getActiveSubclassCode());
         static::assertSame(
-            'NewsBundle\Entity\PostExtended1',
+            PostExtended1::class,
             $admin->getClass(),
             'getClass() should return the name of the sub class when passed through a request query parameter.'
         );
@@ -750,10 +733,8 @@ final class AdminTest extends TestCase
 
         $admin->setRequest(new Request(['subclass' => 'inject']));
 
-        /** @var class-string $postExtended1 */
-        $postExtended1 = 'NewsBundle\Entity\PostExtended1';
-        /** @var class-string $postExtended2 */
-        $postExtended2 = 'NewsBundle\Entity\PostExtended2';
+        $postExtended1 = PostExtended1::class;
+        $postExtended2 = PostExtended2::class;
 
         $admin->setSubClasses([
             'extended1' => $postExtended1,
@@ -775,8 +756,7 @@ final class AdminTest extends TestCase
         $admin = new PostAdmin();
         $admin->setModelClass(Post::class);
 
-        /** @var class-string $postExtended1 */
-        $postExtended1 = 'NewsBundle\Entity\PostExtended1';
+        $postExtended1 = PostExtended1::class;
         $admin->setSubClasses(['extended1' => $postExtended1]);
 
         $request = new Request(['subclass' => 'extended1']);
@@ -1569,25 +1549,12 @@ final class AdminTest extends TestCase
             ->expects(static::exactly(3))
             ->method('create')
             ->willReturnCallback(static function (string $adminClass, string $name, array $filterOptions) use ($fooFieldDescription, $barFieldDescription, $bazFieldDescription): FieldDescriptionInterface {
-                switch ($name) {
-                    case 'foo':
-                        $fieldDescription = $fooFieldDescription;
-
-                        break;
-
-                    case 'bar':
-                        $fieldDescription = $barFieldDescription;
-
-                        break;
-
-                    case 'baz':
-                        $fieldDescription = $bazFieldDescription;
-
-                        break;
-
-                    default:
-                        throw new \RuntimeException(sprintf('Unknown filter name "%s"', $name));
-                }
+                $fieldDescription = match ($name) {
+                    'foo' => $fooFieldDescription,
+                    'bar' => $barFieldDescription,
+                    'baz' => $bazFieldDescription,
+                    default => throw new \RuntimeException(sprintf('Unknown filter name "%s"', $name)),
+                };
 
                 $fieldDescription->setName($name);
 
@@ -1685,11 +1652,9 @@ final class AdminTest extends TestCase
     }
 
     /**
-     * @param int|string $id
-     *
      * @dataProvider provideGetSubject
      */
-    public function testGetSubjectFailed($id): void
+    public function testGetSubjectFailed(int|string $id): void
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
@@ -1707,11 +1672,9 @@ final class AdminTest extends TestCase
     }
 
     /**
-     * @param int|string $id
-     *
      * @dataProvider provideGetSubject
      */
-    public function testGetSubject($id): void
+    public function testGetSubject(int|string $id): void
     {
         $model = new Post();
 
@@ -2337,4 +2300,11 @@ final class AdminTest extends TestCase
 
         static::assertSame($sourceIterator, $admin->getDataSourceIterator());
     }
+}
+
+class PostExtended1
+{
+}
+class PostExtended2
+{
 }

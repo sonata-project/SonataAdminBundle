@@ -22,11 +22,9 @@ use Sonata\AdminBundle\Tests\App\Model\FooRepository;
  */
 final class Pager implements PagerInterface
 {
-    private FooRepository $repository;
-
-    public function __construct(FooRepository $repository)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        private FooRepository $repository
+    ) {
     }
 
     public function init(): void

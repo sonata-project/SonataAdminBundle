@@ -131,7 +131,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                     throw new \TypeError(sprintf(
                         'Tag attribute "model_class" for service "%s" must be of type string, %s given.',
                         $id,
-                        \is_object($class) ? \get_class($class) : \gettype($class)
+                        get_debug_type($class)
                     ));
                 }
 
@@ -227,7 +227,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                         throw new \TypeError(sprintf(
                             'Tag attribute "model_class" for service "%s" must be of type string, %s given.',
                             $id,
-                            \is_object($class) ? \get_class($class) : \gettype($class)
+                            get_debug_type($class)
                         ));
                     }
 
@@ -326,12 +326,10 @@ final class ExtensionCompilerPass implements CompilerPassInterface
     }
 
     /**
-     * @param mixed $subject
-     *
      * @phpstan-param class-string $class
      * @phpstan-param class-string $adminClass
      */
-    private function shouldApplyExtension(string $type, $subject, string $class, string $adminClass): bool
+    private function shouldApplyExtension(string $type, mixed $subject, string $class, string $adminClass): bool
     {
         $classReflection = new \ReflectionClass($class);
         $adminClassReflection = new \ReflectionClass($adminClass);

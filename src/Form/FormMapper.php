@@ -35,28 +35,16 @@ use Symfony\Component\Form\FormTypeInterface;
  */
 final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
 {
-    private FormContractorInterface $builder;
-
-    private FormBuilderInterface $formBuilder;
-
     /**
-     * @var AdminInterface<object>
+     * @param AdminInterface<object> $admin
      *
-     * @phpstan-var AdminInterface<T>
-     */
-    private AdminInterface $admin;
-
-    /**
      * @phpstan-param AdminInterface<T> $admin
      */
     public function __construct(
-        FormContractorInterface $formContractor,
-        FormBuilderInterface $formBuilder,
-        AdminInterface $admin
+        private FormContractorInterface $builder,
+        private FormBuilderInterface $formBuilder,
+        private AdminInterface $admin
     ) {
-        $this->builder = $formContractor;
-        $this->admin = $admin;
-        $this->formBuilder = $formBuilder;
     }
 
     public function getAdmin(): AdminInterface
@@ -64,10 +52,7 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
         return $this->admin;
     }
 
-    /**
-     * @return static
-     */
-    public function reorder(array $keys): self
+    public function reorder(array $keys): static
     {
         $this->getAdmin()->reorderFormGroup($this->getCurrentGroupName(), $keys);
 
@@ -77,12 +62,10 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
     /**
      * @param array<string, mixed> $options
      *
-     * @return static
-     *
      * @phpstan-param class-string|null $type
      * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
-    public function add(string $name, ?string $type = null, array $options = [], array $fieldDescriptionOptions = []): self
+    public function add(string $name, ?string $type = null, array $options = [], array $fieldDescriptionOptions = []): static
     {
         if (!$this->shouldApply()) {
             return $this;
@@ -167,10 +150,7 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
         return array_keys($this->formBuilder->all());
     }
 
-    /**
-     * @return static
-     */
-    public function remove(string $key): self
+    public function remove(string $key): static
     {
         $this->getAdmin()->removeFormFieldDescription($key);
         $this->getAdmin()->removeFieldFromFormGroup($key);

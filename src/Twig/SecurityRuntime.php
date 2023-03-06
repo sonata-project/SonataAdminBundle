@@ -20,21 +20,18 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 final class SecurityRuntime implements RuntimeExtensionInterface
 {
-    private ?AuthorizationCheckerInterface $securityChecker = null;
-
     /**
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        ?AuthorizationCheckerInterface $securityChecker = null
+        private ?AuthorizationCheckerInterface $securityChecker = null
     ) {
-        $this->securityChecker = $securityChecker;
     }
 
     /**
      * @param string|string[] $role
      */
-    public function isGrantedAffirmative($role, ?object $object = null, ?string $field = null): bool
+    public function isGrantedAffirmative(string|array $role, ?object $object = null, ?string $field = null): bool
     {
         if (null === $this->securityChecker) {
             return false;
@@ -53,7 +50,7 @@ final class SecurityRuntime implements RuntimeExtensionInterface
                 if ($this->securityChecker->isGranted($oneRole, $object)) {
                     return true;
                 }
-            } catch (AuthenticationCredentialsNotFoundException $e) {
+            } catch (AuthenticationCredentialsNotFoundException) {
                 // empty on purpose
             }
         }
