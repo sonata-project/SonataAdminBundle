@@ -53,18 +53,17 @@ final class GroupMenuProviderTest extends TestCase
         $this->factory = new MenuFactory();
 
         $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
-        $urlGenerator->method('generate')->willReturnCallback(static function (string $name, array $parameters = [], int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH): string {
-            switch ($referenceType) {
-                case UrlGeneratorInterface::ABSOLUTE_URL:
-                    return sprintf('http://sonata-project/%s%s', $name, [] !== $parameters ? '?'.http_build_query($parameters) : '');
-                case UrlGeneratorInterface::ABSOLUTE_PATH:
-                    return sprintf('/%s%s', $name, [] !== $parameters ? '?'.http_build_query($parameters) : '');
-                default:
-                    throw new \InvalidArgumentException(sprintf(
-                        'Dummy router does not support the reference type "%s".',
-                        $referenceType
-                    ));
-            }
+        $urlGenerator->method('generate')->willReturnCallback(static fn (
+            string $name,
+            array $parameters = [],
+            int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+        ): string => match ($referenceType) {
+            UrlGeneratorInterface::ABSOLUTE_URL => sprintf('http://sonata-project/%s%s', $name, [] !== $parameters ? '?'.http_build_query($parameters) : ''),
+            UrlGeneratorInterface::ABSOLUTE_PATH => sprintf('/%s%s', $name, [] !== $parameters ? '?'.http_build_query($parameters) : ''),
+            default => throw new \InvalidArgumentException(sprintf(
+                'Dummy router does not support the reference type "%s".',
+                $referenceType
+            )),
         });
 
         $this->factory->addExtension(new RoutingExtension($urlGenerator));

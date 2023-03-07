@@ -504,13 +504,11 @@ final class DatagridTest extends TestCase
     }
 
     /**
-     * @param int|array $perPage
-     *
      * @phpstan-param int|array{value: int} $perPage
      *
      * @dataProvider getBuildPagerWithPageTests
      */
-    public function testBuildPagerWithPage(int $page, $perPage): void
+    public function testBuildPagerWithPage(int $page, int|array $perPage): void
     {
         $sortBy = $this->createMock(FieldDescriptionInterface::class);
         $sortBy->expects(static::once())

@@ -30,17 +30,11 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 final class GroupMenuProvider implements MenuProviderInterface
 {
-    private FactoryInterface $menuFactory;
-
-    private Pool $pool;
-
-    private AuthorizationCheckerInterface $checker;
-
-    public function __construct(FactoryInterface $menuFactory, Pool $pool, AuthorizationCheckerInterface $checker)
-    {
-        $this->menuFactory = $menuFactory;
-        $this->pool = $pool;
-        $this->checker = $checker;
+    public function __construct(
+        private FactoryInterface $menuFactory,
+        private Pool $pool,
+        private AuthorizationCheckerInterface $checker
+    ) {
     }
 
     /**

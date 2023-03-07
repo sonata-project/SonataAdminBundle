@@ -22,16 +22,11 @@ use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 abstract class AbstractDummyGroupedMapper extends BaseGroupedMapper
 {
     /**
-     * @var AdminInterface<object>
-     */
-    private AdminInterface $admin;
-
-    /**
      * @param AdminInterface<object> $admin
      */
-    public function __construct(AdminInterface $admin)
-    {
-        $this->admin = $admin;
+    public function __construct(
+        private AdminInterface $admin
+    ) {
     }
 
     /**

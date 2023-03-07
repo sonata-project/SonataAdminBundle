@@ -77,18 +77,14 @@ interface FieldDescriptionInterface
     /**
      * Returns the value represented by the provided name.
      *
-     * @param mixed $default
-     *
      * @return mixed
      */
-    public function getOption(string $name, $default = null);
+    public function getOption(string $name, mixed $default = null);
 
     /**
      * Define an option, an option is has a name and a value.
-     *
-     * @param mixed $value
      */
-    public function setOption(string $name, $value): void;
+    public function setOption(string $name, mixed $value): void;
 
     /**
      * Define the options value, if the options array contains the reserved keywords

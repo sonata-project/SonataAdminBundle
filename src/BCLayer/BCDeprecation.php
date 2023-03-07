@@ -47,11 +47,9 @@ final class BCDeprecation
      * This class is a BC layer for deprecation messages for symfony/options-resolver < 5.1.
      * Remove this method when dropping support for symfony/options-resolver < 5.1.
      *
-     * @param string|\Closure $message
-     *
      * @return mixed[]
      */
-    public static function forOptionResolver($message, string $version): array
+    public static function forOptionResolver(string|callable $message, string $version): array
     {
         // @phpstan-ignore-next-line
         if (method_exists(OptionsResolver::class, 'define')) {

@@ -37,7 +37,7 @@ final class TypeGuesserChain implements TypeGuesserInterface
                 throw new \InvalidArgumentException(sprintf(
                     'Expected argument of type "%s", "%s" given',
                     TypeGuesserInterface::class,
-                    \is_object($guesser) ? \get_class($guesser) : \gettype($guesser)
+                    get_debug_type($guesser)
                 ));
             }
 

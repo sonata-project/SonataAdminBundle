@@ -21,16 +21,14 @@ use Twig\TwigFilter;
 
 final class RenderElementExtension extends AbstractExtension
 {
-    private RenderElementRuntime $renderElementRuntime;
-
     /**
      * NEXT_MAJOR: Remove this constructor.
      *
      * @internal This class should only be used through Twig
      */
-    public function __construct(RenderElementRuntime $renderElementRuntime)
-    {
-        $this->renderElementRuntime = $renderElementRuntime;
+    public function __construct(
+        private RenderElementRuntime $renderElementRuntime
+    ) {
     }
 
     /**
@@ -124,15 +122,12 @@ final class RenderElementExtension extends AbstractExtension
      * @deprecated since sonata-project/admin-bundle version 4.7 use RenderElementRuntime::renderViewElementCompare() instead
      *
      * render a compared view element.
-     *
-     * @param mixed $baseObject
-     * @param mixed $compareObject
      */
     public function renderViewElementCompare(
         Environment $environment,
         FieldDescriptionInterface $fieldDescription,
-        $baseObject,
-        $compareObject
+        mixed $baseObject,
+        mixed $compareObject
     ): string {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
@@ -150,13 +145,11 @@ final class RenderElementExtension extends AbstractExtension
      *
      * @deprecated since sonata-project/admin-bundle version 4.7 use RenderElementRuntime::renderRelationElement() instead
      *
-     * @param mixed $element
-     *
      * @throws \RuntimeException
      *
      * @return mixed
      */
-    public function renderRelationElement($element, FieldDescriptionInterface $fieldDescription)
+    public function renderRelationElement(mixed $element, FieldDescriptionInterface $fieldDescription)
     {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'

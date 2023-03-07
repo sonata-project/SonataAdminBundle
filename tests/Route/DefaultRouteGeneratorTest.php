@@ -89,14 +89,11 @@ final class DefaultRouteGeneratorTest extends TestCase
                     $params .= '?'.http_build_query($parameters);
                 }
 
-                switch ($name) {
-                    case 'admin_acme_foo':
-                        return sprintf('%s/foo%s', $domain, $params);
-                    case 'admin_acme_child_bar':
-                        return sprintf('%s/foo/bar%s', $domain, $params);
-                    default:
-                        throw new \LogicException('Not implemented');
-                }
+                return match ($name) {
+                    'admin_acme_foo' => sprintf('%s/foo%s', $domain, $params),
+                    'admin_acme_child_bar' => sprintf('%s/foo/bar%s', $domain, $params),
+                    default => throw new \LogicException('Not implemented'),
+                };
             });
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
@@ -212,16 +209,12 @@ final class DefaultRouteGeneratorTest extends TestCase
                     $params .= '?'.http_build_query($parameters);
                 }
 
-                switch ($name) {
-                    case 'admin_acme_foo':
-                        return sprintf('/foo%s', $params);
-                    case 'admin_acme_child_bar':
-                        return sprintf('/foo/bar%s', $params);
-                    case 'admin_child_bar':
-                        return sprintf('/bar%s', $params);
-                    default:
-                        throw new \LogicException('Not implemented');
-                }
+                return match ($name) {
+                    'admin_acme_foo' => sprintf('/foo%s', $params),
+                    'admin_acme_child_bar' => sprintf('/foo/bar%s', $params),
+                    'admin_child_bar' => sprintf('/bar%s', $params),
+                    default => throw new \LogicException('Not implemented'),
+                };
             });
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
@@ -281,14 +274,11 @@ final class DefaultRouteGeneratorTest extends TestCase
                     $params .= '?'.http_build_query($parameters);
                 }
 
-                switch ($name) {
-                    case 'admin_acme_foo':
-                        return sprintf('/foo%s', $params);
-                    case 'admin_acme_child_bar':
-                        return sprintf('/foo/bar%s', $params);
-                    default:
-                        throw new \LogicException('Not implemented');
-                }
+                return match ($name) {
+                    'admin_acme_foo' => sprintf('/foo%s', $params),
+                    'admin_acme_child_bar' => sprintf('/foo/bar%s', $params),
+                    default => throw new \LogicException('Not implemented'),
+                };
             });
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
@@ -395,14 +385,11 @@ final class DefaultRouteGeneratorTest extends TestCase
                     $params .= '?'.http_build_query($parameters);
                 }
 
-                switch ($name) {
-                    case 'admin_acme_child_bar':
-                        return sprintf('/foo/bar%s', $params);
-                    case 'admin_acme_child_standalone_bar':
-                        return sprintf('/bar%s', $params);
-                    default:
-                        throw new \LogicException('Not implemented');
-                }
+                return match ($name) {
+                    'admin_acme_child_bar' => sprintf('/foo/bar%s', $params),
+                    'admin_acme_child_standalone_bar' => sprintf('/bar%s', $params),
+                    default => throw new \LogicException('Not implemented'),
+                };
             });
 
         $cache = new RoutesCache($this->cacheTempFolder, true);

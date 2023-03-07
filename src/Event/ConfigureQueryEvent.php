@@ -30,26 +30,14 @@ use Symfony\Contracts\EventDispatcher\Event;
 final class ConfigureQueryEvent extends Event
 {
     /**
-     * @var AdminInterface<object>
-     */
-    private AdminInterface $admin;
-
-    /**
-     * @var ProxyQueryInterface<object>
-     */
-    private ProxyQueryInterface $proxyQuery;
-
-    private string $context;
-
-    /**
      * @param AdminInterface<object>      $admin
      * @param ProxyQueryInterface<object> $proxyQuery
      */
-    public function __construct(AdminInterface $admin, ProxyQueryInterface $proxyQuery, string $context)
-    {
-        $this->admin = $admin;
-        $this->proxyQuery = $proxyQuery;
-        $this->context = $context;
+    public function __construct(
+        private AdminInterface $admin,
+        private ProxyQueryInterface $proxyQuery,
+        private string $context
+    ) {
     }
 
     /**

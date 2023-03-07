@@ -25,16 +25,11 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 final class ModelManager implements ModelManagerInterface, LockInterface
 {
     /**
-     * @var RepositoryInterface<T>
-     */
-    private RepositoryInterface $repository;
-
-    /**
      * @param RepositoryInterface<T> $repository
      */
-    public function __construct(RepositoryInterface $repository)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        private RepositoryInterface $repository
+    ) {
     }
 
     public function create(object $object): void

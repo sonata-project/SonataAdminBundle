@@ -181,12 +181,11 @@ final class RenderElementRuntimeTest extends TestCase
     }
 
     /**
-     * @param mixed                $value
      * @param array<string, mixed> $options
      *
      * @dataProvider getRenderListElementTests
      */
-    public function testRenderListElement(string $expected, string $type, $value, array $options): void
+    public function testRenderListElement(string $expected, string $type, mixed $value, array $options): void
     {
         $this->admin
             ->method('getPersistentParameters')
@@ -290,12 +289,11 @@ final class RenderElementRuntimeTest extends TestCase
     }
 
     /**
-     * @param mixed                $value
      * @param array<string, mixed> $options
      *
      * @dataProvider getRenderViewElementTests
      */
-    public function testRenderViewElement(string $expected, string $type, $value, array $options): void
+    public function testRenderViewElement(string $expected, string $type, mixed $value, array $options): void
     {
         $this->fieldDescription
             ->method('getValue')
@@ -330,13 +328,17 @@ final class RenderElementRuntimeTest extends TestCase
     }
 
     /**
-     * @param mixed                $value
      * @param array<string, mixed> $options
      *
      * @dataProvider getRenderViewElementCompareTests
      */
-    public function testRenderViewElementCompare(string $expected, string $type, $value, array $options, ?string $objectName): void
-    {
+    public function testRenderViewElementCompare(
+        string $expected,
+        string $type,
+        mixed $value,
+        array $options,
+        ?string $objectName
+    ): void {
         $this->fieldDescription
             ->method('getValue')
             ->willReturn($value);

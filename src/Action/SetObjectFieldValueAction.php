@@ -30,32 +30,16 @@ use Twig\Environment;
 
 final class SetObjectFieldValueAction
 {
-    private AdminFetcherInterface $adminFetcher;
-
-    private Environment $twig;
-
-    private ValidatorInterface $validator;
-
-    private DataTransformerResolverInterface $resolver;
-
-    private PropertyAccessorInterface $propertyAccessor;
-
     private RenderElementRuntime $renderElementRuntime;
 
     public function __construct(
-        Environment $twig,
-        AdminFetcherInterface $adminFetcher,
-        ValidatorInterface $validator,
-        DataTransformerResolverInterface $resolver,
-        PropertyAccessorInterface $propertyAccessor,
+        private Environment $twig,
+        private AdminFetcherInterface $adminFetcher,
+        private ValidatorInterface $validator,
+        private DataTransformerResolverInterface $resolver,
+        private PropertyAccessorInterface $propertyAccessor,
         ?RenderElementRuntime $renderElementRuntime = null
     ) {
-        $this->adminFetcher = $adminFetcher;
-        $this->twig = $twig;
-        $this->validator = $validator;
-        $this->resolver = $resolver;
-        $this->propertyAccessor = $propertyAccessor;
-
         // NEXT_MAJOR: Remove the deprecation and restrict param constructor to RenderElementRuntime.
         if (null === $renderElementRuntime) {
             @trigger_error(sprintf(

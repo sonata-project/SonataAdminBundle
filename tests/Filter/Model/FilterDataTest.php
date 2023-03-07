@@ -21,16 +21,14 @@ final class FilterDataTest extends TestCase
     /**
      * @dataProvider getInvalidTypes
      *
-     * @param mixed $type
-     *
      * @psalm-suppress InvalidArgument
      */
-    public function testTypeMustBeNumericOrNull($type): void
+    public function testTypeMustBeNumericOrNull(mixed $type): void
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
             'The "type" parameter MUST be of type "integer" or "null", %s given.',
-            \is_object($type) ? 'instance of "'.\get_class($type).'"' : '"'.\gettype($type).'"'
+            \is_object($type) ? 'instance of "'.$type::class.'"' : '"'.\gettype($type).'"'
         ));
 
         // @phpstan-ignore-next-line
@@ -65,11 +63,9 @@ final class FilterDataTest extends TestCase
     /**
      * @dataProvider getTypes
      *
-     * @param int|string|null $type
-     *
      * @phpstan-param int|numeric-string|null $type
      */
-    public function testGetType(?int $expected, $type): void
+    public function testGetType(?int $expected, int|string|null $type): void
     {
         static::assertSame($expected, FilterData::fromArray(['type' => $type])->getType());
     }
@@ -86,10 +82,8 @@ final class FilterDataTest extends TestCase
 
     /**
      * @dataProvider getValues
-     *
-     * @param mixed $value
      */
-    public function testGetValue($value): void
+    public function testGetValue(mixed $value): void
     {
         static::assertSame($value, FilterData::fromArray(['value' => $value])->getValue());
     }

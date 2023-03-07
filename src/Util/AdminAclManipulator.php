@@ -27,16 +27,11 @@ use Symfony\Component\Security\Acl\Permission\MaskBuilderInterface;
 final class AdminAclManipulator implements AdminAclManipulatorInterface
 {
     /**
-     * @phpstan-var class-string<MaskBuilderInterface>
-     */
-    private string $maskBuilderClass;
-
-    /**
      * @phpstan-param class-string<MaskBuilderInterface> $maskBuilderClass
      */
-    public function __construct(string $maskBuilderClass)
-    {
-        $this->maskBuilderClass = $maskBuilderClass;
+    public function __construct(
+        private string $maskBuilderClass
+    ) {
     }
 
     public function configureAcls(OutputInterface $output, AdminInterface $admin): void

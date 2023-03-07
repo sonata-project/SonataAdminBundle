@@ -30,35 +30,19 @@ use Twig\Environment;
  */
 final class AdminSearchBlockService extends AbstractBlockService
 {
-    private Pool $pool;
-
-    private SearchHandler $searchHandler;
-
-    private TemplateRegistryInterface $templateRegistry;
-
-    private string $emptyBoxesOption;
-
-    private string $adminRoute;
-
     /**
      * @phpstan-param 'show'|'hide'|'fade' $emptyBoxesOption
      * @phpstan-param 'show'|'edit'        $adminRoute
      */
     public function __construct(
         Environment $twig,
-        Pool $pool,
-        SearchHandler $searchHandler,
-        TemplateRegistryInterface $templateRegistry,
-        string $emptyBoxesOption,
-        string $adminRoute
+        private Pool $pool,
+        private SearchHandler $searchHandler,
+        private TemplateRegistryInterface $templateRegistry,
+        private string $emptyBoxesOption,
+        private string $adminRoute
     ) {
         parent::__construct($twig);
-
-        $this->pool = $pool;
-        $this->searchHandler = $searchHandler;
-        $this->templateRegistry = $templateRegistry;
-        $this->emptyBoxesOption = $emptyBoxesOption;
-        $this->adminRoute = $adminRoute;
     }
 
     public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response

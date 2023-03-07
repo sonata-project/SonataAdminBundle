@@ -105,11 +105,9 @@ final class DataTransformerResolverTest extends TestCase
     }
 
     /**
-     * @param mixed $timezone
-     *
      * @dataProvider getTimeZones
      */
-    public function testResolveDateDataTransformer($timezone, \DateTimeZone $expectedTimezone): void
+    public function testResolveDateDataTransformer(mixed $timezone, \DateTimeZone $expectedTimezone): void
     {
         $this->fieldDescription->method('getOption')->willReturnMap([
             ['data_transformer', null, null],

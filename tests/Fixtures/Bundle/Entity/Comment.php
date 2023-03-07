@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity;
 
-final class Comment
+final class Comment implements \Stringable
 {
     public function __toString(): string
     {

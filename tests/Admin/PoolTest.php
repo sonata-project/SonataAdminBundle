@@ -305,7 +305,7 @@ final class PoolTest extends TestCase
     {
         $adminMock = $this->createMock(AdminInterface::class);
 
-        if (false !== strpos($adminId, '|')) {
+        if (str_contains($adminId, '|')) {
             $childAdminMock = $this->createMock(AdminInterface::class);
             $adminMock
                 ->method('hasChild')

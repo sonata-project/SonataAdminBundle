@@ -57,11 +57,9 @@ final class ChoiceFieldMaskTypeTest extends TypeTestCase
     }
 
     /**
-     * @param mixed $map
-     *
      * @dataProvider setAllowedTypesProvider
      */
-    public function testSetAllowedTypes($map): void
+    public function testSetAllowedTypes(mixed $map): void
     {
         $this->expectException(InvalidOptionsException::class);
         $this->expectExceptionMessageMatches('/The option "map" with value .* is expected to be of type "array", but is of type ".*"/');

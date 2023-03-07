@@ -30,7 +30,6 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '7.4'
                     - '8.0'
                     - '8.1'
                     - '8.2'
@@ -39,31 +38,21 @@ jobs:
                 symfony-require: ['']
                 variant: [normal]
                 include:
-                    - php-version: '7.4'
+                    - php-version: '8.0'
                       dependencies: lowest
                       allowed-to-fail: false
                       variant: normal
-                    - php-version: '8.1'
+                    - php-version: '8.2'
                       dependencies: highest
                       allowed-to-fail: false
                       symfony-require: 4.4.*
                       variant: symfony/symfony:"4.4.*"
-                    - php-version: '8.1'
+                    - php-version: '8.2'
                       dependencies: highest
                       allowed-to-fail: false
                       symfony-require: 5.4.*
                       variant: symfony/symfony:"5.4.*"
-                    - php-version: '8.1'
-                      dependencies: highest
-                      allowed-to-fail: false
-                      symfony-require: 6.0.*
-                      variant: symfony/symfony:"6.0.*"
-                    - php-version: '8.1'
-                      dependencies: highest
-                      allowed-to-fail: false
-                      symfony-require: 6.1.*
-                      variant: symfony/symfony:"6.1.*"
-                    - php-version: '8.1'
+                    - php-version: '8.2'
                       dependencies: highest
                       allowed-to-fail: false
                       symfony-require: 6.2.*

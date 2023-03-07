@@ -204,7 +204,7 @@ final class AdminHelperTest extends TestCase
         $dataMapper = $this->createStub(DataMapperInterface::class);
         $formFactory = $this->createStub(FormFactoryInterface::class);
         $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
-        $formBuilder = new FormBuilder('test', \get_class($foo), $eventDispatcher, $formFactory);
+        $formBuilder = new FormBuilder('test', $foo::class, $eventDispatcher, $formFactory);
         $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory, [
             'sonata_field_description' => $fieldDescription,
         ]);
@@ -309,7 +309,7 @@ final class AdminHelperTest extends TestCase
         $dataMapper = $this->createStub(DataMapperInterface::class);
         $formFactory = $this->createStub(FormFactoryInterface::class);
         $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
-        $formBuilder = new FormBuilder('test', \get_class($foo), $eventDispatcher, $formFactory);
+        $formBuilder = new FormBuilder('test', $foo::class, $eventDispatcher, $formFactory);
         $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory);
         $childFormBuilder->setCompound(true);
@@ -418,7 +418,7 @@ final class AdminHelperTest extends TestCase
         $dataMapper = $this->createStub(DataMapperInterface::class);
         $formFactory = $this->createStub(FormFactoryInterface::class);
         $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
-        $formBuilder = new FormBuilder('test', \get_class($foo), $eventDispatcher, $formFactory);
+        $formBuilder = new FormBuilder('test', $foo::class, $eventDispatcher, $formFactory);
         $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory);
         $childFormBuilder->setCompound(true);
@@ -529,7 +529,7 @@ final class AdminHelperTest extends TestCase
         $dataMapper = $this->createStub(DataMapperInterface::class);
         $formFactory = $this->createStub(FormFactoryInterface::class);
         $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
-        $formBuilder = new FormBuilder('test', \get_class($foo), $eventDispatcher, $formFactory);
+        $formBuilder = new FormBuilder('test', $foo::class, $eventDispatcher, $formFactory);
         $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory);
         $childFormBuilder->setCompound(true);
@@ -588,8 +588,8 @@ final class AdminHelperTest extends TestCase
         $dataMapper = $this->createStub(DataMapperInterface::class);
         $formFactory = $this->createStub(FormFactoryInterface::class);
         $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
-        $formBuilder = new FormBuilder('test', \get_class($object), $eventDispatcher, $formFactory);
-        $childFormBuilder = new FormBuilder('subObject', \get_class($subObject), $eventDispatcher, $formFactory);
+        $formBuilder = new FormBuilder('test', $object::class, $eventDispatcher, $formFactory);
+        $childFormBuilder = new FormBuilder('subObject', $subObject::class, $eventDispatcher, $formFactory);
 
         $object->expects(static::atLeastOnce())->method('getSubObject')->willReturn([$subObject]);
         $subObject->expects(static::atLeastOnce())->method('getAnd')->willReturn($sub2Object);
@@ -646,15 +646,15 @@ final class AdminHelperTest extends TestCase
 
         $admin = $this->createMock(AdminInterface::class);
         $admin->method('hasFormFieldDescription')->with('collection')->willReturn(true);
-        $admin->method('getClass')->willReturn(\get_class($object));
+        $admin->method('getClass')->willReturn($object::class);
 
         $subObjectAdmin = $this->createMock(AdminInterface::class);
-        $subObjectAdmin->method('getClass')->willReturn(\get_class($subObject));
+        $subObjectAdmin->method('getClass')->willReturn($subObject::class);
 
         $subObjectMapping = [
             'fieldName' => 'sub_object',
-            'targetEntity' => \get_class($subObject),
-            'sourceEntity' => \get_class($object),
+            'targetEntity' => $subObject::class,
+            'sourceEntity' => $object::class,
             'isOwningSide' => false,
         ];
 
@@ -666,12 +666,12 @@ final class AdminHelperTest extends TestCase
         $subObjectFieldDescription->expects(static::never())->method('getValue');
 
         $subObjectCollectionAdmin = $this->createMock(AdminInterface::class);
-        $subObjectCollectionAdmin->method('getClass')->willReturn(\get_class($collectionObject));
+        $subObjectCollectionAdmin->method('getClass')->willReturn($collectionObject::class);
 
         $subObjectCollectionMapping = [
             'fieldName' => 'collection',
-            'targetEntity' => \get_class($collectionObject),
-            'sourceEntity' => \get_class($subObject),
+            'targetEntity' => $collectionObject::class,
+            'sourceEntity' => $subObject::class,
             'isOwningSide' => false,
         ];
 
@@ -687,12 +687,12 @@ final class AdminHelperTest extends TestCase
         );
 
         $collectionAdmin = $this->createMock(AdminInterface::class);
-        $collectionAdmin->method('getClass')->willReturn(\get_class($collectionObject));
+        $collectionAdmin->method('getClass')->willReturn($collectionObject::class);
 
         $collectionMapping = [
             'fieldName' => 'collection',
-            'targetEntity' => \get_class($collectionObject),
-            'sourceEntity' => \get_class($object),
+            'targetEntity' => $collectionObject::class,
+            'sourceEntity' => $object::class,
             'isOwningSide' => false,
         ];
 
@@ -730,14 +730,14 @@ final class AdminHelperTest extends TestCase
         $childCollectionFormBuilder->setCompound(true);
         $childCollectionFormBuilder->setDataMapper($dataMapper);
 
-        $childFormBuilder = new FormBuilder('sub_object', \get_class($subObject), $eventDispatcher, $formFactory, [
+        $childFormBuilder = new FormBuilder('sub_object', $subObject::class, $eventDispatcher, $formFactory, [
             'sonata_field_description' => $subObjectFieldDescription,
         ]);
         $childFormBuilder->setCompound(true);
         $childFormBuilder->setDataMapper($dataMapper);
         $childFormBuilder->add($childCollectionFormBuilder);
 
-        $formBuilder = new FormBuilder('main', \get_class($object), $eventDispatcher, $formFactory);
+        $formBuilder = new FormBuilder('main', $object::class, $eventDispatcher, $formFactory);
         $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $formBuilder->setCompound(true);
         $formBuilder->setDataMapper($dataMapper);

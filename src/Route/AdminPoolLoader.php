@@ -25,17 +25,14 @@ final class AdminPoolLoader extends Loader
 {
     public const ROUTE_TYPE_NAME = 'sonata_admin';
 
-    private Pool $pool;
-
-    public function __construct(Pool $pool)
-    {
+    public function __construct(
+        private Pool $pool
+    ) {
         // Remove this check when dropping support for support of symfony/symfony-config < 5.3.
         // @phpstan-ignore-next-line
         if (method_exists(parent::class, '__construct')) {
             parent::__construct();
         }
-
-        $this->pool = $pool;
     }
 
     /**

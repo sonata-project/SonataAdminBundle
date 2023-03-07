@@ -26,19 +26,12 @@ use Twig\Environment;
  */
 final class AdminListBlockService extends AbstractBlockService
 {
-    private Pool $pool;
-
-    private TemplateRegistryInterface $templateRegistry;
-
     public function __construct(
         Environment $twig,
-        Pool $pool,
-        TemplateRegistryInterface $templateRegistry
+        private Pool $pool,
+        private TemplateRegistryInterface $templateRegistry
     ) {
         parent::__construct($twig);
-
-        $this->pool = $pool;
-        $this->templateRegistry = $templateRegistry;
     }
 
     public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response

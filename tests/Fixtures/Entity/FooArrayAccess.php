@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 /**
  * @phpstan-implements \ArrayAccess<string, string|null>
  */
-final class FooArrayAccess implements \ArrayAccess
+final class FooArrayAccess implements \ArrayAccess, \Stringable
 {
     private ?string $bar = null;
 

@@ -20,11 +20,9 @@ use Psr\Container\ContainerInterface;
  */
 final class FilterFactory implements FilterFactoryInterface
 {
-    private ContainerInterface $container;
-
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
+    public function __construct(
+        private ContainerInterface $container
+    ) {
     }
 
     public function create(string $name, string $type, array $options = []): FilterInterface

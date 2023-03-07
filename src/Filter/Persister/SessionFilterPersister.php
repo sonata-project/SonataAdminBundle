@@ -24,11 +24,9 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
  */
 final class SessionFilterPersister implements FilterPersisterInterface
 {
-    private RequestStack $requestStack;
-
-    public function __construct(RequestStack $requestStack)
-    {
-        $this->requestStack = $requestStack;
+    public function __construct(
+        private RequestStack $requestStack
+    ) {
     }
 
     public function get(string $adminCode): array

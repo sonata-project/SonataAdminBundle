@@ -39,29 +39,7 @@ final class Datagrid implements DatagridInterface
      */
     private array $filters = [];
 
-    /**
-     * @var array<string, mixed>
-     */
-    private array $values = [];
-
-    /**
-     * @var FieldDescriptionCollection<FieldDescriptionInterface>
-     */
-    private FieldDescriptionCollection $columns;
-
-    /**
-     * @phpstan-var PagerInterface<T>
-     */
-    private PagerInterface $pager;
-
     private bool $bound = false;
-
-    /**
-     * @phpstan-var T
-     */
-    private ProxyQueryInterface $query;
-
-    private FormBuilderInterface $formBuilder;
 
     private ?FormInterface $form = null;
 
@@ -80,17 +58,12 @@ final class Datagrid implements DatagridInterface
      * @phpstan-param PagerInterface<T> $pager
      */
     public function __construct(
-        ProxyQueryInterface $query,
-        FieldDescriptionCollection $columns,
-        PagerInterface $pager,
-        FormBuilderInterface $formBuilder,
-        array $values = []
+        private ProxyQueryInterface $query,
+        private FieldDescriptionCollection $columns,
+        private PagerInterface $pager,
+        private FormBuilderInterface $formBuilder,
+        private array $values = []
     ) {
-        $this->pager = $pager;
-        $this->query = $query;
-        $this->values = $values;
-        $this->columns = $columns;
-        $this->formBuilder = $formBuilder;
     }
 
     public function getPager(): PagerInterface
@@ -350,7 +323,7 @@ final class Datagrid implements DatagridInterface
 
         foreach ($this->getFilters() as $filter) {
             // NEXT_MAJOR: Keep the if part.
-            if (method_exists($filter, 'getFormOptions')) { // @phpstan-ignore-line
+            if (method_exists($filter, 'getFormOptions')) {
                 $type = FilterDataType::class;
                 $options = $filter->getFormOptions();
             } else {

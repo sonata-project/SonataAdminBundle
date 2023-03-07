@@ -44,25 +44,16 @@ namespace Sonata\AdminBundle;
  */
 final class SonataConfiguration
 {
-    private string $title;
-
-    private string $logo;
-
     /**
-     * @var array<string, mixed>
+     * @param array<string, mixed> $options
      *
-     * @phpstan-var SonataConfigurationOptions
-     */
-    private array $options;
-
-    /**
      * @phpstan-param SonataConfigurationOptions $options
      */
-    public function __construct(string $title, string $logo, array $options)
-    {
-        $this->title = $title;
-        $this->logo = $logo;
-        $this->options = $options;
+    public function __construct(
+        private string $title,
+        private string $logo,
+        private array $options
+    ) {
     }
 
     public function getTitle(): string
@@ -76,11 +67,9 @@ final class SonataConfiguration
     }
 
     /**
-     * @param mixed $default
-     *
      * @return mixed
      */
-    public function getOption(string $name, $default = null)
+    public function getOption(string $name, mixed $default = null)
     {
         return $this->options[$name] ?? $default;
     }

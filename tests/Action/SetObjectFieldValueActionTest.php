@@ -150,12 +150,12 @@ final class SetObjectFieldValueActionTest extends TestCase
     }
 
     /**
-     * @param \DateTimeZone|string|false|null $timezone
-     *
      * @dataProvider getTimeZones
      */
-    public function testSetObjectFieldValueActionWithDate($timezone, \DateTimeZone $expectedTimezone): void
-    {
+    public function testSetObjectFieldValueActionWithDate(
+        \DateTimeZone|string|false|null $timezone,
+        \DateTimeZone $expectedTimezone
+    ): void {
         $object = new Bafoo();
         $request = new Request([
             '_sonata_admin' => 'sonata.post.admin',
@@ -219,7 +219,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('bar')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('bar')->willReturn($fieldDescription);
-        $this->admin->method('getClass')->willReturn(\get_class($object));
+        $this->admin->method('getClass')->willReturn($object::class);
         $this->admin->expects(static::once())->method('update')->with($object);
         $this->templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
         $fieldDescription->method('getType')->willReturn('choice');
@@ -232,7 +232,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription->method('getAdmin')->willReturn($this->admin);
         $fieldDescription->method('getTemplate')->willReturn('field_template');
         $fieldDescription->method('getValue')->willReturn('some value');
-        $this->modelManager->method('find')->with(\get_class($associationObject), 1)->willReturn($associationObject);
+        $this->modelManager->method('find')->with($associationObject::class, 1)->willReturn($associationObject);
 
         $this->validator->method('validate')->with($object)->willReturn(new ConstraintViolationList([]));
 
