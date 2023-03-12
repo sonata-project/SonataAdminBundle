@@ -567,7 +567,7 @@ final class DatagridTest extends TestCase
     {
         return [
             [3, 50],
-            [3, ['type' => null, 'value' => 50]],
+            [3, ['value' => 50]],
         ];
     }
 

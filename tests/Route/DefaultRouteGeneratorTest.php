@@ -104,7 +104,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string, string, array<string, mixed>}>
+     * @phpstan-return array<array{0: string, 1: string, 2: array<string, mixed>, 3?: int}>
      */
     public function getGenerateUrlTests(): array
     {

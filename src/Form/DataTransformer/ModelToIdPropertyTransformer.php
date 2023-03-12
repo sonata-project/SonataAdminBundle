@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Form\DataTransformer;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Stringable;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\InvalidArgumentException;
 use Symfony\Component\Form\Exception\TransformationFailedException;
@@ -72,7 +73,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
      * @psalm-param int|string|(array{_labels?: array<string>}&array<int|string>)|null $value
      * @phpstan-return Collection<array-key, T>|T|null
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): ?object
     {
         if (null === $value || [] === $value || '' === $value) {
             if ($this->multiple) {
@@ -166,7 +167,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
 
             if (null !== $this->toStringCallback) {
                 $label = ($this->toStringCallback)($model, $this->property);
-            } elseif (method_exists($model, '__toString')) {
+            } elseif ($model instanceof Stringable) {
                 $label = $model->__toString();
             } else {
                 throw new TransformationFailedException(sprintf(

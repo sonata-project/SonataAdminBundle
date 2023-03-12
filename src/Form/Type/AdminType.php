@@ -30,6 +30,8 @@ use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @psalm-suppress MissingTemplateParam https://github.com/phpstan/phpstan-symfony/issues/320
  */
 final class AdminType extends AbstractType
 {

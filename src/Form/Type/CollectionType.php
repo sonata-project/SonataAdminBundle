@@ -22,6 +22,8 @@ use Symfony\Component\Form\FormTypeInterface;
  * buttons in standard Symfony` collection form type.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
+ *
+ * @psalm-suppress MissingTemplateParam https://github.com/phpstan/phpstan-symfony/issues/320
  */
 final class CollectionType extends AbstractType
 {

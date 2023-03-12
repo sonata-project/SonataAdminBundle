@@ -49,6 +49,7 @@ final class ObjectAclManipulatorTest extends TestCase
     {
         $this->output = $this->createMock(OutputInterface::class);
         $this->admin = $this->createMock(AdminInterface::class);
+        /** @psalm-suppress InvalidPropertyAssignmentValue https://github.com/vimeo/psalm/issues/9501 */
         $this->oids = new \ArrayIterator([
             $this->createMock(ObjectIdentityInterface::class),
             $this->createMock(ObjectIdentityInterface::class),
