@@ -39,9 +39,9 @@ final class ObjectAclManipulatorTest extends TestCase
     private AdminInterface $admin;
 
     /**
-     * @var \ArrayIterator<int, MockObject&ObjectIdentityInterface>
+     * @var \Traversable<int, MockObject&ObjectIdentityInterface>
      */
-    private \ArrayIterator $oids;
+    private \Traversable $oids;
 
     private UserSecurityIdentity $securityIdentity;
 
@@ -49,7 +49,6 @@ final class ObjectAclManipulatorTest extends TestCase
     {
         $this->output = $this->createMock(OutputInterface::class);
         $this->admin = $this->createMock(AdminInterface::class);
-        /** @psalm-suppress InvalidPropertyAssignmentValue https://github.com/vimeo/psalm/issues/9501 */
         $this->oids = new \ArrayIterator([
             $this->createMock(ObjectIdentityInterface::class),
             $this->createMock(ObjectIdentityInterface::class),
