@@ -47,11 +47,12 @@ final class AdminType extends AbstractType
         }
 
         if (true === $options['delete'] && $admin->hasAccess('delete')) {
-            if (!\array_key_exists('translation_domain', $options['delete_options']['type_options'])) {
-                $options['delete_options']['type_options']['translation_domain'] = $admin->getTranslationDomain();
+            $deleteOptions = $options['delete_options'];
+            if (!\array_key_exists('translation_domain', $deleteOptions['type_options'])) {
+                $deleteOptions['type_options']['translation_domain'] = $admin->getTranslationDomain();
             }
 
-            $builder->add('_delete', $options['delete_options']['type'], $options['delete_options']['type_options']);
+            $builder->add('_delete', $deleteOptions['type'], $deleteOptions['type_options']);
         }
 
         // hack to make sure the subject is correctly set

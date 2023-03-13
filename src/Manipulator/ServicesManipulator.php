@@ -68,6 +68,7 @@ final class ServicesManipulator
                     $code .= "\n";
                 }
             } else {
+                /** @psalm-suppress TypeDoesNotContainType https://github.com/vimeo/psalm/issues/9511 */
                 $code .= '' === $code ? '' : "\n".'services:'."\n";
             }
         }
