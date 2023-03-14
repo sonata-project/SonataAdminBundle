@@ -65,6 +65,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
      * @dataProvider getReverseTransformMultipleTests
      *
      * @psalm-param (array{_labels?: array<string>}&array<int|string>)|null $params
+     * @phpstan-param array<int|string|array<string>>|null $params
      */
     public function testReverseTransformMultiple(array $expected, ?array $params, Foo $entity1, Foo $entity2, Foo $entity3): void
     {

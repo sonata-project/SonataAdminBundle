@@ -25,12 +25,14 @@ use Symfony\Component\Form\Extension\Core\DataTransformer\DateTimeToStringTransf
 final class DataTransformerResolver implements DataTransformerResolverInterface
 {
     /**
-     * @var array<string, DataTransformerInterface<mixed, mixed>>
+     * @phpstan-var array<string, DataTransformerInterface<mixed, mixed>>
+     * @psalm-var array<string, DataTransformerInterface>
      */
     private array $globalCustomTransformers = [];
 
     /**
-     * @param array<string, DataTransformerInterface<mixed, mixed>> $customGlobalTransformers
+     * @phpstan-param array<string, DataTransformerInterface<mixed, mixed>> $customGlobalTransformers
+     * @psalm-param array<string, DataTransformerInterface> $customGlobalTransformers
      */
     public function __construct(array $customGlobalTransformers = [])
     {
