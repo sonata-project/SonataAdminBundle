@@ -25,6 +25,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * This type define a standard hidden field, that stored id to a object.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
+ *
+ * @psalm-suppress MissingTemplateParam https://github.com/phpstan/phpstan-symfony/issues/320
  */
 final class ModelHiddenType extends AbstractType
 {

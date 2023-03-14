@@ -87,8 +87,16 @@ final class SonataAdminExtension extends Extension
         /** @phpstan-var SonataAdminConfiguration $config */
         $config = $this->processConfiguration($configuration, $configs);
 
-        $config['options']['javascripts'] = $this->buildJavascripts($config);
-        $config['options']['stylesheets'] = $this->buildStylesheets($config);
+        $javascript = $this->buildJavascripts($config);
+
+        $config['assets']['stylesheets'][] = sprintf(
+            'bundles/sonataadmin/admin-lte-skins/%s.min.css',
+            $config['options']['skin']
+        );
+        $stylesheet = $this->buildStylesheets($config);
+
+        $config['options']['javascripts'] = $javascript;
+        $config['options']['stylesheets'] = $stylesheet;
         $config['options']['role_admin'] = $config['security']['role_admin'];
         $config['options']['role_super_admin'] = $config['security']['role_super_admin'];
         $config['options']['search'] = $config['search'];
@@ -226,11 +234,6 @@ final class SonataAdminExtension extends Extension
      */
     private function buildStylesheets(array $config): array
     {
-        $config['assets']['stylesheets'][] = sprintf(
-            'bundles/sonataadmin/admin-lte-skins/%s.min.css',
-            $config['options']['skin']
-        );
-
         return $this->mergeArray(
             $config['assets']['stylesheets'],
             $config['assets']['extra_stylesheets'],

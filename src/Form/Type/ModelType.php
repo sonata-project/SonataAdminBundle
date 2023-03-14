@@ -34,6 +34,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  * This type define a standard select input with a + sign to add new associated object.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @psalm-suppress MissingTemplateParam https://github.com/phpstan/phpstan-symfony/issues/320
  */
 final class ModelType extends AbstractType
 {

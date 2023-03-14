@@ -162,6 +162,7 @@ final class GroupMenuProvider implements MenuProviderInterface
         }
 
         \assert(isset($item['label']));
+        \assert(isset($item['route']));
 
         return $this->menuFactory->createItem($item['label'], [
             'route' => $item['route'],

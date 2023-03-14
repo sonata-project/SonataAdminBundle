@@ -44,6 +44,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *  - a button to open the associated admin create form in a dialog,
  *    in order to create and select an associated model.
  *  - a button to unlink the associated model, if any.
+ *
+ * @psalm-suppress MissingTemplateParam https://github.com/phpstan/phpstan-symfony/issues/320
  */
 final class ModelListType extends AbstractType
 {

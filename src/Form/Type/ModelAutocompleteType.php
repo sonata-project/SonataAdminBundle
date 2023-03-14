@@ -31,6 +31,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  * @author Florent Denis <dflorent.pokap@gmail.com>
+ *
+ * @psalm-suppress MissingTemplateParam https://github.com/phpstan/phpstan-symfony/issues/320
  */
 final class ModelAutocompleteType extends AbstractType
 {

@@ -119,7 +119,7 @@ final class RoleSecurityHandlerTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{bool, string|array<string>, string, string|Expression|array<string|Expression>}>
+     * @phpstan-return array<array{0: bool, 1: string|array<string>, 2: string, 3: string|Expression|array<string|Expression>, 4?: object|null}>
      */
     public function getIsGrantedTests(): array
     {

@@ -65,7 +65,6 @@ final class DatagridMapperTest extends TestCase
                      ->disableOriginalConstructor()
                      ->getMock();
 
-        /** @psalm-suppress InvalidArgument */
         $this->datagrid = new Datagrid($proxyQuery, $fieldDescriptionCollection, $pager, $formBuilder, []);
 
         $this->admin = $this->createMock(AdminInterface::class);
