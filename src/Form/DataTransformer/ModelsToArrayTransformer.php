@@ -76,7 +76,7 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
      *
      * @phpstan-return Collection<array-key, T>|null
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): ?Collection
     {
         if (null === $value) {
             return null;
@@ -86,8 +86,11 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
             throw new UnexpectedTypeException($value, 'array');
         }
 
+        /** @var Collection<array-key, T> $collection */
+        $collection = new ArrayCollection();
+
         if ([] === $value) {
-            return new ArrayCollection();
+            return $collection;
         }
 
         $query = $this->modelManager->createQuery($this->class);
@@ -107,7 +110,6 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
             $modelsById[$identifier] = $model;
         }
 
-        $result = [];
         foreach ($value as $identifier) {
             if (!isset($modelsById[$identifier])) {
                 throw new TransformationFailedException(sprintf(
@@ -116,9 +118,9 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
                 ));
             }
 
-            $result[] = $modelsById[$identifier];
+            $collection->add($modelsById[$identifier]);
         }
 
-        return new ArrayCollection($result);
+        return $collection;
     }
 }

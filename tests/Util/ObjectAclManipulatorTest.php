@@ -39,9 +39,9 @@ final class ObjectAclManipulatorTest extends TestCase
     private AdminInterface $admin;
 
     /**
-     * @var \ArrayIterator<int, MockObject&ObjectIdentityInterface>
+     * @var \Traversable<int, MockObject&ObjectIdentityInterface>
      */
-    private \ArrayIterator $oids;
+    private \Traversable $oids;
 
     private UserSecurityIdentity $securityIdentity;
 

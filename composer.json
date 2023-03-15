@@ -78,7 +78,7 @@
         "phpstan/phpstan-symfony": "^1.0",
         "phpunit/phpunit": "^9.5",
         "psalm/plugin-phpunit": "^0.18",
-        "psalm/plugin-symfony": "^4.0",
+        "psalm/plugin-symfony": "^4.0 || ^5.0",
         "psr/event-dispatcher": "^1.0",
         "rector/rector": "^0.15",
         "symfony/browser-kit": "^4.4 || ^5.4 || ^6.2",
@@ -87,7 +87,7 @@
         "symfony/maker-bundle": "^1.25",
         "symfony/phpunit-bridge": "^6.2",
         "symfony/yaml": "^4.4 || ^5.4 || ^6.2",
-        "vimeo/psalm": "^4.9.2"
+        "vimeo/psalm": "^4.9.2 || ^5.8.0"
     },
     "suggest": {
         "twig/extra-bundle": "Auto configures the Twig Intl extension"

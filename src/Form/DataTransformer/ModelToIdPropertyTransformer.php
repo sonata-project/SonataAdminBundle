@@ -72,7 +72,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
      * @psalm-param int|string|(array{_labels?: array<string>}&array<int|string>)|null $value
      * @phpstan-return Collection<array-key, T>|T|null
      */
-    public function reverseTransform($value)
+    public function reverseTransform($value): ?object
     {
         if (null === $value || [] === $value || '' === $value) {
             if ($this->multiple) {
@@ -166,7 +166,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
 
             if (null !== $this->toStringCallback) {
                 $label = ($this->toStringCallback)($model, $this->property);
-            } elseif (method_exists($model, '__toString')) {
+            } elseif ($model instanceof \Stringable) {
                 $label = $model->__toString();
             } else {
                 throw new TransformationFailedException(sprintf(

@@ -16,7 +16,10 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Form;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Symfony\Component\Form\AbstractType;
 
-class MyCustomType extends AbstractType
+/**
+ * @psalm-suppress MissingTemplateParam https://github.com/phpstan/phpstan-symfony/issues/320
+ */
+final class MyCustomType extends AbstractType
 {
     public function getParent(): string
     {

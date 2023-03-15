@@ -67,8 +67,11 @@ final class Pool
     }
 
     /**
+     * NEXT_MAJOR: Remove the label_catalogue key.
+     *
      * @phpstan-return array<string, array{
      *  label: string,
+     *  label_catalogue?: string,
      *  translation_domain: string,
      *  icon: string,
      *  items: list<AdminInterface<object>>,

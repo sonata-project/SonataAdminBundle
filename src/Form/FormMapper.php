@@ -96,6 +96,7 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
             $fieldDescriptionOptions['translation_domain'] = $group['translation_domain'] ?? null;
         }
 
+        /** @psalm-suppress ArgumentTypeCoercion https://github.com/vimeo/psalm/issues/9500 */
         $fieldDescription = $this->getAdmin()->createFieldDescription(
             $name,
             $fieldDescriptionOptions

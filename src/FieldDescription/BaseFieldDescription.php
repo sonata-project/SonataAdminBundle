@@ -201,6 +201,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             unset($options['template']);
         }
 
+        /** @psalm-suppress PropertyTypeCoercion https://github.com/vimeo/psalm/issues/9500 */
         $this->options = $options;
     }
 

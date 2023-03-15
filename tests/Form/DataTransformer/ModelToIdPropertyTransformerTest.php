@@ -64,9 +64,10 @@ final class ModelToIdPropertyTransformerTest extends TestCase
      *
      * @dataProvider getReverseTransformMultipleTests
      *
+     * @phpstan-param array<int|string|array<string>>|null $params
      * @psalm-param (array{_labels?: array<string>}&array<int|string>)|null $params
      */
-    public function testReverseTransformMultiple(array $expected, $params, Foo $entity1, Foo $entity2, Foo $entity3): void
+    public function testReverseTransformMultiple(array $expected, ?array $params, Foo $entity1, Foo $entity2, Foo $entity3): void
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $transformer = new ModelToIdPropertyTransformer($modelManager, Foo::class, 'bar', true);
@@ -105,6 +106,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
                 [$entity3, '789'],
             ]);
 
+        /** @psalm-suppress ArgumentTypeCoercion https://github.com/vimeo/psalm/issues/9503 */
         $result = $transformer->reverseTransform($params);
         static::assertInstanceOf(Collection::class, $result);
         static::assertCount(\count($expected), $result);
