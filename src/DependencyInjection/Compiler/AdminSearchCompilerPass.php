@@ -39,8 +39,6 @@ final class AdminSearchCompilerPass implements CompilerPassInterface
         $adminSearch = [];
 
         foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
-            $this->validateAdminClass($container, $id);
-
             foreach ($tags as $attributes) {
                 $globalSearch = $this->getGlobalSearchValue($attributes, $id);
                 if (null === $globalSearch) {
@@ -54,30 +52,6 @@ final class AdminSearchCompilerPass implements CompilerPassInterface
 
         $searchHandlerDefinition = $container->getDefinition('sonata.admin.search.handler');
         $searchHandlerDefinition->addMethodCall('configureAdminSearch', [$adminSearch]);
-    }
-
-    /**
-     * @throws LogicException if the class in the given service definition is not
-     *                        a subclass of `AdminInterface`
-     */
-    private function validateAdminClass(ContainerBuilder $container, string $id): void
-    {
-        $definition = $container->getDefinition($id);
-
-        // Trim possible parameter delimiters ("%") from the class name.
-        $adminClass = trim($definition->getClass() ?? '', '%');
-        if (!class_exists($adminClass) && $container->hasParameter($adminClass)) {
-            $adminClass = $container->getParameter($adminClass);
-            \assert(\is_string($adminClass));
-        }
-
-        if (!is_subclass_of($adminClass, AdminInterface::class)) {
-            throw new LogicException(sprintf(
-                'Service "%s" must implement `%s`.',
-                $id,
-                AdminInterface::class
-            ));
-        }
     }
 
     /**
