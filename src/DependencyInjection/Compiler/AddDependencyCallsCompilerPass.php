@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
-use Doctrine\Inflector\InflectorFactory;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
@@ -25,6 +24,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
 use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\String\UnicodeString;
 
 /**
  * Add all dependencies to the Admin class, this avoids writing too many lines
@@ -546,6 +546,6 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
     private function generateSetterMethodName(string $key): string
     {
-        return 'set'.InflectorFactory::create()->build()->classify($key);
+        return 'set'.(new UnicodeString($key))->camel()->title(true)->toString();
     }
 }
