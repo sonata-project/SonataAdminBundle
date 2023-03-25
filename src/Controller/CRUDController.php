@@ -1076,7 +1076,7 @@ class CRUDController extends AbstractController
      *
      * @return string|null A custom error message to display in the flag bag instead of the generic one
      */
-    protected function handleModelManagerThrowable(ModelManagerThrowable $exception)
+    protected function handleModelManagerThrowable(ModelManagerThrowable $exception): ?string
     {
         $debug = $this->getParameter('kernel.debug');
         \assert(\is_bool($debug));
