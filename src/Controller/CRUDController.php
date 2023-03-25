@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Controller;
 
-use Doctrine\Inflector\InflectorFactory;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -53,6 +52,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\String\UnicodeString;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -446,7 +446,7 @@ class CRUDController extends AbstractController
             throw new \RuntimeException('The action is not defined');
         }
 
-        $camelizedAction = InflectorFactory::create()->build()->classify($action);
+        $camelizedAction = (new UnicodeString($action))->camel()->title(true)->toString();
 
         try {
             $batchActionExecutable = $this->getBatchActionExecutable($action);
@@ -1488,7 +1488,7 @@ class CRUDController extends AbstractController
         $controller = $batchActions[$action]['controller'] ?? sprintf(
             '%s::%s',
             $this->admin->getBaseControllerName(),
-            sprintf('batchAction%s', InflectorFactory::create()->build()->classify($action))
+            sprintf('batchAction%s', (new UnicodeString($action))->camel()->title(true)->toString())
         );
 
         // This will throw an exception when called so we know if it's possible or not to call the controller.

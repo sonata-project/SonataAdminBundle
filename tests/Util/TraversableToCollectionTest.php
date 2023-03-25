@@ -24,11 +24,11 @@ use Sonata\AdminBundle\Util\TraversableToCollection;
 final class TraversableToCollectionTest extends TestCase
 {
     /**
-     * @param \Traversable<mixed>|array<mixed> $value
+     * @param iterable<mixed, mixed> $value
      *
      * @dataProvider provideTraversableValues
      */
-    public function testTransform(int $expectedCount, $value): void
+    public function testTransform(int $expectedCount, iterable $value): void
     {
         $collection = TraversableToCollection::transform($value);
 
