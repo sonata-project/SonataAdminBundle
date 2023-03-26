@@ -18,7 +18,7 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
     use Doctrine\DBAL\Types\Types;
     use Doctrine\ORM\Mapping as ORM;
 
-    final class BlogPost
+    class BlogPost
     {
         // ...
 
@@ -39,10 +39,14 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
 
     // src/Entity/Category.php
 
+    namespace App\Entity;
+
     use Doctrine\Common\Collections\ArrayCollection;
     use Doctrine\Common\Collections\Collection;
+    use Doctrine\DBAL\Types\Types;
+    use Doctrine\ORM\Mapping as ORM;
 
-    final class Category
+    class Category
     {
         // ...
 
