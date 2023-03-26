@@ -33,7 +33,7 @@ This represents your security user, you can read more about it
     use Symfony\Component\Security\Core\User\UserInterface;
 
     #[ORM\Entity]
-    final class User implements UserInterface
+    class User implements UserInterface
     {
         #[ORM\Id]
         #[ORM\Column(type: Types::INTEGER)]
