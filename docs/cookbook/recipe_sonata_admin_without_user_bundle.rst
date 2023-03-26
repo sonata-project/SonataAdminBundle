@@ -264,9 +264,7 @@ this will be handled by Symfony, but we still need to register that route::
             ]);
         }
 
-        /**
-         * @Route("/admin/logout", name="admin_logout")
-         */
+        #[Route('/admin/logout', name: 'admin_logout')]
         public function logoutAction(): void
         {
             // Left empty intentionally because this will be handled by Symfony.
