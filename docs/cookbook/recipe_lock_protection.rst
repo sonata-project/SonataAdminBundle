@@ -39,16 +39,15 @@ Using Annotations::
 
     namespace App\Entity\Car;
 
+    use Doctrine\DBAL\Types\Types;
     use Doctrine\ORM\Mapping as ORM;
 
     final class Car
     {
         // ...
 
-        /**
-         * @ORM\Column(type="integer")
-         * @ORM\Version
-         */
+        #[ORM\Column(type=Types::INTEGER)]
+        #[ORM\Version]
         private ?int $version = null;
 
         // ...
