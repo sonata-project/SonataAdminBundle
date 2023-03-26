@@ -250,9 +250,7 @@ this will be handled by Symfony, but we still need to register that route::
             $this->authenticationUtils = $authenticationUtils;
         }
 
-        /**
-         * @Route("/admin/login", name="admin_login")
-         */
+        #[Route('/admin/login', name: 'admin_login')]
         public function loginAction(): Response
         {
             $form = $this->createForm(AdminLoginForm::class, [
