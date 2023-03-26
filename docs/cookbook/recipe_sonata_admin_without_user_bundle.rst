@@ -28,34 +28,25 @@ This represents your security user, you can read more about it
 
     namespace App\Entity;
 
+    use Doctrine\DBAL\Types\Types;
     use Doctrine\ORM\Mapping as ORM;
     use Symfony\Component\Security\Core\User\UserInterface;
 
-    /**
-     * @ORM\Entity
-     */
+    #[ORM\Entity]
     final class User implements UserInterface
     {
-        /**
-         * @ORM\Id
-         * @ORM\Column(type="integer")
-         * @ORM\GeneratedValue(strategy="AUTO")
-         */
+        #[ORM\Id]
+        #[ORM\Column(type: Types::INTEGER)]
+        #[ORM\GeneratedValue]
         private ?int $id = null;
 
-        /**
-         * @ORM\Column(name="email", type="string", unique=true)
-         */
+        #[ORM\Column(type: Types::STRING, unique: true)]
         private ?string $email = null;
 
-        /**
-         * @ORM\Column(name="password", type="string", nullable=true)
-         */
+        #[ORM\Column(type: Types::STRING, nullable: true)]
         private ?string $password = null;
 
-        /**
-         * @ORM\Column(name="roles", type="array")
-         */
+        #[ORM\Column(type: Types::ARRAY)]
         private array $roles = [];
     }
 
