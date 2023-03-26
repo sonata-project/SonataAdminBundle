@@ -17,24 +17,16 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
     {
         // ...
 
-        /**
-         * @ORM\Column(name="title", type="string")
-         */
+        #[ORM\Column(name: 'title', type: Types::STRING)]
         private ?string $title = null;
 
-        /**
-         * @ORM\Column(name="body", type="text")
-         */
+        #[ORM\Column(name: 'body', type: Types::TEXT)]
         private ?string $body = null;
 
-        /**
-         * @ORM\Column(name="draft", type="boolean")
-         */
+        #[ORM\Column(name: 'draft', type: Types::BOOLEAN)]
         private bool $draft = false;
 
-        /**
-         * @ORM\ManyToOne(targetEntity="Category", inversedBy="blogPosts")
-         */
+        #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'blogPosts')]
         private ?Category $category = null;
     }
 
@@ -49,14 +41,10 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
     {
         // ...
 
-        /**
-         * @ORM\Column(name="name", type="string")
-         */
+        #[ORM\Column(name: 'name', type: Types::STRING)]
         private ?string $name = null;
 
-        /**
-         * @ORM\OneToMany(targetEntity="BlogPost", mappedBy="category")
-         */
+        #[ORM\OneToMany(targetEntity: BlogPost::class, mappedBy: 'category')]
         private Collection $blogPosts;
 
         public function __construct()
