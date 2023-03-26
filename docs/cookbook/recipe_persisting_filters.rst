@@ -11,14 +11,12 @@ Enable Filters Persistence
 By default, filters persistence is disabled.
 You can enable it in your ``sonata_admin`` configuration :
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            persist_filters: true
+    sonata_admin:
+        persist_filters: true
 
 Choose the persistence strategy
 -------------------------------
@@ -37,46 +35,29 @@ filter persister.
 
 Globally :
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            persist_filters: true
-            filter_persister: filter_persister_service_id
+    sonata_admin:
+        persist_filters: true
+        filter_persister: filter_persister_service_id
 
 Per Admin :
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        services:
-            app.admin.user:
-                class: App\Admin\UserAdmin
-                tags:
-                    -
-                        name: sonata.admin
-                        model_class: App\Entity\User
-                        manager_type: orm
-                        filter_persister: filter_persister_service_id
-
-    .. code-block:: xml
-
-        <!-- config/services.xml -->
-
-        <service id="app.admin.user" class="App\Admin\UserAdmin">
-            <tag
-                name="sonata.admin"
-                model_class="App\Entity\User"
-                manager_type="orm"
-                filter_persister="filter_persister_service_id"
-                />
-        </service>
+    services:
+        app.admin.user:
+            class: App\Admin\UserAdmin
+            tags:
+                -
+                    name: sonata.admin
+                    model_class: App\Entity\User
+                    manager_type: orm
+                    filter_persister: filter_persister_service_id
 
 Disable filters persistence for some Admin
 ------------------------------------------
@@ -87,25 +68,15 @@ All registered Admins will have the feature enabled.
 
 You can disable it per Admin if you want.
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        services:
-            app.admin.user:
-                class: App\Admin\UserAdmin
-                tags:
-                    - { name: sonata.admin, model_class: App\Entity\User,  manager_type: orm, persist_filters: false }
-
-    .. code-block:: xml
-
-        <!-- config/services.xml -->
-
-        <service id="app.admin.user" class="App\Admin\UserAdmin">
-            <tag name="sonata.admin" model_class="App\Entity\User" manager_type="orm" persist_filters="false"/>
-        </service>
+    services:
+        app.admin.user:
+            class: App\Admin\UserAdmin
+            tags:
+                - { name: sonata.admin, model_class: App\Entity\User,  manager_type: orm, persist_filters: false }
 
 .. note::
 

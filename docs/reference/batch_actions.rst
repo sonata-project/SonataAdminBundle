@@ -201,7 +201,7 @@ only let you select one set of objects to manipulate. We can override this
 behavior by changing our list template (``list__batch.html.twig``) and adding
 a radio button to choose the target object.
 
-.. code-block:: html+jinja
+.. code-block:: html+twig
 
     {# templates/bundles/SonataAdminBundle/CRUD/list__batch.html.twig #}
 

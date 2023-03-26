@@ -17,13 +17,11 @@ Disabling the search by admin
 You can disable the search for a whole admin by setting the ``global_search`` attribute
 to ``false`` at your admin definition using the tag ``sonata.admin``.
 
-.. configuration-block::
+.. code-block:: xml
 
-    .. code-block:: xml
-
-        <service id="app.admin.post" class="App\Admin\PostAdmin">
-            <tag name="sonata.admin" global_search="false" model_class="App\Entity\Post" manager_type="orm" group="Content" label="Post"/>
-        </service>
+    <service id="app.admin.post" class="App\Admin\PostAdmin">
+        <tag name="sonata.admin" global_search="false" model_class="App\Entity\Post" manager_type="orm" group="Content" label="Post"/>
+    </service>
 
 Customization
 -------------
@@ -36,44 +34,38 @@ The main action is using the template ``@SonataAdmin/Core/search.html.twig``. An
 
 The default template values can be configured in the configuration section
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            templates:
-                # other configuration options
-                search:              '@SonataAdmin/Core/search.html.twig'
-                search_result_block: '@SonataAdmin/Block/block_search_result.html.twig'
+    sonata_admin:
+        templates:
+            # other configuration options
+            search:              '@SonataAdmin/Core/search.html.twig'
+            search_result_block: '@SonataAdmin/Block/block_search_result.html.twig'
 
 You also need to configure the block in the sonata block config
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_block:
-            blocks:
-                sonata.admin.block.search_result:
-                    contexts: [admin]
+    sonata_block:
+        blocks:
+            sonata.admin.block.search_result:
+                contexts: [admin]
 
 You can also configure the block template per admin while defining the admin:
 
-.. configuration-block::
+.. code-block:: xml
 
-    .. code-block:: xml
-
-        <service id="app.admin.post" class="App\Admin\PostAdmin">
-              <tag name="sonata.admin" model_class="App\Entity\Post" manager_type="orm" group="Content" label="Post"/>
-              <call method="setTemplate">
-                  <argument>search_result_block</argument>
-                  <argument>@SonataPost/Block/block_search_result.html.twig</argument>
-              </call>
-          </service>
+    <service id="app.admin.post" class="App\Admin\PostAdmin">
+            <tag name="sonata.admin" model_class="App\Entity\Post" manager_type="orm" group="Content" label="Post"/>
+            <call method="setTemplate">
+                <argument>search_result_block</argument>
+                <argument>@SonataPost/Block/block_search_result.html.twig</argument>
+            </call>
+        </service>
 
 Configure the default search result actions
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

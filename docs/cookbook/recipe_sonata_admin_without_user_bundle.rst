@@ -325,7 +325,7 @@ Setup firewall in ``security.yaml``
 Login template resembling Sonata style
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code-block:: html+jinja
+.. code-block:: html+twig
 
     {# templates/security/login.html.twig #}
 

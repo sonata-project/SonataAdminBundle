@@ -183,7 +183,7 @@ with the sonata TemplateType::
 
 The related template:
 
-.. code-block:: twig
+.. code-block:: html+twig
 
     <a href="{{ url }}">{{ object.title }}</a>
 

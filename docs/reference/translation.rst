@@ -13,23 +13,21 @@ other Admin classes.
 
 You can configure the translation domain for the Admin class by injecting the value through the container:
 
-.. configuration-block::
+.. code-block:: xml
 
-    .. code-block:: xml
+    <!-- config/services.xml -->
 
-        <!-- config/services.xml -->
-
-        <service id="sonata.page.admin.page" class="Sonata\PageBundle\Admin\PageAdmin">
-            <tag name="sonata.admin" model_class="Application\Sonata\PageBundle\Entity\Page" manager_type="orm" group="sonata_page" label="Page"/>
-            <call method="setTranslationDomain">
-                <argument>SonataPageBundle</argument>
-            </call>
-        </service>
+    <service id="sonata.page.admin.page" class="Sonata\PageBundle\Admin\PageAdmin">
+        <tag name="sonata.admin" model_class="Application\Sonata\PageBundle\Entity\Page" manager_type="orm" group="sonata_page" label="Page"/>
+        <call method="setTranslationDomain">
+            <argument>SonataPageBundle</argument>
+        </call>
+    </service>
 
 An Admin instance always gets the ``translator`` instance, so it can be used to
 translate messages within the ``configureFields`` method or in templates.
 
-.. code-block:: jinja
+.. code-block:: html+twig
 
     {# the classical call by using the twig trans helper #}
     {{ 'message_create_snapshots'|trans({}, 'SonataPageBundle') }}
@@ -143,22 +141,20 @@ configuration can be switched to ``underscore``.
 The strategy can be quickly configured when the Admin class is registered in
 the Container:
 
-.. configuration-block::
+.. code-block:: xml
 
-    .. code-block:: xml
+    <!-- config/services.xml -->
 
-       <!-- config/services.xml -->
-
-        <service id="app.admin.project" class="App\Admin\ProjectAdmin">
-            <tag
-                name="sonata.admin"
-                model_class="App\Entity\Project"
-                manager_type="orm"
-                group="Project"
-                label="Project"
-                label_translator_strategy="sonata.admin.label.strategy.native"
-             />
-        </service>
+    <service id="app.admin.project" class="App\Admin\ProjectAdmin">
+        <tag
+            name="sonata.admin"
+            model_class="App\Entity\Project"
+            manager_type="orm"
+            group="Project"
+            label="Project"
+            label_translator_strategy="sonata.admin.label.strategy.native"
+            />
+    </service>
 
 .. note::
 

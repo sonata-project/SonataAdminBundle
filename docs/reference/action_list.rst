@@ -896,7 +896,7 @@ If you need a specific layout for a row cell, you can define a custom template::
 
 The related template:
 
-.. code-block:: twig
+.. code-block:: html+twig
 
     {% extends '@SonataAdmin/CRUD/base_list_field.html.twig' %}
 

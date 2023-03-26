@@ -140,11 +140,11 @@ Routing usage
 Inside a CRUD template, a route for the current ``Admin`` class can be generated via
 the admin variable's ``generateUrl()`` command:
 
-.. code-block:: html+jinja
+.. code-block:: html+twig
 
     <a href="{{ admin.generateUrl('list') }}">List</a>
 
-.. code-block:: html+jinja
+.. code-block:: html+twig
 
     <a href="{{ admin.generateUrl('list', params|merge({'page': 1})) }}">List</a>
 
@@ -154,7 +154,7 @@ generate a URL for the current Admin, only the action name is needed.
 To generate a URL to a different Admin, call the Symfony Twig function ``path``
 with the Route Name:
 
-.. code-block:: html+jinja
+.. code-block:: html+twig
 
     <a href="{{ path('admin_app_post_list') }}">Post List</a>
 
@@ -218,16 +218,14 @@ as their controller, but this can be changed by altering the third argument when
 
 For example, lets change the Controller for our MediaAdmin class to ``App\Controller\MediaCRUDController``:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        app.admin.media:
-            class: App\Admin\MediaAdmin
-            tags:
-                - { name: sonata.admin, model_class: App\Entity\Page, controller: App\Controller\MediaCRUDController, manager_type: orm, label: 'Media' }
+    app.admin.media:
+        class: App\Admin\MediaAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Page, controller: App\Controller\MediaCRUDController, manager_type: orm, label: 'Media' }
 
 We now need to create our Controller, the easiest way is to extend the
 basic Sonata CRUD controller::

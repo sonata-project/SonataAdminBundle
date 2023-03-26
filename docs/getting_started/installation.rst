@@ -55,17 +55,15 @@ Now all needed bundles are downloaded and registered, you have to add some
 configuration. The admin interface is using SonataBlockBundle to put everything
 in blocks. You have to tell the block bundle about the existence of the admin block:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_block:
-            blocks:
-                # enable the SonataAdminBundle block
-                sonata.admin.block.admin_list:
-                    contexts: [admin]
+    sonata_block:
+        blocks:
+            # enable the SonataAdminBundle block
+            sonata.admin.block.admin_list:
+                contexts: [admin]
 
 .. note::
 
@@ -79,14 +77,12 @@ Enable the "translator" service
 The translator service is required by SonataAdmin to display all labels properly.
 For more information: https://symfony.com/doc/5.4/translation.html#configuration
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/framework.yaml
 
-        # config/packages/framework.yaml
-
-        framework:
-            translator: { fallbacks: ['%locale%'] }
+    framework:
+        translator: { fallbacks: ['%locale%'] }
 
 Define routes
 -------------
@@ -95,20 +91,18 @@ The bundles are now registered and configured correctly. To be able to access So
 the Symfony router needs to know the routes provided by the SonataAdminBundle.
 You can do this by adding its routes to your application's routing file:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/routes/sonata_admin.yaml
 
-        # config/routes/sonata_admin.yaml
+    admin_area:
+        resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
+        prefix: /admin
 
-        admin_area:
-            resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.xml'
-            prefix: /admin
-
-        _sonata_admin:
-            resource: .
-            type: sonata_admin
-            prefix: /admin
+    _sonata_admin:
+        resource: .
+        type: sonata_admin
+        prefix: /admin
 
 .. note::
 
