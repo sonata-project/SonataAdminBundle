@@ -35,10 +35,8 @@ The recipe
 
 First of all we are going to add a position field in our ``Client`` entity::
 
-    /**
-     * @Gedmo\SortablePosition
-     * @ORM\Column(name="position", type="integer")
-     */
+    #[Gedmo\SortablePosition]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $position = null;
 
 Then we need to inject the Sortable listener.
