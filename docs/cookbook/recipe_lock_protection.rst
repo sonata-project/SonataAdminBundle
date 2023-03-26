@@ -46,7 +46,7 @@ Using Annotations::
     {
         // ...
 
-        #[ORM\Column(type=Types::INTEGER)]
+        #[ORM\Column(type: Types::INTEGER)]
         #[ORM\Version]
         private ?int $version = null;
 

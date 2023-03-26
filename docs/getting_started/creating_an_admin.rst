@@ -17,13 +17,13 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
     {
         // ...
 
-        #[ORM\Column(name: 'title', type: Types::STRING)]
+        #[ORM\Column(type: Types::STRING)]
         private ?string $title = null;
 
-        #[ORM\Column(name: 'body', type: Types::TEXT)]
+        #[ORM\Column(type: Types::TEXT)]
         private ?string $body = null;
 
-        #[ORM\Column(name: 'draft', type: Types::BOOLEAN)]
+        #[ORM\Column(type: Types::BOOLEAN)]
         private bool $draft = false;
 
         #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'blogPosts')]
@@ -41,7 +41,7 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
     {
         // ...
 
-        #[ORM\Column(name: 'name', type: Types::STRING)]
+        #[ORM\Column(type: Types::STRING)]
         private ?string $name = null;
 
         #[ORM\OneToMany(targetEntity: BlogPost::class, mappedBy: 'category')]
