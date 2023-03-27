@@ -388,6 +388,11 @@ This code manages the many-to-[one|many] association field popup
                         const field = event.currentTarget.querySelector(`[name="${violation.propertyPath}"]`);
 
                         if (!field) {
+                            content += '<div class="alert alert-danger alert-dismissable">'
+                                + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'
+                                + violation.title
+                                + '</div>';
+
                             return;
                         }
 
