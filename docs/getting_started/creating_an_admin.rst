@@ -13,28 +13,25 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
 
     // src/Entity/BlogPost.php
 
-    final class BlogPost
+    namespace App\Entity;
+
+    use Doctrine\DBAL\Types\Types;
+    use Doctrine\ORM\Mapping as ORM;
+
+    class BlogPost
     {
         // ...
 
-        /**
-         * @ORM\Column(name="title", type="string")
-         */
+        #[ORM\Column(type: Types::STRING)]
         private ?string $title = null;
 
-        /**
-         * @ORM\Column(name="body", type="text")
-         */
+        #[ORM\Column(type: Types::TEXT)]
         private ?string $body = null;
 
-        /**
-         * @ORM\Column(name="draft", type="boolean")
-         */
+        #[ORM\Column(type: Types::BOOLEAN)]
         private bool $draft = false;
 
-        /**
-         * @ORM\ManyToOne(targetEntity="Category", inversedBy="blogPosts")
-         */
+        #[ORM\ManyToOne(targetEntity: Category::class, inversedBy: 'blogPosts')]
         private ?Category $category = null;
     }
 
@@ -42,21 +39,21 @@ For the rest of the tutorial, you'll need some sort of model. In this tutorial,
 
     // src/Entity/Category.php
 
+    namespace App\Entity;
+
     use Doctrine\Common\Collections\ArrayCollection;
     use Doctrine\Common\Collections\Collection;
+    use Doctrine\DBAL\Types\Types;
+    use Doctrine\ORM\Mapping as ORM;
 
-    final class Category
+    class Category
     {
         // ...
 
-        /**
-         * @ORM\Column(name="name", type="string")
-         */
+        #[ORM\Column(type: Types::STRING)]
         private ?string $name = null;
 
-        /**
-         * @ORM\OneToMany(targetEntity="BlogPost", mappedBy="category")
-         */
+        #[ORM\OneToMany(targetEntity: BlogPost::class, mappedBy: 'category')]
         private Collection $blogPosts;
 
         public function __construct()
