@@ -4,7 +4,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.22.5](https://github.com/sonata-project/SonataAdminBundle/compare/4.22.4...4.22.5) - 2023-03-30
 ### Changed
-- [[#8029](https://github.com/sonata-project/SonataAdminBundle/pull/8029)] Use `symfony/string` instead of `doctrine/inflector` to convert words from snake_case to camelCase. ([@jordisala1991](https://github.com/jordisala1991))
+- [[#8029](https://github.com/sonata-project/SonataAdminBundle/pull/8029)] Use `symfony/string` instead of `doctrine/inflector` to convert words from "snake_case" to "camelCase" ([@jordisala1991](https://github.com/jordisala1991))
 
 ### Fixed
 - [[#8026](https://github.com/sonata-project/SonataAdminBundle/pull/8026)] Fix errors not being displayed in modal ([@antoinemineau](https://github.com/antoinemineau))
