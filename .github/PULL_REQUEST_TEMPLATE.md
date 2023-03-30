@@ -23,7 +23,7 @@ Closes #{put_issue_number_here}.
 
 <!-- MANDATORY
     Fill the changelog part inside the code block.
-    Follow this schema: http://keepachangelog.com/
+    Follow this schema: https://keepachangelog.com/
     This will end up on https://github.com/sonata-project/SonataAdminBundle/releases,
     please keep it short and clear and to the point
 -->
@@ -34,10 +34,13 @@ Closes #{put_issue_number_here}.
     (eg. update to docs, tests)
 -->
 
-<!-- REMOVE EMPTY SECTIONS -->
+<!-- REMOVE EMPTY SECTIONS
+    - Don't repeat the verb in the messages (don't use "Added", "Changed", etc).
+    - Don't use a full stop at the end of the messages.
+-->
 ```markdown
 ### Added
-- Added some `Class::newMethod()` to do great stuff.
+- Some `Class::newMethod()` to do great stuff
 
 ### Changed
 
