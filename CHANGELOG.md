@@ -8,7 +8,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ### Fixed
 - [[#8026](https://github.com/sonata-project/SonataAdminBundle/pull/8026)] Fix errors not being displayed in modal ([@antoinemineau](https://github.com/antoinemineau))
-- [[#8025](https://github.com/sonata-project/SonataAdminBundle/pull/8025)] Improve message when the admin class declared on the container does not exist. ([@jordisala1991](https://github.com/jordisala1991))
+- [[#8025](https://github.com/sonata-project/SonataAdminBundle/pull/8025)] Message when the admin class declared on the container does not exist. ([@jordisala1991](https://github.com/jordisala1991))
 
 ## [4.22.4](https://github.com/sonata-project/SonataAdminBundle/compare/4.22.3...4.22.4) - 2023-01-26
 ### Fixed
