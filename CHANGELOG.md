@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.22.6](https://github.com/sonata-project/SonataAdminBundle/compare/4.22.5...4.22.6) - 2023-04-12
+### Fixed
+- [[#8039](https://github.com/sonata-project/SonataAdminBundle/pull/8039)] Fix display of enums for nullable property ([@AirBair](https://github.com/AirBair))
+
 ## [4.22.5](https://github.com/sonata-project/SonataAdminBundle/compare/4.22.4...4.22.5) - 2023-03-30
 ### Changed
 - [[#8029](https://github.com/sonata-project/SonataAdminBundle/pull/8029)] Use `symfony/string` instead of `doctrine/inflector` to convert words from "snake_case" to "camelCase" ([@jordisala1991](https://github.com/jordisala1991))
