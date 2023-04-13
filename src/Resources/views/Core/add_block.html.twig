@@ -4,6 +4,7 @@
 
 {% set column_count = (groups|length / items_per_column)|round(0, 'ceil') %}
 
+{% if groups|length > 0 %}
 <div class="dropdown-menu multi-column dropdown-add"
     {% if column_count > 1 %}style="width: {{ column_count*140 }}px;"{% endif %}
 >
@@ -68,3 +69,4 @@
         {% endif %}
     {% endfor %}
 </div>
+{% endif %}
