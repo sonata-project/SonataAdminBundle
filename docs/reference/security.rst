@@ -50,7 +50,7 @@ Configuration
 ^^^^^^^^^^^^^
 
 The security handler is required to determine which type of security to use.
-In case of using ACL you MUST set ``acl_user_manager`` parameter, the other other ones
+In case of using ACL you MUST set ``acl_user_manager`` parameter, the other ones
 are set as default, change them if needed.
 
 Using roles:
