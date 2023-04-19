@@ -26,10 +26,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'sonata:admin:explain', description: 'Explain an admin service')]
 final class ExplainAdminCommand extends Command
 {
-    // TODO: Remove static properties when support for Symfony < 5.4 is dropped.
-    protected static $defaultName = 'sonata:admin:explain';
-    protected static $defaultDescription = 'Explain an admin service';
-
     /**
      * @internal This class should only be used through the console
      */
@@ -41,11 +37,7 @@ final class ExplainAdminCommand extends Command
 
     public function configure(): void
     {
-        \assert(null !== static::$defaultDescription);
-
         $this
-            // TODO: Remove setDescription when support for Symfony < 5.4 is dropped.
-            ->setDescription(static::$defaultDescription)
             ->addArgument('admin', InputArgument::REQUIRED, 'The admin service id');
     }
 

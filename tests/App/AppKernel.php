@@ -26,10 +26,9 @@ use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorageFactory;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use Symfony\Component\Security\Http\Authentication\AuthenticatorManager;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class AppKernel extends Kernel
 {
@@ -65,19 +64,14 @@ final class AppKernel extends Kernel
         return __DIR__;
     }
 
-    /**
-     * TODO: add typehint when support for Symfony < 5.1 is dropped.
-     *
-     * @param RoutingConfigurator $routes
-     */
-    protected function configureRoutes($routes): void
+    protected function configureRoutes(RoutingConfigurator $routes): void
     {
         $routes->import(sprintf('%s/config/routes.yml', $this->getProjectDir()));
     }
 
     protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader): void
     {
-        $frameworkConfig = [
+        $containerBuilder->loadFromExtension('framework', [
             'secret' => 'MySecret',
             'fragments' => ['enabled' => true],
             'form' => ['enabled' => true],
@@ -88,27 +82,18 @@ final class AppKernel extends Kernel
                 'default_path' => '%kernel.project_dir%/translations',
             ],
             'http_method_override' => false,
-        ];
-
-        // TODO: Remove else case when dropping support of Symfony < 5.3
-        if (class_exists(NativeSessionStorageFactory::class)) {
-            $frameworkConfig['session'] = ['storage_factory_id' => 'session.storage.factory.mock_file'];
-        } else {
-            $frameworkConfig['session'] = ['storage_id' => 'session.storage.mock_file'];
-        }
-
-        $containerBuilder->loadFromExtension('framework', $frameworkConfig);
+            'session' => [
+                'storage_factory_id' => 'session.storage.factory.mock_file',
+            ],
+        ]);
 
         $securityConfig = [
             'firewalls' => ['main' => []],
             'providers' => ['in_memory' => ['memory' => null]],
         ];
 
-        // TODO: Remove else case when dropping support of Symfony < 5.3
-        if (class_exists(AuthenticatorManager::class)) {
+        if (!class_exists(IsGranted::class)) {
             $securityConfig['enable_authenticator_manager'] = true;
-        } else {
-            $securityConfig['firewalls']['main']['anonymous'] = true;
         }
 
         $containerBuilder->loadFromExtension('security', $securityConfig);

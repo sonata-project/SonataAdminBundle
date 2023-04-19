@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Sonata\AdminBundle\BCLayer\BCDeprecation;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Form\DataTransformer\ModelsToArrayTransformer;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
@@ -120,16 +119,15 @@ final class ModelType extends AbstractType
 
         $resolver->setDeprecated(
             'btn_catalogue',
-            ...BCDeprecation::forOptionResolver(
-                static function (Options $options, $value): string {
-                    if ('SonataAdminBundle' !== $value) {
-                        return 'Passing a value to option "btn_catalogue" is deprecated! Use "btn_translation_domain" instead!';
-                    }
+            'sonata-project/admin-bundle',
+            '4.9',
+            static function (Options $options, $value): string {
+                if ('SonataAdminBundle' !== $value) {
+                    return 'Passing a value to option "btn_catalogue" is deprecated! Use "btn_translation_domain" instead!';
+                }
 
-                    return '';
-                },
-                '4.9',
-            )
+                return '';
+            },
         ); // NEXT_MAJOR: Remove this deprecation notice.
     }
 

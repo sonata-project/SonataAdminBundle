@@ -26,10 +26,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'sonata:admin:setup-acl', description: 'Install ACL for Admin Classes')]
 final class SetupAclCommand extends Command
 {
-    // TODO: Remove static properties when support for Symfony < 5.4 is dropped.
-    protected static $defaultName = 'sonata:admin:setup-acl';
-    protected static $defaultDescription = 'Install ACL for Admin Classes';
-
     /**
      * @internal This class should only be used through the console
      */
@@ -38,15 +34,6 @@ final class SetupAclCommand extends Command
         private AdminAclManipulatorInterface $aclManipulator
     ) {
         parent::__construct();
-    }
-
-    public function configure(): void
-    {
-        \assert(null !== static::$defaultDescription);
-
-        $this
-            // TODO: Remove setDescription when support for Symfony < 5.4 is dropped.
-            ->setDescription(static::$defaultDescription);
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int

@@ -35,9 +35,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
-use Symfony\Component\HttpFoundation\InputBag;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -408,14 +406,8 @@ class CRUDController extends AbstractController
 
         if (null === $encodedData) {
             $action = $forwardedRequest->request->get('action');
-            /** @var InputBag|ParameterBag $bag */
             $bag = $request->request;
-            if ($bag instanceof InputBag) {
-                // symfony 5.1+
-                $idx = $bag->all('idx');
-            } else {
-                $idx = (array) $bag->get('idx', []);
-            }
+            $idx = $bag->all('idx');
             $allElements = $forwardedRequest->request->getBoolean('all_elements');
 
             $forwardedRequest->request->set('idx', $idx);

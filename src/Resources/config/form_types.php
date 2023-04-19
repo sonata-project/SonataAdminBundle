@@ -11,6 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use Sonata\AdminBundle\Form\DataTransformer\BooleanToStringTransformer;
 use Sonata\AdminBundle\Form\DataTransformerResolver;
 use Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension;
@@ -31,26 +33,22 @@ use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Form\Type\ModelReferenceType;
 use Sonata\AdminBundle\Form\Type\ModelType;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    // Use "service" function for creating references to services when dropping support for Symfony 4.4
-    // Use "param" function for creating references to parameters when dropping support for Symfony 5.1
     $containerConfigurator->services()
 
         ->set('sonata.admin.form.type.admin', AdminType::class)
             ->tag('form.type', ['alias' => 'sonata_type_admin'])
             ->args([
-                new ReferenceConfigurator('sonata.admin.helper'),
+                service('sonata.admin.helper'),
             ])
 
         ->set('sonata.admin.form.type.model_choice', ModelType::class)
             ->tag('form.type', ['alias' => 'sonata_type_model'])
             ->args([
-                new ReferenceConfigurator('property_accessor'),
+                service('property_accessor'),
             ])
 
         ->set('sonata.admin.form.type.model_list', ModelListType::class)
@@ -76,7 +74,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'alias' => 'form',
                 'extended_type' => FormType::class,
             ])
-            ->args(['', ''])
+            ->args([
+                abstract_arg('default classes'),
+                abstract_arg('default options'),
+            ])
 
         ->set('sonata.admin.form.extension.field.mopa', MopaCompatibilityTypeFieldExtension::class)
             ->tag('form.type_extension', [
@@ -119,6 +120,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.form.data_transformer_resolver', DataTransformerResolver::class)
             ->call('addCustomGlobalTransformer', [
                 'boolean',
-                new ReferenceConfigurator('sonata.admin.form.data_transformer.boolean_to_string'),
+                service('sonata.admin.form.data_transformer.boolean_to_string'),
             ]);
 };

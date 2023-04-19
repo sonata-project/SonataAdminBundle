@@ -36,23 +36,17 @@ final class AdminPoolLoader extends Loader
     }
 
     /**
-     * NEXT_MAJOR: Add the ?string param typehint when Symfony 4 support is dropped.
-     *
-     * @param mixed       $resource
-     * @param string|null $type
+     * @param mixed $resource
      */
-    public function supports($resource, $type = null): bool
+    public function supports($resource, ?string $type = null): bool
     {
         return self::ROUTE_TYPE_NAME === $type;
     }
 
     /**
-     * NEXT_MAJOR: Add the ?string param typehint when Symfony 4 support is dropped.
-     *
-     * @param mixed       $resource
-     * @param string|null $type
+     * @param mixed $resource
      */
-    public function load($resource, $type = null): SymfonyRouteCollection
+    public function load($resource, ?string $type = null): SymfonyRouteCollection
     {
         $collection = new SymfonyRouteCollection();
         foreach ($this->pool->getAdminServiceCodes() as $code) {
