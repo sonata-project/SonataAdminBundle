@@ -11,6 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use Psr\Container\ContainerInterface;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
@@ -40,52 +42,48 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    // Use "service" function for creating references to services when dropping support for Symfony 4.4
-    // Use "param" function for creating references to parameters when dropping support for Symfony 5.1
     $containerConfigurator->services()
 
         ->set('sonata.admin.pool', Pool::class)
             ->args([
-                null, // admin service locator
-                [], // admin service ids
-                [], // admin service groups
-                [], // admin service classes
+                abstract_arg('admin service locator'),
+                abstract_arg('admin service ids'),
+                abstract_arg('admin service groups'),
+                abstract_arg('admin service clasess'),
             ])
 
         ->alias(Pool::class, 'sonata.admin.pool')
 
         ->set('sonata.admin.configuration', SonataConfiguration::class)
             ->args([
-                '',
-                '',
-                [],
+                abstract_arg('title'),
+                abstract_arg('logo'),
+                abstract_arg('options'),
             ])
 
         ->set('sonata.admin.route_loader', AdminPoolLoader::class)
             ->tag('routing.loader')
             ->args([
-                new ReferenceConfigurator('sonata.admin.pool'),
+                service('sonata.admin.pool'),
             ])
 
         ->set('sonata.admin.helper', AdminHelper::class)
             ->args([
-                new ReferenceConfigurator('property_accessor'),
+                service('property_accessor'),
             ])
 
         ->set('sonata.admin.builder.filter.factory', FilterFactory::class)
             ->args([
-                null, // Service locator
+                abstract_arg('service locator'),
             ])
 
         ->alias(FilterFactoryInterface::class, 'sonata.admin.builder.filter.factory')
 
         ->set('sonata.admin.breadcrumbs_builder', BreadcrumbsBuilder::class)
             ->args([
-                '%sonata.admin.configuration.breadcrumbs%',
+                param('sonata.admin.configuration.breadcrumbs'),
             ])
 
         ->alias(BreadcrumbsBuilderInterface::class, 'sonata.admin.breadcrumbs_builder')
@@ -110,13 +108,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 'alias' => 'sonata_admin',
             ])
             ->args([
-                new ReferenceConfigurator('sonata.admin.pool'),
-                new ReferenceConfigurator('sonata.admin.breadcrumbs_builder'),
+                service('sonata.admin.pool'),
+                service('sonata.admin.breadcrumbs_builder'),
             ])
 
         ->set('sonata.admin.audit.manager', AuditManager::class)
             ->args([
-                null, // Service locator
+                abstract_arg('service locator'),
             ])
 
         ->alias(AuditManagerInterface::class, 'sonata.admin.audit.manager')
@@ -126,12 +124,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.controller.crud', CRUDController::class)
             ->public()
             ->tag('container.service_subscriber')
-            ->call('setContainer', [new ReferenceConfigurator(ContainerInterface::class)])
+            ->call('setContainer', [service(ContainerInterface::class)])
 
         ->set('sonata.admin.event.extension', AdminEventExtension::class)
             ->tag('sonata.admin.extension', ['global' => true])
             ->args([
-                new ReferenceConfigurator('event_dispatcher'),
+                service('event_dispatcher'),
             ])
 
         ->set('sonata.admin.lock.extension', LockExtension::class)
@@ -139,26 +137,26 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         ->set('sonata.admin.filter_persister.session', SessionFilterPersister::class)
             ->args([
-                new ReferenceConfigurator('request_stack'),
+                service('request_stack'),
             ])
 
         ->alias(FilterPersisterInterface::class, 'sonata.admin.filter_persister.session')
 
         ->set('sonata.admin.global_template_registry', TemplateRegistry::class)
             ->args([
-                '%sonata.admin.configuration.templates%',
+                param('sonata.admin.configuration.templates'),
             ])
 
         ->set('sonata.admin.request.fetcher', AdminFetcher::class)
             ->args([
-                new ReferenceConfigurator('sonata.admin.pool'),
+                service('sonata.admin.pool'),
             ])
 
         ->alias(AdminFetcherInterface::class, 'sonata.admin.request.fetcher')
 
         ->set('sonata.admin.argument_resolver.admin', AdminValueResolver::class)
             ->args([
-                new ReferenceConfigurator('sonata.admin.request.fetcher'),
+                service('sonata.admin.request.fetcher'),
             ])
             ->tag('controller.argument_value_resolver')
 

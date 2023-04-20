@@ -11,6 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use Sonata\AdminBundle\Action\AppendFormFieldElementAction;
 use Sonata\AdminBundle\Action\DashboardAction;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
@@ -18,67 +20,63 @@ use Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction;
 use Sonata\AdminBundle\Action\RetrieveFormFieldElementAction;
 use Sonata\AdminBundle\Action\SearchAction;
 use Sonata\AdminBundle\Action\SetObjectFieldValueAction;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    // Use "service" function for creating references to services when dropping support for Symfony 4.4
-    // Use "param" function for creating references to parameters when dropping support for Symfony 5.1
     $containerConfigurator->services()
 
         ->set('sonata.admin.action.dashboard', DashboardAction::class)
             ->public()
             ->args([
-                '%sonata.admin.configuration.dashboard_blocks%',
-                new ReferenceConfigurator('sonata.admin.global_template_registry'),
-                new ReferenceConfigurator('twig'),
+                param('sonata.admin.configuration.dashboard_blocks'),
+                service('sonata.admin.global_template_registry'),
+                service('twig'),
             ])
 
         ->set('sonata.admin.action.search', SearchAction::class)
             ->public()
             ->args([
-                new ReferenceConfigurator('sonata.admin.pool'),
-                new ReferenceConfigurator('sonata.admin.global_template_registry'),
-                new ReferenceConfigurator('twig'),
+                service('sonata.admin.pool'),
+                service('sonata.admin.global_template_registry'),
+                service('twig'),
             ])
 
         ->set('sonata.admin.action.append_form_field_element', AppendFormFieldElementAction::class)
             ->public()
             ->args([
-                new ReferenceConfigurator('twig'),
-                new ReferenceConfigurator('sonata.admin.request.fetcher'),
-                new ReferenceConfigurator('sonata.admin.helper'),
+                service('twig'),
+                service('sonata.admin.request.fetcher'),
+                service('sonata.admin.helper'),
             ])
 
         ->set('sonata.admin.action.retrieve_form_field_element', RetrieveFormFieldElementAction::class)
             ->public()
             ->args([
-                new ReferenceConfigurator('twig'),
-                new ReferenceConfigurator('sonata.admin.request.fetcher'),
-                new ReferenceConfigurator('sonata.admin.helper'),
+                service('twig'),
+                service('sonata.admin.request.fetcher'),
+                service('sonata.admin.helper'),
             ])
 
         ->set('sonata.admin.action.get_short_object_description', GetShortObjectDescriptionAction::class)
             ->public()
             ->args([
-                new ReferenceConfigurator('twig'),
-                new ReferenceConfigurator('sonata.admin.request.fetcher'),
+                service('twig'),
+                service('sonata.admin.request.fetcher'),
             ])
 
         ->set('sonata.admin.action.set_object_field_value', SetObjectFieldValueAction::class)
             ->public()
             ->args([
-                new ReferenceConfigurator('twig'),
-                new ReferenceConfigurator('sonata.admin.request.fetcher'),
-                new ReferenceConfigurator('validator'),
-                new ReferenceConfigurator('sonata.admin.form.data_transformer_resolver'),
-                new ReferenceConfigurator('property_accessor'),
-                new ReferenceConfigurator('sonata.admin.twig.render_element_runtime'),
+                service('twig'),
+                service('sonata.admin.request.fetcher'),
+                service('validator'),
+                service('sonata.admin.form.data_transformer_resolver'),
+                service('property_accessor'),
+                service('sonata.admin.twig.render_element_runtime'),
             ])
 
         ->set('sonata.admin.action.retrieve_autocomplete_items', RetrieveAutocompleteItemsAction::class)
             ->public()
             ->args([
-                new ReferenceConfigurator('sonata.admin.request.fetcher'),
+                service('sonata.admin.request.fetcher'),
             ]);
 };

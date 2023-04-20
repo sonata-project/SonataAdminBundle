@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Form\Type;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\BCLayer\BCDeprecation;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
@@ -148,16 +147,15 @@ final class AdminType extends AbstractType
 
         $resolver->setDeprecated(
             'btn_catalogue',
-            ...BCDeprecation::forOptionResolver(
-                static function (Options $options, $value): string {
-                    if ('SonataAdminBundle' !== $value) {
-                        return 'Passing a value to option "btn_catalogue" is deprecated! Use "btn_translation_domain" instead!';
-                    }
+            'sonata-project/admin-bundle',
+            '4.9',
+            static function (Options $options, $value): string {
+                if ('SonataAdminBundle' !== $value) {
+                    return 'Passing a value to option "btn_catalogue" is deprecated! Use "btn_translation_domain" instead!';
+                }
 
-                    return '';
-                },
-                '4.9',
-            )
+                return '';
+            },
         ); // NEXT_MAJOR: Remove this deprecation notice.
     }
 

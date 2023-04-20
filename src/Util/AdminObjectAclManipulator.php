@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Util;
 
-use Sonata\AdminBundle\BCLayer\BCUserInterface;
 use Sonata\AdminBundle\Form\Type\AclMatrixType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -114,7 +113,7 @@ final class AdminObjectAclManipulator
         foreach ($aclValues as $aclValue) {
             foreach ($matrices as $key => $matrix) {
                 if ($aclValue instanceof UserInterface) {
-                    if (\array_key_exists('user', $matrix) && BCUserInterface::getUsername($aclValue) === $matrix['user']) {
+                    if (\array_key_exists('user', $matrix) && $aclValue->getUserIdentifier() === $matrix['user']) {
                         $matrices[$key]['acl_value'] = $aclValue;
                     }
                 } elseif (\array_key_exists('role', $matrix) && $aclValue === $matrix['role']) {

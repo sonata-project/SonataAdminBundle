@@ -154,8 +154,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
         $this->expectException(UnexpectedTypeException::class);
-        // TODO: Uncomment the following like when dropping support for Symfony 4
-        // $this->expectExceptionMessage(sprintf('Expected argument of type "array", "%s" given', $type));
+        $this->expectExceptionMessage(sprintf('Expected argument of type "array", "%s" given', $type));
 
         $transformer->reverseTransform($params);
     }
