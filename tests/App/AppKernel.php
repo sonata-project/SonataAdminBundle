@@ -92,6 +92,7 @@ final class AppKernel extends Kernel
             'providers' => ['in_memory' => ['memory' => null]],
         ];
 
+        // TODO: Remove if when dropping support of Symfony 5.4
         if (!class_exists(IsGranted::class)) {
             $securityConfig['enable_authenticator_manager'] = true;
         }
