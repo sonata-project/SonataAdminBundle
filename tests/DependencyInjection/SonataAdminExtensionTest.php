@@ -170,7 +170,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $javascripts = $options['javascripts'];
         static::assertSame(
-            array_merge($this->defaultConfiguration['assets']['javascripts'], $extraJavascripts),
+            [...$this->defaultConfiguration['assets']['javascripts'], ...$extraJavascripts],
             $javascripts
         );
     }
@@ -225,19 +225,13 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $stylesheets = $options['stylesheets'];
         static::assertSame(
-            array_merge(
-                array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets),
-                $extraStylesheets
-            ),
+            [...array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets), ...$extraStylesheets],
             $stylesheets
         );
 
         $javascripts = $options['javascripts'];
         static::assertSame(
-            array_merge(
-                array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts),
-                $extraJavascripts
-            ),
+            [...array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts), ...$extraJavascripts],
             $javascripts
         );
     }
