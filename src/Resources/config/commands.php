@@ -31,7 +31,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('console.command')
             ->args([
                 service('sonata.admin.pool'),
-                [],
+                abstract_arg('acl object manipulators'),
             ])
 
         ->set('sonata.admin.command.list', ListAdminCommand::class)

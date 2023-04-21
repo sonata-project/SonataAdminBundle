@@ -37,15 +37,15 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $containerConfigurator->services()
 
-        ->set('sonata.admin.security.handler.noop', '%sonata.admin.security.handler.noop.class%')
+        ->set('sonata.admin.security.handler.noop', (string) param('sonata.admin.security.handler.noop.class'))
 
-        ->set('sonata.admin.security.handler.role', '%sonata.admin.security.handler.role.class%')
+        ->set('sonata.admin.security.handler.role', (string) param('sonata.admin.security.handler.role.class'))
             ->args([
                 service('security.authorization_checker'),
                 param('sonata.admin.configuration.security.role_super_admin'),
             ])
 
-        ->set('sonata.admin.security.handler.acl', '%sonata.admin.security.handler.acl.class%')
+        ->set('sonata.admin.security.handler.acl', (string) param('sonata.admin.security.handler.acl.class'))
             ->args([
                 service('security.token_storage'),
                 service('security.authorization_checker'),
@@ -56,12 +56,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->call('setAdminPermissions', [param('sonata.admin.configuration.security.admin_permissions')])
             ->call('setObjectPermissions', [param('sonata.admin.configuration.security.object_permissions')])
 
-        ->set('sonata.admin.manipulator.acl.admin', '%sonata.admin.manipulator.acl.admin.class%')
+        ->set('sonata.admin.manipulator.acl.admin', (string) param('sonata.admin.manipulator.acl.admin.class'))
             ->args([
                 param('sonata.admin.security.mask.builder.class'),
             ])
 
-        ->set('sonata.admin.object.manipulator.acl.admin', '%sonata.admin.object.manipulator.acl.admin.class%')
+        ->set('sonata.admin.object.manipulator.acl.admin', (string) param('sonata.admin.object.manipulator.acl.admin.class'))
             ->args([
                 service('form.factory'),
                 param('sonata.admin.security.mask.builder.class'),
