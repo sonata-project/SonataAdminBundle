@@ -3,9 +3,6 @@ All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [4.23.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.22.6...4.23.0) - 2023-04-24
-### Added
-- [[#8042](https://github.com/sonata-project/SonataAdminBundle/pull/8042)] Some `Class::newMethod()` to do great stuff ([@abdellahrk](https://github.com/abdellahrk))
-
 ### Fixed
 - [[#8041](https://github.com/sonata-project/SonataAdminBundle/pull/8041)] Top nav bar menu for user is shown if there is a user logged in ([@jordisala1991](https://github.com/jordisala1991))
 - [[#8041](https://github.com/sonata-project/SonataAdminBundle/pull/8041)] Top nav bar menu for creating admin entities is shown even is there is no user logged in ([@jordisala1991](https://github.com/jordisala1991))
