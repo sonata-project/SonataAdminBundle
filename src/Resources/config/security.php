@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
 use Sonata\AdminBundle\Security\Handler\NoopSecurityHandler;
 use Sonata\AdminBundle\Security\Handler\RoleSecurityHandler;
 use Sonata\AdminBundle\Util\AdminAclManipulator;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->parameters()
@@ -35,38 +35,36 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         ->set('sonata.admin.object.manipulator.acl.admin.class', AdminObjectAclManipulator::class);
 
-    // Use "service" function for creating references to services when dropping support for Symfony 4.4
-    // Use "param" function for creating references to parameters when dropping support for Symfony 5.1
     $containerConfigurator->services()
 
-        ->set('sonata.admin.security.handler.noop', '%sonata.admin.security.handler.noop.class%')
+        ->set('sonata.admin.security.handler.noop', (string) param('sonata.admin.security.handler.noop.class'))
 
-        ->set('sonata.admin.security.handler.role', '%sonata.admin.security.handler.role.class%')
+        ->set('sonata.admin.security.handler.role', (string) param('sonata.admin.security.handler.role.class'))
             ->args([
-                new ReferenceConfigurator('security.authorization_checker'),
-                '%sonata.admin.configuration.security.role_super_admin%',
+                service('security.authorization_checker'),
+                param('sonata.admin.configuration.security.role_super_admin'),
             ])
 
-        ->set('sonata.admin.security.handler.acl', '%sonata.admin.security.handler.acl.class%')
+        ->set('sonata.admin.security.handler.acl', (string) param('sonata.admin.security.handler.acl.class'))
             ->args([
-                new ReferenceConfigurator('security.token_storage'),
-                new ReferenceConfigurator('security.authorization_checker'),
-                (new ReferenceConfigurator('security.acl.provider'))->nullOnInvalid(),
-                '%sonata.admin.security.mask.builder.class%',
-                '%sonata.admin.configuration.security.role_super_admin%',
+                service('security.token_storage'),
+                service('security.authorization_checker'),
+                service('security.acl.provider')->nullOnInvalid(),
+                param('sonata.admin.security.mask.builder.class'),
+                param('sonata.admin.configuration.security.role_super_admin'),
             ])
-            ->call('setAdminPermissions', ['%sonata.admin.configuration.security.admin_permissions%'])
-            ->call('setObjectPermissions', ['%sonata.admin.configuration.security.object_permissions%'])
+            ->call('setAdminPermissions', [param('sonata.admin.configuration.security.admin_permissions')])
+            ->call('setObjectPermissions', [param('sonata.admin.configuration.security.object_permissions')])
 
-        ->set('sonata.admin.manipulator.acl.admin', '%sonata.admin.manipulator.acl.admin.class%')
+        ->set('sonata.admin.manipulator.acl.admin', (string) param('sonata.admin.manipulator.acl.admin.class'))
             ->args([
-                '%sonata.admin.security.mask.builder.class%',
+                param('sonata.admin.security.mask.builder.class'),
             ])
 
-        ->set('sonata.admin.object.manipulator.acl.admin', '%sonata.admin.object.manipulator.acl.admin.class%')
+        ->set('sonata.admin.object.manipulator.acl.admin', (string) param('sonata.admin.object.manipulator.acl.admin.class'))
             ->args([
-                new ReferenceConfigurator('form.factory'),
-                '%sonata.admin.security.mask.builder.class%',
+                service('form.factory'),
+                param('sonata.admin.security.mask.builder.class'),
             ])
 
         ->alias(AdminObjectAclManipulator::class, 'sonata.admin.object.manipulator.acl.admin');

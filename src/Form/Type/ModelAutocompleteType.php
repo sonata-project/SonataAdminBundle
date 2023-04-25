@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type;
 
-use Sonata\AdminBundle\BCLayer\BCDeprecation;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -170,30 +169,28 @@ final class ModelAutocompleteType extends AbstractType
         $resolver->setAllowedTypes('property', ['string', 'array']);
         $resolver->setDeprecated(
             'quiet_millis',
-            ...BCDeprecation::forOptionResolver(
-                static function (Options $options, $value): string {
-                    if (100 !== $value) {
-                        return 'Passing a value to option "quiet_millis" is deprecated! Use "delay" instead!';
-                    }
+            'sonata-project/admin-bundle',
+            '4.6',
+            static function (Options $options, $value): string {
+                if (100 !== $value) {
+                    return 'Passing a value to option "quiet_millis" is deprecated! Use "delay" instead!';
+                }
 
-                    return '';
-                },
-                '4.6',
-            )
+                return '';
+            },
         ); // NEXT_MAJOR: Remove this deprecation notice.
 
         $resolver->setDeprecated(
             'btn_catalogue',
-            ...BCDeprecation::forOptionResolver(
-                static function (Options $options, $value): string {
-                    if ('SonataAdminBundle' !== $value) {
-                        return 'Passing a value to option "btn_catalogue" is deprecated! Use "btn_translation_domain" instead!';
-                    }
+            'sonata-project/admin-bundle',
+            '4.9',
+            static function (Options $options, $value): string {
+                if ('SonataAdminBundle' !== $value) {
+                    return 'Passing a value to option "btn_catalogue" is deprecated! Use "btn_translation_domain" instead!';
+                }
 
-                    return '';
-                },
-                '4.9',
-            )
+                return '';
+            },
         ); // NEXT_MAJOR: Remove this deprecation notice.
     }
 

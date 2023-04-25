@@ -10,5 +10,9 @@ file that was distributed with this source code.
 #}
 
 {%- apply spaceless %}
-    {{ value.name }}
+    {%- if value is null -%}
+        &nbsp;
+    {%- else -%}
+        {{ value.name }}
+    {%- endif -%}
 {% endapply -%}

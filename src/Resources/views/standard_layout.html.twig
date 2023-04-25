@@ -155,23 +155,23 @@ file that was distributed with this source code.
                         </div>
 
                         {% block sonata_top_nav_menu %}
-                            {% if app.user and is_granted(sonata_config.getOption('role_admin')) %}
-                                <div class="navbar-custom-menu">
-                                    <ul class="nav navbar-nav">
-                                        {% block sonata_top_nav_menu_add_block %}
-                                            {% set addBlock = include(get_global_template('add_block')) %}
-                                            {% if addBlock is not empty %}
-                                                <li class="dropdown">
-                                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                        <i class="fas fa-plus-square fa-fw" aria-hidden="true"></i> <i class="fas fa-caret-down" aria-hidden="true"></i>
-                                                    </a>
-                                                    {{ addBlock|raw }}
-                                                </li>
-                                            {% endif %}
-                                        {% endblock %}
+                            <div class="navbar-custom-menu">
+                                <ul class="nav navbar-nav">
+                                    {% block sonata_top_nav_menu_add_block %}
+                                        {% set addBlock = include(get_global_template('add_block')) %}
+                                        {% if addBlock|spaceless is not empty %}
+                                            <li class="dropdown">
+                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                                    <i class="fas fa-plus-square fa-fw" aria-hidden="true"></i> <i class="fas fa-caret-down" aria-hidden="true"></i>
+                                                </a>
+                                                {{ addBlock|raw }}
+                                            </li>
+                                        {% endif %}
+                                    {% endblock %}
+                                    {% if app.user %}
                                         {% block sonata_top_nav_menu_user_block %}
                                             {% set userBlock = include(get_global_template('user_block')) %}
-                                            {% if userBlock is not empty %}
+                                            {% if userBlock|spaceless is not empty %}
                                                 <li class="dropdown user-menu">
                                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                                         <i class="fas fa-user fa-fw" aria-hidden="true"></i> <i class="fas fa-caret-down" aria-hidden="true"></i>
@@ -182,9 +182,9 @@ file that was distributed with this source code.
                                                 </li>
                                             {% endif %}
                                         {% endblock %}
-                                    </ul>
-                                </div>
-                            {% endif %}
+                                    {% endif %}
+                                </ul>
+                            </div>
                         {% endblock %}
                     </nav>
                 {% endblock sonata_nav %}

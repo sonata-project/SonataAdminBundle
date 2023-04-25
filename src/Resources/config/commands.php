@@ -11,40 +11,39 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
 use Sonata\AdminBundle\Command\ExplainAdminCommand;
 use Sonata\AdminBundle\Command\GenerateObjectAclCommand;
 use Sonata\AdminBundle\Command\ListAdminCommand;
 use Sonata\AdminBundle\Command\SetupAclCommand;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ReferenceConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    // Use "service" function for creating references to services when dropping support for Symfony 4.4
     $containerConfigurator->services()
 
         ->set('sonata.admin.command.explain', ExplainAdminCommand::class)
             ->tag('console.command')
             ->args([
-                new ReferenceConfigurator('sonata.admin.pool'),
+                service('sonata.admin.pool'),
             ])
 
         ->set('sonata.admin.command.generate_object_acl', GenerateObjectAclCommand::class)
             ->tag('console.command')
             ->args([
-                new ReferenceConfigurator('sonata.admin.pool'),
-                [],
+                service('sonata.admin.pool'),
+                abstract_arg('acl object manipulators'),
             ])
 
         ->set('sonata.admin.command.list', ListAdminCommand::class)
             ->tag('console.command')
             ->args([
-                new ReferenceConfigurator('sonata.admin.pool'),
+                service('sonata.admin.pool'),
             ])
 
         ->set('sonata.admin.command.setup_acl', SetupAclCommand::class)
             ->tag('console.command')
             ->args([
-                new ReferenceConfigurator('sonata.admin.pool'),
-                new ReferenceConfigurator('sonata.admin.manipulator.acl.admin'),
+                service('sonata.admin.pool'),
+                service('sonata.admin.manipulator.acl.admin'),
             ]);
 };

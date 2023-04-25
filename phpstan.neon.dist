@@ -25,3 +25,9 @@ parameters:
     checkMissingVarTagTypehint: true
     checkMissingTypehints: true
     checkUninitializedProperties: true
+    featureToggles:
+        skipCheckGenericClasses:
+            - Symfony\Component\Form\AbstractType
+            - Symfony\Component\Form\FormInterface
+            - Symfony\Component\Form\FormTypeExtensionInterface
+            - Symfony\Component\Form\FormTypeInterface

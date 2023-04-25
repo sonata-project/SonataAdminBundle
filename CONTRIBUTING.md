@@ -36,7 +36,7 @@ you using the latest patch version?
 
 GitHub Issues is for **issues**, as opposed to question on how to use Sonata.
 If you are not sure this is a bug, or simply want to ask such a question,
-please post your question on [Stack Overflow](http://stackoverflow.com/questions/tagged/sonata),
+please post your question on [Stack Overflow](https://stackoverflow.com/questions/tagged/sonata),
 using the `sonata` tags.
 
 If you happen to find a bug, we kindly request you report it. However,
@@ -80,11 +80,11 @@ But please, read the following before.
 
 #### Coding style
 
-Each project follows [PSR-1](http://www.php-fig.org/psr/psr-1/), [PSR-2](http://www.php-fig.org/psr/psr-2/)
-and [Symfony Coding Standards](http://symfony.com/doc/current/contributing/code/standards.html) for coding style,
-[PSR-4](http://www.php-fig.org/psr/psr-4/) for autoloading.
+Each project follows [PSR-1](https://www.php-fig.org/psr/psr-1/), [PSR-2](https://www.php-fig.org/psr/psr-2/)
+and [Symfony Coding Standards](https://symfony.com/doc/current/contributing/code/standards.html) for coding style,
+[PSR-4](https://www.php-fig.org/psr/psr-4/) for autoloading.
 
-Please [install PHP Coding Standard Fixer](http://cs.sensiolabs.org/#installation)
+Please [install PHP Coding Standard Fixer](https://cs.symfony.com/#installation)
 and run this command before committing your modifications:
 
 ```bash
@@ -271,13 +271,13 @@ Your note can be put on one of these sections:
 * `Fixed` for any bug fixes.
 * `Security` to invite users to upgrade in case of vulnerabilities.
 
-More information about the followed changelog format: [keepachangelog.com](http://keepachangelog.com/)
+More information about the followed changelog format: [keepachangelog.com](https://keepachangelog.com/)
 
 #### Base branch
 
 Before writing a PR, you have to check on which branch your changes SHOULD be based.
 
-Each project follows [semver](http://semver.org/) convention for release management.
+Each project follows [semver](https://semver.org/) convention for release management.
 
 Here is a short table resuming on which you have to start:
 
@@ -393,7 +393,7 @@ If the deprecated thing is a service, you **MUST** specify it on the service def
  </service>
  ```
 
-More info: http://symfony.com/blog/new-in-symfony-2-8-deprecated-service-definitions
+More info: https://symfony.com/blog/new-in-symfony-2-8-deprecated-service-definitions
 
 For everything else, not managed by the `@deprecated` tag,
 you **MUST** still trigger a deprecation message (and add a `NEXT_MAJOR` comment).

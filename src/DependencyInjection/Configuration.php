@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\DependencyInjection;
 
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\BCLayer\BCDeprecation;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -174,7 +173,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
 final class Configuration implements ConfigurationInterface
 {
     /**
-     * @psalm-suppress PossiblyNullReference, PossiblyUndefinedMethod
+     * @psalm-suppress PossiblyNullReference, UndefinedInterfaceMethod
      *
      * @see https://github.com/psalm/psalm-plugin-symfony/issues/174
      */
@@ -327,10 +326,11 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                         // NEXT_MAJOR: Remove this option.
                         ->scalarNode('default_label_catalogue')
-                            ->setDeprecated(...BCDeprecation::forConfig(
-                                'The "default_label_catalogue" node is deprecated, use "default_translation_domain" instead.',
-                                '4.9'
-                            ))
+                            ->setDeprecated(
+                                'sonata-project/admin-bundle',
+                                '4.9',
+                                'The "default_label_catalogue" node is deprecated, use "default_translation_domain" instead.'
+                            )
                             ->defaultValue('SonataAdminBundle')
                             ->info('Label Catalogue used for admin services if one isn\'t provided.')
                         ->end()
@@ -410,10 +410,11 @@ final class Configuration implements ConfigurationInterface
                                     ->scalarNode('translation_domain')->end()
                                     // NEXT_MAJOR: Remove this option.
                                     ->scalarNode('label_catalogue')
-                                        ->setDeprecated(...BCDeprecation::forConfig(
-                                            'The "default_label_catalogue" node is deprecated, use "default_translation_domain" instead.',
-                                            '4.9'
-                                        ))
+                                        ->setDeprecated(
+                                            'sonata-project/admin-bundle',
+                                            '4.9',
+                                            'The "default_label_catalogue" node is deprecated, use "default_translation_domain" instead.'
+                                        )
                                     ->end()
                                     ->scalarNode('icon')->end()
                                     ->scalarNode('on_top')->defaultFalse()->info('Show menu item in side dashboard menu without treeview')->end()
@@ -499,10 +500,11 @@ final class Configuration implements ConfigurationInterface
                                     ->end()
                                     // NEXT_MAJOR: Remove the item_adds key.
                                     ->arrayNode('item_adds')
-                                        ->setDeprecated(...BCDeprecation::forConfig(
-                                            'The "item_adds" node is deprecated',
-                                            '4.9'
-                                        ))
+                                        ->setDeprecated(
+                                            'sonata-project/admin-bundle',
+                                            '4.9',
+                                            'The "item_adds" node is deprecated'
+                                        )
                                         ->prototype('scalar')->defaultValue([])->end()
                                     ->end()
                                     ->arrayNode('roles')

@@ -446,7 +446,7 @@ by creating custom SecurityHandler service for specific Admin class::
 
     use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 
-    final class CustomSecurityHandler extends SecurityHandlerInterface
+    final class CustomSecurityHandler implements SecurityHandlerInterface
     {
         public function isGranted(AdminInterface $admin, $attributes, ?object $object = null): bool
         {
@@ -495,7 +495,7 @@ in your custom SecurityHandler::
 
     use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 
-    final class CustomSecurityHandler extends SecurityHandlerInterface
+    final class CustomSecurityHandler implements SecurityHandlerInterface
     {
         private SecurityHandlerInterface $defaultSecurityHandler;
 

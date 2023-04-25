@@ -25,10 +25,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand(name: 'sonata:admin:list', description: 'List all admin services available')]
 final class ListAdminCommand extends Command
 {
-    // TODO: Remove static properties when support for Symfony < 5.4 is dropped.
-    protected static $defaultName = 'sonata:admin:list';
-    protected static $defaultDescription = 'List all admin services available';
-
     /**
      * @internal This class should only be used through the console
      */
@@ -36,15 +32,6 @@ final class ListAdminCommand extends Command
         private Pool $pool
     ) {
         parent::__construct();
-    }
-
-    public function configure(): void
-    {
-        \assert(null !== static::$defaultDescription);
-
-        $this
-            // TODO: Remove setDescription when support for Symfony < 5.4 is dropped.
-            ->setDescription(static::$defaultDescription);
     }
 
     public function execute(InputInterface $input, OutputInterface $output): int
