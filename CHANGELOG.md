@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.23.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.22.6...4.23.0) - 2023-04-24
+### Fixed
+- [[#8041](https://github.com/sonata-project/SonataAdminBundle/pull/8041)] Top nav bar menu for user is shown if there is a user logged in ([@jordisala1991](https://github.com/jordisala1991))
+- [[#8041](https://github.com/sonata-project/SonataAdminBundle/pull/8041)] Top nav bar menu for creating admin entities is shown even is there is no user logged in ([@jordisala1991](https://github.com/jordisala1991))
+
+### Removed
+- [[#8044](https://github.com/sonata-project/SonataAdminBundle/pull/8044)] Support for Symfony 4 ([@jordisala1991](https://github.com/jordisala1991))
+- [[#8044](https://github.com/sonata-project/SonataAdminBundle/pull/8044)] Support for Twig 2 ([@jordisala1991](https://github.com/jordisala1991))
+
 ## [4.22.6](https://github.com/sonata-project/SonataAdminBundle/compare/4.22.5...4.22.6) - 2023-04-12
 ### Fixed
 - [[#8039](https://github.com/sonata-project/SonataAdminBundle/pull/8039)] Fix display of enums for nullable property ([@AirBair](https://github.com/AirBair))
