@@ -140,12 +140,9 @@ div {
   &.mosaic-inner-box-hover {
     background-color: rgb(255 255 255 / 80%);
     border-radius: 4px 4px 0 0;
-    bottom: 0;
-    left: 0;
+    inset: 0;
     padding: 5px 10px;
     position: absolute;
-    right: 0;
-    top: 0;
     transition: 0.25s opacity;
   }
 
@@ -326,7 +323,7 @@ body.fixed .content-header .navbar {
   content: '\f107';
 }
 
-@media (min-width: 768px) {
+@media (width >= 768px) {
   .navbar-static-side {
     position: absolute;
     width: 250px;
