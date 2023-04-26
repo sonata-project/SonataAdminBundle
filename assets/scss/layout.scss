@@ -401,7 +401,7 @@ body.fixed .content-header .navbar.stuck {
   z-index: 5;
 }
 
-@media (max-width: 768px) {
+@media (width <= 768px) {
   body.fixed {
     .main-header {
       position: relative;

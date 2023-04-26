@@ -139,12 +139,9 @@
       cursor: pointer;
 
       &::after {
-        bottom: -5px;
         content: '';
-        left: -10px;
+        inset: -5px 10px;
         position: absolute;
-        right: -10px;
-        top: -5px;
       }
     }
 
