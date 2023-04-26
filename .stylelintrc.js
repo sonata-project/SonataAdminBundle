@@ -15,7 +15,7 @@
 
 module.exports = {
   customSyntax: 'postcss-scss',
-  extends: ['stylelint-config-standard', 'stylelint-config-prettier'],
+  extends: ['stylelint-config-standard'],
   plugins: ['stylelint-scss', 'stylelint-order'],
   rules: {
     'at-rule-no-unknown': null,
