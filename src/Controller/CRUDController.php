@@ -1454,7 +1454,7 @@ class CRUDController extends AbstractController
 
         $parentAssociationMapping = $this->admin->getParentAssociationMapping();
         if (null === $parentAssociationMapping) {
-            throw new \RuntimeException('The admin has no parent association mapping.');
+            return;
         }
 
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
