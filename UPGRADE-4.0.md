@@ -146,7 +146,7 @@ The method signature of `configureActionButtons` has changed. A new parameter `b
 
 ### Rector Config
 
-Some of the tasks to update yout admin classes can be automated using [Rector](https://getrector.com/).
+Some of the tasks to update your admin classes can be automated using [Rector](https://getrector.com/).
 Use the below config in your `rector.php` config as a starting point to automate your update.
 
 ```php
@@ -188,7 +188,6 @@ return static function (RectorConfig $rectorConfig): void {
         new AddReturnTypeDeclaration(AbstractAdmin::class, 'postPersist', new VoidType()),
         new AddReturnTypeDeclaration(AbstractAdmin::class, 'preRemove', new VoidType()),
         new AddReturnTypeDeclaration(AbstractAdmin::class, 'postRemove', new VoidType()),
-        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureExportFields', new VoidType()),
         new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureFormFields', new VoidType()),
         new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureListFields', new VoidType()),
         new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureDatagridFilters', new VoidType()),
