@@ -188,7 +188,6 @@ return static function (RectorConfig $rectorConfig): void {
         new AddReturnTypeDeclaration(AbstractAdmin::class, 'postPersist', new VoidType()),
         new AddReturnTypeDeclaration(AbstractAdmin::class, 'preRemove', new VoidType()),
         new AddReturnTypeDeclaration(AbstractAdmin::class, 'postRemove', new VoidType()),
-        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureExportFields', new VoidType()),
         new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureFormFields', new VoidType()),
         new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureListFields', new VoidType()),
         new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureDatagridFilters', new VoidType()),
