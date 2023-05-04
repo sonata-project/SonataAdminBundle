@@ -144,6 +144,90 @@ The following methods changed their visiblity to protected:
 
 The method signature of `configureActionButtons` has changed. A new parameter `buttonList` was added.
 
+### Rector Config
+
+Some of the tasks to update yout admin classes can be automated using [Rector](https://getrector.com/).
+Use the below config in your `rector.php` config as a starting point to automate your update.
+
+```php
+<?php
+
+declare(strict_types=1);
+
+use PHPStan\Type\ArrayType;
+use PHPStan\Type\IntegerType;
+use PHPStan\Type\MixedType;
+use PHPStan\Type\ObjectType;
+use PHPStan\Type\ObjectWithoutClassType;
+use PHPStan\Type\StringType;
+use PHPStan\Type\UnionType;
+use PHPStan\Type\VoidType;
+use Rector\Config\RectorConfig;
+use Rector\Php80\Rector\ClassMethod\AddParamBasedOnParentClassMethodRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\AddParamTypeDeclarationRector;
+use Rector\TypeDeclaration\Rector\ClassMethod\AddReturnTypeDeclarationRector;
+use Rector\TypeDeclaration\ValueObject\AddParamTypeDeclaration;
+use Rector\TypeDeclaration\ValueObject\AddReturnTypeDeclaration;
+use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+
+return static function (RectorConfig $rectorConfig): void {
+    // ....
+
+    $services = $rectorConfig->services();
+
+    $rectorConfig->ruleWithConfiguration(AddReturnTypeDeclarationRector::class, [
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'preBatchAction', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configure', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'alterNewInstance', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'alterObject', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'preValidate', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'preUpdate', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'postUpdate', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'prePersist', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'postPersist', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'preRemove', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'postRemove', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureExportFields', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureFormFields', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureListFields', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureDatagridFilters', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureShowFields', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureRoutes', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureActionButtons', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureDashboardActions', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureTabMenu', new VoidType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'generateBaseRoutePattern', new StringType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'generateBaseRouteName', new StringType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'getSubClass', new StringType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'createNewInstance', new ObjectWithoutClassType()),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configurePersistentParameters', new ArrayType(new StringType(), new MixedType())),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureFilterParameters', new ArrayType(new StringType(), new MixedType())),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureActionButtons', new ArrayType(new StringType(), new MixedType())),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureExportFields', new ArrayType(new IntegerType(), new StringType())),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureDashboardActions', new ArrayType(new StringType(), new ArrayType(new StringType(), new MixedType()))),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureBatchActions', new ArrayType(new StringType(), new ArrayType(new StringType(), new MixedType()))),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'getAccessMapping', new ArrayType(new StringType(), new UnionType([new StringType(), new ArrayType(new IntegerType(), new StringType())]))),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'getPermissionsShow', new ArrayType(new IntegerType(), new StringType())),
+        new AddReturnTypeDeclaration(AbstractAdmin::class, 'configureQuery', new ObjectType(ProxyQueryInterface::class)),
+    ]);
+
+    $rectorConfig->ruleWithConfiguration(AddParamTypeDeclarationRector::class, [
+        new AddParamTypeDeclaration(AbstractAdmin::class, 'alterNewInstance', 0, new ObjectWithoutClassType()),
+        new AddParamTypeDeclaration(AbstractAdmin::class, 'alterObject', 0, new ObjectWithoutClassType()),
+        new AddParamTypeDeclaration(AbstractAdmin::class, 'preValidate', 0, new ObjectWithoutClassType()),
+        new AddParamTypeDeclaration(AbstractAdmin::class, 'preUpdate', 0, new ObjectWithoutClassType()),
+        new AddParamTypeDeclaration(AbstractAdmin::class, 'postUpdate', 0, new ObjectWithoutClassType()),
+        new AddParamTypeDeclaration(AbstractAdmin::class, 'prePersist', 0, new ObjectWithoutClassType()),
+        new AddParamTypeDeclaration(AbstractAdmin::class, 'postPersist', 0, new ObjectWithoutClassType()),
+        new AddParamTypeDeclaration(AbstractAdmin::class, 'preRemove', 0, new ObjectWithoutClassType()),
+        new AddParamTypeDeclaration(AbstractAdmin::class, 'postRemove', 0, new ObjectWithoutClassType()),
+    ]);
+
+    $services->set(AddParamBasedOnParentClassMethodRector::class);
+};
+```
+
 ## AdminExtension
 If you have implemented a custom admin extension, you must adapt the signature of the following new methods to match the one in `AdminExtensionInterface` again:
  * `configureActionButtons`
