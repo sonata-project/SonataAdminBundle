@@ -63,7 +63,7 @@ jobs:
                     - php-version: '8.2'
                       dependencies: highest
                       allowed-to-fail: false
-                      symfony-require: '6.3@dev'
+                      symfony-require: '6.3.*'
                       variant: symfony/symfony:"6.3.*"
 
         steps:
