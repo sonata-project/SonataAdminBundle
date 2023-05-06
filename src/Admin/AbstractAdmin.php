@@ -799,13 +799,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final public function defineFormBuilder(FormBuilderInterface $formBuilder): void
     {
-        if (!$this->hasSubject()) {
-            throw new \LogicException(sprintf(
-                'Admin "%s" has no subject.',
-                static::class
-            ));
-        }
-
         $mapper = new FormMapper($this->getFormContractor(), $formBuilder, $this);
 
         $this->configureFormFields($mapper);
