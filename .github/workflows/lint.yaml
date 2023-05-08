@@ -37,7 +37,6 @@ jobs:
               uses: ramsey/composer-install@v2
               with:
                   dependency-versions: highest
-                  composer-options: --prefer-dist --prefer-stable
 
             - name: Lint PHP files
               run: make lint-php

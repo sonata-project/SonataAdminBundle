@@ -37,5 +37,6 @@ module.exports = {
       ],
       2,
     ],
+    'import/no-webpack-loader-syntax': 'off',
   },
 };
