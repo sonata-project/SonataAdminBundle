@@ -119,7 +119,6 @@ final class ListMapper implements MapperInterface
             ));
         }
 
-        /** @psalm-suppress ArgumentTypeCoercion https://github.com/vimeo/psalm/issues/9500 */
         $fieldDescription = $this->getAdmin()->createFieldDescription(
             $name,
             $fieldDescriptionOptions

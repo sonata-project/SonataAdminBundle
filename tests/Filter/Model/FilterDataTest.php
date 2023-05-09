@@ -20,8 +20,6 @@ final class FilterDataTest extends TestCase
 {
     /**
      * @dataProvider getInvalidTypes
-     *
-     * @psalm-suppress InvalidArgument
      */
     public function testTypeMustBeNumericOrNull(mixed $type): void
     {

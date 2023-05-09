@@ -45,6 +45,9 @@ final class ExplainAdminCommand extends Command
     {
         $admin = $this->pool->getInstance($input->getArgument('admin'));
 
+        // Some admin methods might require a subject.
+        $admin->setSubject($admin->getNewInstance());
+
         $output->writeln('<comment>AdminBundle Information</comment>');
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'id', $admin->getCode()));
         $output->writeln(sprintf('<info>% -20s</info> : %s', 'Admin', $admin::class));
