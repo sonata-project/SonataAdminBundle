@@ -71,6 +71,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ConstraintViolationListNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
@@ -1744,7 +1745,13 @@ final class CRUDControllerTest extends TestCase
         static::assertInstanceOf(JsonResponse::class, $response = $this->controller->editAction($this->request));
         $content = $response->getContent();
         static::assertNotFalse($content);
-        static::assertJsonStringEqualsJsonString('{"type":"https:\/\/symfony.com\/errors\/validation","title":"Validation Failed","detail":"name: Form error message","violations":[{"propertyPath":"name","title":"Form error message","parameters":[]}]}', $content);
+
+        // TODO: Remove else when dropping support for Symfony < 6.3
+        if (defined(Uuid::class.'::INVALID_TIME_BASED_VERSION_ERROR') {
+            static::assertJsonStringEqualsJsonString('{"type":"https:\/\/symfony.com\/errors\/validation","title":"Validation Failed","detail":"name: Form error message","violations":[{"propertyPath":"name","title":"Form error message","template":"","parameters":[]}]}', $content);
+        } else {
+            static::assertJsonStringEqualsJsonString('{"type":"https:\/\/symfony.com\/errors\/validation","title":"Validation Failed","detail":"name: Form error message","violations":[{"propertyPath":"name","title":"Form error message","parameters":[]}]}', $content);
+        }
     }
 
     public function testEditActionAjaxErrorWithoutAcceptApplicationJson(): void
@@ -2422,7 +2429,13 @@ final class CRUDControllerTest extends TestCase
 
         $content = $response->getContent();
         static::assertNotFalse($content);
-        static::assertJsonStringEqualsJsonString('{"type":"https:\/\/symfony.com\/errors\/validation","title":"Validation Failed","detail":"name: Form error message","violations":[{"propertyPath":"name","title":"Form error message","parameters":[]}]}', $content);
+        
+        // TODO: Remove else when dropping support for Symfony < 6.3
+        if (defined(Uuid::class.'::INVALID_TIME_BASED_VERSION_ERROR') {
+            static::assertJsonStringEqualsJsonString('{"type":"https:\/\/symfony.com\/errors\/validation","title":"Validation Failed","detail":"name: Form error message","violations":[{"propertyPath":"name","title":"Form error message","template":"","parameters":[]}]}', $content);
+        } else {
+            static::assertJsonStringEqualsJsonString('{"type":"https:\/\/symfony.com\/errors\/validation","title":"Validation Failed","detail":"name: Form error message","violations":[{"propertyPath":"name","title":"Form error message","parameters":[]}]}', $content);
+        }
     }
 
     public function testCreateActionAjaxErrorWithoutAcceptApplicationJson(): void
