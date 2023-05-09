@@ -1747,7 +1747,7 @@ final class CRUDControllerTest extends TestCase
         static::assertNotFalse($content);
 
         // TODO: Remove else when dropping support for Symfony < 6.3
-        if (defined(Uuid::class.'::INVALID_TIME_BASED_VERSION_ERROR') {
+        if (defined(Uuid::class.'::INVALID_TIME_BASED_VERSION_ERROR')) {
             static::assertJsonStringEqualsJsonString('{"type":"https:\/\/symfony.com\/errors\/validation","title":"Validation Failed","detail":"name: Form error message","violations":[{"propertyPath":"name","title":"Form error message","template":"","parameters":[]}]}', $content);
         } else {
             static::assertJsonStringEqualsJsonString('{"type":"https:\/\/symfony.com\/errors\/validation","title":"Validation Failed","detail":"name: Form error message","violations":[{"propertyPath":"name","title":"Form error message","parameters":[]}]}', $content);
@@ -2431,7 +2431,7 @@ final class CRUDControllerTest extends TestCase
         static::assertNotFalse($content);
         
         // TODO: Remove else when dropping support for Symfony < 6.3
-        if (defined(Uuid::class.'::INVALID_TIME_BASED_VERSION_ERROR') {
+        if (defined(Uuid::class.'::INVALID_TIME_BASED_VERSION_ERROR')) {
             static::assertJsonStringEqualsJsonString('{"type":"https:\/\/symfony.com\/errors\/validation","title":"Validation Failed","detail":"name: Form error message","violations":[{"propertyPath":"name","title":"Form error message","template":"","parameters":[]}]}', $content);
         } else {
             static::assertJsonStringEqualsJsonString('{"type":"https:\/\/symfony.com\/errors\/validation","title":"Validation Failed","detail":"name: Form error message","violations":[{"propertyPath":"name","title":"Form error message","parameters":[]}]}', $content);
