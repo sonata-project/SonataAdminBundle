@@ -37,85 +37,49 @@ You have 2 ways of defining the dependencies inside your services config file
 With a tag attribute (less verbose)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        app.admin.project:
-            class: App\Admin\ProjectAdmin
-            tags:
-                -
-                    name: sonata.admin
-                    model_class: App\Entity\Project
-                    manager_type: orm
-                    group: 'Project'
-                    label: 'Project'
-                    label_translator_strategy: 'sonata.admin.label.strategy.native'
-                    route_builder: 'sonata.admin.route.path_info'
-
-    .. code-block:: xml
-
-        <!-- config/services.xml -->
-
-        <service id="app.admin.project" class="App\Admin\ProjectAdmin">
-            <tag
-                name="sonata.admin"
-                model_class="App\Entity\Project"
-                manager_type="orm"
-                group="Project"
-                label="Project"
-                label_translator_strategy="sonata.admin.label.strategy.native"
-                route_builder="sonata.admin.route.path_info"
-                />
-        </service>
+    app.admin.project:
+        class: App\Admin\ProjectAdmin
+        tags:
+            -
+                name: sonata.admin
+                model_class: App\Entity\Project
+                manager_type: orm
+                group: 'Project'
+                label: 'Project'
+                label_translator_strategy: 'sonata.admin.label.strategy.native'
+                route_builder: 'sonata.admin.route.path_info'
 
 With a method call (more verbose)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        app.admin.project:
-            class: App\Admin\ProjectAdmin
-            calls:
-                - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.native']]
-                - [setRouteBuilder, ['@sonata.admin.route.path_info']]
-            tags:
-                - { name: sonata.admin, model_class: App\Entity\Project, manager_type: orm, group: 'Project', label: 'Project' }
-
-    .. code-block:: xml
-
-        <!-- config/services.xml -->
-
-        <service id="app.admin.project" class="App\Admin\ProjectAdmin">
-            <call method="setLabelTranslatorStrategy">
-                <argument type="service" id="sonata.admin.label.strategy.native"/>
-            </call>
-            <call method="setRouteBuilder">
-                <argument type="service" id="sonata.admin.route.path_info"/>
-            </call>
-            <tag name="sonata.admin" model_class="App\Entity\Project" manager_type="orm" group="Project" label="Project"/>
-        </service>
+    app.admin.project:
+        class: App\Admin\ProjectAdmin
+        calls:
+            - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.native']]
+            - [setRouteBuilder, ['@sonata.admin.route.path_info']]
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Project, manager_type: orm, group: 'Project', label: 'Project' }
 
 If you want to modify the service that is going to be injected, add the following code to your
 application's config file:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        admins:
-            sonata_admin:
-                sonata.order.admin.order:   # id of the admin service this setting is for
-                    model_manager:          # dependency name, from the table above
-                        sonata.order.admin.order.manager  # customised service id
+    admins:
+        sonata_admin:
+            sonata.order.admin.order:   # id of the admin service this setting is for
+                model_manager:          # dependency name, from the table above
+                    sonata.order.admin.order.manager  # customised service id
 
 Creating a custom RouteBuilder
 ------------------------------
@@ -151,25 +115,15 @@ To create your own RouteBuilder create the PHP class and register it as a servic
         }
     }
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        services:
-            app.admin.entity_route_builder:
-                class: App\Route\EntityRouterBuilder
-                arguments:
-                    - '@sonata.admin.audit.manager'
-
-    .. code-block:: xml
-
-        <!-- config/services.xml -->
-
-        <service id="app.admin.entity_route_builder" class="App\Route\EntityRouterBuilder">
-            <argument type="service" id="sonata.admin.audit.manager"/>
-        </service>
+    services:
+        app.admin.entity_route_builder:
+            class: App\Route\EntityRouterBuilder
+            arguments:
+                - '@sonata.admin.audit.manager'
 
 Inherited classes
 -----------------
@@ -178,36 +132,20 @@ You can manage inherited classes by injecting subclasses using the service confi
 
 Lets consider a base class named ``Person`` and its subclasses ``Student`` and ``Teacher``:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        app.admin.person:
-            class: App\Admin\PersonAdmin
-            calls:
+    app.admin.person:
+        class: App\Admin\PersonAdmin
+        calls:
+            -
+                - setSubClasses
                 -
-                    - setSubClasses
-                    -
-                        student: App\Entity\Student
-                        teacher: App\Entity\Teacher
-            tags:
-                - { name: sonata.admin, model_class: App\Entity\Person, manager_type: orm, group: "admin", label: "Person" }
-
-    .. code-block:: xml
-
-        <!-- config/services.xml -->
-
-        <service id="app.admin.person" class="App\Admin\PersonAdmin">
-            <call method="setSubClasses">
-                <argument type="collection">
-                    <argument key="student">App\Entity\Student</argument>
-                    <argument key="teacher">App\Entity\Teacher</argument>
-                </argument>
-            </call>
-            <tag name="sonata.admin" model_class="App\Entity\Person" manager_type="orm" group="admin" label="Person"/>
-        </service>
+                    student: App\Entity\Student
+                    teacher: App\Entity\Teacher
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Person, manager_type: orm, group: "admin", label: "Person" }
 
 You will need to change the way forms are configured in order to
 take into account these new subclasses::
@@ -278,15 +216,13 @@ the `'dropdown' => true` attribute::
 
 If you want to use the Tab Menu in a different way, you can replace the Menu Template:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            templates:
-                tab_menu_template:  "@App/Admin/own_tab_menu_template.html.twig"
+    sonata_admin:
+        templates:
+            tab_menu_template:  "@App/Admin/own_tab_menu_template.html.twig"
 
 Translations
 ^^^^^^^^^^^^
@@ -367,7 +303,7 @@ overriding the following method::
 
 Your custom twig file
 
-.. code-block:: twig
+.. code-block:: html+twig
 
     {# @App/Button/custom_button.html.twig #}
 
@@ -390,7 +326,7 @@ These containers are forced to be full height by default. If you use a
 custom layout or don't need such behavior, add the ``no-stretch`` class
 to the ``<html>`` tag.
 
-.. code-block:: html+jinja
+.. code-block:: html+twig
 
     {# templates/standard_layout.html.twig #}
 
@@ -475,18 +411,16 @@ by creating custom SecurityHandler service for specific Admin class::
 Use `security_handler` tag to point to your custom SecurityHandler service
 for specific Admin class:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        services:
-            # ...
-            admin.custom:
-                class: App\Admin\CustomAdmin
-                tags:
-                    - { name: sonata.admin, model_class: App\Entity\Custom, manager_type: orm, label: Category, security_handler: App\Security\Handler\CustomSecurityHandler }
+    services:
+        # ...
+        admin.custom:
+            class: App\Admin\CustomAdmin
+            tags:
+                - { name: sonata.admin, model_class: App\Entity\Custom, manager_type: orm, label: Category, security_handler: App\Security\Handler\CustomSecurityHandler }
 
 You can also use the default SecurityHandler (defined in global configuration)
 in your custom SecurityHandler::
@@ -518,30 +452,26 @@ in your custom SecurityHandler::
         // ...
     }
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        services:
-            # ...
-            App\Security\Handler\CustomSecurityHandler:
-                arguments:
-                    - '@sonata.admin.security.handler'
+    services:
+        # ...
+        App\Security\Handler\CustomSecurityHandler:
+            arguments:
+                - '@sonata.admin.security.handler'
 
 If you have a lot of SecurityHandler services that use the default SecurityHandler service,
 you can define a service alias:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        services:
-            # ...
-            Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface: '@sonata.admin.security.handler'
+    services:
+        # ...
+        Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface: '@sonata.admin.security.handler'
 
 This way, you do not need to define each custom SecurityHandler service to specify
 the default SecurityHandler service as an argument.
@@ -553,11 +483,9 @@ Use your own custom controller as default
 By default, ``CRUDController`` is the controller used when no controller has been specified. You can modify this by
 adding the following in the configuration:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            default_controller: App\Controller\DefaultCRUDController
+    sonata_admin:
+        default_controller: App\Controller\DefaultCRUDController

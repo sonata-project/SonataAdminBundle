@@ -15,25 +15,15 @@ information if there is next page or not.
 
 To use ``SimplePager`` in your admin,  define ``pager_type`` in the service definition:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        services:
-            app.admin.post:
-                class: App\Admin\PostAdmin
-                tags:
-                    - { name: sonata.admin, model_class: App\Entity\Post, manager_type: orm, group: 'Content', label: 'Post', pager_type: 'simple' }
-
-    .. code-block:: xml
-
-        <!-- config/services.xml -->
-
-        <service id="app.admin.post" class="App\Admin\PostAdmin">
-            <tag name="sonata.admin" model_class="App\Entity\Post" manager_type="orm" group="Content" label="Post" pager_type="simple"/>
-        </service>
+    services:
+        app.admin.post:
+            class: App\Admin\PostAdmin
+            tags:
+                - { name: sonata.admin, model_class: App\Entity\Post, manager_type: orm, group: 'Content', label: 'Post', pager_type: 'simple' }
 
 .. note::
 

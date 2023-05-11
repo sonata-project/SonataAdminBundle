@@ -26,41 +26,39 @@ Two template keys need to be set:
   ``@SonataAdmin/CRUD/base_list_flat_field.html.twig`` is suitable for most
   cases but it can be customized if required.
 
-.. configuration-block::
+.. code-block:: xml
 
-    .. code-block:: xml
+    <!-- config/services.xml -->
 
-        <!-- config/services.xml -->
-
-        <service id="sonata.admin.comment" class="%sonata.admin.comment.class%">
-            <call method="setTemplates">
-                <argument type="collection">
-                    <argument key="inner_list_row">
-                        @App/Admin/inner_row_comment.html.twig
-                    </argument>
-                    <argument key="base_list_field">
-                        @SonataAdmin/CRUD/base_list_flat_field.html.twig
-                    </argument>
+    <service id="sonata.admin.comment" class="%sonata.admin.comment.class%">
+        <call method="setTemplates">
+            <argument type="collection">
+                <argument key="inner_list_row">
+                    @App/Admin/inner_row_comment.html.twig
                 </argument>
-            </call>
-            <tag
-                name="sonata.admin"
-                model_class="%sonata.admin.comment.entity%"
-                controller="%sonata.admin.comment.controller%"
-                manager_type="orm"
-                group="sonata_blog"
-                translation_domain="%sonata.admin.comment.translation_domain%"
-                label="comments"
-                label_translator_strategy="sonata.admin.label.strategy.underscore"
-                />
-        </service>
+                <argument key="base_list_field">
+                    @SonataAdmin/CRUD/base_list_flat_field.html.twig
+                </argument>
+            </argument>
+        </call>
+        <tag
+            name="sonata.admin"
+            model_class="%sonata.admin.comment.entity%"
+            controller="%sonata.admin.comment.controller%"
+            manager_type="orm"
+            group="sonata_blog"
+            translation_domain="%sonata.admin.comment.translation_domain%"
+            label="comments"
+            label_translator_strategy="sonata.admin.label.strategy.underscore"
+            />
+    </service>
 
 Create your customized template
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Once the templates are defined, create the template to render the row:
 
-.. code-block:: jinja
+.. code-block:: html+twig
 
     {# @App/Admin/inner_row_comment.html.twig #}
 

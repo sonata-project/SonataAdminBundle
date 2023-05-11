@@ -49,7 +49,7 @@ First, configure the ``outer_list_rows_mosaic`` template key:
 
 The ``list_outer_rows_mosaic.html.twig`` is the name of one mosaic's tile. You should also extends the template and overwrite the default blocks availables.
 
-.. code-block:: jinja
+.. code-block:: html+twig
 
     {% extends '@SonataAdmin/CRUD/list_outer_rows_mosaic.html.twig' %}
 

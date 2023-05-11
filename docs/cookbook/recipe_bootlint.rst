@@ -12,15 +12,13 @@ Enable Bootlint
 
 To use Bootlint in your admin, you can enable it in your config file:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            options:
-                use_bootlint:    true # enable Bootlint
+    sonata_admin:
+        options:
+            use_bootlint: true # enable Bootlint
 
 Then open your browser debugger to look after some Bootlint warnings on console.
 

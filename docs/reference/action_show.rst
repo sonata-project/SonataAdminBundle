@@ -146,17 +146,15 @@ Setting up a custom show template (very useful)
 
 The first thing you need to do is define it in app/config/config/yml:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            title:      Acme
-            title_logo: img/logo_small.png
-            templates:
-                show:   '@App/Admin/display_client.html.twig'
+    sonata_admin:
+        title: Acme
+        title_logo: img/logo_small.png
+        templates:
+            show: '@App/Admin/display_client.html.twig'
 
 Once you have defined this, Sonata Admin looks for it in the following location:
 

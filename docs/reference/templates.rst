@@ -104,51 +104,49 @@ in several ways.
 
 You can specify your templates in the config file:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            templates:
-                layout:                     '@SonataAdmin/standard_layout.html.twig'
-                ajax:                       '@SonataAdmin/ajax_layout.html.twig'
-                list:                       '@SonataAdmin/CRUD/list.html.twig'
-                show:                       '@SonataAdmin/CRUD/show.html.twig'
-                show_compare:               '@SonataAdmin/CRUD/show_compare.html.twig'
-                edit:                       '@SonataAdmin/CRUD/edit.html.twig'
-                history:                    '@SonataAdmin/CRUD/history.html.twig'
-                preview:                    '@SonataAdmin/CRUD/preview.html.twig'
-                delete:                     '@SonataAdmin/CRUD/delete.html.twig'
-                batch:                      '@SonataAdmin/CRUD/list__batch.html.twig'
-                acl:                        '@SonataAdmin/CRUD/acl.html.twig'
-                action:                     '@SonataAdmin/CRUD/action.html.twig'
-                select:                     '@SonataAdmin/CRUD/list__select.html.twig'
-                filter:                     '@SonataAdmin/Form/filter_admin_fields.html.twig'
-                dashboard:                  '@SonataAdmin/Core/dashboard.html.twig'
-                search:                     '@SonataAdmin/Core/search.html.twig'
-                batch_confirmation:         '@SonataAdmin/CRUD/batch_confirmation.html.twig'
-                inner_list_row:             '@SonataAdmin/CRUD/list_inner_row.html.twig'
-                base_list_field:            '@SonataAdmin/CRUD/base_list_field.html.twig'
-                list_block:                 '@SonataAdmin/Block/block_admin_list.html.twig'
-                user_block:                 '@SonataAdmin/Core/user_block.html.twig'
-                add_block:                  '@SonataAdmin/Core/add_block.html.twig'
-                pager_links:                '@SonataAdmin/Pager/links.html.twig'
-                pager_results:              '@SonataAdmin/Pager/results.html.twig'
-                tab_menu_template:          '@SonataAdmin/Core/tab_menu_template.html.twig'
-                history_revision_timestamp: '@SonataAdmin/CRUD/history_revision_timestamp.html.twig'
-                short_object_description:   '@SonataAdmin/Helper/short-object-description.html.twig'
-                search_result_block:        '@SonataAdmin/Block/block_search_result.html.twig'
-                action_create:              '@SonataAdmin/CRUD/dashboard__action_create.html.twig'
-                button_acl:                 '@SonataAdmin/Button/acl_button.html.twig'
-                button_create:              '@SonataAdmin/Button/create_button.html.twig'
-                button_edit:                '@SonataAdmin/Button/edit_button.html.twig'
-                button_history:             '@SonataAdmin/Button/history_button.html.twig'
-                button_list:                '@SonataAdmin/Button/list_button.html.twig'
-                button_show:                '@SonataAdmin/Button/show_button.html.twig'
-                form_theme:                 []
-                filter_theme:               []
+    sonata_admin:
+        templates:
+            layout:                     '@SonataAdmin/standard_layout.html.twig'
+            ajax:                       '@SonataAdmin/ajax_layout.html.twig'
+            list:                       '@SonataAdmin/CRUD/list.html.twig'
+            show:                       '@SonataAdmin/CRUD/show.html.twig'
+            show_compare:               '@SonataAdmin/CRUD/show_compare.html.twig'
+            edit:                       '@SonataAdmin/CRUD/edit.html.twig'
+            history:                    '@SonataAdmin/CRUD/history.html.twig'
+            preview:                    '@SonataAdmin/CRUD/preview.html.twig'
+            delete:                     '@SonataAdmin/CRUD/delete.html.twig'
+            batch:                      '@SonataAdmin/CRUD/list__batch.html.twig'
+            acl:                        '@SonataAdmin/CRUD/acl.html.twig'
+            action:                     '@SonataAdmin/CRUD/action.html.twig'
+            select:                     '@SonataAdmin/CRUD/list__select.html.twig'
+            filter:                     '@SonataAdmin/Form/filter_admin_fields.html.twig'
+            dashboard:                  '@SonataAdmin/Core/dashboard.html.twig'
+            search:                     '@SonataAdmin/Core/search.html.twig'
+            batch_confirmation:         '@SonataAdmin/CRUD/batch_confirmation.html.twig'
+            inner_list_row:             '@SonataAdmin/CRUD/list_inner_row.html.twig'
+            base_list_field:            '@SonataAdmin/CRUD/base_list_field.html.twig'
+            list_block:                 '@SonataAdmin/Block/block_admin_list.html.twig'
+            user_block:                 '@SonataAdmin/Core/user_block.html.twig'
+            add_block:                  '@SonataAdmin/Core/add_block.html.twig'
+            pager_links:                '@SonataAdmin/Pager/links.html.twig'
+            pager_results:              '@SonataAdmin/Pager/results.html.twig'
+            tab_menu_template:          '@SonataAdmin/Core/tab_menu_template.html.twig'
+            history_revision_timestamp: '@SonataAdmin/CRUD/history_revision_timestamp.html.twig'
+            short_object_description:   '@SonataAdmin/Helper/short-object-description.html.twig'
+            search_result_block:        '@SonataAdmin/Block/block_search_result.html.twig'
+            action_create:              '@SonataAdmin/CRUD/dashboard__action_create.html.twig'
+            button_acl:                 '@SonataAdmin/Button/acl_button.html.twig'
+            button_create:              '@SonataAdmin/Button/create_button.html.twig'
+            button_edit:                '@SonataAdmin/Button/edit_button.html.twig'
+            button_history:             '@SonataAdmin/Button/history_button.html.twig'
+            button_list:                '@SonataAdmin/Button/list_button.html.twig'
+            button_show:                '@SonataAdmin/Button/show_button.html.twig'
+            form_theme:                 []
+            filter_theme:               []
 
 .. warning::
 
@@ -160,31 +158,17 @@ basis. Internally, the ``CRUDController`` fetches this information from the
 ``TemplateRegistry`` class instance that belongs with the ``Admin``, so you
 can specify the templates to use in the ``Admin`` service definition:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        services:
-            app.admin.post:
-                class: App\Admin\PostAdmin
-                calls:
-                    - [setTemplate, ['edit', 'PostAdmin/edit.html.twig']]
-                tags:
-                    - { name: sonata.admin, model_class: App\Entity\Post, manager_type: orm, group: 'Content', label: 'Post' }
-
-    .. code-block:: xml
-
-       <!-- config/services.xml -->
-
-        <service id="app.admin.post" class="App\Admin\PostAdmin">
-            <tag name="sonata.admin" model_class="App\Entity\Post" manager_type="orm" group="Content" label="Post"/>
-            <call method="setTemplate">
-                <argument>edit</argument>
-                <argument>PostAdmin/edit.html.twig</argument>
-            </call>
-        </service>
+    services:
+        app.admin.post:
+            class: App\Admin\PostAdmin
+            calls:
+                - [setTemplate, ['edit', 'PostAdmin/edit.html.twig']]
+            tags:
+                - { name: sonata.admin, model_class: App\Entity\Post, manager_type: orm, group: 'Content', label: 'Post' }
 
 .. note::
 
@@ -214,7 +198,7 @@ Within Twig templates, you can use the ``get_admin_template($name, $adminCode)``
 function to access the templates of the current ``Admin``, or the
 ``get_global_template($name)`` function to access global templates.
 
-.. code-block:: html+jinja
+.. code-block:: html+twig
 
     {% extends get_admin_template('base_list_field', admin.code) %}
 

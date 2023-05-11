@@ -153,18 +153,16 @@ SonataAdminBundle to know that this Admin class exists. To tell the
 SonataAdminBundle of the existence of this Admin class, you have to create a
 service and tag it with the ``sonata.admin`` tag:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        services:
-            # ...
-            admin.category:
-                class: App\Admin\CategoryAdmin
-                tags:
-                    - { name: sonata.admin, model_class: App\Entity\Category, manager_type: orm, label: Category }
+    services:
+        # ...
+        admin.category:
+            class: App\Admin\CategoryAdmin
+            tags:
+                - { name: sonata.admin, model_class: App\Entity\Category, manager_type: orm, label: Category }
 
 +---------------------------------------+-----------------------------------------------------------------------------------------+
 | Tag option                            | Description                                                                             |
@@ -193,17 +191,15 @@ Step 3: Register SonataAdmin custom Routes
 SonataAdminBundle generates routes for the Admin classes on the fly. To load these
 routes, you have to make sure the routing loader of the SonataAdminBundle is executed:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/routes/sonata_admin.yaml
 
-        # config/routes/sonata_admin.yaml
-
-        # ...
-        _sonata_admin:
-            resource: .
-            type: sonata_admin
-            prefix: /admin
+    # ...
+    _sonata_admin:
+        resource: .
+        type: sonata_admin
+        prefix: /admin
 
 View the Category Admin Interface
 ---------------------------------

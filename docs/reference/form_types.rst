@@ -413,7 +413,7 @@ The available options are:
         }
     }
 
-.. code-block:: jinja
+.. code-block:: html+twig
 
     {# templates/Form/Type/sonata_type_model_autocomplete.html.twig #}
 
@@ -545,19 +545,17 @@ First we need to create an ``ImageAdmin`` class and register it as an admin clas
 for managing ``Image`` objects. In our ``services.yaml`` we have an entry for ``ImageAdmin``
 that looks like this:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        services:
-            app.admin.image:
-                class: App\Admin\ImageAdmin
-                calls:
-                    - [setTranslationDomain, ['App']]
-                tags:
-                    - { name: sonata.admin, model_class: App\Entity\Image, controller: 'Sonata\AdminBundle\Controller\CRUDController', manager_type: orm, label: 'Image' }
+    services:
+        app.admin.image:
+            class: App\Admin\ImageAdmin
+            calls:
+                - [setTranslationDomain, ['App']]
+            tags:
+                - { name: sonata.admin, model_class: App\Entity\Image, controller: 'Sonata\AdminBundle\Controller\CRUDController', manager_type: orm, label: 'Image' }
 
 To embed ``ImageAdmin`` within ``PageAdmin`` we need to change the reference
 for the ``image1`` field to ``AdminType`` in our ``PageAdmin`` class::

@@ -11,37 +11,18 @@ service configuration with two arguments, the child admin name (in this case
 ``VideoAdmin`` service) and the Entity field that relates our child Entity with
 its parent:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
+    App\Admin\VideoAdmin:
+        # tags, calls, etc
 
-        App\Admin\VideoAdmin:
-            # tags, calls, etc
-
-        App\Admin\PlaylistAdmin:
-            calls:
-                - [addChild, ['@App\Admin\VideoAdmin', 'playlist']]
-                # Or `[addChild, ['@App\Admin\VideoAdmin']]` if there is no
-                # field to access the Playlist from the Video entity
-
-    .. code-block:: xml
-
-        <!-- config/services.xml -->
-
-        <service id="App\Admin\VideoAdmin">
-            <!-- tags, calls, etc -->
-        </service>
-
-        <service id="App\Admin\PlaylistAdmin">
-            <!-- ... -->
-
-            <call method="addChild">
-                <argument type="service" id="App\Admin\VideoAdmin"/>
-                <argument>playlist</argument>
-            </call>
-        </service>
+    App\Admin\PlaylistAdmin:
+        calls:
+            - [addChild, ['@App\Admin\VideoAdmin', 'playlist']]
+            # Or `[addChild, ['@App\Admin\VideoAdmin']]` if there is no
+            # field to access the Playlist from the Video entity
 
 To display the ``VideoAdmin`` extend the menu in your ``PlaylistAdmin``
 class::

@@ -14,14 +14,12 @@ Getting the breadcrumbs for a given action of a given admin is done like this::
 Configuration
 -------------
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            breadcrumbs:
-               # use this to change the default route used to generate the link
-               # to the parent object inside a breadcrumb, when in a child admin
-               child_admin_route: show
+    sonata_admin:
+        breadcrumbs:
+            # use this to change the default route used to generate the link
+            # to the parent object inside a breadcrumb, when in a child admin
+            child_admin_route: show

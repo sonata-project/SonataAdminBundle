@@ -37,34 +37,32 @@ that looks something like the YAML below (you can achieve something similar with
 or Annotation based definitions too). In this example we are using the ``updated``
 field to trigger the lifecycle callbacks by setting it based on the upload timestamp.
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # src/Resources/config/Doctrine/Image.orm.yaml
 
-        # src/Resources/config/Doctrine/Image.orm.yaml
-
-        App\Entity\Image:
-            type: entity
-            repositoryClass: App\Entity\Repositories\ImageRepository
-            table: images
+    App\Entity\Image:
+        type: entity
+        repositoryClass: App\Entity\Repositories\ImageRepository
+        table: images
+        id:
             id:
-                id:
-                    type:      integer
-                    generator: { strategy: AUTO }
-            fields:
-                filename:
-                    type:      string
-                    length:    100
+                type:      integer
+                generator: { strategy: AUTO }
+        fields:
+            filename:
+                type:      string
+                length:    100
 
-                # changed when files are uploaded, to force preUpdate and postUpdate to fire
-                updated:
-                    type:      datetime
-                    nullable:  true
+            # changed when files are uploaded, to force preUpdate and postUpdate to fire
+            updated:
+                type:      datetime
+                nullable:  true
 
-                # ...
-            lifecycleCallbacks:
-                prePersist: ['lifecycleFileUpload']
-                preUpdate:  ['lifecycleFileUpload']
+            # ...
+        lifecycleCallbacks:
+            prePersist: ['lifecycleFileUpload']
+            preUpdate:  ['lifecycleFileUpload']
 
 We then have the following methods in our ``Image`` class to manage file uploads::
 

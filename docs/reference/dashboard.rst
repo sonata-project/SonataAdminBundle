@@ -11,15 +11,13 @@ the ``Sonata\AdminBundle\Action\DashboardAction`` controller action. The default
 this action is ``@SonataAdmin/Core/dashboard.html.twig``, but you can change
 this in your admin configuration:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            templates:
-                dashboard: '@SonataAdmin/Core/dashboard.html.twig'
+    sonata_admin:
+        templates:
+            dashboard: '@SonataAdmin/Core/dashboard.html.twig'
 
 .. note::
 
@@ -61,60 +59,33 @@ Using the ``Admin`` service declaration
 The first, and most commonly used, method is to set a group when defining your ``Admin``
 services:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        services:
-            app.admin.post:
-                class: App\Admin\PostAdmin
-                tags:
-                    - { name: sonata.admin, model_class: App\Entity\Post, manager_type: orm, group: 'Content', label: 'Post' }
-
-    .. code-block:: xml
-
-        <!-- config/services.xml -->
-
-        <service id="app.admin.post" class="App\Admin\PostAdmin">
-              <tag name="sonata.admin" model_class="App\Entity\Post" manager_type="orm" group="Content" label="Post"/>
-          </service>
+    services:
+        app.admin.post:
+            class: App\Admin\PostAdmin
+            tags:
+                - { name: sonata.admin, model_class: App\Entity\Post, manager_type: orm, group: 'Content', label: 'Post' }
 
 In these examples, notice the ``group`` tag, stating that this particular ``Admin``
 service belongs to the ``Content`` group.
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        services:
-            app.admin.post:
-                class: App\Admin\PostAdmin
-                tags:
-                    - name: sonata.admin
-                      model_class: App\Entity\Post
-                      manager_type: orm
-                      group: 'app.admin.group.content'
-                      translation_domain: 'App'
-                      label: 'app.admin.model.post'
-
-    .. code-block:: xml
-
-        <!-- config/services.xml -->
-
-        <service id="app.admin.post" class="App\Admin\PostAdmin">
-              <tag
-                  name="sonata.admin"
-                  model_class="App\Entity\Post"
-                  manager_type="orm"
-                  group="app.admin.group.content"
-                  translation_domain="App"
-                  label="app.admin.model.post"
-                  />
-          </service>
+    services:
+        app.admin.post:
+            class: App\Admin\PostAdmin
+            tags:
+                - name: sonata.admin
+                    model_class: App\Entity\Post
+                    manager_type: orm
+                    group: 'app.admin.group.content'
+                    translation_domain: 'App'
+                    label: 'app.admin.model.post'
 
 In this example, the label are translated by ``App``, using the given
 ``translation_domain``. So, you can use the above examples to support multiple languages
@@ -132,27 +103,25 @@ You can also configure the ``Admin`` list in your ``sonata_admin.yaml`` config f
 configuration method overrides any settings defined in the Admin service
 declarations.
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
+    sonata_admin:
+        dashboard:
+            groups:
+                app.admin.group.content:
+                    label: app.admin.group.content
+                    translation_domain: App
+                    items:
+                        - app.admin.post
 
-        sonata_admin:
-            dashboard:
-                groups:
-                    app.admin.group.content:
-                        label: app.admin.group.content
-                        translation_domain: App
-                        items:
-                            - app.admin.post
+                app.admin.group.blog:
+                    items:
+                        - sonata.admin.page
+                    roles: ['ROLE_ONE', 'ROLE_TWO']
 
-                    app.admin.group.blog:
-                        items:
-                            - sonata.admin.page
-                        roles: ['ROLE_ONE', 'ROLE_TWO']
-
-                    app.admin.group.misc: ~
+                app.admin.group.misc: ~
 
 .. note::
 
@@ -196,35 +165,33 @@ you can create and add more blocks to it.
 In this screenshot, in addition to the default ``Admin`` list block on the left, we added
 a text block and RSS feed block on the right. The configuration for this scenario would be:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            dashboard:
-                blocks:
-                    -
-                        position: left
-                        type: sonata.admin.block.admin_list
-                    -
-                        position: right
-                        type: sonata.block.service.text
-                        settings:
-                            content: >
-                                <h2>Welcome to the Sonata Admin</h2>
-                                <p>This is a <code>sonata.block.service.text</code> from the Block
-                                Bundle, you can create and add new block in these area by configuring
-                                the <code>sonata_admin</code> section.</p> <br/> For instance, here
-                                a RSS feed parser (<code>sonata.block.service.rss</code>):
-                    -
-                        position: right
-                        type: sonata.block.service.rss
-                        roles: [POST_READER]
-                        settings:
-                            title: Sonata Project's Feeds
-                            url: https://sonata-project.org/blog/archive.rss
+    sonata_admin:
+        dashboard:
+            blocks:
+                -
+                    position: left
+                    type: sonata.admin.block.admin_list
+                -
+                    position: right
+                    type: sonata.block.service.text
+                    settings:
+                        content: >
+                            <h2>Welcome to the Sonata Admin</h2>
+                            <p>This is a <code>sonata.block.service.text</code> from the Block
+                            Bundle, you can create and add new block in these area by configuring
+                            the <code>sonata_admin</code> section.</p> <br/> For instance, here
+                            a RSS feed parser (<code>sonata.block.service.rss</code>):
+                -
+                    position: right
+                    type: sonata.block.service.rss
+                    roles: [POST_READER]
+                    settings:
+                        title: Sonata Project's Feeds
+                        url: https://sonata-project.org/blog/archive.rss
 
 .. note::
 
@@ -243,41 +210,39 @@ across the Dashboard using different configuration settings for each instance.
 A particular example is the ``Admin`` list block, which can be configured to
 suit this scenario.
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
+    sonata_admin:
+        dashboard:
+            blocks:
 
-        sonata_admin:
-            dashboard:
-                blocks:
+                # display two dashboard blocks
+                -
+                    position: left
+                    type: sonata.admin.block.admin_list
+                    settings:
+                        groups: [sonata_page1, sonata_page2]
+                -
+                    position: right
+                    type: sonata.admin.block.admin_list
+                    settings:
+                        groups: [sonata_page3]
 
-                    # display two dashboard blocks
-                    -
-                        position: left
-                        type: sonata.admin.block.admin_list
-                        settings:
-                            groups: [sonata_page1, sonata_page2]
-                    -
-                        position: right
-                        type: sonata.admin.block.admin_list
-                        settings:
-                            groups: [sonata_page3]
+            groups:
+                sonata_page1:
+                    items:
+                        - sonata.page.admin.myitem1
 
-                groups:
-                    sonata_page1:
-                        items:
-                            - sonata.page.admin.myitem1
+                sonata_page2:
+                    items:
+                        - sonata.page.admin.myitem2
+                        - sonata.page.admin.myitem3
 
-                    sonata_page2:
-                        items:
-                            - sonata.page.admin.myitem2
-                            - sonata.page.admin.myitem3
-
-                    sonata_page3:
-                        items:
-                            - sonata.page.admin.myitem4
+                sonata_page3:
+                    items:
+                        - sonata.page.admin.myitem4
 
 In this example, you would have two ``admin_list`` blocks on your dashboard, each
 of them containing the respectively configured groups.
@@ -290,26 +255,24 @@ Statistic Block
 A statistic block can be used to display a simple counter with a color, an font awesome icon and a text. A
 counter is related to the filters from one admin
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            dashboard:
-                blocks:
-                    -
-                        class:    col-lg-3 col-xs-6          # twitter bootstrap responsive code
-                        position: top                        # zone in the dashboard
-                        type:     sonata.admin.block.stats   # block id
-                        settings:
-                            code:  sonata.page.admin.page    # admin code - service id
-                            icon:  fas fa-magic               # font awesome icon
-                            text:  app.page.stats            # static text or translation message
-                            color: bg-yellow                 # colors: bg-green, bg-red and bg-aqua
-                            filters:                         # filter values
-                                edited: { value: 1 }
+    sonata_admin:
+        dashboard:
+            blocks:
+                -
+                    class:    col-lg-3 col-xs-6          # twitter bootstrap responsive code
+                    position: top                        # zone in the dashboard
+                    type:     sonata.admin.block.stats   # block id
+                    settings:
+                        code:  sonata.page.admin.page    # admin code - service id
+                        icon:  fas fa-magic               # font awesome icon
+                        text:  app.page.stats            # static text or translation message
+                        color: bg-yellow                 # colors: bg-green, bg-red and bg-aqua
+                        filters:                         # filter values
+                            edited: { value: 1 }
 
 The block configuration for ``settings.text`` accepts static text or a translation message,
 which could also have a pluralized translation target:
@@ -339,27 +302,25 @@ Preview Block
 
 A preview block can be used to display a brief of an admin list.
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            dashboard:
-                blocks:
-                    -
-                        position: top                              # zone in the dashboard
-                        type:     sonata.admin.block.admin_preview # block id
-                        settings:
-                            code:  sonata.page.admin.page          # admin code - service id
-                            icon:  fas fa-magic                     # font awesome icon
-                            limit: 10
-                            text:  Latest Edited Pages
-                            filters:                               # filter values
-                                edited:      { value: 1 }
-                                _sort_by:    updatedAt
-                                _sort_order: DESC
+    sonata_admin:
+        dashboard:
+            blocks:
+                -
+                    position: top                              # zone in the dashboard
+                    type:     sonata.admin.block.admin_preview # block id
+                    settings:
+                        code:  sonata.page.admin.page          # admin code - service id
+                        icon:  fas fa-magic                     # font awesome icon
+                        limit: 10
+                        text:  Latest Edited Pages
+                        filters:                               # filter values
+                            edited:      { value: 1 }
+                            _sort_by:    updatedAt
+                            _sort_order: DESC
 
 Dashboard Layout
 ^^^^^^^^^^^^^^^^
@@ -386,21 +347,19 @@ The layout is as follows:
 
 On ``top`` and ``bottom`` positions, you can also specify an optional ``class`` option to set the width of the block.
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
+    sonata_admin:
+        dashboard:
+            blocks:
 
-        sonata_admin:
-            dashboard:
-                blocks:
-
-                    # display dashboard block in the top zone with a col-md-6 css class
-                    -
-                        position: top
-                        class: col-md-6
-                        type: sonata.admin.block.admin_list
+                # display dashboard block in the top zone with a col-md-6 css class
+                -
+                    position: top
+                    class: col-md-6
+                    type: sonata.admin.block.admin_list
 
 Configuring what actions are available for each item on the dashboard
 ---------------------------------------------------------------------
