@@ -12,15 +12,13 @@ Disable select2
 
 If you don't want to use select2 in your admin, you can disable it in configuration.
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            options:
-                use_select2:    false # disable select2
+    sonata_admin:
+        options:
+            use_select2: false # disable select2
 
 .. note::
 

@@ -63,26 +63,15 @@ MenuFactory                     generates the side menu, depending on the curren
 All of these dependencies have default values that you can override when declaring any of
 your ``Admin`` services. This is done using a ``call`` to the matching ``setter``:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
-
-        services:
-            app.admin.post:
-                class: App\Admin\PostAdmin
-                calls:
-                    - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.underscore']]
-                tags:
-                    - { name: sonata.admin, model_class: App\Entity\Post, manager_type: orm, group: 'Content', label: 'Post' }
-
-    .. code-block:: xml
-
-        <service id="app.admin.post" class="App\Admin\PostAdmin">
-              <call method="setLabelTranslatorStrategy">
-                  <argument type="service" id="sonata.admin.label.strategy.underscore"/>
-              </call>
-              <tag name="sonata.admin" model_class="App\Entity\Post" manager_type="orm" group="Content" label="Post"/>
-          </service>
+    services:
+        app.admin.post:
+            class: App\Admin\PostAdmin
+            calls:
+                - [setLabelTranslatorStrategy, ['@sonata.admin.label.strategy.underscore']]
+            tags:
+                - { name: sonata.admin, model_class: App\Entity\Post, manager_type: orm, group: 'Content', label: 'Post' }
 
 Here, we declare the same ``Admin`` service as in the :doc:`../getting_started/creating_an_admin`
 chapter, but using a different label translator strategy, replacing the default one. Notice that
@@ -111,26 +100,15 @@ add new actions or change the behavior of existing ones. You can specify which c
 to use when declaring the ``Admin`` service by passing it as the 3rd argument. For example
 to set the controller to ``App\Controller\PostAdminController``:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
-
-        services:
-            app.admin.post:
-                class: App\Admin\PostAdmin
-                calls:
-                    - [setTranslationDomain, ['App']]
-                tags:
-                    - { name: sonata.admin, model_class: App\Entity\Post, controller: App\Controller\PostAdminController, manager_type: orm, group: 'Content', label: 'Post' }
-
-    .. code-block:: xml
-
-        <service id="app.admin.post" class="App\Admin\PostAdmin">
-            <call method="setTranslationDomain">
-                <argument>App</argument>
-            </call>
-            <tag name="sonata.admin" model_class="App\Entity\Post" controller="App\Controller\PostAdminController" manager_type="orm" group="Content" label="Post"/>
-        </service>
+    services:
+        app.admin.post:
+            class: App\Admin\PostAdmin
+            calls:
+                - [setTranslationDomain, ['App']]
+            tags:
+                - { name: sonata.admin, model_class: App\Entity\Post, controller: App\Controller\PostAdminController, manager_type: orm, group: 'Content', label: 'Post' }
 
 When extending ``CRUDController``, remember that the ``Admin`` class already has
 a set of automatically injected dependencies that are useful when implementing several

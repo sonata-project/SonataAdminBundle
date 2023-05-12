@@ -20,15 +20,13 @@ Enable Lock Protection
 By default, lock protection is disabled.
 You can enable it in your ``sonata_admin`` configuration:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            options:
-                lock_protection: true
+    sonata_admin:
+        options:
+            lock_protection: true
 
 You must also configure each entity that you want to support by adding a
 field called ``$version`` on which the Doctrine ``Version`` feature is activated.

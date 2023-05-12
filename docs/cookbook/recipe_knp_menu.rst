@@ -35,63 +35,57 @@ Create your controller::
 
 Add the controller route as an item of the menu:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            dashboard:
-                groups:
-                    news:
-                        label:                ~
-                        translation_domain:   ~
-                        items:
-                            - sonata.news.admin.post
-                            - route:        blog_home
-                              label:        Blog
-                            - route:        blog_article
-                              route_params: { articleId: 3 }
-                              label:        Article
+    sonata_admin:
+        dashboard:
+            groups:
+                news:
+                    label:                ~
+                    translation_domain:   ~
+                    items:
+                        - sonata.news.admin.post
+                        - route:        blog_home
+                            label:        Blog
+                        - route:        blog_article
+                            route_params: { articleId: 3 }
+                            label:        Article
 
 If you want to show your route to user with different roles, you can configure this for each route. If this is not set,
 group roles will be checked.
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            dashboard:
-                groups:
-                    news:
-                        label:                ~
-                        translation_domain:   ~
-                        items:
-                            - sonata.news.admin.post
-                            - route:        blog_home
-                              label:        Blog
-                              roles:        ['ROLE_FOO', 'ROLE_BAR']
-                            - route:        blog_article
-                              route_params: { articleId: 3 }
-                              label:        Article
-                        roles: ['ROLE_ADMIN', 'ROLE_SONATA_ADMIN']
+    sonata_admin:
+        dashboard:
+            groups:
+                news:
+                    label:                ~
+                    translation_domain:   ~
+                    items:
+                        - sonata.news.admin.post
+                        - route:        blog_home
+                            label:        Blog
+                            roles:        ['ROLE_FOO', 'ROLE_BAR']
+                        - route:        blog_article
+                            route_params: { articleId: 3 }
+                            label:        Article
+                    roles: ['ROLE_ADMIN', 'ROLE_SONATA_ADMIN']
 
 You can also override the template of knp_menu used by sonata. The default
 one is `@SonataAdmin/Menu/sonata_menu.html.twig`:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            templates:
-                knp_menu_template: '@ApplicationAdmin/Menu/custom_knp_menu.html.twig'
+    sonata_admin:
+        templates:
+            knp_menu_template: '@ApplicationAdmin/Menu/custom_knp_menu.html.twig'
 
 Now you have a menu group which contains a link to a sonata admin via its id, to your blog and to a specific article.
 
@@ -106,18 +100,16 @@ the ``provider`` config value.
 
 The following configuration uses a menu provider to populate the menu group ``my_group``:
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/packages/sonata_admin.yaml
 
-        # config/packages/sonata_admin.yaml
-
-        sonata_admin:
-            dashboard:
-                groups:
-                    my_group:
-                        provider:        'MyBundle:MyMenuProvider:getMyMenu'
-                        icon:            'fas fa-edit' # html is also supported
+    sonata_admin:
+        dashboard:
+            groups:
+                my_group:
+                    provider: 'MyBundle:MyMenuProvider:getMyMenu'
+                    icon: 'fas fa-edit' # html is also supported
 
 With KnpMenuBundle you can create a custom menu by using a builder class
 or by declaring it as a service. Please see the `Knp documentation`_ for
@@ -129,13 +121,11 @@ the menu alias to the provider config key:
 * If you are using a builder class, your menu alias should be something like ``MyBundle:MyMenuProvider:getMyMenu``.
 * If you are using a service, your menu alias is the alias set in the ``knp_menu.menu`` tag. In the following example this is ``my_menu_alias``:
 
-.. configuration-block::
+.. code-block:: xml
 
-    .. code-block:: xml
-
-        <service id="my_menu_provider" class="MyBundle/MyDirectory/MyMenuProvider">
-            <tag name="knp_menu.menu" alias="my_menu_alias"/>
-        </service>
+    <service id="my_menu_provider" class="MyBundle/MyDirectory/MyMenuProvider">
+        <tag name="knp_menu.menu" alias="my_menu_alias"/>
+    </service>
 
 Please note that when using the provider option, you can't set the menu
 label via the configuration. It is done in your custom menu.
@@ -168,17 +158,15 @@ name ``sonata.admin.event.configure.menu.sidebar``::
         }
     }
 
-.. configuration-block::
+.. code-block:: yaml
 
-    .. code-block:: yaml
+    # config/services.yaml
 
-        # config/services.yaml
-
-        services:
-            app.menu_listener:
-                class: App\EventListener\MenuBuilderListener
-                tags:
-                    - { name: kernel.event_listener, event: sonata.admin.event.configure.menu.sidebar, method: addMenuItems }
+    services:
+        app.menu_listener:
+            class: App\EventListener\MenuBuilderListener
+            tags:
+                - { name: kernel.event_listener, event: sonata.admin.event.configure.menu.sidebar, method: addMenuItems }
 
 Please see the `Using events to allow a menu to be extended`_ for further information.
 

@@ -119,7 +119,7 @@ as a new object. Finally we set a flash message indicating success and redirect 
     If you want to render something here you can create new template anywhere, extend sonata layout
     and use ``sonata_admin_content`` block.
 
-    .. code-block:: html+jinja
+    .. code-block:: html+twig
 
         {% extends '@SonataAdmin/standard_layout.html.twig' %}
 
@@ -134,7 +134,7 @@ You need to tell SonataAdmin how to render your new action. You do that by
 creating a ``list__action_clone.html.twig`` in the namespace of your custom
 Admin Controller.
 
-.. code-block:: html+jinja
+.. code-block:: html+twig
 
     {# templates/CRUD/list__action_clone.html.twig #}
 
@@ -269,7 +269,7 @@ method::
 
 Create a template for that button:
 
-.. code-block:: html+jinja
+.. code-block:: html+twig
 
     <li>
         <a class="sonata-action-element" href="{{ admin.generateUrl('import') }}">
@@ -290,7 +290,7 @@ ways you can add action::
 
 Create a template for that button:
 
-.. code-block:: html+jinja
+.. code-block:: html+twig
 
     <a class="btn btn-link btn-flat" href="{{ admin.generateUrl('import') }}">
         <i class="fas fa-level-up-alt"></i> {{ 'import_action'|trans({}, 'SonataAdminBundle') }}
