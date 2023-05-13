@@ -65,8 +65,9 @@ file that was distributed with this source code.
                 {% endfor %}
             {% endblock %}
 
+            {# TODO: Drop locale for moment calls when dropping support for `sonata-project/form-extensions` 1.x #}
             {# localize moment #}
-            {% set localeForMoment = sonata_form_canonicalize_locale_for_moment() %}
+            {% set localeForMoment = canonicalize_locale_for_moment() %}
             {% if localeForMoment %}
                 <script src="{{ asset('bundles/sonataform/moment-locale/' ~ localeForMoment ~ '.js') }}"></script>
             {% endif %}

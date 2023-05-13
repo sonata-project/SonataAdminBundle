@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Twig\CanonicalizeRuntime;
+use Sonata\Form\Twig\CanonicalizeRuntime as SonataFormCanonicalizeRuntime;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -29,7 +30,10 @@ final class CanonicalizeRuntimeTest extends TestCase
         $this->request = new Request();
         $requestStack = new RequestStack();
         $requestStack->push($this->request);
-        $this->canonicalizeRuntime = new CanonicalizeRuntime($requestStack);
+        $this->canonicalizeRuntime = new CanonicalizeRuntime(
+            $requestStack,
+            class_exists(SonataFormCanonicalizeRuntime::class) ? new SonataFormCanonicalizeRuntime($requestStack) : null,
+        );
     }
 
     /**
@@ -42,6 +46,9 @@ final class CanonicalizeRuntimeTest extends TestCase
     public function testCanonicalizedLocaleForMoment(?string $expected, string $original): void
     {
         $this->changeLocale($original);
+
+        $expected = class_exists(SonataFormCanonicalizeRuntime::class) ? $expected : null;
+
         static::assertSame($expected, $this->canonicalizeRuntime->getCanonicalizedLocaleForMoment());
     }
 
