@@ -153,6 +153,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('twig.runtime')
             ->args([
                 service('request_stack'),
+                // TODO: Remove this argument when dropping support for `sonata-project/form-extensions` 1.x.
+                service('sonata.form.twig.canonicalize_runtime')->nullOnInvalid(),
             ])
 
         // NEXT_MAJOR: Remove the `args()` call.

@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.24.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.23.0...4.24.0) - 2023-05-13
+### Added
+- [[#8064](https://github.com/sonata-project/SonataAdminBundle/pull/8064)] Support for `sonata-project/form-extensions` 2.0 ([@jordisala1991](https://github.com/jordisala1991))
+- [[#7838](https://github.com/sonata-project/SonataAdminBundle/pull/7838)] Stimulus dependency and initialization inside main `app.js` ([@jordisala1991](https://github.com/jordisala1991))
+
+### Fixed
+- [[#8061](https://github.com/sonata-project/SonataAdminBundle/pull/8061)] ExplainAdminCommand no longer complains about missing subject on admin ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#8055](https://github.com/sonata-project/SonataAdminBundle/pull/8055)] Child admins not related directly to a parent now handle show, edit and delete actions correctly. ([@maMykola](https://github.com/maMykola))
+
 ## [4.23.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.22.6...4.23.0) - 2023-04-24
 ### Fixed
 - [[#8041](https://github.com/sonata-project/SonataAdminBundle/pull/8041)] Top nav bar menu for user is shown if there is a user logged in ([@jordisala1991](https://github.com/jordisala1991))

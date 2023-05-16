@@ -45,6 +45,10 @@ jobs:
                     - php-version: '8.2'
                       dependencies: highest
                       allowed-to-fail: false
+                      variant: sonata-project/form-extensions:"2.0.0-alpha-1"
+                    - php-version: '8.2'
+                      dependencies: highest
+                      allowed-to-fail: false
                       symfony-require: 5.4.*
                       variant: symfony/symfony:"5.4.*"
                     - php-version: '8.2'
