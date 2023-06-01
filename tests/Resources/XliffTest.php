@@ -15,9 +15,6 @@ namespace Sonata\AdminBundle\Tests\Resources;
 
 final class XliffTest extends XliffValidatorTestCase
 {
-    /**
-     * @phpstan-return array<array{string}>
-     */
     public function getXliffPaths(): array
     {
         return [[sprintf('%s/../../src/Resources/translations', __DIR__)]];

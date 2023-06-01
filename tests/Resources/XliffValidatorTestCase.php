@@ -36,6 +36,8 @@ abstract class XliffValidatorTestCase extends TestCase
 
     /**
      * @dataProvider getXliffPaths
+     *
+     * @phpstan-param non-empty-string $path
      */
     public function testXliff(string $path): void
     {
@@ -53,7 +55,9 @@ abstract class XliffValidatorTestCase extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string}>
+     * @return array<array{string}>
+     *
+     * @phpstan-return array<array{non-empty-string}>
      */
     abstract public function getXliffPaths(): array;
 
@@ -67,6 +71,9 @@ abstract class XliffValidatorTestCase extends TestCase
         }
     }
 
+    /**
+     * @phpstan-param non-empty-string $path
+     */
     protected function validatePath(string $path): void
     {
         $files = glob(sprintf('%s/*.xliff', $path));
