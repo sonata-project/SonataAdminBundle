@@ -42,6 +42,7 @@ $rules = [
     'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],
     'no_useless_else' => true,
     'no_useless_return' => true,
+    'no_superfluous_phpdoc_tags' => ['allow_mixed' => true, 'remove_inheritdoc' => true],
     'nullable_type_declaration_for_default_null_value' => ['use_nullable_type_declaration' => true],
     'ordered_class_elements' => true,
     'ordered_imports' => ['sort_algorithm' => 'alpha', 'imports_order' => ['class', 'function', 'const']],

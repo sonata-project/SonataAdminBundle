@@ -1192,8 +1192,8 @@ final class AdminTest extends TestCase
         $securityHandler
             ->expects(static::exactly(6))
             ->method('isGranted')
-            ->willReturnCallback(static fn (AdminInterface $adminIn, string $attributes, ?object $object = null): bool => $admin === $adminIn && 'FOO' === $attributes &&
-                ($object === $admin || $object === $entity1));
+            ->willReturnCallback(static fn (AdminInterface $adminIn, string $attributes, ?object $object = null): bool => $admin === $adminIn && 'FOO' === $attributes
+                && ($object === $admin || $object === $entity1));
 
         $admin->setSecurityHandler($securityHandler);
 
