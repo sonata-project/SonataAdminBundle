@@ -1488,6 +1488,24 @@ final class RenderElementExtensionTest extends TestCase
             [],
         ];
 
+        $elements[] = [
+            '<td class="sonata-ba-list-field sonata-ba-list-field-enum" objectId="12345"> Clubs </td>',
+            FieldDescriptionInterface::TYPE_ENUM,
+            Suit::Clubs,
+            [
+                'use_value' => false,
+            ],
+        ];
+
+        $elements[] = [
+            '<td class="sonata-ba-list-field sonata-ba-list-field-enum" objectId="12345"> C </td>',
+            FieldDescriptionInterface::TYPE_ENUM,
+            Suit::Clubs,
+            [
+                'use_value' => true,
+            ],
+        ];
+
         return $elements;
     }
 
