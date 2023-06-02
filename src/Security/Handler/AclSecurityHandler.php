@@ -119,8 +119,8 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
 
         try {
             // NEXT_MAJOR: Remove the method isAnyGranted and use $this->authorizationChecker->isGranted instead.
-            return $this->isAnyGranted($this->superAdminRoles) ||
-                $this->isAnyGranted($attributes, $object);
+            return $this->isAnyGranted($this->superAdminRoles)
+                || $this->isAnyGranted($attributes, $object);
         } catch (AuthenticationCredentialsNotFoundException) {
             return false;
         }

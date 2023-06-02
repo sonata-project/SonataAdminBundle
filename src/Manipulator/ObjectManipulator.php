@@ -82,6 +82,7 @@ final class ObjectManipulator
 
         $propertyAccessor->setValue($instance, $mappedBy, $object);
 
+        /** @phpstan-var T */
         return $instance;
     }
 }
