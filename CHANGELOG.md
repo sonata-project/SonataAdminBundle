@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.25.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.24.0...4.25.0) - 2023-06-03
+### Added
+- [[#8072](https://github.com/sonata-project/SonataAdminBundle/pull/8072)] Support for SonataBlockBundle 5.0 ([@jordisala1991](https://github.com/jordisala1991))
+- [[#8070](https://github.com/sonata-project/SonataAdminBundle/pull/8070)] "enum_translation_domain" and "use_value" options for fields of type `FieldDescriptionInterface::TYPE_ENUM`. ([@phansys](https://github.com/phansys))
+
 ## [4.24.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.23.0...4.24.0) - 2023-05-13
 ### Added
 - [[#8064](https://github.com/sonata-project/SonataAdminBundle/pull/8064)] Support for `sonata-project/form-extensions` 2.0 ([@jordisala1991](https://github.com/jordisala1991))
