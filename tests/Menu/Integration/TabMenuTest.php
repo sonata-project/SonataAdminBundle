@@ -26,11 +26,7 @@ final class TabMenuTest extends BaseMenuTest
 
     public function getTranslator(): TranslatorInterface
     {
-        if (isset($this->translator)) {
-            return $this->translator;
-        }
-
-        return parent::getTranslator();
+        return $this->translator ?? parent::getTranslator();
     }
 
     public function testLabelTranslationNominalCase(): void

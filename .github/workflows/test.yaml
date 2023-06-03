@@ -45,6 +45,10 @@ jobs:
                     - php-version: '8.2'
                       dependencies: highest
                       allowed-to-fail: false
+                      variant: sonata-project/block-bundle:"5.0.0-alpha-1"
+                    - php-version: '8.2'
+                      dependencies: highest
+                      allowed-to-fail: false
                       variant: sonata-project/form-extensions:"2.0.0-alpha-1"
                     - php-version: '8.2'
                       dependencies: highest

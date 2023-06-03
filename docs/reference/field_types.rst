@@ -194,6 +194,19 @@ The ``FieldDescriptionInterface::TYPE_CHOICE`` field type also supports multiple
 
     The default delimiter is a comma ``,``.
 
+``FieldDescriptionInterface::TYPE_ENUM``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can use the following options:
+
+======================================  ==============================================================
+Option                                  Description
+======================================  ==============================================================
+**use_value**                           Determines if the field must show the value or the case' name.
+                                        ``false`` by default.
+**enum_translation_domain**             Translation domain.
+======================================  ==============================================================
+
 ``FieldDescriptionInterface::TYPE_URL``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 

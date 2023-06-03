@@ -12,5 +12,9 @@ file that was distributed with this source code.
 {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
 
 {% block field %}
-    {%- include '@SonataAdmin/CRUD/display_enum.html.twig' with { value: value } only -%}
+    {%- include '@SonataAdmin/CRUD/display_enum.html.twig' with {
+        value: value,
+        use_value: field_description.option('use_value', false),
+        translation_domain: field_description.option('enum_translation_domain', null),
+    } only -%}
 {% endblock %}
