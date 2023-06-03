@@ -509,10 +509,7 @@ class CRUDController extends AbstractController
 
         $this->admin->preBatchAction($action, $query, $idx, $allElements);
         foreach ($this->admin->getExtensions() as $extension) {
-            // NEXT_MAJOR: Remove the if-statement around the call to `$extension->preBatchAction()`
-            if (method_exists($extension, 'preBatchAction')) {
-                $extension->preBatchAction($this->admin, $action, $query, $idx, $allElements);
-            }
+            $extension->preBatchAction($this->admin, $action, $query, $idx, $allElements);
         }
 
         if (\count($idx) > 0) {
@@ -1071,7 +1068,7 @@ class CRUDController extends AbstractController
      *
      * @return string|null A custom error message to display in the flag bag instead of the generic one
      */
-    protected function handleModelManagerThrowable(ModelManagerThrowable $exception)
+    protected function handleModelManagerThrowable(ModelManagerThrowable $exception): ?string
     {
         $debug = $this->getParameter('kernel.debug');
         \assert(\is_bool($debug));
