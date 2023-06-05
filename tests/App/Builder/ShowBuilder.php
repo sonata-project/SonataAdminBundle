@@ -18,6 +18,9 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 
+/**
+ * @psalm-suppress DeprecatedInterface
+ */
 final class ShowBuilder implements ShowBuilderInterface
 {
     public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void

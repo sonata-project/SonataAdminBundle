@@ -333,6 +333,9 @@ final class Datagrid implements DatagridInterface
                     \E_USER_DEPRECATED
                 );
 
+                /**
+                 * @psalm-suppress DeprecatedMethod
+                 */
                 [$type, $options] = $filter->getRenderSettings();
             }
 
@@ -341,8 +344,8 @@ final class Datagrid implements DatagridInterface
 
         $this->formBuilder->add(DatagridInterface::SORT_BY, HiddenType::class);
         $this->formBuilder->get(DatagridInterface::SORT_BY)->addViewTransformer(new CallbackTransformer(
-            static fn ($value) => $value,
-            static fn ($value) => $value instanceof FieldDescriptionInterface ? $value->getName() : $value
+            static fn (mixed $value): mixed => $value,
+            static fn (mixed $value): mixed => $value instanceof FieldDescriptionInterface ? $value->getName() : $value
         ));
 
         $this->formBuilder->add(DatagridInterface::SORT_ORDER, HiddenType::class);

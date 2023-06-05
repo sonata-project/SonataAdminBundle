@@ -66,6 +66,9 @@ final class AbstractFormContractorTest extends TestCase
             return $resolvedType;
         });
 
+        /**
+         * @psalm-suppress DeprecatedInterface
+         */
         $this->formContractor = new class($this->formFactory, $formRegistry) extends AbstractFormContractor {
             protected function hasAssociation(FieldDescriptionInterface $fieldDescription): bool
             {

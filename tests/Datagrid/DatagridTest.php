@@ -23,7 +23,7 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
-use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
+use Sonata\AdminBundle\Form\Type\Filter\FilterDataType;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
@@ -403,7 +403,7 @@ final class DatagridTest extends TestCase
         $filter->method('getFormName')->willReturn('fooFormName');
         $filter->method('isActive')->willReturn(false);
         $filter->method('getRenderSettings')
-            ->willReturn([DefaultType::class, ['operator_options' => ['help' => 'baz2']]]);
+            ->willReturn([FilterDataType::class, ['operator_options' => ['help' => 'baz2']]]);
         $filter->expects(static::exactly($applyCallNumber))->method('apply');
 
         $this->datagrid->addFilter($filter);

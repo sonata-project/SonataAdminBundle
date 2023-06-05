@@ -31,6 +31,8 @@ final class XEditableExtensionTest extends TestCase
      * @param array<array<string, string>> $expectedChoices
      *
      * @dataProvider xEditableChoicesProvider
+     *
+     * @psalm-suppress DeprecatedMethod
      */
     public function testGetXEditableChoicesIsIdempotent(array $options, array $expectedChoices): void
     {
@@ -39,19 +41,13 @@ final class XEditableExtensionTest extends TestCase
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $fieldDescription
             ->method('getOption')
-            ->withConsecutive(
-                ['choices', []],
-                ['catalogue'],
-                ['choice_translation_domain'],
-                ['required'],
-                ['multiple']
-            )
-            ->will(static::onConsecutiveCalls(
-                $options['choices'],
-                'MyCatalogue',
-                'MyCatalogue',
-                $options['multiple'] ?? null
-            ));
+            ->willReturnMap([
+                ['choices', [], $options['choices']],
+                ['catalogue', null, 'MyCatalogue'],
+                ['choice_translation_domain', null, 'MyCatalogue'],
+                ['required', null, $options['multiple'] ?? null],
+                ['multiple', null, null],
+            ]);
 
         static::assertSame($expectedChoices, $twigExtension->getXEditableChoices($fieldDescription));
     }

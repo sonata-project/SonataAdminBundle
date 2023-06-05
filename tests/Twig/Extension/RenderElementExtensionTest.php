@@ -188,6 +188,8 @@ final class RenderElementExtensionTest extends TestCase
      * @param array<string, mixed> $options
      *
      * @dataProvider getRenderListElementTests
+     *
+     * @psalm-suppress DeprecatedMethod
      */
     public function testRenderListElement(string $expected, string $type, mixed $value, array $options): void
     {
@@ -216,7 +218,7 @@ final class RenderElementExtensionTest extends TestCase
 
         $this->fieldDescription
             ->method('getOption')
-            ->willReturnCallback(static fn (string $name, $default = null) => $options[$name] ?? $default);
+            ->willReturnCallback(static fn (string $name, mixed $default = null): mixed => $options[$name] ?? $default);
 
         $this->fieldDescription
             ->method('getTemplate')
@@ -232,6 +234,9 @@ final class RenderElementExtensionTest extends TestCase
         );
     }
 
+    /**
+     * @psalm-suppress DeprecatedMethod
+     */
     public function testRenderListElementWithAdditionalValuesInArray(): void
     {
         $this->templateRegistry->method('getTemplate')->with('base_list_field')
@@ -251,6 +256,9 @@ final class RenderElementExtensionTest extends TestCase
         );
     }
 
+    /**
+     * @psalm-suppress DeprecatedMethod
+     */
     public function testRenderWithDebug(): void
     {
         $this->fieldDescription
@@ -296,6 +304,8 @@ final class RenderElementExtensionTest extends TestCase
      * @param array<string, mixed> $options
      *
      * @dataProvider getRenderViewElementTests
+     *
+     * @psalm-suppress DeprecatedMethod
      */
     public function testRenderViewElement(string $expected, string $type, mixed $value, array $options): void
     {
@@ -313,7 +323,7 @@ final class RenderElementExtensionTest extends TestCase
 
         $this->fieldDescription
             ->method('getOption')
-            ->willReturnCallback(static fn (string $name, $default = null) => $options[$name] ?? $default);
+            ->willReturnCallback(static fn (string $name, mixed $default = null): mixed => $options[$name] ?? $default);
 
         $this->fieldDescription
             ->method('getTemplate')
@@ -335,6 +345,8 @@ final class RenderElementExtensionTest extends TestCase
      * @param array<string, mixed> $options
      *
      * @dataProvider getRenderViewElementCompareTests
+     *
+     * @psalm-suppress DeprecatedMethod
      */
     public function testRenderViewElementCompare(
         string $expected,
@@ -357,7 +369,7 @@ final class RenderElementExtensionTest extends TestCase
 
         $this->fieldDescription
             ->method('getOption')
-            ->willReturnCallback(static fn (string $name, $default = null) => $options[$name] ?? $default);
+            ->willReturnCallback(static fn (string $name, mixed $default = null): mixed => $options[$name] ?? $default);
 
         $this->fieldDescription
             ->method('getTemplate')
@@ -390,30 +402,41 @@ final class RenderElementExtensionTest extends TestCase
         );
     }
 
+    /**
+     * @psalm-suppress DeprecatedMethod
+     */
     public function testRenderRelationElementNoObject(): void
     {
         static::assertSame('foo', $this->twigExtension->renderRelationElement('foo', $this->fieldDescription));
     }
 
+    /**
+     * @psalm-suppress DeprecatedMethod
+     */
     public function testRenderRelationElementToString(): void
     {
         $this->fieldDescription->expects(static::once())
             ->method('getOption')
-            ->willReturnCallback(static function (string $value, $default = null) {
+            ->willReturnCallback(static function (string $value, mixed $default = null): mixed {
                 if ('associated_property' === $value) {
                     return $default;
                 }
+
+                return null;
             });
 
         $element = new FooToString();
         static::assertSame('salut', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
+    /**
+     * @psalm-suppress DeprecatedMethod
+     */
     public function testRenderRelationElementCustomToString(): void
     {
         $this->fieldDescription->expects(static::once())
             ->method('getOption')
-            ->willReturnCallback(static function (string $value, $default = null) {
+            ->willReturnCallback(static function (string $value, mixed $default = null): mixed {
                 if ('associated_property' === $value) {
                     return 'customToString';
                 }
@@ -431,11 +454,14 @@ final class RenderElementExtensionTest extends TestCase
         static::assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
+    /**
+     * @psalm-suppress DeprecatedMethod
+     */
     public function testRenderRelationElementMethodNotExist(): void
     {
         $this->fieldDescription->expects(static::once())
             ->method('getOption')
-            ->willReturnCallback(static function (string $value, $default = null) {
+            ->willReturnCallback(static function (string $value, mixed $default = null): mixed {
                 if ('associated_property' === $value) {
                     return null;
                 }
@@ -450,12 +476,15 @@ final class RenderElementExtensionTest extends TestCase
         $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
     }
 
+    /**
+     * @psalm-suppress DeprecatedMethod
+     */
     public function testRenderRelationElementWithPropertyPath(): void
     {
         $this->fieldDescription->expects(static::once())
             ->method('getOption')
 
-            ->willReturnCallback(static function (string $value, $default = null) {
+            ->willReturnCallback(static function (string $value, mixed $default = null): mixed {
                 if ('associated_property' === $value) {
                     return 'foo';
                 }
@@ -469,13 +498,16 @@ final class RenderElementExtensionTest extends TestCase
         static::assertSame('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
+    /**
+     * @psalm-suppress DeprecatedMethod
+     */
     public function testRenderRelationElementWithClosure(): void
     {
         $this->fieldDescription->expects(static::once())
             ->method('getOption')
-            ->willReturnCallback(static function (string $value, $default = null) {
+            ->willReturnCallback(static function (string $value, mixed $default = null): mixed {
                 if ('associated_property' === $value) {
-                    return static fn ($element): string => sprintf('closure %s', $element->foo);
+                    return static fn (object $element): string => property_exists($element, 'foo') ? sprintf('closure %s', $element->foo) : '';
                 }
 
                 return $default;

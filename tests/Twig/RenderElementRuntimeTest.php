@@ -212,7 +212,7 @@ final class RenderElementRuntimeTest extends TestCase
 
         $this->fieldDescription
             ->method('getOption')
-            ->willReturnCallback(static fn (string $name, $default = null) => $options[$name] ?? $default);
+            ->willReturnCallback(static fn (string $value, mixed $default = null): mixed => $options[$value] ?? $default);
 
         $this->fieldDescription
             ->method('getTemplate')
@@ -309,7 +309,7 @@ final class RenderElementRuntimeTest extends TestCase
 
         $this->fieldDescription
             ->method('getOption')
-            ->willReturnCallback(static fn (string $name, $default = null) => $options[$name] ?? $default);
+            ->willReturnCallback(static fn (string $value, mixed $default = null): mixed => $options[$value] ?? $default);
 
         $this->fieldDescription
             ->method('getTemplate')
@@ -353,7 +353,7 @@ final class RenderElementRuntimeTest extends TestCase
 
         $this->fieldDescription
             ->method('getOption')
-            ->willReturnCallback(static fn (string $name, $default = null) => $options[$name] ?? $default);
+            ->willReturnCallback(static fn (string $value, mixed $default = null): mixed => $options[$value] ?? $default);
 
         $this->fieldDescription
             ->method('getTemplate')
@@ -395,10 +395,12 @@ final class RenderElementRuntimeTest extends TestCase
     {
         $this->fieldDescription->expects(static::once())
             ->method('getOption')
-            ->willReturnCallback(static function (string $value, $default = null) {
+            ->willReturnCallback(static function (string $value, mixed $default = null): mixed {
                 if ('associated_property' === $value) {
                     return $default;
                 }
+
+                return null;
             });
 
         $element = new FooToString();
@@ -409,7 +411,7 @@ final class RenderElementRuntimeTest extends TestCase
     {
         $this->fieldDescription->expects(static::once())
             ->method('getOption')
-            ->willReturnCallback(static function (string $value, $default = null) {
+            ->willReturnCallback(static function (string $value, mixed $default = null): mixed {
                 if ('associated_property' === $value) {
                     return 'customToString';
                 }
@@ -431,7 +433,7 @@ final class RenderElementRuntimeTest extends TestCase
     {
         $this->fieldDescription->expects(static::once())
             ->method('getOption')
-            ->willReturnCallback(static function (string $value, $default = null) {
+            ->willReturnCallback(static function (string $value, mixed $default = null): mixed {
                 if ('associated_property' === $value) {
                     return null;
                 }
@@ -450,8 +452,7 @@ final class RenderElementRuntimeTest extends TestCase
     {
         $this->fieldDescription->expects(static::once())
             ->method('getOption')
-
-            ->willReturnCallback(static function (string $value, $default = null) {
+            ->willReturnCallback(static function (string $value, mixed $default = null): mixed {
                 if ('associated_property' === $value) {
                     return 'foo';
                 }
@@ -469,9 +470,9 @@ final class RenderElementRuntimeTest extends TestCase
     {
         $this->fieldDescription->expects(static::once())
             ->method('getOption')
-            ->willReturnCallback(static function (string $value, $default = null) {
+            ->willReturnCallback(static function (string $value, mixed $default = null): mixed {
                 if ('associated_property' === $value) {
-                    return static fn ($element): string => sprintf('closure %s', $element->foo);
+                    return static fn (object $element): string => property_exists($element, 'foo') ? sprintf('closure %s', $element->foo) : '';
                 }
 
                 return $default;

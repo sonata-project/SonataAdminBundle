@@ -832,7 +832,11 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->container->setAlias('translator', 'translator.default');
 
         $blockExtension = new SonataBlockExtension();
-        // TODO: remove "http_cache" parameter when support for SonataBlockBundle 4 is dropped.
+        /**
+         * TODO: remove "http_cache" parameter when support for SonataBlockBundle 4 is dropped.
+         *
+         * @psalm-suppress DeprecatedClass
+         */
         $blockExtension->load(
             [
                 'sonata_block' => class_exists(HttpCacheHandler::class) ? ['http_cache' => false] : [],

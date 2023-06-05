@@ -160,7 +160,14 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         if (null !== $code) {
             $this->code = $code;
         }
+
+        /**
+         * NEXT_MAJOR: Remove this assignment.
+         *
+         * @psalm-suppress DeprecatedProperty
+         */
         $this->class = $class;
+
         $this->modelClass = $class;
 
         if (null !== $baseControllerName) {

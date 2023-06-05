@@ -94,7 +94,7 @@ final class RoleSecurityHandlerTest extends TestCase
 
         $this->authorizationChecker
             ->method('isGranted')
-            ->willReturnCallback(static function ($attribute, ?object $object): bool {
+            ->willReturnCallback(static function (mixed $attribute, mixed $subject = null): bool {
                 if ($attribute instanceof Expression) {
                     $attribute = (string) $attribute;
                 }
@@ -109,7 +109,7 @@ final class RoleSecurityHandlerTest extends TestCase
                     case 'ROLE_AUTH_EXCEPTION':
                         throw new AuthenticationCredentialsNotFoundException();
                     case 'ROLE_FOO_BAR_DEF':
-                        return $object instanceof \stdClass;
+                        return $subject instanceof \stdClass;
                     default:
                         return false;
                 }
