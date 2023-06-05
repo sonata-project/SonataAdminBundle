@@ -18,5 +18,9 @@
         <InternalClass errorLevel="suppress"/>
         <InternalMethod errorLevel="suppress"/>
         <InternalProperty errorLevel="suppress"/>
+
+        <!-- Psalm equivalent of PHPStan config `treatPhpDocTypesAsCertain: false` -->
+        <DocblockTypeContradiction errorLevel="suppress"/>
+        <RedundantConditionGivenDocblockType errorLevel="suppress"/>
     </issueHandlers>
 </psalm>
