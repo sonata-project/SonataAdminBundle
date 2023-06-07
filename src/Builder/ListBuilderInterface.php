@@ -17,6 +17,8 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 /**
+ * NEXT_MAJOR: Avoid extending deprecated BuilderInterface.
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface ListBuilderInterface extends BuilderInterface

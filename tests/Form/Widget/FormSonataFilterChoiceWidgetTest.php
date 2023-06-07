@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
-use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
+use Sonata\AdminBundle\Form\Type\Filter\FilterDataType;
 use Sonata\AdminBundle\Form\Type\Operator\ContainsOperatorType;
 use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
@@ -57,7 +57,7 @@ final class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
      */
     protected function getChoiceClass(): string
     {
-        return ChoiceType::class;
+        return FilterDataType::class;
     }
 
     /**
@@ -68,7 +68,7 @@ final class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
         $extensions = parent::getExtensions();
         $guesser = $this->createMock(FormTypeGuesserInterface::class);
         $extension = new TestExtension($guesser);
-        $type = new ChoiceType();
+        $type = new FilterDataType();
         $extension->addType($type);
 
         if (!$extension->hasType($this->getChoiceClass())) {
@@ -91,9 +91,9 @@ final class FormSonataFilterChoiceWidgetTest extends BaseWidgetTest
     protected function getDefaultOption(): array
     {
         return ['field_type' => SymfonyChoiceType::class,
-             'field_options' => [],
-             'operator_type' => ContainsOperatorType::class,
-             'operator_options' => [],
+            'field_options' => [],
+            'operator_type' => ContainsOperatorType::class,
+            'operator_options' => [],
         ];
     }
 }

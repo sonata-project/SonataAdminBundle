@@ -15,6 +15,9 @@ namespace Sonata\AdminBundle\Tests\App\Builder;
 
 use Sonata\AdminBundle\Builder\AbstractFormContractor;
 
+/**
+ * @psalm-suppress DeprecatedInterface
+ */
 final class FormContractor extends AbstractFormContractor
 {
 }

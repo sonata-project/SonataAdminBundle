@@ -338,7 +338,7 @@ final class Configuration implements ConfigurationInterface
                             // NEXT_MAJOR: Use `messages` as default value and remove the deprecation.
                             ->defaultValue(null)
                             ->validate()
-                                ->always(static function ($value) {
+                                ->always(static function (?string $value): ?string {
                                     if (null === $value) {
                                         @trigger_error(
                                             'Not setting the "sonata_admin.options.default_translation_domain" config option is deprecated'

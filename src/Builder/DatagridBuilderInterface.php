@@ -18,6 +18,8 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 /**
+ * NEXT_MAJOR: Avoid extending deprecated BuilderInterface.
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of \Sonata\AdminBundle\Datagrid\ProxyQueryInterface

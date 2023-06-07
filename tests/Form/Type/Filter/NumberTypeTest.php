@@ -15,6 +15,11 @@ namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
 use Sonata\AdminBundle\Form\Type\Filter\NumberType;
 
+/**
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @group legacy
+ */
 final class NumberTypeTest extends BaseTypeTest
 {
     public function testDefaultOptions(): void
@@ -27,6 +32,9 @@ final class NumberTypeTest extends BaseTypeTest
         static::assertFalse($view->children['value']->vars['required']);
     }
 
+    /**
+     * @psalm-suppress DeprecatedClass
+     */
     protected function getTestedType(): string
     {
         return NumberType::class;

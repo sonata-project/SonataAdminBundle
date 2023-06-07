@@ -1501,7 +1501,11 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     public function showInDashboard(): bool
     {
-        // NEXT_MAJOR: Remove those lines and uncomment the last one.
+        /**
+         * NEXT_MAJOR: Remove those lines and uncomment the last one.
+         *
+         * @psalm-suppress DeprecatedMethod, DeprecatedConstant
+         */
         $permissionShow = $this->getPermissionsShow(self::CONTEXT_DASHBOARD, 'sonata_deprecation_mute');
         $permission = 1 === \count($permissionShow) ? reset($permissionShow) : $permissionShow;
 
@@ -1513,6 +1517,8 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * NEXT_MAJOR: Remove this method.
      *
      * @deprecated since sonata-project/admin-bundle version 4.7 use showInDashboard instead
+     *
+     * @psalm-suppress DeprecatedMethod
      */
     final public function showIn(string $context): bool
     {
@@ -1816,6 +1822,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
     }
 
+    /**
+     * @psalm-suppress DeprecatedProperty
+     */
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
         // NEXT_MAJOR: Remove this code
@@ -1850,6 +1859,9 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         );
     }
 
+    /**
+     * @psalm-suppress DeprecatedProperty
+     */
     protected function generateBaseRouteName(bool $isChildAdmin = false): string
     {
         // NEXT_MAJOR: Remove this code

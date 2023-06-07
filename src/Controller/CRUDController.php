@@ -1495,7 +1495,7 @@ class CRUDController extends AbstractController
             throw new \RuntimeException(sprintf('Controller for action `%s` cannot be resolved', $action));
         }
 
-        return function (ProxyQueryInterface $query, Request $request) use ($controller) {
+        return function (ProxyQueryInterface $query, Request $request) use ($controller): Response {
             $request->attributes->set('_controller', $controller);
             $request->attributes->set('query', $query);
 

@@ -44,7 +44,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
 
         $this->modelManager
             ->method('find')
-            ->willReturnCallback(static function (string $class, $id) use ($model): ?Foo {
+            ->willReturnCallback(static function (string $class, int|string $id) use ($model): ?Foo {
                 if (Foo::class === $class && 123 === $id) {
                     return $model;
                 }

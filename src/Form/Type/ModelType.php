@@ -20,6 +20,7 @@ use Sonata\AdminBundle\Form\EventListener\MergeCollectionListener;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
+use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
@@ -82,7 +83,7 @@ final class ModelType extends AbstractType
     {
         $options = [];
 
-        $options['choice_loader'] = function (Options $options, ?ChoiceListInterface $previousValue) {
+        $options['choice_loader'] = function (Options $options, ?ChoiceListInterface $previousValue): array|ChoiceLoaderInterface {
             if (null !== $previousValue && \count($choices = $previousValue->getChoices()) > 0) {
                 return $choices;
             }
@@ -121,7 +122,7 @@ final class ModelType extends AbstractType
             'btn_catalogue',
             'sonata-project/admin-bundle',
             '4.9',
-            static function (Options $options, $value): string {
+            static function (Options $options, mixed $value): string {
                 if ('SonataAdminBundle' !== $value) {
                     return 'Passing a value to option "btn_catalogue" is deprecated! Use "btn_translation_domain" instead!';
                 }

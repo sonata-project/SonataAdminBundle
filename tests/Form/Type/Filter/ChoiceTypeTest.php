@@ -15,6 +15,11 @@ namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
 use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 
+/**
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @group legacy
+ */
 final class ChoiceTypeTest extends BaseTypeTest
 {
     public function testDefaultOptions(): void
@@ -27,6 +32,9 @@ final class ChoiceTypeTest extends BaseTypeTest
         static::assertFalse($view->children['value']->vars['required']);
     }
 
+    /**
+     * @psalm-suppress DeprecatedClass
+     */
     protected function getTestedType(): string
     {
         return ChoiceType::class;

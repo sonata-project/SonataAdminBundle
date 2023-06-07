@@ -107,6 +107,9 @@ final class Pool
                         AdminInterface::class
                     ), \E_USER_DEPRECATED);
 
+                    /**
+                     * @psalm-suppress DeprecatedMethod, DeprecatedConstant
+                     */
                     if (!$admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD)) {
                         return null;
                     }

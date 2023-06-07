@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Filter;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Filter\FilterFactory;
 use Sonata\AdminBundle\Filter\FilterInterface;
-use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
+use Sonata\AdminBundle\Form\Type\Filter\FilterDataType;
 use Symfony\Component\DependencyInjection\Container;
 
 final class FilterFactoryTest extends TestCase
@@ -34,15 +34,15 @@ final class FilterFactoryTest extends TestCase
     {
         $container = new Container();
         $container
-            ->set(DefaultType::class, new DefaultType());
+            ->set(FilterDataType::class, new FilterDataType());
         $filter = new FilterFactory($container);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            'The service `Sonata\AdminBundle\Form\Type\Filter\DefaultType` must implement `FilterInterface`'
+            'The service `Sonata\AdminBundle\Form\Type\Filter\FilterDataType` must implement `FilterInterface`'
         );
 
-        $filter->create('test', DefaultType::class);
+        $filter->create('test', FilterDataType::class);
     }
 
     public function testCreateFilter(): void

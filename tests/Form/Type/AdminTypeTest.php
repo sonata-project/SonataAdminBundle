@@ -81,11 +81,11 @@ final class AdminTypeTest extends TypeTestCase
         $field->expects(static::once())->method('getAssociationAdmin')->willReturn($admin);
         $field->expects(static::once())->method('getAdmin');
         $field->expects(static::once())->method('getName');
-        $field->expects(static::exactly(3))->method('getOption')->withConsecutive(
-            ['edit', 'standard'],
-            ['inline', 'natural'],
-            ['block_name', false]
-        );
+        $field->expects(static::exactly(3))->method('getOption')->willReturnMap([
+            ['edit', 'standard', 'standard'],
+            ['inline', 'natural', 'natural'],
+            ['block_name', false, false],
+        ]);
 
         $formData = [];
 

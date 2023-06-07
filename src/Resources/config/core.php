@@ -44,6 +44,9 @@ use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
+    /**
+     * @psalm-suppress DeprecatedClass
+     */
     $containerConfigurator->services()
 
         ->set('sonata.admin.pool', Pool::class)

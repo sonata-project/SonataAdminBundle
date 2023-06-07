@@ -16,7 +16,6 @@ namespace Sonata\AdminBundle\Tests\Admin;
 use Doctrine\Common\Collections\Collection;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
@@ -75,6 +74,7 @@ use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormRegistry;
@@ -1230,6 +1230,8 @@ final class AdminTest extends TestCase
      * NEXT_MAJOR: Remove this test.
      *
      * @group legacy
+     *
+     * @psalm-suppress DeprecatedMethod, DeprecatedConstant
      */
     public function testShowIn(): void
     {
@@ -1238,7 +1240,7 @@ final class AdminTest extends TestCase
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static fn (AdminInterface $adminIn, $attributes, ?object $object = null): bool => $admin === $adminIn && 'LIST' === $attributes);
+            ->willReturnCallback(static fn (AdminInterface $adminIn, string|Expression $attributes, ?object $object = null): bool => $admin === $adminIn && 'LIST' === $attributes);
 
         $admin->setSecurityHandler($securityHandler);
 
@@ -1820,11 +1822,7 @@ final class AdminTest extends TestCase
 
     public function testGetActionButtonsListWithoutExtraChecks(): void
     {
-        /** @var AbstractAdmin<object>&MockObject $admin */
-        $admin = $this->getMockBuilder(AbstractAdmin::class)
-            ->disableOriginalConstructor()
-            ->setMethodsExcept(['getActionButtons', 'configureActionButtons'])
-            ->getMockForAbstractClass();
+        $admin = new PostAdmin();
 
         $securityHandler = $this->createStub(AclSecurityHandlerInterface::class);
         $admin->setSecurityHandler($securityHandler);
@@ -1878,7 +1876,6 @@ final class AdminTest extends TestCase
         $routeGenerator
             ->expects(static::exactly(2))
             ->method('hasAdminRoute')
-            ->withConsecutive([$admin, 'batch'], [$admin, 'delete'])
             ->willReturn(true);
         $admin->setRouteGenerator($routeGenerator);
 

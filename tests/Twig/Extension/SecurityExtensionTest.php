@@ -25,6 +25,9 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
  */
 final class SecurityExtensionTest extends TestCase
 {
+    /**
+     * @psalm-suppress DeprecatedMethod
+     */
     public function testIsGrantedAffirmative(): void
     {
         $securityChecker = $this->createMock(AuthorizationCheckerInterface::class);
@@ -32,12 +35,6 @@ final class SecurityExtensionTest extends TestCase
 
         $securityChecker
             ->method('isGranted')
-            ->withConsecutive(
-                ['foo', null],
-                ['bar', null],
-                ['foo', null],
-                ['bar', null]
-            )
             ->willReturnMap([
                 ['foo', null, false],
                 ['bar', null, true],

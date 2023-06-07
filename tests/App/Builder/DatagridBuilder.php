@@ -25,6 +25,8 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormFactoryInterface;
 
 /**
+ * @psalm-suppress DeprecatedInterface
+ *
  * @phpstan-implements DatagridBuilderInterface<ProxyQueryInterface<object>>
  */
 final class DatagridBuilder implements DatagridBuilderInterface

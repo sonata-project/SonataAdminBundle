@@ -26,6 +26,8 @@ final class IconExtensionTest extends TestCase
 {
     /**
      * @dataProvider iconProvider
+     *
+     * @psalm-suppress DeprecatedMethod
      */
     public function testParseIcon(string $icon, string $expected): void
     {

@@ -99,7 +99,7 @@ final class ModelListType extends AbstractType
             'btn_catalogue',
             'sonata-project/admin-bundle',
             '4.9',
-            static function (Options $options, $value): string {
+            static function (Options $options, mixed $value): string {
                 if ('SonataAdminBundle' !== $value) {
                     return 'Passing a value to option "btn_catalogue" is deprecated! Use "btn_translation_domain" instead!';
                 }
