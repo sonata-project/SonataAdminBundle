@@ -27,6 +27,9 @@ use Symfony\Component\DependencyInjection\Container;
  */
 final class GroupExtensionTest extends TestCase
 {
+    /**
+     * @psalm-suppress DeprecatedMethod
+     */
     public function testGetDashboardGroupsWithCreatableAdmins(): void
     {
         $container = new Container();

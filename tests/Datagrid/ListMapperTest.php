@@ -257,7 +257,7 @@ final class ListMapperTest extends TestCase
             'fooNameNotSortable',
             null,
             [
-                'associated_property' => static fn ($value): string => (string) $value,
+                'associated_property' => static fn (object $value): string => $value instanceof \Stringable ? (string) $value : '',
             ]
         );
         $this->listMapper->add(

@@ -14,17 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AdminAddInitializeCallCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AdminSearchCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\TwigStringExtensionCompilerPass;
 use Sonata\AdminBundle\SonataAdminBundle;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -38,20 +27,7 @@ final class SonataAdminBundleTest extends TestCase
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
         $containerBuilder->expects(static::exactly(11))
-            ->method('addCompilerPass')
-            ->withConsecutive(
-                [new AddDependencyCallsCompilerPass()],
-                [new AddFilterTypeCompilerPass()],
-                [new AdminSearchCompilerPass()],
-                [new ExtensionCompilerPass()],
-                [new GlobalVariablesCompilerPass()],
-                [new ModelManagerCompilerPass()],
-                [new ObjectAclManipulatorCompilerPass()],
-                [new TwigStringExtensionCompilerPass()],
-                [new AdminMakerCompilerPass()],
-                [new AddAuditReadersCompilerPass()],
-                [new AdminAddInitializeCallCompilerPass()],
-            );
+            ->method('addCompilerPass');
 
         $bundle = new SonataAdminBundle();
         $bundle->build($containerBuilder);

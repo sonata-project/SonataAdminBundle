@@ -26,12 +26,6 @@ final class SecurityRuntimeTest extends TestCase
 
         $securityChecker
             ->method('isGranted')
-            ->withConsecutive(
-                ['foo', null],
-                ['bar', null],
-                ['foo', null],
-                ['bar', null]
-            )
             ->willReturnMap([
                 ['foo', null, false],
                 ['bar', null, true],

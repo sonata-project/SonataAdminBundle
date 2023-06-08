@@ -73,7 +73,7 @@ final class FormMapperTest extends TestCase
         $securityHandler = $this->createStub(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
-            ->willReturnCallback(static fn (AdminInterface $admin, string $attributes, $object = null): bool => self::DEFAULT_GRANTED_ROLE === $attributes);
+            ->willReturnCallback(static fn (AdminInterface $admin, string $attributes, ?object $object = null): bool => self::DEFAULT_GRANTED_ROLE === $attributes);
 
         $this->admin->setSecurityHandler($securityHandler);
         $this->admin->setFormContractor($this->contractor);

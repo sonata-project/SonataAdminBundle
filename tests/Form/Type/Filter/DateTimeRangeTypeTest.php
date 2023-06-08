@@ -19,6 +19,11 @@ use Sonata\Form\Type\DateTimeRangeType as FormDateTimeRangeType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @group legacy
+ */
 final class DateTimeRangeTypeTest extends BaseTypeTest
 {
     public function testDefaultOptions(): void
@@ -31,6 +36,9 @@ final class DateTimeRangeTypeTest extends BaseTypeTest
         static::assertFalse($view->children['value']->vars['required']);
     }
 
+    /**
+     * @psalm-suppress DeprecatedClass
+     */
     public function testGetDefaultOptions(): void
     {
         $type = new DateTimeRangeType();
@@ -49,6 +57,9 @@ final class DateTimeRangeTypeTest extends BaseTypeTest
         static::assertSame($expected, $options);
     }
 
+    /**
+     * @psalm-suppress DeprecatedClass
+     */
     protected function getTestedType(): string
     {
         return DateTimeRangeType::class;

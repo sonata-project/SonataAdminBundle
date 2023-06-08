@@ -15,6 +15,11 @@ namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
 use Sonata\AdminBundle\Form\Type\Filter\DateRangeType;
 
+/**
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @group legacy
+ */
 final class DateRangeTypeTest extends BaseTypeTest
 {
     public function testDefaultOptions(): void
@@ -27,6 +32,9 @@ final class DateRangeTypeTest extends BaseTypeTest
         static::assertFalse($view->children['value']->vars['required']);
     }
 
+    /**
+     * @psalm-suppress DeprecatedClass
+     */
     protected function getTestedType(): string
     {
         return DateRangeType::class;

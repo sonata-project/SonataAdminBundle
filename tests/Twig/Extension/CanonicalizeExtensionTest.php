@@ -46,6 +46,8 @@ final class CanonicalizeExtensionTest extends TestCase
 
     /**
      * @dataProvider momentLocalesProvider
+     *
+     * @psalm-suppress DeprecatedMethod
      */
     public function testCanonicalizedLocaleForMoment(?string $expected, string $original): void
     {
@@ -58,6 +60,8 @@ final class CanonicalizeExtensionTest extends TestCase
 
     /**
      * @dataProvider select2LocalesProvider
+     *
+     * @psalm-suppress DeprecatedMethod
      */
     public function testCanonicalizedLocaleForSelect2(?string $expected, string $original): void
     {

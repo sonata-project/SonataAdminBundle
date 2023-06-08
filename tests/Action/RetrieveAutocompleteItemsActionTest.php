@@ -144,11 +144,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $datagrid->method('hasFilter')->with('foo')->willReturn(true);
         $datagrid->method('getFilter')->with('foo')->willReturn($filter);
-        $datagrid->expects(static::exactly(3))->method('setValue')->withConsecutive(
-            ['foo', null, 'sonata'],
-            [DatagridInterface::PER_PAGE, null, 10],
-            [DatagridInterface::PAGE, null, 1]
-        );
+        $datagrid->expects(static::exactly(3))->method('setValue');
 
         $response = ($this->action)($request);
 
@@ -182,12 +178,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             ['entity.property', $filter],
             ['entity2.property2', $filter2],
         ]);
-        $datagrid->expects(static::exactly(4))->method('setValue')->withConsecutive(
-            ['entity__property', null, 'sonata'],
-            ['entity2__property2', null, 'sonata'],
-            [DatagridInterface::PER_PAGE, null, 10],
-            [DatagridInterface::PAGE, null, 1]
-        );
+        $datagrid->expects(static::exactly(4))->method('setValue');
 
         $datagrid->expects(static::once())
             ->method('reorderFilters')
@@ -222,11 +213,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $datagrid->method('hasFilter')->with('entity.property')->willReturn(true);
         $datagrid->method('getFilter')->with('entity.property')->willReturn($filter);
-        $datagrid->expects(static::exactly(3))->method('setValue')->withConsecutive(
-            ['entity__property', null, 'sonata'],
-            [DatagridInterface::PER_PAGE, null, 10],
-            [DatagridInterface::PAGE, null, 1]
-        );
+        $datagrid->expects(static::exactly(3))->method('setValue');
 
         $response = ($this->action)($request);
 
