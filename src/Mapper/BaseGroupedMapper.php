@@ -268,7 +268,7 @@ abstract class BaseGroupedMapper implements MapperInterface
         }
 
         if (isset($groups[$group])) {
-            foreach ($groups[$group]['fields'] as $field) {
+            foreach (array_keys($groups[$group]['fields']) as $field) {
                 $this->remove($field);
             }
         }
@@ -302,7 +302,7 @@ abstract class BaseGroupedMapper implements MapperInterface
 
         foreach ($tabs[$tab]['groups'] as $group) {
             if (isset($groups[$group])) {
-                foreach ($groups[$group]['fields'] as $field) {
+                foreach (array_keys($groups[$group]['fields']) as $field) {
                     $this->remove($field);
                 }
             }
