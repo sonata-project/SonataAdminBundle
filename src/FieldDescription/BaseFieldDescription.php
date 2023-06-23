@@ -378,7 +378,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     abstract protected function setAssociationMapping(array $associationMapping): void;
 
     /**
-     *  @param array<array<string, mixed>> $parentAssociationMappings
+     * @param array<array<string, mixed>> $parentAssociationMappings
      */
     abstract protected function setParentAssociationMappings(array $parentAssociationMappings): void;
 
