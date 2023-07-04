@@ -48,14 +48,12 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
             $availableManagers[$id] = $definition;
         }
 
-        if ([] !== $availableManagers) {
-            $bundles = $container->getParameter('kernel.bundles');
-            \assert(\is_array($bundles));
+        $bundles = $container->getParameter('kernel.bundles');
+        \assert(\is_array($bundles));
 
-            if (isset($bundles['MakerBundle'])) {
-                $adminMakerDefinition = $container->getDefinition('sonata.admin.maker');
-                $adminMakerDefinition->replaceArgument(1, $availableManagers);
-            }
+        if (isset($bundles['MakerBundle'])) {
+            $adminMakerDefinition = $container->getDefinition('sonata.admin.maker');
+            $adminMakerDefinition->replaceArgument(1, $availableManagers);
         }
     }
 }
