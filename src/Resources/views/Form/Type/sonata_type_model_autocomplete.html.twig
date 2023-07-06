@@ -10,9 +10,9 @@ file that was distributed with this source code.
 #}
 {% apply spaceless %}
     <select id="{{ id }}_autocomplete_input" data-sonata-select2="false"
-        {%- if read_only|default(false) %} readonly="readonly"{% endif -%}
         {%- if disabled %} disabled="disabled"{% endif %}
         {%- if multiple %} multiple="multiple"{% endif %}
+        {%- for attribute, value in attr %} {{ attribute }}="{{ value }}" {% endfor -%}
     >
         {%- for idx, val in value|filter((val, idx) => idx~'' != '_labels') -%}
             <option value="{{ val }}" selected>{{ value['_labels'][idx] }}</option>
