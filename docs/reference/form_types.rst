@@ -483,6 +483,18 @@ The available options are:
           }
       }
 
+``attr``
+  An array of arbitrary attributes which will be rendered inside the select tag::
+
+      $form
+          ->add('category', ModelAutocompleteType::class, [
+              'property' => 'title',
+              'attr' => [
+                    'data-my-custom-variable' => 'my-custom-value',
+              ],
+          ])
+      ;
+
 Sonata\\AdminBundle\\Form\\Type\\ChoiceFieldMaskType
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
