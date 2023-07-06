@@ -70,7 +70,6 @@ file that was distributed with this source code.
                 placeholder: '{{ placeholder ?: allowClearPlaceholder }}', // allowClear needs placeholder to work properly
                 allowClear: {{ required ? 'false' : 'true' }},
                 enable: {{ disabled ? 'false' : 'true' }},
-                readonly: {{ attr.read_only|default(false) ? 'true' : 'false' }},
                 minimumInputLength: {{ minimum_input_length }},
                 theme: 'bootstrap',
                 width: function() {
