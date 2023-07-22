@@ -23,10 +23,12 @@ final class CanonicalizeRuntime implements RuntimeExtensionInterface
      * TODO: Remove second argument when dropping support for `sonata-project/form-extensions` 1.x.
      *
      * @internal This class should only be used through Twig
+     *
+     * @psalm-suppress UndefinedClass
      */
     public function __construct(
         private RequestStack $requestStack,
-        private ?SonataFormCanonicalizeRuntime $canonicalizeRuntime
+        private ?SonataFormCanonicalizeRuntime $canonicalizeRuntime // @phpstan-ignore-line
     ) {
     }
 
@@ -35,6 +37,8 @@ final class CanonicalizeRuntime implements RuntimeExtensionInterface
      *
      * Returns a canonicalized locale for "Moment.js" NPM library,
      * or `null` if the locale's language is "en", which doesn't require localization.
+     *
+     * @psalm-suppress UndefinedClass
      */
     public function getCanonicalizedLocaleForMoment(): ?string
     {
@@ -42,6 +46,7 @@ final class CanonicalizeRuntime implements RuntimeExtensionInterface
             return null;
         }
 
+        // @phpstan-ignore-next-line
         return $this->canonicalizeRuntime->getCanonicalizedLocaleForMoment();
     }
 
