@@ -110,8 +110,6 @@ final class AppKernel extends Kernel
 
         /**
          * TODO: Remove when support for SonataBlockBundle 4 is dropped.
-         *
-         * @psalm-suppress DeprecatedClass
          */
         $containerBuilder->loadFromExtension('sonata_block', class_exists(HttpCacheHandler::class) ? ['http_cache' => false] : []);
     }

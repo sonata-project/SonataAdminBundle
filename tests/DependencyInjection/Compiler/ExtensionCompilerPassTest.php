@@ -567,8 +567,6 @@ final class ExtensionCompilerPassTest extends TestCase
         $blockExtension = new SonataBlockExtension();
         /**
          * TODO: remove "http_cache" parameter when support for SonataBlockBundle 4 is dropped.
-         *
-         * @psalm-suppress DeprecatedClass
          */
         $blockExtension->load(
             [

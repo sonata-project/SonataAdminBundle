@@ -39,7 +39,6 @@ final class AdminPreviewBlockService extends AbstractBlockService
     public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
     {
         $template = $blockContext->getTemplate();
-        \assert(\is_string($template));
 
         $admin = $this->getAdmin($blockContext->getSetting('code'));
         $this->handleFilters($admin, $blockContext);
