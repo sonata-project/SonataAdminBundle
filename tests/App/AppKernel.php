@@ -108,7 +108,7 @@ final class AppKernel extends Kernel
 
         $loader->load(sprintf('%s/config/services.yml', $this->getProjectDir()));
 
-        /**
+        /*
          * TODO: Remove when support for SonataBlockBundle 4 is dropped.
          */
         $containerBuilder->loadFromExtension('sonata_block', class_exists(HttpCacheHandler::class) ? ['http_cache' => false] : []);
