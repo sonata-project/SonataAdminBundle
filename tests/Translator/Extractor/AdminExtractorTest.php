@@ -32,7 +32,7 @@ final class AdminExtractorTest extends TestCase
     /**
      * @var AdminInterface<object>&MockObject
      */
-    private AdminInterface$fooAdmin;
+    private AdminInterface $fooAdmin;
 
     /**
      * @var AdminInterface<object>&MockObject

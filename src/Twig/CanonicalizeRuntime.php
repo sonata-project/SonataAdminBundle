@@ -17,6 +17,7 @@ use Sonata\Form\Twig\CanonicalizeRuntime as SonataFormCanonicalizeRuntime;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\RuntimeExtensionInterface;
 
+/** @psalm-suppress UndefinedClass */
 final class CanonicalizeRuntime implements RuntimeExtensionInterface
 {
     /**
@@ -26,7 +27,7 @@ final class CanonicalizeRuntime implements RuntimeExtensionInterface
      */
     public function __construct(
         private RequestStack $requestStack,
-        private ?SonataFormCanonicalizeRuntime $canonicalizeRuntime
+        private ?SonataFormCanonicalizeRuntime $canonicalizeRuntime = null // @phpstan-ignore-line
     ) {
     }
 
@@ -42,6 +43,7 @@ final class CanonicalizeRuntime implements RuntimeExtensionInterface
             return null;
         }
 
+        // @phpstan-ignore-next-line
         return $this->canonicalizeRuntime->getCanonicalizedLocaleForMoment();
     }
 

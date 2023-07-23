@@ -57,12 +57,12 @@ final class ShowMapperTest extends TestCase
     /**
      * @var array<string, array<string, mixed>>
      */
-    private array $groups;
+    private array $groups = [];
 
     /**
      * @var array<string, bool>
      */
-    private array $listShowFields;
+    private array $listShowFields = [];
 
     protected function setUp(): void
     {
