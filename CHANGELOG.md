@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.26.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.25.0...4.26.0) - 2023-07-29
+### Changed
+- [[#8079](https://github.com/sonata-project/SonataAdminBundle/pull/8079)] Update jQuery to `^3.7.0` ([@tonyaxo](https://github.com/tonyaxo))
+
+### Fixed
+- [[#8082](https://github.com/sonata-project/SonataAdminBundle/pull/8082)] Installing SonataAdminBundle without any persistence does not throw missing abstract argument definition ([@jordisala1991](https://github.com/jordisala1991))
+
 ## [4.25.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.24.0...4.25.0) - 2023-06-03
 ### Added
 - [[#8072](https://github.com/sonata-project/SonataAdminBundle/pull/8072)] Support for SonataBlockBundle 5.0 ([@jordisala1991](https://github.com/jordisala1991))
