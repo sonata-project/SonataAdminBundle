@@ -68,8 +68,9 @@ services:
 
     sonata_foo_admin:
         class: Sonata\AdminBundle\Tests\App\Admin\FooAdmin
+        arguments: [ ~, Sonata\AdminBundle\Tests\App\Model\Foo, 'sonata.admin.controller.crud' ]
         tags:
-            - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Foo, controller: 'sonata.admin.controller.crud', manager_type: test, label: Foo}
+            - { name: sonata.admin, manager_type: test, label: Foo }
         calls:
             - [addChild, ['@sonata_bar_admin', 'foo']]
 
