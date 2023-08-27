@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Extension\Field\Type;
 
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Symfony\Component\Form\AbstractTypeExtension;
@@ -91,8 +92,13 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
             && \is_array($sonataAdmin)
             && false === $sonataAdmin['admin']
         ) {
-            $blockPrefixes = $view->vars['block_prefixes'];
-            $baseName = str_replace('.', '_', $view->parent->vars['sonata_admin_code']);
+            $blockPrefixes = $view->vars['block_prefixes'] ?? [];
+            \assert(\is_array($blockPrefixes));
+
+            $adminCode = $view->parent->vars['sonata_admin_code'] ?? '';
+            \assert(\is_string($adminCode));
+
+            $baseName = str_replace('.', '_', $adminCode);
 
             $baseType = $blockPrefixes[\count($blockPrefixes) - 2];
             $lastBlockPrefix = end($blockPrefixes);
@@ -116,7 +122,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
                 'class' => false,
                 'options' => $this->options,
             ];
-            $view->vars['sonata_admin_code'] = $view->parent->vars['sonata_admin_code'];
+            $view->vars['sonata_admin_code'] = $adminCode;
 
             return;
         }
@@ -126,8 +132,13 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
             $sonataAdmin['value'] = $form->getData();
 
             // add a new block types, so the Admin Form element can be tweaked based on the admin code
-            $blockPrefixes = $view->vars['block_prefixes'];
-            $baseName = str_replace('.', '_', $sonataAdmin['admin']->getCode());
+            $blockPrefixes = $view->vars['block_prefixes'] ?? [];
+            \assert(\is_array($blockPrefixes));
+
+            $admin = $sonataAdmin['admin'];
+            \assert($admin instanceof AdminInterface);
+
+            $baseName = str_replace('.', '_', $admin->getCode());
             $baseType = $blockPrefixes[\count($blockPrefixes) - 2];
             $lastBlockPrefix = end($blockPrefixes);
             \assert(\is_string($lastBlockPrefix));
@@ -145,8 +156,8 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
             $view->vars['block_prefixes'] = array_unique($blockPrefixes);
             $view->vars['sonata_admin_enabled'] = true;
             $view->vars['sonata_admin'] = $sonataAdmin;
-            $view->vars['sonata_admin_code'] = $sonataAdmin['admin']->getCode();
-            $view->vars['sonata_admin_translation_domain'] = $sonataAdmin['admin']->getTranslationDomain();
+            $view->vars['sonata_admin_code'] = $admin->getCode();
+            $view->vars['sonata_admin_translation_domain'] = $admin->getTranslationDomain();
 
             $attr = $view->vars['attr'];
 
