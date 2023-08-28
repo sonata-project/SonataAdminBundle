@@ -132,8 +132,8 @@ final class ExtensionCompilerPassTest extends TestCase
         static::assertArrayHasKey('admins', $extensionMap);
         static::assertCount(1, $extensionMap['admins']);
 
-        static::assertArrayHasKey('sonata_extension_publish', $extensionMap['admins']['sonata_post_admin']);
         static::assertCount(1, $extensionMap['admins']['sonata_post_admin']);
+        static::assertArrayHasKey('sonata_extension_publish', $extensionMap['admins']['sonata_post_admin']);
 
         // Excludes
         static::assertArrayHasKey('excludes', $extensionMap);
