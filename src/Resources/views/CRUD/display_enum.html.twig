@@ -10,13 +10,16 @@ file that was distributed with this source code.
 #}
 
 {%- apply spaceless %}
-    {% set value = use_value|default(false) ? value.value : value.name %}
-
-    {% if translation_domain|default(null) is null %}
-        {% set value = value %}
+    {% if value is null %}
+        &nbsp;
     {% else %}
-        {% set value = value|trans({}, translation_domain) %}
-    {% endif %}
+        {% set value = use_value|default(false) ? value.value : value.name %}
 
-    {{ value }}
+        {% if translation_domain|default(null) is null %}
+            {% set value = value %}
+        {% else %}
+            {% set value = value|trans({}, translation_domain) %}
+        {% endif %}
+        {{ value }}
+    {% endif %}
 {% endapply -%}
