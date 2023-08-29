@@ -89,9 +89,11 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         static::assertFalse($dashboardGroupsSettings['sonata_group_one']['on_top']);
         static::assertTrue($dashboardGroupsSettings['sonata_group_three']['on_top']);
         static::assertFalse($dashboardGroupsSettings['sonata_group_one']['keep_open']);
+        static::assertIsArray($dashboardGroupsSettings['sonata_group_one']['items'][0]);
         static::assertArrayHasKey('admin', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
         static::assertArrayHasKey('route_params', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
         static::assertContains('sonata_post_admin', $dashboardGroupsSettings['sonata_group_one']['items'][0]);
+        static::assertIsArray($dashboardGroupsSettings['sonata_group_one']['items'][1]);
         static::assertArrayHasKey('route', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
         static::assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
         static::assertArrayHasKey('route_params', $dashboardGroupsSettings['sonata_group_one']['items'][1]);
@@ -100,6 +102,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         static::assertSame('blog_name', $dashboardGroupsSettings['sonata_group_one']['items'][1]['route']);
         static::assertSame('Blog', $dashboardGroupsSettings['sonata_group_one']['items'][1]['label']);
         static::assertSame([], $dashboardGroupsSettings['sonata_group_one']['items'][1]['route_params']);
+        static::assertIsArray($dashboardGroupsSettings['sonata_group_one']['items'][2]);
         static::assertArrayHasKey('route', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
         static::assertArrayHasKey('label', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
         static::assertArrayHasKey('route_params', $dashboardGroupsSettings['sonata_group_one']['items'][2]);
