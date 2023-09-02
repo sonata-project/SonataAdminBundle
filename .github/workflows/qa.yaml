@@ -39,7 +39,7 @@ jobs:
                   dependency-versions: highest
 
             - name: PHPStan
-              run: vendor/bin/phpstan --no-progress --memory-limit=1G analyse --error-format=github
+              run: vendor/bin/phpstan --no-progress --memory-limit=1G analyse
 
     psalm:
         name: Psalm
