@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.27.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.26.1...4.27.0) - 2023-09-07
+### Added
+- [[#8083](https://github.com/sonata-project/SonataAdminBundle/pull/8083)] Autocomplete attr support for select2 ([@pietaj](https://github.com/pietaj))
+
 ## [4.26.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.26.0...4.26.1) - 2023-09-02
 ### Fixed
 - [[#8091](https://github.com/sonata-project/SonataAdminBundle/pull/8091)] Fix display of enums for nullable property ([@bedfir](https://github.com/bedfir))
