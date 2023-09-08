@@ -413,7 +413,7 @@ final class Configuration implements ConfigurationInterface
                                         ->setDeprecated(
                                             'sonata-project/admin-bundle',
                                             '4.9',
-                                            'The "default_label_catalogue" node is deprecated, use "default_translation_domain" instead.'
+                                            'The "label_catalogue" node is deprecated, use "translation_domain" instead.'
                                         )
                                     ->end()
                                     ->scalarNode('icon')->end()
