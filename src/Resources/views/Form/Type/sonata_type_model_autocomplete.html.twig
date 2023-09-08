@@ -10,9 +10,9 @@ file that was distributed with this source code.
 #}
 {% apply spaceless %}
     <select id="{{ id }}_autocomplete_input" data-sonata-select2="false"
-        {%- if read_only|default(false) %} readonly="readonly"{% endif -%}
         {%- if disabled %} disabled="disabled"{% endif %}
         {%- if multiple %} multiple="multiple"{% endif %}
+        {%- for attribute, value in attr %} {{ attribute }}="{{ value }}" {% endfor -%}
     >
         {%- for idx, val in value|filter((val, idx) => idx~'' != '_labels') -%}
             <option value="{{ val }}" selected>{{ value['_labels'][idx] }}</option>
@@ -70,7 +70,6 @@ file that was distributed with this source code.
                 placeholder: '{{ placeholder ?: allowClearPlaceholder }}', // allowClear needs placeholder to work properly
                 allowClear: {{ required ? 'false' : 'true' }},
                 enable: {{ disabled ? 'false' : 'true' }},
-                readonly: {{ attr.read_only|default(false) ? 'true' : 'false' }},
                 minimumInputLength: {{ minimum_input_length }},
                 theme: 'bootstrap',
                 width: function() {
