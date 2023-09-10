@@ -505,12 +505,24 @@ file that was distributed with this source code.
                         defaultFieldId = '#{{ main_form_name }}_' + field;
                     }
 
+                    // catch select2 fields with inline: table option
+                    if (jQuery(defaultFieldId).length === 0) {
+                        defaultFieldId = '#{{ main_form_name }}_' + field + '_autocomplete_input';
+                    }
+
                     return defaultFieldId;
                 };
 
                 jQuery.each(allFields, function (i, field) {
                     var fieldContainer = controlGroupIdFunc(field);
                     jQuery(fieldContainer).hide();
+                    {% if form.parent.vars.sonata_admin.inline == 'table' %}
+                        var td = jQuery(fieldContainer).parent();
+                        var columnIndex = td.index();
+                        var headerTh = $("table thead tr th:eq(" + columnIndex + ")");
+                        td.hide();
+                        headerTh.hide();
+                    {% endif %}
                     jQuery(fieldContainer).find('[required="required"]').attr('data-required', 'required').removeAttr("required");
                 });
 
@@ -518,6 +530,13 @@ file that was distributed with this source code.
                     jQuery.each(map[val], function (i, field) {
                         var fieldContainer = controlGroupIdFunc(field);
                         jQuery(fieldContainer).show();
+                        {% if form.parent.vars.sonata_admin.inline == 'table' %}
+                            var td = jQuery(fieldContainer).parent();
+                            var columnIndex = td.index();
+                            var headerTh = $("table thead tr th:eq(" + columnIndex + ")");
+                            td.show();
+                            headerTh.show();
+                        {% endif %}
                         jQuery(fieldContainer).find('[data-required="required"]').attr("required", "required");
                     });
                 }
