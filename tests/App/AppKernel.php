@@ -94,8 +94,8 @@ final class AppKernel extends Kernel
             'php_errors' => [
                 'log' => true,
             ],
-            'handle_all_throwables' => true,
-
+            // Not present on all Symfony versions, since 6.3, need to add it conditionally
+            // 'handle_all_throwables' => true,
         ]);
 
         $securityConfig = [
