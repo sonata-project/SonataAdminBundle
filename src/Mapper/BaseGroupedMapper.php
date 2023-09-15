@@ -44,8 +44,6 @@ abstract class BaseGroupedMapper implements MapperInterface
      * @param array<string, mixed> $options
      *
      * @throws \LogicException
-     *
-     * @return static
      */
     final public function with(string $name, array $options = []): static
     {
@@ -167,8 +165,6 @@ abstract class BaseGroupedMapper implements MapperInterface
 
     /**
      * Only nested add if the condition match true.
-     *
-     * @return static
      */
     final public function ifTrue(bool $bool): static
     {
@@ -179,8 +175,6 @@ abstract class BaseGroupedMapper implements MapperInterface
 
     /**
      * Only nested add if the condition match false.
-     *
-     * @return static
      */
     final public function ifFalse(bool $bool): static
     {
@@ -191,8 +185,6 @@ abstract class BaseGroupedMapper implements MapperInterface
 
     /**
      * @throws \LogicException
-     *
-     * @return static
      */
     final public function ifEnd(): static
     {
@@ -209,8 +201,6 @@ abstract class BaseGroupedMapper implements MapperInterface
      * Add new tab.
      *
      * @param array<string, mixed> $options
-     *
-     * @return static
      */
     final public function tab(string $name, array $options = []): static
     {
@@ -221,8 +211,6 @@ abstract class BaseGroupedMapper implements MapperInterface
      * Close the current group or tab.
      *
      * @throws \LogicException
-     *
-     * @return static
      */
     final public function end(): static
     {
@@ -255,8 +243,6 @@ abstract class BaseGroupedMapper implements MapperInterface
      * @param string $group          The group to delete
      * @param string $tab            The tab the group belongs to, defaults to 'default'
      * @param bool   $deleteEmptyTab Whether or not the Tab should be deleted, when the deleted group leaves the tab empty after deletion
-     *
-     * @return static
      */
     final public function removeGroup(string $group, string $tab = 'default', bool $deleteEmptyTab = false): static
     {
@@ -292,8 +278,6 @@ abstract class BaseGroupedMapper implements MapperInterface
 
     /**
      * Removes a tab.
-     *
-     * @return static
      */
     final public function removeTab(string $tab): static
     {

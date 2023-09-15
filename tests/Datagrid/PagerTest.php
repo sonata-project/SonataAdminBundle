@@ -226,8 +226,6 @@ final class PagerTest extends TestCase
 
     /**
      * @param mixed[] $args
-     *
-     * @return mixed
      */
     protected function callMethod(object $obj, string $name, array $args = []): mixed
     {

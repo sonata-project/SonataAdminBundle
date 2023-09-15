@@ -329,9 +329,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->mappingType;
     }
 
-    /**
-     * @return string|false|null
-     */
     final public function getLabel(): string|false|null
     {
         return $this->getOption('label');
@@ -384,8 +381,6 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     /**
      * @throws NoValueException
-     *
-     * @return mixed
      */
     final protected function getFieldValue(?object $object, string $fieldName): mixed
     {

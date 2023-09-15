@@ -22,7 +22,6 @@ use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 use Symfony\Component\Security\Acl\Exception\NoAceFoundException;
-use Symfony\Component\Security\Acl\Model\SecurityIdentityInterface;
 use Symfony\Component\Security\Acl\Permission\MaskBuilderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -226,8 +225,6 @@ final class AdminObjectAclManipulator
 
     /**
      * Gets a user or a role security identity.
-     *
-     * @return RoleSecurityIdentity|UserSecurityIdentity
      */
     private function getSecurityIdentity(string|UserInterface $aclValue): RoleSecurityIdentity|UserSecurityIdentity
     {

@@ -201,8 +201,6 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
      *
      * return the value related to FieldDescription, if the associated object does no
      * exists => a temporary one is created.
-     *
-     * @return mixed
      */
     public function getValueFromFieldDescription(?object $object, FieldDescriptionInterface $fieldDescription): mixed
     {

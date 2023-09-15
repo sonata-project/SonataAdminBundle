@@ -125,8 +125,6 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
 
     /**
      * @throws \RuntimeException
-     *
-     * @return mixed
      */
     public function renderRelationElement(mixed $element, FieldDescriptionInterface $fieldDescription): mixed
     {

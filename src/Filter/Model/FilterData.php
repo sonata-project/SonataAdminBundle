@@ -56,9 +56,6 @@ final class FilterData
         return new self($type, \array_key_exists('value', $data), $data['value'] ?? null);
     }
 
-    /**
-     * @return mixed
-     */
     public function getValue(): mixed
     {
         if (!$this->hasValue) {
