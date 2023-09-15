@@ -44,8 +44,10 @@ abstract class BaseGroupedMapper implements MapperInterface
      * @param array<string, mixed> $options
      *
      * @throws \LogicException
+     *
+     * @return $this
      */
-    final public function with(string $name, array $options = []): static
+    final public function with(string $name, array $options = []): self
     {
         if (!$this->shouldApply()) {
             return $this;
@@ -165,8 +167,10 @@ abstract class BaseGroupedMapper implements MapperInterface
 
     /**
      * Only nested add if the condition match true.
+     *
+     * @return $this
      */
-    final public function ifTrue(bool $bool): static
+    final public function ifTrue(bool $bool): self
     {
         $this->apply[] = true === $bool;
 
@@ -175,8 +179,10 @@ abstract class BaseGroupedMapper implements MapperInterface
 
     /**
      * Only nested add if the condition match false.
+     *
+     * @return $this
      */
-    final public function ifFalse(bool $bool): static
+    final public function ifFalse(bool $bool): self
     {
         $this->apply[] = false === $bool;
 
@@ -185,8 +191,10 @@ abstract class BaseGroupedMapper implements MapperInterface
 
     /**
      * @throws \LogicException
+     *
+     * @return $this
      */
-    final public function ifEnd(): static
+    final public function ifEnd(): self
     {
         if ([] === $this->apply) {
             throw new \LogicException('No open ifTrue() or ifFalse(), you cannot use ifEnd()');
@@ -201,8 +209,10 @@ abstract class BaseGroupedMapper implements MapperInterface
      * Add new tab.
      *
      * @param array<string, mixed> $options
+     *
+     * @return $this
      */
-    final public function tab(string $name, array $options = []): static
+    final public function tab(string $name, array $options = []): self
     {
         return $this->with($name, array_merge($options, ['tab' => true]));
     }
@@ -211,8 +221,10 @@ abstract class BaseGroupedMapper implements MapperInterface
      * Close the current group or tab.
      *
      * @throws \LogicException
+     *
+     * @return $this
      */
-    final public function end(): static
+    final public function end(): self
     {
         if (!$this->shouldApply()) {
             return $this;
@@ -243,8 +255,10 @@ abstract class BaseGroupedMapper implements MapperInterface
      * @param string $group          The group to delete
      * @param string $tab            The tab the group belongs to, defaults to 'default'
      * @param bool   $deleteEmptyTab Whether or not the Tab should be deleted, when the deleted group leaves the tab empty after deletion
+     *
+     * @return $this
      */
-    final public function removeGroup(string $group, string $tab = 'default', bool $deleteEmptyTab = false): static
+    final public function removeGroup(string $group, string $tab = 'default', bool $deleteEmptyTab = false): self
     {
         $groups = $this->getGroups();
 
@@ -278,8 +292,10 @@ abstract class BaseGroupedMapper implements MapperInterface
 
     /**
      * Removes a tab.
+     *
+     * @return $this
      */
-    final public function removeTab(string $tab): static
+    final public function removeTab(string $tab): self
     {
         $groups = $this->getGroups();
         $tabs = $this->getTabs();
