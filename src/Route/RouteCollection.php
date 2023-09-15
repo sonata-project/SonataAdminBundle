@@ -151,7 +151,7 @@ final class RouteCollection implements RouteCollectionInterface
      *
      * @return static
      */
-    public function clearExcept($routeList): RouteCollectionInterface
+    public function clearExcept($routeList): static
     {
         if (!\is_array($routeList)) {
             $routeList = [$routeList];

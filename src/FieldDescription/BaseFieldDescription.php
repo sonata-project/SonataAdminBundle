@@ -177,7 +177,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->name;
     }
 
-    final public function getOption(string $name, mixed $default = null)
+    final public function getOption(string $name, mixed $default = null): mixed
     {
         return $this->options[$name] ?? $default;
     }
@@ -324,7 +324,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $this->options[$name] = array_merge($this->options[$name], $options);
     }
 
-    final public function getMappingType()
+    final public function getMappingType(): int|string|null
     {
         return $this->mappingType;
     }
@@ -332,7 +332,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     /**
      * @return string|false|null
      */
-    final public function getLabel()
+    final public function getLabel(): string|false|null
     {
         return $this->getOption('label');
     }
@@ -352,7 +352,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         return $this->getOption('sort_parent_association_mappings');
     }
 
-    final public function getTranslationDomain()
+    final public function getTranslationDomain(): string|false
     {
         return $this->getOption('translation_domain') ?? $this->getAdmin()->getTranslationDomain();
     }
@@ -387,7 +387,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
      *
      * @return mixed
      */
-    final protected function getFieldValue(?object $object, string $fieldName)
+    final protected function getFieldValue(?object $object, string $fieldName): mixed
     {
         if ($this->isVirtual() || null === $object) {
             return null;

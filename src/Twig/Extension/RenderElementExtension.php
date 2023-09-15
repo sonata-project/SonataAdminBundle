@@ -149,7 +149,7 @@ final class RenderElementExtension extends AbstractExtension
      *
      * @return mixed
      */
-    public function renderRelationElement(mixed $element, FieldDescriptionInterface $fieldDescription)
+    public function renderRelationElement(mixed $element, FieldDescriptionInterface $fieldDescription): mixed
     {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'

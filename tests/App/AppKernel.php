@@ -83,8 +83,19 @@ final class AppKernel extends Kernel
             ],
             'http_method_override' => false,
             'session' => [
+                'cookie_secure' => 'auto',
+                'cookie_samesite' => 'lax',
+                'save_path' => null,
                 'storage_factory_id' => 'session.storage.factory.mock_file',
             ],
+            'validation' => [
+                'email_validation_mode' => 'html5',
+            ],
+            'php_errors' => [
+                'log' => true,
+            ],
+            'handle_all_throwables' => true,
+
         ]);
 
         $securityConfig = [

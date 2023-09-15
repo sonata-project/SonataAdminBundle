@@ -190,7 +190,7 @@ final class CanonicalizeRuntimeTest extends TestCase
     /**
      * @return array<array{?string, string}>
      */
-    public function select2LocalesProvider()
+    public function select2LocalesProvider(): array
     {
         return [
             ['ar', 'ar'],

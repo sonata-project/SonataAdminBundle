@@ -229,7 +229,7 @@ final class AdminObjectAclManipulator
      *
      * @return RoleSecurityIdentity|UserSecurityIdentity
      */
-    private function getSecurityIdentity(string|UserInterface $aclValue): SecurityIdentityInterface
+    private function getSecurityIdentity(string|UserInterface $aclValue): RoleSecurityIdentity|UserSecurityIdentity
     {
         return ($aclValue instanceof UserInterface)
             ? UserSecurityIdentity::fromAccount($aclValue)

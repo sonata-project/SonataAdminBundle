@@ -204,7 +204,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
      *
      * @return mixed
      */
-    public function getValueFromFieldDescription(?object $object, FieldDescriptionInterface $fieldDescription)
+    public function getValueFromFieldDescription(?object $object, FieldDescriptionInterface $fieldDescription): mixed
     {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.3 and will be removed in 5.0.',

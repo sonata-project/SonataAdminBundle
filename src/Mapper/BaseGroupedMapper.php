@@ -47,7 +47,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    final public function with(string $name, array $options = []): self
+    final public function with(string $name, array $options = []): static
     {
         if (!$this->shouldApply()) {
             return $this;
@@ -170,7 +170,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    final public function ifTrue(bool $bool): self
+    final public function ifTrue(bool $bool): static
     {
         $this->apply[] = true === $bool;
 
@@ -182,7 +182,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    final public function ifFalse(bool $bool): self
+    final public function ifFalse(bool $bool): static
     {
         $this->apply[] = false === $bool;
 
@@ -194,7 +194,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    final public function ifEnd(): self
+    final public function ifEnd(): static
     {
         if ([] === $this->apply) {
             throw new \LogicException('No open ifTrue() or ifFalse(), you cannot use ifEnd()');
@@ -212,7 +212,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    final public function tab(string $name, array $options = []): self
+    final public function tab(string $name, array $options = []): static
     {
         return $this->with($name, array_merge($options, ['tab' => true]));
     }
@@ -224,7 +224,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    final public function end(): self
+    final public function end(): static
     {
         if (!$this->shouldApply()) {
             return $this;
@@ -258,7 +258,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    final public function removeGroup(string $group, string $tab = 'default', bool $deleteEmptyTab = false)
+    final public function removeGroup(string $group, string $tab = 'default', bool $deleteEmptyTab = false): static
     {
         $groups = $this->getGroups();
 
@@ -295,7 +295,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @return static
      */
-    final public function removeTab(string $tab): self
+    final public function removeTab(string $tab): static
     {
         $groups = $this->getGroups();
         $tabs = $this->getTabs();
