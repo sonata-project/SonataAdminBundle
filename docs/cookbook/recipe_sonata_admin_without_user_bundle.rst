@@ -349,7 +349,7 @@ Login template resembling Sonata style
                     <span>Login</span>
                 </a>
             </div>
-            <div class="login-box-body">
+            <div class="login-card-body">
                 {% block sonata_user_login_form %}
                     {% block sonata_user_login_error %}
                         {% if error %}
@@ -365,7 +365,7 @@ Login template resembling Sonata style
                             </div>
                         {% endfor %}
                     {% endfor %}
-                    <p class="login-box-msg">{{ 'Authentication'|trans }}</p>
+                    <p class="login-card-msg">{{ 'Authentication'|trans }}</p>
                     <form action="{{ path("admin_login") }}" method="post" role="form">
                         {{ form_row(form._token) }}
 

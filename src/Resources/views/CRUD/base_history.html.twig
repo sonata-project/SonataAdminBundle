@@ -19,8 +19,8 @@ file that was distributed with this source code.
 
     <div class="row">
         <div class="col-md-5">
-            <div class="box box-primary">
-                <div class="box-body table-responsive no-padding">
+            <div class="card card-primary">
+                <div class="card-body table-responsive no-padding">
                     <table class="table" id="revisions">
                         <thead>
                         <tr>
@@ -56,36 +56,4 @@ file that was distributed with this source code.
 
         </div>
     </div>
-
-    <script>
-        jQuery(document).ready(function() {
-
-            jQuery('a.revision-link, a.revision-compare-link').bind('click', function(event) {
-                event.stopPropagation();
-                event.preventDefault();
-
-                action = jQuery(this).hasClass('revision-link')
-                    ? 'show'
-                    : 'compare';
-
-                jQuery('#revision-detail').html('');
-
-                if(action == 'show'){
-                    jQuery('table#revisions tbody tr').removeClass('current');
-                    jQuery(this).parent('').removeClass('current');
-                }
-
-                jQuery.ajax({
-                    url: jQuery(this).attr('href'),
-                    dataType: 'html',
-                    success: function(data) {
-                        jQuery('#revision-detail').html(data);
-                    }
-                });
-
-                return false;
-            });
-
-        });
-    </script>
 {% endblock %}

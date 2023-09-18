@@ -268,9 +268,9 @@ counter is related to the filters from one admin
                     type:     sonata.admin.block.stats   # block id
                     settings:
                         code:  sonata.page.admin.page    # admin code - service id
-                        icon:  fas fa-magic               # font awesome icon
+                        icon:  fas fa-magic              # font awesome icon
                         text:  app.page.stats            # static text or translation message
-                        color: bg-yellow                 # colors: bg-green, bg-red and bg-aqua
+                        color: bg-warning                # colors: bg-primary, bg-secondary, bg-success, ...
                         filters:                         # filter values
                             edited: { value: 1 }
 

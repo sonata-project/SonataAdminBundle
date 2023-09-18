@@ -52,12 +52,12 @@ file that was distributed with this source code.
     {% else %}
         {% set currencySymbol = money_pattern|replace({'{{ widget }}': ''})|trim %}
         {% if money_pattern matches '/^{{ widget }}/' %}
-            <div class="input-group">
+            <div class="form-group">
                 {{- block('form_widget_simple') -}}
                 <span class="input-group-addon">{{ currencySymbol }}</span>
             </div>
         {% elseif money_pattern matches '/{{ widget }}$/' %}
-            <div class="input-group">
+            <div class="form-group">
                 <span class="input-group-addon">{{ currencySymbol }}</span>
                 {{- block('form_widget_simple') -}}
             </div>
@@ -68,7 +68,7 @@ file that was distributed with this source code.
 {% block percent_widget %}
     {% apply spaceless %}
         {% set type = type|default('text') %}
-        <div class="input-group">
+        <div class="form-group">
             {{ block('form_widget_simple') }}
             <span class="input-group-addon">%</span>
         </div>

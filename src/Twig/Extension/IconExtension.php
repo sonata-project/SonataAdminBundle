@@ -41,7 +41,7 @@ final class IconExtension extends AbstractExtension
      *
      * @deprecated since sonata-project/admin-bundle version 4.7 use IconRuntime::parseIcon() instead
      */
-    public function parseIcon(string $icon): string
+    public function parseIcon(string $icon, ?string $extraClasses = ''): string
     {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
@@ -51,6 +51,6 @@ final class IconExtension extends AbstractExtension
             __FUNCTION__
         ), \E_USER_DEPRECATED);
 
-        return $this->iconRuntime->parseIcon($icon);
+        return $this->iconRuntime->parseIcon($icon, $extraClasses);
     }
 }

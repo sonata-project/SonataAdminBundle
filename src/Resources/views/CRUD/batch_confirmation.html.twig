@@ -24,21 +24,21 @@ file that was distributed with this source code.
 
 {% block content %}
     <div class="sonata-ba-delete">
-        <div class="box box-danger">
-            <div class="box-header">
+        <div class="card card-danger">
+            <div class="card-header">
                 {% if batch_translation_domain is not same as(false) %}
                     {% set action_label = action_label|trans({}, batch_translation_domain) %}
                 {% endif %}
-                <h4 class="box-title">{% trans with {'%action%': action_label} from 'SonataAdminBundle' %}title_batch_confirmation{% endtrans %}</h4>
+                <h4 class="card-title">{% trans with {'%action%': action_label} from 'SonataAdminBundle' %}title_batch_confirmation{% endtrans %}</h4>
             </div>
-            <div class="box-body">
+            <div class="card-body">
                 {% if data.all_elements %}
                     {{ 'message_batch_all_confirmation'|trans({}, 'SonataAdminBundle') }}
                 {% else %}
                     {% trans with {'%count%': data.idx|length} from 'SonataAdminBundle' %}message_batch_confirmation{% endtrans %}
                 {% endif %}
             </div>
-            <div class="box-footer clearfix">
+            <div class="card-footer clearfix">
                 <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST">
                     <input type="hidden" name="confirmation" value="ok">
                     <input type="hidden" name="data" value="{{ data|json_encode }}">

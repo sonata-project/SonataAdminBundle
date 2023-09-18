@@ -1,6 +1,8 @@
 {% extends 'knp_menu.html.twig' %}
 
 {% block item %}
+    {%- do item.setAttribute('class', 'nav-item') -%}
+
 {% import "knp_menu.html.twig" as macros %}
 {% if item.displayed %}
     {%- set attributes = item.attributes %}
@@ -83,6 +85,8 @@
 {% endblock %}
 
 {% block linkElement %}
+    {%- do item.setLinkAttributes({'class': 'nav-link'}) -%}
+
     {% import "knp_menu.html.twig" as macros %}
     <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }}>
         {% if item.attribute('icon') is not empty %}

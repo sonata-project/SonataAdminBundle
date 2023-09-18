@@ -16,10 +16,10 @@ file that was distributed with this source code.
 {% block block %}
     {% set inlineAnchor = settings.text|replace({'.':'_'}) %}
     {% set results_count = admin.datagrid.pager.countResults %}
-    <div class="box box-primary" id="{{ inlineAnchor }}">
-        <div class="box-header with-border">
+    <div class="card card-primary" id="{{ inlineAnchor }}">
+        <div class="card-header with-border">
             {{ settings.icon|default('')|parse_icon }}
-            <h3 class="box-title">
+            <h3 class="card-title">
                 <a href="#{{ inlineAnchor }}">
                     {% if translation_domain is same as(false) %}
                         {{ settings.text }}
@@ -29,7 +29,7 @@ file that was distributed with this source code.
                 </a>
             </h3>
         </div>
-        <div class="box-body {% if results_count > 0 %}table-responsive no-padding{% endif %}">
+        <div class="card-body {% if results_count > 0 %}table-responsive no-padding{% endif %}">
             {{ sonata_block_render_event('sonata.admin.list.table.top', { 'admin': admin }) }}
 
             {% block list_header %}{% endblock %}
@@ -72,7 +72,7 @@ file that was distributed with this source code.
                     {% block table_footer %}
                     {% endblock %}
                 </table>
-                <div class="box-footer">
+                <div class="card-footer">
                     {% if admin.hasAccess('list') %}
                         <a href="{{ admin.generateUrl('list', {filter: settings.filters}) }}" class="btn btn-primary btn-block">
                             <i class="fas fa-list" aria-hidden="true"></i> {{ 'preview_view_more'|trans({}, 'SonataAdminBundle') }}
@@ -82,9 +82,9 @@ file that was distributed with this source code.
             {% else %}
                 {% block no_result_content %}
                     <div class="info-box">
-                        <div class="info-box">
+                        <div class="info-box-content">
                             <span class="info-box-text">{{ 'no_result'|trans({}, 'SonataAdminBundle') }}</span>
-                        </div><!-- /.info-box-content -->
+                        </div>
                     </div>
                 {% endblock %}
             {% endif %}

@@ -26,10 +26,11 @@ const Admin = {
     Admin.setup_select2(subject);
     Admin.setup_icheck(subject);
     Admin.setup_checkbox_range_selection(subject);
-    Admin.setup_xeditable(subject);
     Admin.setup_form_tabs_for_errors(subject);
     Admin.setup_inline_form_errors(subject);
+    Admin.setup_list_view(subject);
     Admin.setup_tree_view(subject);
+    Admin.setup_history_view(subject);
     Admin.setup_collection_counter(subject);
     Admin.setup_sticky_elements(subject);
     Admin.setup_readmore_elements(subject);
@@ -111,7 +112,7 @@ const Admin = {
 
         select.select2({
           width: () => Admin.get_select2_width(select),
-          theme: 'bootstrap',
+          theme: 'bootstrap4',
           dropdownAutoWidth: true,
           minimumResultsForSearch,
           placeholder: allowClearEnabled ? ' ' : '', // allowClear needs placeholder to work properly
@@ -202,29 +203,6 @@ const Admin = {
 
         previousIndex = currentIndex;
       }
-    });
-  },
-
-  setup_xeditable(subject) {
-    Admin.log('[core|setup_xeditable] configure xeditable on', subject);
-    jQuery('.x-editable', subject).editable({
-      emptyclass: 'editable-empty btn btn-sm btn-default',
-      emptytext: '<i class="fas fa-pencil-alt"></i>',
-      container: 'body',
-      placement: 'auto',
-      success(response) {
-        const html = jQuery(response);
-        Admin.setup_xeditable(html);
-        jQuery(this).closest('td').replaceWith(html);
-      },
-      error: (xhr) => {
-        // On some error responses, we return JSON.
-        if (xhr.getResponseHeader('Content-Type') === 'application/json') {
-          return JSON.parse(xhr.responseText);
-        }
-
-        return xhr.responseText;
-      },
     });
   },
 
@@ -533,10 +511,69 @@ const Admin = {
     }
   },
 
+  setup_list_view(subject) {
+    Admin.log('[core|setup_list_view] setup list view', subject);
+
+    // Toggle individual checkboxes when the batch checkbox is changed
+    jQuery('#list_batch_checkbox').on('ifChanged change', function () {
+      const checkboxes = jQuery(this)
+        .closest('table')
+        .find('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
+      ;
+
+      if (Admin.get_config('USE_ICHECK')) {
+        checkboxes.iCheck(jQuery(this).is(':checked') ? 'check' : 'uncheck');
+      } else {
+        checkboxes.prop('checked', this.checked);
+      }
+    });
+
+    // Add a CSS class to rows when they are selected
+    jQuery('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
+      .on('ifChanged change', function () {
+        jQuery(this)
+          .closest('tr, div.sonata-ba-list-field-batch')
+          .toggleClass('sonata-ba-list-row-selected', jQuery(this).is(':checked'))
+        ;
+      })
+      .trigger('ifChanged')
+    ;
+  },
+
   setup_tree_view(subject) {
     Admin.log('[core|setup_tree_view] setup tree view', subject);
 
     jQuery('ul.js-treeview', subject).treeView();
+  },
+
+  setup_history_view(subject) {
+    Admin.log('[core|setup_history_view] setup history view', subject);
+
+    jQuery('a.revision-link, a.revision-compare-link').bind('click', function (event) {
+      event.stopPropagation();
+      event.preventDefault();
+
+      const action = jQuery(this).hasClass('revision-link')
+        ? 'show'
+        : 'compare';
+
+      jQuery('#revision-detail').html('');
+
+      if (action === 'show') {
+        jQuery('table#revisions tbody tr').removeClass('current');
+        jQuery(this).parent('').removeClass('current');
+      }
+
+      jQuery.ajax({
+        url: jQuery(this).attr('href'),
+        dataType: 'html',
+        success: function (data) {
+          jQuery('#revision-detail').html(data);
+        }
+      });
+
+      return false;
+    });
   },
 
   /** Return the width for simple and sortable select2 element * */
@@ -592,7 +629,7 @@ const Admin = {
     }
 
     const options = {
-      theme: 'bootstrap',
+      theme: 'bootstrap4',
       width: () => Admin.get_select2_width(subject),
       dropdownAutoWidth: true,
       data: [...selectedItems, ...unselectedItems],

@@ -33,46 +33,50 @@
                     {% if has_tab %}
                         {% set tab_prefix = 'tab_' ~ admin.uniqid ~ '_' ~ random() %}
                         {% set tab_query_index = app.request.query.get('_tab', 0)|split("_")|last %}
-                        <div class="nav-tabs-custom">
-                            <ul class="nav nav-tabs" role="tablist">
-                                {% for name, form_tab in formtabs %}
-                                    {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
-                                    <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %} class="active"{% endif %}>
-                                        <a href="#{{ _tab_name }}" class="changer-tab" aria-controls="{{ _tab_name }}" data-toggle="tab">
-                                            <i class="fas fa-exclamation-circle has-errors hide" aria-hidden="true"></i>
-                                            {% if form_tab.translation_domain is defined and form_tab.translation_domain is same as(false) %}
-                                                {{ form_tab.label }}
-                                            {% else %}
-                                                {{ form_tab.label|trans({}, form_tab.translation_domain ?? admin.translationDomain) }}
-                                            {% endif %}
-                                        </a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                            <div class="tab-content">
-                                {% for code, form_tab in formtabs %}
-                                    {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
-                                    <div
-                                        class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (tab_query_index == loop.index) %} in active{% endif %}"
-                                        id="{{ _tab_name }}"
-                                    >
-                                        <div class="box-body  container-fluid">
-                                            <div class="sonata-ba-collapsed-fields">
-                                                {% if form_tab.description != false %}
-                                                    {% if form_tab.translation_domain is defined and form_tab.translation_domain is same as(false) %}
-                                                        <p>{{ form_tab.description|raw }}</p>
-                                                    {% else %}
-                                                        <p>{{ form_tab.description|trans({}, form_tab.translation_domain ?? admin.translationDomain)|raw }}</p>
-                                                    {% endif %}
+                        <div class="card card-primary card-outline card-outline-tabs nav-tabs-custom">
+                            <div class="card-header p-0 border-bottom-0">
+                                <ul class="nav nav-tabs" role="tablist">
+                                    {% for name, form_tab in formtabs %}
+                                        {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
+                                        <li class="nav-item">
+                                            <a href="#{{ _tab_name }}" class="nav-link{% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %} active{% endif %}" aria-controls="{{ _tab_name }}" data-toggle="pill">
+                                                <i class="fas fa-exclamation-circle has-errors hide" aria-hidden="true"></i>
+                                                {% if form_tab.translation_domain is defined and form_tab.translation_domain is same as(false) %}
+                                                    {{ form_tab.label }}
+                                                {% else %}
+                                                    {{ form_tab.label|trans({}, form_tab.translation_domain ?? admin.translationDomain) }}
                                                 {% endif %}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div class="card-body">
+                                <div class="tab-content">
+                                    {% for code, form_tab in formtabs %}
+                                        {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
+                                        <div
+                                            class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (tab_query_index == loop.index) %} active show{% endif %}"
+                                            id="{{ _tab_name }}"
+                                        >
+                                            <div class="card-body  container-fluid">
+                                                <div class="sonata-ba-collapsed-fields">
+                                                    {% if form_tab.description != false %}
+                                                        {% if form_tab.translation_domain is defined and form_tab.translation_domain is same as(false) %}
+                                                            <p>{{ form_tab.description|raw }}</p>
+                                                        {% else %}
+                                                            <p>{{ form_tab.description|trans({}, form_tab.translation_domain ?? admin.translationDomain)|raw }}</p>
+                                                        {% endif %}
+                                                    {% endif %}
 
-                                                {{ form_helper.render_groups(admin, form, form_tab['groups'], has_tab) }}
+                                                    {{ form_helper.render_groups(admin, form, form_tab['groups'], has_tab) }}
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                {% endfor %}
+                                    {% endfor %}
+                                </div>
+                                <input type="hidden" name="_tab" value="{{ app.request.query.get('_tab') }}">
                             </div>
-                            <input type="hidden" name="_tab" value="{{ app.request.query.get('_tab') }}">
                         </div>
                     {% elseif formtabs['default'] is defined %}
                         {{ form_helper.render_groups(admin, form, formtabs['default'].groups, has_tab) }}
@@ -87,7 +91,7 @@
             {{ form_rest(form) }}
 
             {% block formactions %}
-                <div class="sonata-ba-form-actions well well-small form-actions">
+                <footer class="main-footer">
                 {% block sonata_form_actions %}
                     {% if app.request.isxmlhttprequest %}
                         {% if objectId is not null %}

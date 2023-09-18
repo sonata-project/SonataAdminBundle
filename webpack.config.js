@@ -56,11 +56,6 @@ Encore.setOutputPath('./src/Resources/public')
   .copyFiles([
     { from: './assets/images/', pattern: /\.(png|gif)$/, to: 'images/[name].[ext]' },
     {
-      from: './node_modules/admin-lte/dist/css/skins/',
-      pattern: /skin-.*\.min.css/,
-      to: 'admin-lte-skins/[name].[ext]',
-    },
-    {
       from: './node_modules/select2/dist/js/i18n/',
       pattern: /\.js/,
       to: 'select2-locale/[name].[ext]',

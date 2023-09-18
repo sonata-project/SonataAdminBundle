@@ -114,8 +114,8 @@ options for the group itself.
   value is set to ``col-md-12``.
 - ``fields``: The fields in your form group (you should NOT override this
   unless you know what you're doing).
-- ``box_class``: The class for your form group box in the admin; by default,
-  the value is set to ``box box-primary``.
+- ``card_class``: The class for your form group box in the admin; by default,
+  the value is set to ``card card-primary``.
 - ``description``: A text shown at the top of the form group.
 - ``translation_domain``: The translation domain for the form group title
   (the Admin translation domain is used by default).
@@ -132,7 +132,7 @@ To specify options, do as follows::
                 ->tab('General') // the tab call is optional
                     ->with('Addresses', [
                         'class'       => 'col-md-8',
-                        'box_class'   => 'box box-solid box-danger',
+                        'card_class'  => 'card card-danger',
                         'description' => 'Lorem ipsum',
                         // ...
                     ])
@@ -144,10 +144,10 @@ To specify options, do as follows::
         }
     }
 
-Here is an example of what you can do with customizing the box_class on
+Here is an example of what you can do with customizing the card_class on
 a group:
 
-.. figure:: ../images/box_class.png
+.. figure:: ../images/card_class.png
    :align: center
    :alt: Box Class
    :width: 500
