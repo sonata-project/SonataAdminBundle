@@ -475,20 +475,21 @@ file that was distributed with this source code.
     {% set main_form_name = id|slice(0, (id|length - name|length)-1) %}
     {% if expanded %}
         {% set js_selector = '#' ~ main_form_name ~ '_' ~ name ~ ' input' %}
-        {% set js_event = 'ifChecked' %}
+        {% set js_events = ['change', 'ifChecked'] %}
     {% else %}
         {% set js_selector = '#' ~ main_form_name ~ '_' ~ name %}
-        {% set js_event = 'change' %}
+        {% set js_events = ['change'] %}
     {% endif %}
     <script>
         jQuery(document).ready(function() {
             var allFields = {{ all_fields|json_encode|raw }},
                 map = {{ map|json_encode|raw }},
                 showMaskChoiceEl = jQuery("{{ js_selector }}");
-
-            showMaskChoiceEl.on("{{ js_event }}", function () {
-                choice_field_mask_show(jQuery(this).val());
-            });
+                {% for js_event in js_events %}
+                    showMaskChoiceEl.on("{{ js_event }}", function () {
+                        choice_field_mask_show(jQuery(this).val());
+                    });
+                {% endfor %}
 
             function choice_field_mask_show(val) {
                 var controlGroupIdFunc = function (field) {
