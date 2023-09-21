@@ -239,7 +239,7 @@ final class DataTransformerResolverTest extends TestCase
     }
 
     /**
-     * @return DataTransformerInterface<mixed, mixed>
+     * @return DataTransformerInterface<mixed, mixed>|null
      */
     private function resolve(): ?DataTransformerInterface
     {

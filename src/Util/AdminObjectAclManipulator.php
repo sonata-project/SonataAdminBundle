@@ -226,8 +226,6 @@ final class AdminObjectAclManipulator
 
     /**
      * Gets a user or a role security identity.
-     *
-     * @return RoleSecurityIdentity|UserSecurityIdentity
      */
     private function getSecurityIdentity(string|UserInterface $aclValue): SecurityIdentityInterface
     {

@@ -256,7 +256,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         $this->aclProvider->deleteAcl($objectIdentity);
     }
 
-    public function findClassAceIndexByRole(MutableAclInterface $acl, string $role)
+    public function findClassAceIndexByRole(MutableAclInterface $acl, string $role): int|false
     {
         foreach ($acl->getClassAces() as $index => $entry) {
             $securityIdentity = $entry->getSecurityIdentity();
@@ -268,7 +268,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         return false;
     }
 
-    public function findClassAceIndexByUsername(MutableAclInterface $acl, string $username)
+    public function findClassAceIndexByUsername(MutableAclInterface $acl, string $username): int|false
     {
         foreach ($acl->getClassAces() as $index => $entry) {
             $securityIdentity = $entry->getSecurityIdentity();

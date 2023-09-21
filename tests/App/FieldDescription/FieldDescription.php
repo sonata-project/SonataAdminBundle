@@ -44,7 +44,7 @@ final class FieldDescription extends BaseFieldDescription
         return false;
     }
 
-    public function getValue(object $object)
+    public function getValue(object $object): mixed
     {
         return $this->getFieldValue($object, $this->fieldName);
     }
