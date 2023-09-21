@@ -44,7 +44,7 @@ set data attribute ``data-sonata-icheck = "false"`` to this form element::
 
     You have to use false as string! ``"false"``!
 
-When using ``Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType`` (or other types that inherit from it, such as )
+When using ``Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType`` (or other types that inherit from it)
 with the ``expanded``: ``true`` option (that renders the form type with checkboxes or radio buttons),
 it is necessary to set the ``data-sonata-icheck`` attribute on its choice elements::
 
