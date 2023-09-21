@@ -43,3 +43,30 @@ set data attribute ``data-sonata-icheck = "false"`` to this form element::
 .. note::
 
     You have to use false as string! ``"false"``!
+
+When using ``Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType`` (or other types that inherit from it)
+with the ``expanded``: ``true`` option (that renders the form type with checkboxes or radio buttons),
+it is necessary to set the ``data-sonata-icheck`` attribute on its choice elements::
+
+    use Sonata\AdminBundle\Form\FormMapper;
+    use Sonata\AdminBundle\Form\Type\ModelType;
+    use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
+
+    protected function configureFormFields(FormMapper $form): void
+    {
+        $form
+            ->add('category', ChoiceFieldMaskType::class, [
+                'expanded' => true,
+                'placeholder_attr' => [
+                    // the placeholder (if any) needs also the data-sonata-icheck attr too since is rendered as
+                    // checkbox or radio button
+                    'data-sonata-icheck' => 'false'
+                ],
+                'choice_attr' => [
+                    'val1' => ['data-sonata-icheck' => 'false'],
+                    'val2' => ['data-sonata-icheck' => 'false'],
+                    // ...
+                ],
+            ])
+        ;
+    }
