@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.27.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.27.0...4.27.1) - 2023-09-21
+### Added
+- [[#8105](https://github.com/sonata-project/SonataAdminBundle/pull/8105)] Allow to disable `icheck` and to be able to use still choice field mask with the expanded option ([@goetas](https://github.com/goetas))
+
+### Fixed
+- [[#8100](https://github.com/sonata-project/SonataAdminBundle/pull/8100)] Logic to handle show / hide column of table html element ([@nhung-le](https://github.com/nhung-le))
+- [[#8108](https://github.com/sonata-project/SonataAdminBundle/pull/8108)] Add missing type button on ModelList form widget ([@tdumalin](https://github.com/tdumalin))
+- [[#8099](https://github.com/sonata-project/SonataAdminBundle/pull/8099)] `label_catalogue` configuration node deprecation message ([@7ochem](https://github.com/7ochem))
+
 ## [4.27.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.26.1...4.27.0) - 2023-09-07
 ### Added
 - [[#8083](https://github.com/sonata-project/SonataAdminBundle/pull/8083)] Autocomplete attr support for select2 ([@pietaj](https://github.com/pietaj))
