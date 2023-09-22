@@ -1,11 +1,11 @@
 {
   "dependencies": {
     "@fontsource/source-sans-pro": "^4.5",
-    "@fortawesome/fontawesome-free": "^5.15",
+    "@fortawesome/fontawesome-free": "^6.0",
     "@hotwired/stimulus": "^3.2",
     "@symfony/stimulus-bridge": "^3.2",
-    "admin-lte": "^2.4",
-    "bootstrap": "^3.3",
+    "admin-lte": "^3.2",
+    "bootstrap": "^4.6",
     "icheck": "^1.0",
     "jquery": "^3.7.0",
     "jquery-form": "^4.3",
@@ -15,9 +15,8 @@
     "masonry-layout": "^4.2",
     "readmore-js": "^2.2",
     "select2": "^4.0",
-    "select2-bootstrap-theme": "^0.1.0-beta.10",
-    "waypoints": "^4.0",
-    "x-editable": "^1.5"
+    "@ttskch/select2-bootstrap4-theme": "^1.5",
+    "waypoints": "^4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.21",

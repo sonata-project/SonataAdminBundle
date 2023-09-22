@@ -69,7 +69,7 @@ final class AdminStatsBlockService extends AbstractBlockService
             'icon' => 'fas fa-chart-line',
             'text' => 'Statistics',
             'translation_domain' => null,
-            'color' => 'bg-aqua',
+            'color' => 'bg-info',
             'code' => false,
             'filters' => [],
             'limit' => 1000,

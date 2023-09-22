@@ -18,22 +18,6 @@ html {
   position: relative;
 }
 
-footer {
-  background-color: #333;
-  bottom: 0;
-  height: 20px;
-  position: absolute;
-  width: 100%;
-
-  p {
-    margin: 0;
-  }
-
-  a {
-    color: #f6f6f6;
-  }
-}
-
 .logo {
   img {
     display: inline;
@@ -56,10 +40,6 @@ footer {
 
 body > .header .logo {
   font-family: 'Source Sans Pro', sans-serif;
-}
-
-.main-header {
-  height: 50px;
 }
 
 .open > .dropdown-menu {
@@ -362,7 +342,7 @@ td.sonata-ba-list-label {
 }
 
 /* side filter */
-.box .box-header h4.box-title.filter_legend {
+.card .card-header h4.card-title.filter_legend {
   cursor: pointer;
   padding-left: 20px;
   position: relative;

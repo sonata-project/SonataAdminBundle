@@ -41,41 +41,44 @@ file that was distributed with this source code.
         {% if has_tab %}
             {% set tab_prefix = 'tab_' ~ admin.uniqid ~ '_' ~ random() %}
             {% set tab_query_index = app.request.query.get('_tab', 0)|split("_")|last %}
-            <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs" role="tablist">
-                    {% for name, show_tab in showtabs %}
-                        {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
-                        <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %} class="active"{% endif %}>
-                            <a href="#{{ _tab_name }}" class="changer-tab" aria-controls="{{ _tab_name }}" data-toggle="tab">
-                                {% if show_tab.translation_domain is defined and show_tab.translation_domain is same as(false) %}
-                                    {{ show_tab.label }}
-                                {% else %}
-                                    {{ show_tab.label|trans({}, show_tab.translation_domain ?? admin.translationDomain) }}
-                                {% endif %}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-
-                <div class="tab-content">
-                    {% for code, show_tab in showtabs %}
-                        {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
-                        <div
-                            class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (tab_query_index == loop.index) %} in active{% endif %}"
-                            id="{{ _tab_name }}"
-                        >
-                            <div class="box-body  container-fluid">
-                                <div class="sonata-ba-collapsed-fields">
-                                    {% if show_tab.description != false %}
-                                        <p>{{ show_tab.description|raw }}</p>
+            <div class="card card-primary card-outline card-outline-tabs nav-tabs-custom">
+                <div class="card-header p-0 border-bottom-0">
+                    <ul class="nav nav-tabs" role="tablist">
+                        {% for name, show_tab in showtabs %}
+                            {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
+                            <li class="nav-item">
+                                <a href="#{{ _tab_name }}" class="nav-link{% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %} active{% endif %}" aria-controls="{{ _tab_name }}" data-toggle="pill">
+                                    {% if show_tab.translation_domain is defined and show_tab.translation_domain is same as(false) %}
+                                        {{ show_tab.label }}
+                                    {% else %}
+                                        {{ show_tab.label|trans({}, show_tab.translation_domain ?? admin.translationDomain) }}
                                     {% endif %}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div class="card-body">
+                    <div class="tab-content">
+                        {% for code, show_tab in showtabs %}
+                            {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
+                            <div
+                                class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (tab_query_index == loop.index) %} active show{% endif %}"
+                                id="{{ _tab_name }}"
+                            >
+                                <div class="card-body  container-fluid">
+                                    <div class="sonata-ba-collapsed-fields">
+                                        {% if show_tab.description != false %}
+                                            <p>{{ show_tab.description|raw }}</p>
+                                        {% endif %}
 
-                                    {% set groups = show_tab.groups %}
-                                    {{ block('show_groups') }}
+                                        {% set groups = show_tab.groups %}
+                                        {{ block('show_groups') }}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         {% elseif showtabs['default'] is defined %}
@@ -95,9 +98,9 @@ file that was distributed with this source code.
                 {% set show_group = admin.showgroups[code] %}
 
                 <div class="{{ show_group.class|default('col-md-12') }} {{ no_padding|default(false) ? 'nopadding' }}">
-                    <div class="{{ show_group.box_class }}">
-                        <div class="box-header">
-                            <h4 class="box-title">
+                    <div class="{{ show_group.card_class }}">
+                        <div class="card-header">
+                            <h4 class="card-title">
                                 {% block show_title %}
                                     {% if show_group.translation_domain is defined and show_group.translation_domain is same as(false) %}
                                         {{ show_group.label }}
@@ -107,7 +110,7 @@ file that was distributed with this source code.
                                 {% endblock %}
                             </h4>
                         </div>
-                        <div class="box-body table-responsive no-padding">
+                        <div class="card-body table-responsive no-padding">
                             <table class="table">
                                 <tbody>
                                 {% for show_field_name in show_group.fields %}

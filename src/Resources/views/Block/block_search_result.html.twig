@@ -18,10 +18,10 @@ file that was distributed with this source code.
     {% set visibility_class = 'sonata-search-result-' ~ (has_results ? 'show' : show_empty_boxes) %}
 
     <div class="col-lg-4 col-md-6 search-box-item {{ visibility_class }}">
-        <div class="box box-solid {{ visibility_class }}">
-            <div class="box-header with-border {{ visibility_class }}">
+        <div class="card card-solid {{ visibility_class }}">
+            <div class="card-header with-border {{ visibility_class }}">
                 {{ settings.icon|default('')|parse_icon }}
-                <h3 class="box-title">
+                <h3 class="card-title">
                     {% if admin.label is not empty %}
                         {{ admin.label|trans({}, admin.translationdomain) }}
                     {% endif %}
@@ -55,7 +55,7 @@ file that was distributed with this source code.
                 </div>
             </div>
             {% if has_results %}
-                <div class="box-body no-padding">
+                <div class="card-body no-padding">
                     <ul class="nav nav-stacked sonata-search-result-list">
                         {% for result in current_page_results %}
                             {% if admin.hasRoute(admin_route) and admin.hasAccess(admin_route, result) %}
@@ -71,7 +71,7 @@ file that was distributed with this source code.
                     </ul>
                 </div>
             {% else %}
-                <div class="box-body">
+                <div class="card-body">
                     <p>
                         <em>{{ 'no_results_found'|trans({}, 'SonataAdminBundle') }}</em>
                     </p>
