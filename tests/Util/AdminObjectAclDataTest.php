@@ -170,8 +170,8 @@ final class AdminObjectAclDataTest extends TestCase
             static::assertIsString($permission);
         }
 
-        static::assertFalse(array_search('OWNER', $adminObjectAclData->getUserPermissions(), true));
-        static::assertFalse(array_search('MASTER', $adminObjectAclData->getUserPermissions(), true));
+        static::assertNotContains('OWNER', $adminObjectAclData->getUserPermissions());
+        static::assertNotContains('MASTER', $adminObjectAclData->getUserPermissions());
     }
 
     public function testIsOwner(): void

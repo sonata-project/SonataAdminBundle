@@ -187,7 +187,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider getRenderListElementTests
+     * @dataProvider provideRenderListElementCases
      *
      * @psalm-suppress DeprecatedMethod
      */
@@ -303,7 +303,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider getRenderViewElementTests
+     * @dataProvider provideRenderViewElementCases
      *
      * @psalm-suppress DeprecatedMethod
      */
@@ -344,7 +344,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider getRenderViewElementCompareTests
+     * @dataProvider provideRenderViewElementCompareCases
      *
      * @psalm-suppress DeprecatedMethod
      */
@@ -525,7 +525,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @phpstan-return array<array{string, string, mixed, array<string, mixed>}>
      */
-    public function getRenderListElementTests(): array
+    public function provideRenderListElementCases(): iterable
     {
         $elements = [
             [
@@ -1551,7 +1551,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @phpstan-return array<array{string, string, mixed, array<string, mixed>}>
      */
-    public function getRenderViewElementTests(): array
+    public function provideRenderViewElementCases(): iterable
     {
         $elements = [
             ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]],
@@ -2069,46 +2069,44 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @phpstan-return array<array{string, string, mixed, array<string, mixed>, string|null}>
      */
-    public function getRenderViewElementCompareTests(): iterable
+    public function provideRenderViewElementCompareCases(): iterable
     {
-        return [
-            ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null],
-            ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null],
-            ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_TEXTAREA, 'Example', ['safe' => false], null],
-            ['<th>Data</th> <td>SonataAdmin<br/>Example</td><td>SonataAdmin<br/>Example</td>', 'virtual_field', 'Example', ['template' => 'custom_show_field.html.twig', 'safe' => false], 'SonataAdmin'],
-            ['<th class="diff">Data</th> <td>SonataAdmin<br/>Example</td><td>sonata-project/admin-bundle<br/>Example</td>', 'virtual_field', 'Example', ['template' => 'custom_show_field.html.twig', 'safe' => false], 'sonata-project/admin-bundle'],
-            [
-                '<th>Data</th> <td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> May 27, 2020 10:11 </time></td>'
-                .'<td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> May 27, 2020 10:11 </time></td>',
-                FieldDescriptionInterface::TYPE_DATETIME,
-                new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
-                [],
-                null,
-            ],
-            [
-                '<th>Data</th> <td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> 27.05.2020 10:11:12 </time></td>'
-                .'<td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> 27.05.2020 10:11:12 </time></td>',
-                FieldDescriptionInterface::TYPE_DATETIME,
-                new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
-                ['format' => 'd.m.Y H:i:s'],
-                null,
-            ],
-            [
-                '<th>Data</th> <td><time datetime="2020-05-27T10:11:12+00:00" title="2020-05-27T10:11:12+00:00"> May 27, 2020 18:11 </time></td>'
-                .'<td><time datetime="2020-05-27T10:11:12+00:00" title="2020-05-27T10:11:12+00:00"> May 27, 2020 18:11 </time></td>',
-                FieldDescriptionInterface::TYPE_DATETIME,
-                new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('UTC')),
-                ['timezone' => 'Asia/Hong_Kong'],
-                null,
-            ],
-            [
-                '<th>Data</th> <td><time datetime="2020-05-27" title="2020-05-27"> May 27, 2020 </time></td>'
-                .'<td><time datetime="2020-05-27" title="2020-05-27"> May 27, 2020 </time></td>',
-                FieldDescriptionInterface::TYPE_DATE,
-                new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
-                [],
-                null,
-            ],
+        yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];
+        yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];
+        yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_TEXTAREA, 'Example', ['safe' => false], null];
+        yield ['<th>Data</th> <td>SonataAdmin<br/>Example</td><td>SonataAdmin<br/>Example</td>', 'virtual_field', 'Example', ['template' => 'custom_show_field.html.twig', 'safe' => false], 'SonataAdmin'];
+        yield ['<th class="diff">Data</th> <td>SonataAdmin<br/>Example</td><td>sonata-project/admin-bundle<br/>Example</td>', 'virtual_field', 'Example', ['template' => 'custom_show_field.html.twig', 'safe' => false], 'sonata-project/admin-bundle'];
+        yield [
+            '<th>Data</th> <td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> May 27, 2020 10:11 </time></td>'
+            .'<td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> May 27, 2020 10:11 </time></td>',
+            FieldDescriptionInterface::TYPE_DATETIME,
+            new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
+            [],
+            null,
+        ];
+        yield [
+            '<th>Data</th> <td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> 27.05.2020 10:11:12 </time></td>'
+            .'<td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> 27.05.2020 10:11:12 </time></td>',
+            FieldDescriptionInterface::TYPE_DATETIME,
+            new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
+            ['format' => 'd.m.Y H:i:s'],
+            null,
+        ];
+        yield [
+            '<th>Data</th> <td><time datetime="2020-05-27T10:11:12+00:00" title="2020-05-27T10:11:12+00:00"> May 27, 2020 18:11 </time></td>'
+            .'<td><time datetime="2020-05-27T10:11:12+00:00" title="2020-05-27T10:11:12+00:00"> May 27, 2020 18:11 </time></td>',
+            FieldDescriptionInterface::TYPE_DATETIME,
+            new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('UTC')),
+            ['timezone' => 'Asia/Hong_Kong'],
+            null,
+        ];
+        yield [
+            '<th>Data</th> <td><time datetime="2020-05-27" title="2020-05-27"> May 27, 2020 </time></td>'
+            .'<td><time datetime="2020-05-27" title="2020-05-27"> May 27, 2020 </time></td>',
+            FieldDescriptionInterface::TYPE_DATE,
+            new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
+            [],
+            null,
         ];
     }
 

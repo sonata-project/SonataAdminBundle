@@ -24,12 +24,10 @@ final class AdminExporterTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string[], string[], string[]}>
      */
-    public function provideExportFormats(): iterable
+    public function provideAdminHasPriorityOverGlobalSettingsCases(): iterable
     {
-        return [
-            'no override' => [['xls'], [], ['xls']],
-            'override in admin' => [['csv'], ['csv'], ['xls']],
-        ];
+        yield 'no override' => [['xls'], [], ['xls']];
+        yield 'override in admin' => [['csv'], ['csv'], ['xls']];
     }
 
     /**
@@ -37,7 +35,7 @@ final class AdminExporterTest extends TestCase
      * @param string[] $adminFormats
      * @param string[] $globalFormats
      *
-     * @dataProvider provideExportFormats
+     * @dataProvider provideAdminHasPriorityOverGlobalSettingsCases
      */
     public function testAdminHasPriorityOverGlobalSettings(array $expectedFormats, array $adminFormats, array $globalFormats): void
     {

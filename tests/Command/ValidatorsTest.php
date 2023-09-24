@@ -23,7 +23,7 @@ use Sonata\AdminBundle\Command\Validators;
 final class ValidatorsTest extends TestCase
 {
     /**
-     * @dataProvider getValidateUsernameTests
+     * @dataProvider provideValidateUsernameCases
      */
     public function testValidateUsername(string $expected, string $value): void
     {
@@ -33,12 +33,10 @@ final class ValidatorsTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, string}>
      */
-    public function getValidateUsernameTests(): iterable
+    public function provideValidateUsernameCases(): iterable
     {
-        return [
-            ['Foo', 'Foo'],
-            ['abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789', 'abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789'],
-        ];
+        yield ['Foo', 'Foo'];
+        yield ['abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789', 'abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789'];
     }
 
     public function testValidateUsernameWithException(): void
@@ -49,7 +47,7 @@ final class ValidatorsTest extends TestCase
     }
 
     /**
-     * @dataProvider getValidateClassTests
+     * @dataProvider provideValidateClassCases
      */
     public function testValidateClass(string $expected, string $value): void
     {
@@ -59,16 +57,14 @@ final class ValidatorsTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, string}>
      */
-    public function getValidateClassTests(): iterable
+    public function provideValidateClassCases(): iterable
     {
-        return [
-            [AbstractAdmin::class, AbstractAdmin::class],
-            [AbstractAdmin::class, 'Sonata/AdminBundle/Admin/AbstractAdmin'],
-        ];
+        yield [AbstractAdmin::class, AbstractAdmin::class];
+        yield [AbstractAdmin::class, 'Sonata/AdminBundle/Admin/AbstractAdmin'];
     }
 
     /**
-     * @dataProvider getValidateClassWithExceptionTests
+     * @dataProvider provideValidateClassWithExceptionCases
      */
     public function testValidateClassWithException(string $value): void
     {
@@ -80,17 +76,15 @@ final class ValidatorsTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function getValidateClassWithExceptionTests(): iterable
+    public function provideValidateClassWithExceptionCases(): iterable
     {
-        return [
-            ['Foo:BarAdmin'],
-            ['Foo:Bar:Admin'],
-            ['Foo/Bar/Admin'],
-        ];
+        yield ['Foo:BarAdmin'];
+        yield ['Foo:Bar:Admin'];
+        yield ['Foo/Bar/Admin'];
     }
 
     /**
-     * @dataProvider getValidateAdminClassBasenameTests
+     * @dataProvider provideValidateAdminClassBasenameCases
      */
     public function testValidateAdminClassBasename(string $expected, string $value): void
     {
@@ -100,17 +94,15 @@ final class ValidatorsTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, string}>
      */
-    public function getValidateAdminClassBasenameTests(): iterable
+    public function provideValidateAdminClassBasenameCases(): iterable
     {
-        return [
-            ['FooBarAdmin', 'FooBarAdmin'],
-            ['Foo\Foo\BarAdmin', 'Foo\Foo\BarAdmin'],
-            ['Foo\Foo\BarAdmin', 'Foo/Foo/BarAdmin'],
-        ];
+        yield ['FooBarAdmin', 'FooBarAdmin'];
+        yield ['Foo\Foo\BarAdmin', 'Foo\Foo\BarAdmin'];
+        yield ['Foo\Foo\BarAdmin', 'Foo/Foo/BarAdmin'];
     }
 
     /**
-     * @dataProvider getValidateAdminClassBasenameWithExceptionTests
+     * @dataProvider provideValidateAdminClassBasenameWithExceptionCases
      */
     public function testValidateAdminClassBasenameWithException(string $value): void
     {
@@ -122,17 +114,15 @@ final class ValidatorsTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function getValidateAdminClassBasenameWithExceptionTests(): iterable
+    public function provideValidateAdminClassBasenameWithExceptionCases(): iterable
     {
-        return [
-            ['Foo:BarAdmin'],
-            ['Foo:Bar:Admin'],
-            ['*+-!:@&^%'],
-        ];
+        yield ['Foo:BarAdmin'];
+        yield ['Foo:Bar:Admin'];
+        yield ['*+-!:@&^%'];
     }
 
     /**
-     * @dataProvider getValidateControllerClassBasenameTests
+     * @dataProvider provideValidateControllerClassBasenameCases
      */
     public function testValidateControllerClassBasename(string $expected, string $value): void
     {
@@ -142,17 +132,15 @@ final class ValidatorsTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, string}>
      */
-    public function getValidateControllerClassBasenameTests(): iterable
+    public function provideValidateControllerClassBasenameCases(): iterable
     {
-        return [
-            ['FooBarController', 'FooBarController'],
-            ['Foo\Foo\BarController', 'Foo/Foo/BarController'],
-            ['Foo\Foo\BarController', 'Foo\Foo\BarController'],
-        ];
+        yield ['FooBarController', 'FooBarController'];
+        yield ['Foo\Foo\BarController', 'Foo/Foo/BarController'];
+        yield ['Foo\Foo\BarController', 'Foo\Foo\BarController'];
     }
 
     /**
-     * @dataProvider getValidateControllerClassBasenameWithExceptionTests
+     * @dataProvider provideValidateControllerClassBasenameWithExceptionCases
      */
     public function testValidateControllerClassBasenameWithException(string $value): void
     {
@@ -164,34 +152,32 @@ final class ValidatorsTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function getValidateControllerClassBasenameWithExceptionTests(): iterable
+    public function provideValidateControllerClassBasenameWithExceptionCases(): iterable
     {
-        return [
-            [' foobar '],
-            [' FooBar'],
-            ['Foo Bar'],
-            ['Foo-Bar'],
-            ['foo*'],
-            ['foo+'],
-            ['foo-'],
-            ['foo!'],
-            ['foo@'],
-            ['foo&'],
-            ['foo%'],
-            ['foo^'],
-            ['foo(bar)'],
-            ['foo[bar]'],
-            ['foo{bar}'],
-            ['Foo/Bar'],
-            ['Foo\Bar'],
-            ['Foo/BarControllr'],
-            ['Foo\BarControllr'],
-            ['Foo:BarControllr'],
-        ];
+        yield [' foobar '];
+        yield [' FooBar'];
+        yield ['Foo Bar'];
+        yield ['Foo-Bar'];
+        yield ['foo*'];
+        yield ['foo+'];
+        yield ['foo-'];
+        yield ['foo!'];
+        yield ['foo@'];
+        yield ['foo&'];
+        yield ['foo%'];
+        yield ['foo^'];
+        yield ['foo(bar)'];
+        yield ['foo[bar]'];
+        yield ['foo{bar}'];
+        yield ['Foo/Bar'];
+        yield ['Foo\Bar'];
+        yield ['Foo/BarControllr'];
+        yield ['Foo\BarControllr'];
+        yield ['Foo:BarControllr'];
     }
 
     /**
-     * @dataProvider getValidateServicesFileTests
+     * @dataProvider provideValidateServicesFileCases
      */
     public function testValidateServicesFile(string $expected, string $value): void
     {
@@ -201,21 +187,19 @@ final class ValidatorsTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, string}>
      */
-    public function getValidateServicesFileTests(): iterable
+    public function provideValidateServicesFileCases(): iterable
     {
-        return [
-            ['foobar', 'foobar'],
-            ['fooBar', 'fooBar'],
-            [' foo Bar ', ' foo Bar '],
-            ['Foo/Bar', '/Foo/Bar/'],
-            ['Foo/BAR', '/Foo/BAR/'],
-            ['Foo/Bar', '/Foo/Bar'],
-            ['Foo/Bar', 'Foo/Bar/'],
-        ];
+        yield ['foobar', 'foobar'];
+        yield ['fooBar', 'fooBar'];
+        yield [' foo Bar ', ' foo Bar '];
+        yield ['Foo/Bar', '/Foo/Bar/'];
+        yield ['Foo/BAR', '/Foo/BAR/'];
+        yield ['Foo/Bar', '/Foo/Bar'];
+        yield ['Foo/Bar', 'Foo/Bar/'];
     }
 
     /**
-     * @dataProvider getValidateServiceIdTests
+     * @dataProvider provideValidateServiceIdCases
      */
     public function testValidateServiceId(string $value): void
     {
@@ -225,17 +209,15 @@ final class ValidatorsTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function getValidateServiceIdTests(): iterable
+    public function provideValidateServiceIdCases(): iterable
     {
-        return [
-            ['abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789'],
-            ['Foo_Bar_0123'],
-            ['Foo.Bar.0123'],
-        ];
+        yield ['abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789'];
+        yield ['Foo_Bar_0123'];
+        yield ['Foo.Bar.0123'];
     }
 
     /**
-     * @dataProvider getValidateServiceIdWithExceptionTests
+     * @dataProvider provideValidateServiceIdWithExceptionCases
      */
     public function testValidateServiceIdWithException(string $value): void
     {
@@ -247,27 +229,25 @@ final class ValidatorsTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function getValidateServiceIdWithExceptionTests(): iterable
+    public function provideValidateServiceIdWithExceptionCases(): iterable
     {
-        return [
-            [' foobar '],
-            [' FooBar'],
-            ['Foo Bar'],
-            ['Foo-Bar'],
-            ['foo*'],
-            ['foo+'],
-            ['foo-'],
-            ['foo!'],
-            ['foo@'],
-            ['foo&'],
-            ['foo%'],
-            ['foo^'],
-            ['foo:'],
-            ['foo(bar)'],
-            ['foo[bar]'],
-            ['foo{bar}'],
-            ['Foo/Bar'],
-            ['Foo\Bar'],
-        ];
+        yield [' foobar '];
+        yield [' FooBar'];
+        yield ['Foo Bar'];
+        yield ['Foo-Bar'];
+        yield ['foo*'];
+        yield ['foo+'];
+        yield ['foo-'];
+        yield ['foo!'];
+        yield ['foo@'];
+        yield ['foo&'];
+        yield ['foo%'];
+        yield ['foo^'];
+        yield ['foo:'];
+        yield ['foo(bar)'];
+        yield ['foo[bar]'];
+        yield ['foo{bar}'];
+        yield ['Foo/Bar'];
+        yield ['Foo\Bar'];
     }
 }

@@ -90,7 +90,7 @@ final class CRUDControllerTest extends WebTestCase
     }
 
     /**
-     * @dataProvider urlIsSuccessfulDataProvider
+     * @dataProvider provideUrlIsSuccessfulCases
      */
     public function testUrlIsSuccessful(string $url): void
     {
@@ -126,20 +126,19 @@ final class CRUDControllerTest extends WebTestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function urlIsSuccessfulDataProvider(): iterable
+    public function provideUrlIsSuccessfulCases(): iterable
     {
-        return [
-            ['/admin/tests/app/foo/browse'], // CustomAdminExtension route
-            ['/admin/empty/list'],
-            ['/admin/empty/create'],
-            ['/admin/empty/test_id/show'],
-            ['/admin/empty/test_id/edit'],
-            ['/admin/tests/app/foo-with-custom-controller/list'],
-            ['/admin/tests/app/foo-with-custom-controller/create'],
-            ['/admin/tests/app/foo-with-custom-controller/test_id/show'],
-            ['/admin/tests/app/foo-with-custom-controller/test_id/edit'],
-            ['/admin/tests/app/foo/test_id/bar/list'],
-            ['/admin/tests/app/bar/test_id/baz/list'],
-        ];
+        yield ['/admin/tests/app/foo/browse'];
+        // CustomAdminExtension route
+        yield ['/admin/empty/list'];
+        yield ['/admin/empty/create'];
+        yield ['/admin/empty/test_id/show'];
+        yield ['/admin/empty/test_id/edit'];
+        yield ['/admin/tests/app/foo-with-custom-controller/list'];
+        yield ['/admin/tests/app/foo-with-custom-controller/create'];
+        yield ['/admin/tests/app/foo-with-custom-controller/test_id/show'];
+        yield ['/admin/tests/app/foo-with-custom-controller/test_id/edit'];
+        yield ['/admin/tests/app/foo/test_id/bar/list'];
+        yield ['/admin/tests/app/bar/test_id/baz/list'];
     }
 }

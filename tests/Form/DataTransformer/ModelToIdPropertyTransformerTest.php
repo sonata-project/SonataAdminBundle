@@ -62,7 +62,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
      * @param Foo[]                                $expected
      * @param array<int|string|array<string>>|null $params
      *
-     * @dataProvider getReverseTransformMultipleTests
+     * @dataProvider provideReverseTransformMultipleCases
      *
      * @phpstan-param array<int|string|array<string>>|null $params
      * @psalm-param (array{_labels?: array<string>}&array<int|string>)|null $params
@@ -117,7 +117,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
      * @phpstan-return iterable<array-key, array{array<Foo>, array<int|string|array<string>>|null, Foo, Foo, Foo}>
      * @psalm-return iterable<array-key, array{array<Foo>, (array{_labels?: array<string>}&array<int|string>)|null, Foo, Foo, Foo}>
      */
-    public function getReverseTransformMultipleTests(): iterable
+    public function provideReverseTransformMultipleCases(): iterable
     {
         $entity1 = new Foo();
         $entity1->setBaz(123);
@@ -147,7 +147,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
     }
 
     /**
-     * @dataProvider getReverseTransformMultipleInvalidTypeTests
+     * @dataProvider provideReverseTransformMultipleInvalidTypeTestsCases
      */
     public function testReverseTransformMultipleInvalidTypeTests(mixed $params, string $type): void
     {
@@ -162,15 +162,13 @@ final class ModelToIdPropertyTransformerTest extends TestCase
     /**
      * @phpstan-return array<array{mixed, string}>
      */
-    public function getReverseTransformMultipleInvalidTypeTests(): array
+    public function provideReverseTransformMultipleInvalidTypeTestsCases(): iterable
     {
-        return [
-            [true, 'bool'],
-            [12, 'int'],
-            [12.9, 'float'],
-            ['_labels', 'string'],
-            [new \stdClass(), \stdClass::class],
-        ];
+        yield [true, 'bool'];
+        yield [12, 'int'];
+        yield [12.9, 'float'];
+        yield ['_labels', 'string'];
+        yield [new \stdClass(), \stdClass::class];
     }
 
     public function testTransform(): void

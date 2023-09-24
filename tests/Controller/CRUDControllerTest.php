@@ -803,7 +803,7 @@ final class CRUDControllerTest extends TestCase
      * @param array<string, bool|float|int|string|null> $queryParams
      * @param array<string, bool|float|int|string|null> $requestParams
      *
-     * @dataProvider getRedirectToTests
+     * @dataProvider provideRedirectToCases
      */
     public function testRedirectTo(
         string $expected,
@@ -867,16 +867,14 @@ final class CRUDControllerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, string, array<string, bool|float|int|string|null>, array<string, bool|float|int|string|null>, bool}>
      */
-    public function getRedirectToTests()
+    public function provideRedirectToCases(): iterable
     {
-        return [
-            ['stdClass_edit', 'edit', [], [], false],
-            ['list', 'list', ['btn_update_and_list' => true], [], false],
-            ['list', 'list', ['btn_create_and_list' => true], [], false],
-            ['create', 'create', ['btn_create_and_create' => true], [], false],
-            ['create?subclass=foo', 'create', ['btn_create_and_create' => true, 'subclass' => 'foo'], [], true],
-            ['stdClass_edit?_tab=first_tab', 'edit', ['btn_update_and_edit' => true], ['_tab' => 'first_tab'], false],
-        ];
+        yield ['stdClass_edit', 'edit', [], [], false];
+        yield ['list', 'list', ['btn_update_and_list' => true], [], false];
+        yield ['list', 'list', ['btn_create_and_list' => true], [], false];
+        yield ['create', 'create', ['btn_create_and_create' => true], [], false];
+        yield ['create?subclass=foo', 'create', ['btn_create_and_create' => true, 'subclass' => 'foo'], [], true];
+        yield ['stdClass_edit?_tab=first_tab', 'edit', ['btn_update_and_edit' => true], ['_tab' => 'first_tab'], false];
     }
 
     public function testDeleteActionNotFoundException(): void
@@ -3677,7 +3675,7 @@ final class CRUDControllerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{array<string, mixed>}>
      */
-    public function provideConfirmationData(): iterable
+    public function provideBatchActionWithConfirmationCases(): iterable
     {
         yield 'normal data' => [['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]];
         yield 'without all elements' => [['action' => 'delete', 'idx' => ['123', '456']]];
@@ -3689,7 +3687,7 @@ final class CRUDControllerTest extends TestCase
     /**
      * @param array<string, mixed> $data
      *
-     * @dataProvider provideConfirmationData
+     * @dataProvider provideBatchActionWithConfirmationCases
      */
     public function testBatchActionWithConfirmation(array $data): void
     {
@@ -3752,7 +3750,7 @@ final class CRUDControllerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideActionNames
+     * @dataProvider provideBatchActionNonRelevantActionCases
      *
      * @group legacy
      *
@@ -3798,7 +3796,7 @@ final class CRUDControllerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function provideActionNames(): iterable
+    public function provideBatchActionNonRelevantActionCases(): iterable
     {
         yield ['foo'];
         yield ['foo_bar'];
@@ -4025,12 +4023,10 @@ final class CRUDControllerTest extends TestCase
      */
     public function getToStringValues(): iterable
     {
-        return [
-            ['', ''],
-            ['Foo', 'Foo'],
-            ['&lt;a href=&quot;http://foo&quot;&gt;Bar&lt;/a&gt;', '<a href="http://foo">Bar</a>'],
-            ['&lt;&gt;&amp;&quot;&#039;abcdefghijklmnopqrstuvwxyz*-+.,?_()[]\/', '<>&"\'abcdefghijklmnopqrstuvwxyz*-+.,?_()[]\/'],
-        ];
+        yield ['', ''];
+        yield ['Foo', 'Foo'];
+        yield ['&lt;a href=&quot;http://foo&quot;&gt;Bar&lt;/a&gt;', '<a href="http://foo">Bar</a>'];
+        yield ['&lt;&gt;&amp;&quot;&#039;abcdefghijklmnopqrstuvwxyz*-+.,?_()[]\/', '<>&"\'abcdefghijklmnopqrstuvwxyz*-+.,?_()[]\/'];
     }
 
     public function testBatchActionActionAnotherController(): void

@@ -56,6 +56,8 @@ $rules = [
     ]],
     'php_unit_strict' => true,
     'php_unit_test_case_static_method_calls' => true,
+    'php_unit_data_provider_name' => true,
+    'php_unit_data_provider_return_type' => true,
     'phpdoc_to_comment' => ['ignored_tags' => ['psalm-suppress', 'phpstan-var']],
     'single_line_throw' => false,
     'static_lambda' => true,

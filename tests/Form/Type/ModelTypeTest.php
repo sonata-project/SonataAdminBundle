@@ -34,7 +34,7 @@ final class ModelTypeTest extends TypeTestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider getGetOptionsTests
+     * @dataProvider provideGetOptionsCases
      */
     public function testGetOptions(array $options, int $expectedModelManagerFindCalls): void
     {
@@ -72,17 +72,15 @@ final class ModelTypeTest extends TypeTestCase
     /**
      * @phpstan-return iterable<array-key, array{array<string, mixed>, int}>
      */
-    public function getGetOptionsTests(): iterable
+    public function provideGetOptionsCases(): iterable
     {
-        return [
-            [[], 1],
-            [['choices' => null], 1],
-            [['choices' => []], 0],
-        ];
+        yield [[], 1];
+        yield [['choices' => null], 1];
+        yield [['choices' => []], 0];
     }
 
     /**
-     * @dataProvider getCompoundOptionTests
+     * @dataProvider provideCompoundOptionCases
      */
     public function testCompoundOption(bool $expectedCompound, bool $multiple, bool $expanded): void
     {
@@ -114,13 +112,14 @@ final class ModelTypeTest extends TypeTestCase
     /**
      * @phpstan-return array<array{bool, bool, bool}>
      */
-    public function getCompoundOptionTests(): array
+    public function provideCompoundOptionCases(): iterable
     {
-        return [
-            [true, true, true], // checkboxes
-            [false, true, false], // select tag (with multiple attribute)
-            [true, false, true], // radio buttons
-            [false, false, false], // select tag
-        ];
+        yield [true, true, true];
+        // checkboxes
+        yield [false, true, false];
+        // select tag (with multiple attribute)
+        yield [true, false, true];
+        // radio buttons
+        yield [false, false, false];
     }
 }

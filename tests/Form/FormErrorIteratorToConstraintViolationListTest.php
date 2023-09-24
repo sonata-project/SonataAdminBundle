@@ -29,7 +29,7 @@ final class FormErrorIteratorToConstraintViolationListTest extends TestCase
     /**
      * @param FormErrorIterator<FormError> $formErrors
      *
-     * @dataProvider provideFormErrorIterators
+     * @dataProvider provideTransformCases
      */
     public function testTransform(int $expectedCount, FormErrorIterator $formErrors): void
     {
@@ -43,7 +43,7 @@ final class FormErrorIteratorToConstraintViolationListTest extends TestCase
      * @phpstan-return iterable<array{int, FormErrorIterator<FormError>}>
      * @psalm-return iterable<array{int, FormErrorIterator<FormError|FormErrorIterator>}>
      */
-    public function provideFormErrorIterators(): iterable
+    public function provideTransformCases(): iterable
     {
         $form = $this->createStub(FormInterface::class);
         $form->method('getName')->willReturn('name');

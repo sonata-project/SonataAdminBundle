@@ -45,7 +45,7 @@ final class CanonicalizeExtensionTest extends TestCase
     }
 
     /**
-     * @dataProvider momentLocalesProvider
+     * @dataProvider provideCanonicalizedLocaleForMomentCases
      *
      * @psalm-suppress DeprecatedMethod
      */
@@ -59,7 +59,7 @@ final class CanonicalizeExtensionTest extends TestCase
     }
 
     /**
-     * @dataProvider select2LocalesProvider
+     * @dataProvider provideCanonicalizedLocaleForSelect2Cases
      *
      * @psalm-suppress DeprecatedMethod
      */
@@ -69,186 +69,176 @@ final class CanonicalizeExtensionTest extends TestCase
         static::assertSame($expected, $this->twigExtension->getCanonicalizedLocaleForSelect2());
     }
 
-    /**
-     * @return array<array{?string, string}>
-     */
-    public function momentLocalesProvider(): array
+    public function provideCanonicalizedLocaleForMomentCases(): iterable
     {
-        return [
-            ['af', 'af'],
-            ['ar-dz', 'ar-dz'],
-            ['ar', 'ar'],
-            ['ar-ly', 'ar-ly'],
-            ['ar-ma', 'ar-ma'],
-            ['ar-sa', 'ar-sa'],
-            ['ar-tn', 'ar-tn'],
-            ['az', 'az'],
-            ['be', 'be'],
-            ['bg', 'bg'],
-            ['bn', 'bn'],
-            ['bo', 'bo'],
-            ['br', 'br'],
-            ['bs', 'bs'],
-            ['ca', 'ca'],
-            ['cs', 'cs'],
-            ['cv', 'cv'],
-            ['cy', 'cy'],
-            ['da', 'da'],
-            ['de-at', 'de-at'],
-            ['de', 'de'],
-            ['de', 'de-de'],
-            ['dv', 'dv'],
-            ['el', 'el'],
-            [null, 'en'],
-            [null, 'en-us'],
-            ['en-au', 'en-au'],
-            ['en-ca', 'en-ca'],
-            ['en-gb', 'en-gb'],
-            ['en-ie', 'en-ie'],
-            ['en-nz', 'en-nz'],
-            ['eo', 'eo'],
-            ['es-do', 'es-do'],
-            ['es', 'es-ar'],
-            ['es', 'es-mx'],
-            ['es', 'es'],
-            ['et', 'et'],
-            ['eu', 'eu'],
-            ['fa', 'fa'],
-            ['fi', 'fi'],
-            ['fo', 'fo'],
-            ['fr-ca', 'fr-ca'],
-            ['fr-ch', 'fr-ch'],
-            ['fr', 'fr-fr'],
-            ['fr', 'fr'],
-            ['fy', 'fy'],
-            ['gd', 'gd'],
-            ['gl', 'gl'],
-            ['he', 'he'],
-            ['hi', 'hi'],
-            ['hr', 'hr'],
-            ['hu', 'hu'],
-            ['hy-am', 'hy-am'],
-            ['id', 'id'],
-            ['is', 'is'],
-            ['it', 'it'],
-            ['ja', 'ja'],
-            ['jv', 'jv'],
-            ['ka', 'ka'],
-            ['kk', 'kk'],
-            ['km', 'km'],
-            ['ko', 'ko'],
-            ['ky', 'ky'],
-            ['lb', 'lb'],
-            ['lo', 'lo'],
-            ['lt', 'lt'],
-            ['lv', 'lv'],
-            ['me', 'me'],
-            ['mi', 'mi'],
-            ['mk', 'mk'],
-            ['ml', 'ml'],
-            ['mr', 'mr'],
-            ['ms', 'ms'],
-            ['ms-my', 'ms-my'],
-            ['my', 'my'],
-            ['nb', 'nb'],
-            ['ne', 'ne'],
-            ['nl-be', 'nl-be'],
-            ['nl', 'nl'],
-            ['nl', 'nl-nl'],
-            ['nn', 'nn'],
-            ['pa-in', 'pa-in'],
-            ['pl', 'pl'],
-            ['pt-br', 'pt-br'],
-            ['pt', 'pt'],
-            ['ro', 'ro'],
-            ['ru', 'ru'],
-            ['se', 'se'],
-            ['si', 'si'],
-            ['sk', 'sk'],
-            ['sl', 'sl'],
-            ['sq', 'sq'],
-            ['sr-cyrl', 'sr-cyrl'],
-            ['sr', 'sr'],
-            ['ss', 'ss'],
-            ['sv', 'sv'],
-            ['sw', 'sw'],
-            ['ta', 'ta'],
-            ['te', 'te'],
-            ['tet', 'tet'],
-            ['th', 'th'],
-            ['tlh', 'tlh'],
-            ['tl-ph', 'tl-ph'],
-            ['tr', 'tr'],
-            ['tzl', 'tzl'],
-            ['tzm', 'tzm'],
-            ['tzm-latn', 'tzm-latn'],
-            ['uk', 'uk'],
-            ['uz', 'uz'],
-            ['vi', 'vi'],
-            ['x-pseudo', 'x-pseudo'],
-            ['yo', 'yo'],
-            ['zh-cn', 'zh-cn'],
-            ['zh-hk', 'zh-hk'],
-            ['zh-tw', 'zh-tw'],
-        ];
+        yield ['af', 'af'];
+        yield ['ar-dz', 'ar-dz'];
+        yield ['ar', 'ar'];
+        yield ['ar-ly', 'ar-ly'];
+        yield ['ar-ma', 'ar-ma'];
+        yield ['ar-sa', 'ar-sa'];
+        yield ['ar-tn', 'ar-tn'];
+        yield ['az', 'az'];
+        yield ['be', 'be'];
+        yield ['bg', 'bg'];
+        yield ['bn', 'bn'];
+        yield ['bo', 'bo'];
+        yield ['br', 'br'];
+        yield ['bs', 'bs'];
+        yield ['ca', 'ca'];
+        yield ['cs', 'cs'];
+        yield ['cv', 'cv'];
+        yield ['cy', 'cy'];
+        yield ['da', 'da'];
+        yield ['de-at', 'de-at'];
+        yield ['de', 'de'];
+        yield ['de', 'de-de'];
+        yield ['dv', 'dv'];
+        yield ['el', 'el'];
+        yield [null, 'en'];
+        yield [null, 'en-us'];
+        yield ['en-au', 'en-au'];
+        yield ['en-ca', 'en-ca'];
+        yield ['en-gb', 'en-gb'];
+        yield ['en-ie', 'en-ie'];
+        yield ['en-nz', 'en-nz'];
+        yield ['eo', 'eo'];
+        yield ['es-do', 'es-do'];
+        yield ['es', 'es-ar'];
+        yield ['es', 'es-mx'];
+        yield ['es', 'es'];
+        yield ['et', 'et'];
+        yield ['eu', 'eu'];
+        yield ['fa', 'fa'];
+        yield ['fi', 'fi'];
+        yield ['fo', 'fo'];
+        yield ['fr-ca', 'fr-ca'];
+        yield ['fr-ch', 'fr-ch'];
+        yield ['fr', 'fr-fr'];
+        yield ['fr', 'fr'];
+        yield ['fy', 'fy'];
+        yield ['gd', 'gd'];
+        yield ['gl', 'gl'];
+        yield ['he', 'he'];
+        yield ['hi', 'hi'];
+        yield ['hr', 'hr'];
+        yield ['hu', 'hu'];
+        yield ['hy-am', 'hy-am'];
+        yield ['id', 'id'];
+        yield ['is', 'is'];
+        yield ['it', 'it'];
+        yield ['ja', 'ja'];
+        yield ['jv', 'jv'];
+        yield ['ka', 'ka'];
+        yield ['kk', 'kk'];
+        yield ['km', 'km'];
+        yield ['ko', 'ko'];
+        yield ['ky', 'ky'];
+        yield ['lb', 'lb'];
+        yield ['lo', 'lo'];
+        yield ['lt', 'lt'];
+        yield ['lv', 'lv'];
+        yield ['me', 'me'];
+        yield ['mi', 'mi'];
+        yield ['mk', 'mk'];
+        yield ['ml', 'ml'];
+        yield ['mr', 'mr'];
+        yield ['ms', 'ms'];
+        yield ['ms-my', 'ms-my'];
+        yield ['my', 'my'];
+        yield ['nb', 'nb'];
+        yield ['ne', 'ne'];
+        yield ['nl-be', 'nl-be'];
+        yield ['nl', 'nl'];
+        yield ['nl', 'nl-nl'];
+        yield ['nn', 'nn'];
+        yield ['pa-in', 'pa-in'];
+        yield ['pl', 'pl'];
+        yield ['pt-br', 'pt-br'];
+        yield ['pt', 'pt'];
+        yield ['ro', 'ro'];
+        yield ['ru', 'ru'];
+        yield ['se', 'se'];
+        yield ['si', 'si'];
+        yield ['sk', 'sk'];
+        yield ['sl', 'sl'];
+        yield ['sq', 'sq'];
+        yield ['sr-cyrl', 'sr-cyrl'];
+        yield ['sr', 'sr'];
+        yield ['ss', 'ss'];
+        yield ['sv', 'sv'];
+        yield ['sw', 'sw'];
+        yield ['ta', 'ta'];
+        yield ['te', 'te'];
+        yield ['tet', 'tet'];
+        yield ['th', 'th'];
+        yield ['tlh', 'tlh'];
+        yield ['tl-ph', 'tl-ph'];
+        yield ['tr', 'tr'];
+        yield ['tzl', 'tzl'];
+        yield ['tzm', 'tzm'];
+        yield ['tzm-latn', 'tzm-latn'];
+        yield ['uk', 'uk'];
+        yield ['uz', 'uz'];
+        yield ['vi', 'vi'];
+        yield ['x-pseudo', 'x-pseudo'];
+        yield ['yo', 'yo'];
+        yield ['zh-cn', 'zh-cn'];
+        yield ['zh-hk', 'zh-hk'];
+        yield ['zh-tw', 'zh-tw'];
     }
 
-    /**
-     * @return array<array{?string, string}>
-     */
-    public function select2LocalesProvider()
+    public function provideCanonicalizedLocaleForSelect2Cases(): iterable
     {
-        return [
-            ['ar', 'ar'],
-            ['az', 'az'],
-            ['bg', 'bg'],
-            ['ca', 'ca'],
-            ['cs', 'cs'],
-            ['da', 'da'],
-            ['de', 'de'],
-            ['el', 'el'],
-            [null, 'en'],
-            ['es', 'es'],
-            ['et', 'et'],
-            ['eu', 'eu'],
-            ['fa', 'fa'],
-            ['fi', 'fi'],
-            ['fr', 'fr'],
-            ['gl', 'gl'],
-            ['he', 'he'],
-            ['hr', 'hr'],
-            ['hu', 'hu'],
-            ['id', 'id'],
-            ['is', 'is'],
-            ['it', 'it'],
-            ['ja', 'ja'],
-            ['ka', 'ka'],
-            ['ko', 'ko'],
-            ['lt', 'lt'],
-            ['lv', 'lv'],
-            ['mk', 'mk'],
-            ['ms', 'ms'],
-            ['nb', 'nb'],
-            ['nl', 'nl'],
-            ['pl', 'pl'],
-            ['pt-PT', 'pt'],
-            ['pt-BR', 'pt-BR'],
-            ['pt-PT', 'pt-PT'],
-            ['ro', 'ro'],
-            ['rs', 'rs'],
-            ['ru', 'ru'],
-            ['sk', 'sk'],
-            ['sv', 'sv'],
-            ['th', 'th'],
-            ['tr', 'tr'],
-            ['ug-CN', 'ug'],
-            ['ug-CN', 'ug-CN'],
-            ['uk', 'uk'],
-            ['vi', 'vi'],
-            ['zh-CN', 'zh'],
-            ['zh-CN', 'zh-CN'],
-            ['zh-TW', 'zh-TW'],
-        ];
+        yield ['ar', 'ar'];
+        yield ['az', 'az'];
+        yield ['bg', 'bg'];
+        yield ['ca', 'ca'];
+        yield ['cs', 'cs'];
+        yield ['da', 'da'];
+        yield ['de', 'de'];
+        yield ['el', 'el'];
+        yield [null, 'en'];
+        yield ['es', 'es'];
+        yield ['et', 'et'];
+        yield ['eu', 'eu'];
+        yield ['fa', 'fa'];
+        yield ['fi', 'fi'];
+        yield ['fr', 'fr'];
+        yield ['gl', 'gl'];
+        yield ['he', 'he'];
+        yield ['hr', 'hr'];
+        yield ['hu', 'hu'];
+        yield ['id', 'id'];
+        yield ['is', 'is'];
+        yield ['it', 'it'];
+        yield ['ja', 'ja'];
+        yield ['ka', 'ka'];
+        yield ['ko', 'ko'];
+        yield ['lt', 'lt'];
+        yield ['lv', 'lv'];
+        yield ['mk', 'mk'];
+        yield ['ms', 'ms'];
+        yield ['nb', 'nb'];
+        yield ['nl', 'nl'];
+        yield ['pl', 'pl'];
+        yield ['pt-PT', 'pt'];
+        yield ['pt-BR', 'pt-BR'];
+        yield ['pt-PT', 'pt-PT'];
+        yield ['ro', 'ro'];
+        yield ['rs', 'rs'];
+        yield ['ru', 'ru'];
+        yield ['sk', 'sk'];
+        yield ['sv', 'sv'];
+        yield ['th', 'th'];
+        yield ['tr', 'tr'];
+        yield ['ug-CN', 'ug'];
+        yield ['ug-CN', 'ug-CN'];
+        yield ['uk', 'uk'];
+        yield ['vi', 'vi'];
+        yield ['zh-CN', 'zh'];
+        yield ['zh-CN', 'zh-CN'];
+        yield ['zh-TW', 'zh-TW'];
     }
 
     private function changeLocale(string $locale): void

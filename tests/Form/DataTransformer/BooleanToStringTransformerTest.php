@@ -24,20 +24,18 @@ final class BooleanToStringTransformerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{bool|null, string|null, string}>
      */
-    public function provideTransform(): iterable
+    public function provideTransformCases(): iterable
     {
-        return [
-            [null, null, '1'],
-            [false, null, '1'],
-            [true, '1', '1'],
-            [true, 'true', 'true'],
-            [true, 'yes', 'yes'],
-            [true, 'on', 'on'],
-        ];
+        yield [null, null, '1'];
+        yield [false, null, '1'];
+        yield [true, '1', '1'];
+        yield [true, 'true', 'true'];
+        yield [true, 'yes', 'yes'];
+        yield [true, 'on', 'on'];
     }
 
     /**
-     * @dataProvider provideTransform
+     * @dataProvider provideTransformCases
      */
     public function testTransform(?bool $value, ?string $expected, string $trueValue): void
     {
@@ -49,24 +47,22 @@ final class BooleanToStringTransformerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string|null, bool}>
      */
-    public function provideReverseTransform(): iterable
+    public function provideReverseTransformCases(): iterable
     {
-        return [
-            [null, false],
-            ['1', true],
-            ['true', true],
-            ['yes', true],
-            ['on', true],
-            ['0', false],
-            ['false', false],
-            ['no', false],
-            ['off', false],
-            ['', false],
-        ];
+        yield [null, false];
+        yield ['1', true];
+        yield ['true', true];
+        yield ['yes', true];
+        yield ['on', true];
+        yield ['0', false];
+        yield ['false', false];
+        yield ['no', false];
+        yield ['off', false];
+        yield ['', false];
     }
 
     /**
-     * @dataProvider provideReverseTransform
+     * @dataProvider provideReverseTransformCases
      */
     public function testReverseTransform(?string $value, bool $expected): void
     {
