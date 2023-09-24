@@ -81,7 +81,6 @@
   "bundles/sonataadmin/admin-lte-skins/skin-green.min.css": "./admin-lte-skins/skin-green.min.css",
   "bundles/sonataadmin/admin-lte-skins/skin-red.min.css": "./admin-lte-skins/skin-red.min.css",
   "bundles/sonataadmin/images/blue.png": "./images/blue.png",
-  "bundles/sonataadmin/images/loading.gif": "./images/loading.gif",
   "bundles/sonataadmin/select2-locale/ne.js": "./select2-locale/ne.js",
   "bundles/sonataadmin/select2-locale/sk.js": "./select2-locale/sk.js",
   "bundles/sonataadmin/fonts/source-sans-pro-greek-300-italic.woff2": "./fonts/source-sans-pro-greek-300-italic.woff2",
@@ -153,6 +152,5 @@
   "bundles/sonataadmin/select2-locale/id.js": "./select2-locale/id.js",
   "bundles/sonataadmin/select2-locale/zh-CN.js": "./select2-locale/zh-CN.js",
   "bundles/sonataadmin/select2-locale/az.js": "./select2-locale/az.js",
-  "bundles/sonataadmin/select2-locale/zh-TW.js": "./select2-locale/zh-TW.js",
-  "bundles/sonataadmin/images/clear.png": "./images/clear.png"
+  "bundles/sonataadmin/select2-locale/zh-TW.js": "./select2-locale/zh-TW.js"
 }

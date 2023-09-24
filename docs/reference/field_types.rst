@@ -31,9 +31,6 @@ Fieldtype                                           Description
 ``FieldDescriptionInterface::TYPE_ONE_TO_ONE``      used for relational tables
 ================================================    =============================================
 
-Theses types accept an ``editable`` option to edit the value from within the list action.
-This is currently limited to scalar types (text, integer, url...) and choice types with association field.
-
 .. note::
 
     If the ``SonataIntlBundle`` is installed in the project some template types
@@ -116,7 +113,6 @@ You can use the following options:
 Option                                  Description
 ======================================  ======================================================================
 **ajax_hidden**                         Yes/No; ajax_hidden allows to hide list field during an AJAX context.
-**editable**                            Yes/No; editable allows to edit directly from the list if authorized.
 **inverse**                             Yes/No; reverses the background color (green for false, red for true).
 ======================================  ======================================================================
 
@@ -126,7 +122,6 @@ Option                                  Description
     {
         $list
             ->add('invalid', FieldDescriptionInterface::TYPE_BOOLEAN, [
-                'editable' => true,
                 'inverse'  => true,
             ])
         ;
@@ -149,10 +144,6 @@ Option                                  Description
 **multiple**                            Determines if choosing multiple options is allowed. Defaults to false.
 **delimiter**                           Separator of values, if multiple.
 **choice_translation_domain**           Translation domain.
-**class**                               Class qualified name for editable association field.
-**required**                            Whether the field is required or not (default true) when the
-                                        ``editable`` option is set to ``true``. If false, an empty
-                                        placeholder will be added.
 ======================================  ======================================================================
 
 .. code-block:: php

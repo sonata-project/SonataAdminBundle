@@ -25,9 +25,7 @@ use Sonata\AdminBundle\Tests\Fixtures\Enum\Suit;
 use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Tests\Twig\Extension\FakeTemplateRegistryExtension;
 use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
-use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
 use Sonata\AdminBundle\Twig\RenderElementRuntime;
-use Sonata\AdminBundle\Twig\XEditableRuntime;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Component\Config\FileLocator;
@@ -41,7 +39,6 @@ use Symfony\Component\Translation\Translator;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 use Twig\Extra\String\StringExtension;
-use Twig\RuntimeLoader\FactoryRuntimeLoader;
 
 final class RenderElementRuntimeTest extends TestCase
 {
@@ -795,7 +792,7 @@ final class RenderElementRuntimeTest extends TestCase
                 </td>',
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 true,
-                ['editable' => false],
+                [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
@@ -803,7 +800,7 @@ final class RenderElementRuntimeTest extends TestCase
                 </td>',
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 false,
-                ['editable' => false],
+                [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
@@ -811,67 +808,7 @@ final class RenderElementRuntimeTest extends TestCase
                 </td>',
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 null,
-                ['editable' => false],
-            ],
-            [
-                <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
-                        <span
-                            class="x-editable"
-                            data-type="select"
-                            data-value="1"
-                            data-title="Data"
-                            data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-                            data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]"
-                        >
-                            <span class="label label-success">yes</span>
-                        </span>
-                    </td>
-                    EOT
-            ,
-                FieldDescriptionInterface::TYPE_BOOLEAN,
-                true,
-                ['editable' => true],
-            ],
-            [
-                <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
-                        <span
-                            class="x-editable"
-                            data-type="select"
-                            data-value="0"
-                            data-title="Data"
-                            data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-                            data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]"
-                        >
-                        <span class="label label-danger">no</span> </span>
-                    </td>
-                    EOT
-                ,
-                FieldDescriptionInterface::TYPE_BOOLEAN,
-                false,
-                ['editable' => true],
-            ],
-            [
-                <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
-                        <span
-                            class="x-editable"
-                            data-type="select"
-                            data-value="0"
-                            data-title="Data"
-                            data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-                            data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]" >
-                            <span class="label label-danger">no</span> </span>
-                    </td>
-                    EOT
-                ,
-                FieldDescriptionInterface::TYPE_BOOLEAN,
-                null,
-                ['editable' => true],
+                [],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> Delete </td>',
@@ -1022,134 +959,6 @@ final class RenderElementRuntimeTest extends TestCase
                     'Status2' => '<b>Alias2</b>',
                     'Status3' => '<b>Alias3</b>',
                 ], 'multiple' => true], ],
-            [
-                <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
-                        <span
-                            class="x-editable"
-                            data-type="select"
-                            data-value="Status1"
-                            data-title="Data"
-                            data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-                            data-source="[]"
-                        >
-                            Status1
-                        </span>
-                    </td>
-                    EOT
-                ,
-                FieldDescriptionInterface::TYPE_CHOICE,
-                'Status1',
-                ['editable' => true],
-            ],
-            [
-                <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
-                        <span
-                            class="x-editable"
-                            data-type="select"
-                            data-value="Status1"
-                            data-title="Data"
-                            data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-                            data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
-                            Alias1 </span>
-                    </td>
-                    EOT
-                ,
-                FieldDescriptionInterface::TYPE_CHOICE,
-                'Status1',
-                [
-                    'editable' => true,
-                    'choices' => [
-                        'Status1' => 'Alias1',
-                        'Status2' => 'Alias2',
-                        'Status3' => 'Alias3',
-                    ],
-                ],
-            ],
-            [
-                <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
-                        <span
-                            class="x-editable"
-                            data-type="select"
-                            data-value=""
-                            data-title="Data"
-                            data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-                            data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
-
-                        </span>
-                    </td>
-                    EOT
-                ,
-                FieldDescriptionInterface::TYPE_CHOICE,
-                null,
-                [
-                    'editable' => true,
-                    'choices' => [
-                        'Status1' => 'Alias1',
-                        'Status2' => 'Alias2',
-                        'Status3' => 'Alias3',
-                    ],
-                ],
-            ],
-            [
-                <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
-                        <span
-                            class="x-editable"
-                            data-type="select"
-                            data-value="NoValidKeyInChoices"
-                            data-title="Data" data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-                            data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
-                            NoValidKeyInChoices
-                        </span>
-                    </td>
-                    EOT
-                ,
-                FieldDescriptionInterface::TYPE_CHOICE,
-                'NoValidKeyInChoices',
-                [
-                    'editable' => true,
-                    'choices' => [
-                        'Status1' => 'Alias1',
-                        'Status2' => 'Alias2',
-                        'Status3' => 'Alias3',
-                    ],
-                ],
-            ],
-            [
-                <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
-                        <span
-                            class="x-editable"
-                            data-type="select"
-                            data-value="Foo"
-                            data-title="Data"
-                            data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-                            data-source="[{&quot;value&quot;:&quot;Foo&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
-                             Delete
-                        </span>
-                    </td>
-                    EOT
-                ,
-                FieldDescriptionInterface::TYPE_CHOICE,
-                'Foo',
-                [
-                    'editable' => true,
-                    'choice_translation_domain' => 'SonataAdminBundle',
-                    'choices' => [
-                        'Foo' => 'action_delete',
-                        'Status2' => 'Alias2',
-                        'Status3' => 'Alias3',
-                    ],
-                ],
-            ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> &nbsp; </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1436,38 +1245,6 @@ final class RenderElementRuntimeTest extends TestCase
                         'height' => 10,
                         'more' => 'More',
                         'less' => 'Less',
-                    ],
-                ],
-            ],
-            [
-                <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
-                        <span
-                            class="x-editable"
-                            data-type="checklist"
-                            data-value="[&quot;Status1&quot;,&quot;Status2&quot;]"
-                            data-title="Data"
-                            data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-                            data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
-                             Delete, Alias2
-                        </span>
-                    </td>
-                    EOT
-                ,
-                FieldDescriptionInterface::TYPE_CHOICE,
-                [
-                    'Status1',
-                    'Status2',
-                ],
-                [
-                    'editable' => true,
-                    'multiple' => true,
-                    'choice_translation_domain' => 'SonataAdminBundle',
-                    'choices' => [
-                        'Status1' => 'action_delete',
-                        'Status2' => 'Alias2',
-                        'Status3' => 'Alias3',
                     ],
                 ],
             ],
@@ -2056,14 +1833,9 @@ final class RenderElementRuntimeTest extends TestCase
     private function registerRequiredTwigExtensions(): void
     {
         $this->environment->addExtension(new RenderElementExtension($this->renderElementRuntime));
-        $this->environment->addExtension(new XEditableExtension(new XEditableRuntime($this->translator)));
         $this->environment->addExtension(new TranslationExtension($this->translator));
         $this->environment->addExtension(new FakeTemplateRegistryExtension());
         $this->environment->addExtension(new StringExtension());
-
-        $this->environment->addRuntimeLoader(new FactoryRuntimeLoader([
-            XEditableRuntime::class => fn (): XEditableRuntime => new XEditableRuntime($this->translator),
-        ]));
 
         $this->registerRoutingExtension();
     }
