@@ -92,31 +92,7 @@ Here is an example::
             ->add('isVariation', FieldDescriptionInterface::TYPE_BOOLEAN)
 
             // if null, the type will be guessed
-            ->add('enabled', null, [
-                'editable' => true
-            ])
-
-            // editable association field
-            ->add('status', FieldDescriptionInterface::TYPE_CHOICE, [
-                'editable' => true,
-                'class' => 'Vendor\ExampleBundle\Entity\ExampleStatus',
-                'choices' => [
-                    1 => 'Active',
-                    2 => 'Inactive',
-                    3 => 'Draft',
-                ],
-            ])
-
-            // editable multiple field
-            ->add('winner', FieldDescriptionInterface::TYPE_CHOICE, [
-                'editable' => true,
-                'multiple' => true,
-                'choices' => [
-                    'jury' => 'Jury',
-                    'voting' => 'Voting',
-                    'encouraging' => 'Encouraging',
-                ],
-            ])
+            ->add('enabled', null)
 
             // we can add options to the field depending on the type
             ->add('price', FieldDescriptionInterface::TYPE_CURRENCY, [
@@ -314,26 +290,6 @@ _`Data Transformer`: https://symfony.com/doc/current/form/data_transformers.html
             }
         }
     }
-
-For quick moderation of objects, it is convenient to do this on the page for viewing all objects. But if we just
-indicate the field as editable, then when editing we get in the object a string with the value itself (``awaiting``,
-``approved``, ``rejected``), and not the Value Object (``ModerationStatus``). To solve this problem, you must specify
-the Data Transformer in the ``data_transformer`` field so that it correctly converts the input data into the data
-expected by your object::
-
-    // ...
-
-    protected function configureListFields(ListMapper $list): void
-    {
-        $list
-            ->add('moderation_status', 'choice', [
-                'editable' => true,
-                'choices' => ModerationStatus::choices(),
-                'data_transformer' => new ModerationStatusDataTransformer(),
-            ])
-        ;
-    }
-
 
 Customizing the query used to generate the list
 -----------------------------------------------

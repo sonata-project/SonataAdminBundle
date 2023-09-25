@@ -19,7 +19,6 @@ use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction;
 use Sonata\AdminBundle\Action\RetrieveFormFieldElementAction;
 use Sonata\AdminBundle\Action\SearchAction;
-use Sonata\AdminBundle\Action\SetObjectFieldValueAction;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
@@ -61,17 +60,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 service('twig'),
                 service('sonata.admin.request.fetcher'),
-            ])
-
-        ->set('sonata.admin.action.set_object_field_value', SetObjectFieldValueAction::class)
-            ->public()
-            ->args([
-                service('twig'),
-                service('sonata.admin.request.fetcher'),
-                service('validator'),
-                service('sonata.admin.form.data_transformer_resolver'),
-                service('property_accessor'),
-                service('sonata.admin.twig.render_element_runtime'),
             ])
 
         ->set('sonata.admin.action.retrieve_autocomplete_items', RetrieveAutocompleteItemsAction::class)

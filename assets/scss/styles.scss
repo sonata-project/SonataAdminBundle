@@ -412,39 +412,6 @@ body.fixed .sonata-list-table {
 
 /* Overrides */
 
-/* x-editable */
-td.sonata-ba-list-field {
-  .editable {
-    cursor: pointer;
-  }
-
-  .btn.editable {
-    border-bottom: solid 1px #bbb;
-  }
-
-  .editable-empty:not(.editable-open) {
-    display: none;
-  }
-}
-
-.sonata-ba-list tr:hover .editable-empty {
-  display: inline-block;
-}
-
-.editable-pre-wrapped {
-  white-space: normal;
-}
-
-.editable-container {
-  .prev::before {
-    content: '\2190 ';
-  }
-
-  .next::before {
-    content: '\2192 ';
-  }
-}
-
 /* bootstrap */
 .input-group-addon {
   width: auto; /* See https://github.com/sonata-project/SonataAdminBundle/issues/2950 */

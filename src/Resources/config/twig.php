@@ -23,20 +23,14 @@ use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
 use Sonata\AdminBundle\Twig\Extension\SecurityExtension;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
-use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
 use Sonata\AdminBundle\Twig\GroupRuntime;
 use Sonata\AdminBundle\Twig\IconRuntime;
 use Sonata\AdminBundle\Twig\RenderElementRuntime;
 use Sonata\AdminBundle\Twig\SecurityRuntime;
 use Sonata\AdminBundle\Twig\SonataAdminRuntime;
 use Sonata\AdminBundle\Twig\TemplateRegistryRuntime;
-use Sonata\AdminBundle\Twig\XEditableRuntime;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    $containerConfigurator->parameters()
-
-        ->set('sonata.admin.twig.extension.x_editable_type_mapping', XEditableRuntime::FIELD_DESCRIPTION_MAPPING);
-
     $containerConfigurator->services()
 
         // NEXT_MAJOR: Remove the `args()` call.
@@ -155,28 +149,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 service('request_stack'),
                 // TODO: Remove this argument when dropping support for `sonata-project/form-extensions` 1.x.
                 service('sonata.form.twig.canonicalize_runtime')->nullOnInvalid(),
-            ])
-
-        // NEXT_MAJOR: Remove the `args()` call.
-        ->set('sonata.admin.twig.xeditable_extension', XEditableExtension::class)
-            ->tag('twig.extension')
-            ->args([
-                service('sonata.admin.twig.xeditable_runtime'),
-            ])
-
-        // NEXT_MAJOR: Remove the alias.
-        ->alias('sonata.xeditable.twig.extension', 'sonata.admin.twig.xeditable_extension')
-        ->deprecate(
-            'sonata-project/admin-bundle',
-            '4.7',
-            'The "%alias_id%" alias is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
-        )
-
-        ->set('sonata.admin.twig.xeditable_runtime', XEditableRuntime::class)
-            ->tag('twig.runtime')
-            ->args([
-                service('translator'),
-                '%sonata.admin.twig.extension.x_editable_type_mapping%',
             ])
 
         // NEXT_MAJOR: Remove the `args()` call.
