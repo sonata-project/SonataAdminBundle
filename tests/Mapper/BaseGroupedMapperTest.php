@@ -206,7 +206,7 @@ final class BaseGroupedMapperTest extends TestCase
     /**
      * @phpstan-return array<array{string, string, string|null, string}>
      */
-    public function labelDataProvider(): iterable
+    public function provideLabelCases(): iterable
     {
         yield 'nominal use case not translated' => ['label_default', 'fooGroup1', null, 'label_foogroup1'];
         yield 'nominal use case translated' => ['label_default', 'fooGroup1', null, 'label_foogroup1'];
@@ -215,7 +215,7 @@ final class BaseGroupedMapperTest extends TestCase
     }
 
     /**
-     * @dataProvider labelDataProvider
+     * @dataProvider provideLabelCases
      */
     public function testLabel(string $translated, string $name, ?string $label, string $expectedLabel): void
     {

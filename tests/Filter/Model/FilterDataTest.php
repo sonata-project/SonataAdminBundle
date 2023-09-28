@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Filter\Model\FilterData;
 final class FilterDataTest extends TestCase
 {
     /**
-     * @dataProvider getInvalidTypes
+     * @dataProvider provideTypeMustBeNumericOrNullCases
      */
     public function testTypeMustBeNumericOrNull(mixed $type): void
     {
@@ -36,7 +36,7 @@ final class FilterDataTest extends TestCase
     /**
      * @return iterable<array<mixed>>
      */
-    public function getInvalidTypes(): iterable
+    public function provideTypeMustBeNumericOrNullCases(): iterable
     {
         yield ['string'];
         yield [new \stdClass()];
@@ -59,7 +59,7 @@ final class FilterDataTest extends TestCase
     }
 
     /**
-     * @dataProvider getTypes
+     * @dataProvider provideGetTypeCases
      *
      * @phpstan-param int|numeric-string|null $type
      */
@@ -71,7 +71,7 @@ final class FilterDataTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{int|null, int|numeric-string|null}>
      */
-    public function getTypes(): iterable
+    public function provideGetTypeCases(): iterable
     {
         yield 'nullable' => [null, null];
         yield 'int' => [3, 3];
@@ -79,7 +79,7 @@ final class FilterDataTest extends TestCase
     }
 
     /**
-     * @dataProvider getValues
+     * @dataProvider provideGetValueCases
      */
     public function testGetValue(mixed $value): void
     {
@@ -89,7 +89,7 @@ final class FilterDataTest extends TestCase
     /**
      * @return iterable<array<mixed>>
      */
-    public function getValues(): iterable
+    public function provideGetValueCases(): iterable
     {
         yield [null];
         yield [new \stdClass()];

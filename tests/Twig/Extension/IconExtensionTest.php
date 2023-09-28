@@ -25,7 +25,7 @@ use Sonata\AdminBundle\Twig\IconRuntime;
 final class IconExtensionTest extends TestCase
 {
     /**
-     * @dataProvider iconProvider
+     * @dataProvider provideParseIconCases
      *
      * @psalm-suppress DeprecatedMethod
      */
@@ -39,7 +39,7 @@ final class IconExtensionTest extends TestCase
     /**
      * @return iterable<array{string, string}>
      */
-    public function iconProvider(): iterable
+    public function provideParseIconCases(): iterable
     {
         yield ['', ''];
         yield ['<i class="fa fa-cog" aria-hidden="true"></i>', '<i class="fa fa-cog" aria-hidden="true"></i>'];

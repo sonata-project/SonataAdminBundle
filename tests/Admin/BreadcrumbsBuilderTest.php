@@ -136,7 +136,7 @@ final class BreadcrumbsBuilderTest extends TestCase
     /**
      * @phpstan-return array<array{string}>
      */
-    public function actionProvider(): iterable
+    public function provideBuildBreadcrumbsCases(): iterable
     {
         yield ['my_action'];
         yield ['list'];
@@ -145,7 +145,7 @@ final class BreadcrumbsBuilderTest extends TestCase
     }
 
     /**
-     * @dataProvider actionProvider
+     * @dataProvider provideBuildBreadcrumbsCases
      */
     public function testBuildBreadcrumbs(string $action): void
     {

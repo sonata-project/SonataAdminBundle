@@ -134,7 +134,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{\DateTimeZone|string|false|null, \DateTimeZone}>
      */
-    public function getTimeZones(): iterable
+    public function provideSetObjectFieldValueActionWithDateCases(): iterable
     {
         $default = new \DateTimeZone(date_default_timezone_get());
         $custom = new \DateTimeZone('Europe/Rome');
@@ -147,7 +147,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     }
 
     /**
-     * @dataProvider getTimeZones
+     * @dataProvider provideSetObjectFieldValueActionWithDateCases
      */
     public function testSetObjectFieldValueActionWithDate(
         \DateTimeZone|string|false|null $timezone,

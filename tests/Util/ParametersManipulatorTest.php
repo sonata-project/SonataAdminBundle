@@ -25,7 +25,7 @@ final class ParametersManipulatorTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{array<mixed>, array<mixed>, array<mixed>}>
      */
-    public function provideMergeParameters(): iterable
+    public function provideMergeParametersCases(): iterable
     {
         yield [
             [
@@ -165,7 +165,7 @@ final class ParametersManipulatorTest extends TestCase
      * @param mixed[] $newParameters
      * @param mixed[] $result
      *
-     * @dataProvider provideMergeParameters
+     * @dataProvider provideMergeParametersCases
      */
     public function testMergeParameters(array $parameters, array $newParameters, array $result): void
     {

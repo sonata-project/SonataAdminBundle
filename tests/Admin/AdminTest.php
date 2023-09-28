@@ -1908,7 +1908,7 @@ final class AdminTest extends TestCase
     }
 
     /**
-     * @dataProvider getListModeProvider
+     * @dataProvider provideGetListModeCases
      */
     public function testGetListMode(string $expected, ?Request $request = null): void
     {
@@ -1925,7 +1925,7 @@ final class AdminTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, Request|null}>
      */
-    public function getListModeProvider(): iterable
+    public function provideGetListModeCases(): iterable
     {
         yield ['list', null];
 
@@ -1951,7 +1951,7 @@ final class AdminTest extends TestCase
     }
 
     /**
-     * @dataProvider getListModeProvider2
+     * @dataProvider provideGetListModeWithCustomListModesCases
      */
     public function testGetListModeWithCustomListModes(string $expected, ?Request $request = null): void
     {
@@ -1972,7 +1972,7 @@ final class AdminTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, Request|null}>
      */
-    public function getListModeProvider2(): iterable
+    public function provideGetListModeWithCustomListModesCases(): iterable
     {
         yield ['mosaic', null];
 

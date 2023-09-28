@@ -45,7 +45,7 @@ final class CanonicalizeExtensionTest extends TestCase
     }
 
     /**
-     * @dataProvider momentLocalesProvider
+     * @dataProvider provideCanonicalizedLocaleForMomentCases
      *
      * @psalm-suppress DeprecatedMethod
      */
@@ -59,7 +59,7 @@ final class CanonicalizeExtensionTest extends TestCase
     }
 
     /**
-     * @dataProvider select2LocalesProvider
+     * @dataProvider provideCanonicalizedLocaleForSelect2Cases
      *
      * @psalm-suppress DeprecatedMethod
      */
@@ -72,7 +72,7 @@ final class CanonicalizeExtensionTest extends TestCase
     /**
      * @return array<array{?string, string}>
      */
-    public function momentLocalesProvider(): iterable
+    public function provideCanonicalizedLocaleForMomentCases(): iterable
     {
         yield ['af', 'af'];
         yield ['ar-dz', 'ar-dz'];
@@ -194,7 +194,7 @@ final class CanonicalizeExtensionTest extends TestCase
     /**
      * @return array<array{?string, string}>
      */
-    public function select2LocalesProvider(): iterable
+    public function provideCanonicalizedLocaleForSelect2Cases(): iterable
     {
         yield ['ar', 'ar'];
         yield ['az', 'az'];

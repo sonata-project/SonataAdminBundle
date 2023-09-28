@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 final class NativeLabelTranslatorStrategyTest extends TestCase
 {
     /**
-     * @dataProvider getLabelTests
+     * @dataProvider provideLabelCases
      */
     public function testLabel(string $expectedLabel, string $label): void
     {
@@ -31,7 +31,7 @@ final class NativeLabelTranslatorStrategyTest extends TestCase
     /**
      * @phpstan-return array<array{string, string}>
      */
-    public function getLabelTests(): iterable
+    public function provideLabelCases(): iterable
     {
         yield ['Is Valid', 'isValid'];
         yield ['Is Valid', 'is_Valid'];

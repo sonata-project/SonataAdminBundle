@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Menu\Matcher\Voter\ActiveVoter;
 final class ActiveVoterTest extends TestCase
 {
     /**
-     * @dataProvider provideData
+     * @dataProvider provideMatchingCases
      */
     public function testMatching(?bool $itemData, ?bool $expected): void
     {
@@ -47,7 +47,7 @@ final class ActiveVoterTest extends TestCase
     /**
      * @return iterable<array{bool|null, bool|null}>
      */
-    public function provideData(): iterable
+    public function provideMatchingCases(): iterable
     {
         yield 'active' => [true, true];
         yield 'no active' => [false, false];

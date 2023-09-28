@@ -27,7 +27,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 final class ObjectAclManipulatorCompilerPassTest extends TestCase
 {
     /**
-     * @dataProvider containerDataProvider
+     * @dataProvider provideAvailableManagerCases
      */
     public function testAvailableManager(ContainerBuilder $containerBuilder, string $serviceId): void
     {
@@ -44,7 +44,7 @@ final class ObjectAclManipulatorCompilerPassTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{ContainerBuilder, string}>
      */
-    public function containerDataProvider(): iterable
+    public function provideAvailableManagerCases(): iterable
     {
         $serviceId = 'sonata.admin.manipulator.acl.object.orm';
         $container = $this->createContainer();

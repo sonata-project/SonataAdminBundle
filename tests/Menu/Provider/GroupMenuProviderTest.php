@@ -183,7 +183,7 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @phpstan-param Group $adminGroups
      *
-     * @dataProvider getAdminGroupsMultipleRolesOnTop
+     * @dataProvider provideGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTopCases
      */
     public function testGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTop(
         array $adminGroups
@@ -309,7 +309,7 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @phpstan-param Group $adminGroupsOnTopOption
      *
-     * @dataProvider getAdminGroupsWithOnTopOption
+     * @dataProvider provideGetMenuProviderOnTopOptionsCases
      */
     public function testGetMenuProviderOnTopOptions(array $adminGroupsOnTopOption): void
     {
@@ -358,7 +358,7 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @phpstan-param Group $item
      *
-     * @dataProvider getRootMenuItemWithDifferentUrlTypes
+     * @dataProvider provideRootMenuItemUrlCases
      */
     public function testRootMenuItemUrl(string $expectedUrl, array $item): void
     {
@@ -525,7 +525,7 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @phpstan-return array<array{Group}>
      */
-    public function getAdminGroupsMultipleRolesOnTop(): iterable
+    public function provideGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTopCases(): iterable
     {
         yield [
             [
@@ -592,7 +592,7 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @phpstan-return array<array{Group}>
      */
-    public function getAdminGroupsWithOnTopOption(): iterable
+    public function provideGetMenuProviderOnTopOptionsCases(): iterable
     {
         yield [
             [
@@ -619,7 +619,7 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, Group}>
      */
-    public function getRootMenuItemWithDifferentUrlTypes(): iterable
+    public function provideRootMenuItemUrlCases(): iterable
     {
         yield 'absolute_url' => [
             'http://sonata-project/list',

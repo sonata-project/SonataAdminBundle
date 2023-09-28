@@ -32,7 +32,7 @@ final class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
     /**
      * @phpstan-return array<array{array<string, mixed>}>
      */
-    public function prototypeRenderingProvider(): iterable
+    public function providePrototypeIsDeletableNoMatterTheShrinkabilityCases(): iterable
     {
         yield 'shrinkable collection' => [['allow_delete' => true]];
         yield 'unshrinkable collection' => [['allow_delete' => false]];
@@ -41,7 +41,7 @@ final class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider prototypeRenderingProvider
+     * @dataProvider providePrototypeIsDeletableNoMatterTheShrinkabilityCases
      */
     public function testPrototypeIsDeletableNoMatterTheShrinkability(array $options): void
     {

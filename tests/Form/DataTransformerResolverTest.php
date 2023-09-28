@@ -87,7 +87,7 @@ final class DataTransformerResolverTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{mixed, \DateTimeZone}>
      */
-    public function getTimeZones(): iterable
+    public function provideResolveDateDataTransformerCases(): iterable
     {
         $default = new \DateTimeZone(date_default_timezone_get());
         $custom = new \DateTimeZone('Europe/Rome');
@@ -100,7 +100,7 @@ final class DataTransformerResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider getTimeZones
+     * @dataProvider provideResolveDateDataTransformerCases
      */
     public function testResolveDateDataTransformer(mixed $timezone, \DateTimeZone $expectedTimezone): void
     {

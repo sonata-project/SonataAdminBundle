@@ -43,7 +43,7 @@ final class RoleSecurityHandlerTest extends TestCase
     }
 
     /**
-     * @dataProvider getBaseRoleTests
+     * @dataProvider provideGetBaseRoleCases
      */
     public function testGetBaseRole(string $expected, string $code): void
     {
@@ -59,7 +59,7 @@ final class RoleSecurityHandlerTest extends TestCase
     /**
      * @phpstan-return array<array{string, string}>
      */
-    public function getBaseRoleTests(): iterable
+    public function provideGetBaseRoleCases(): iterable
     {
         yield ['ROLE_FOO_BAR_%s', 'foo.bar'];
         yield ['ROLE_FOO_BAR_%s', 'Foo.Bar'];
@@ -75,7 +75,7 @@ final class RoleSecurityHandlerTest extends TestCase
      * @param string|string[]                            $superAdminRoles
      * @param string|Expression|array<string|Expression> $operation
      *
-     * @dataProvider getIsGrantedTests
+     * @dataProvider provideIsGrantedCases
      */
     public function testIsGranted(
         bool $expected,
@@ -119,7 +119,7 @@ final class RoleSecurityHandlerTest extends TestCase
     /**
      * @phpstan-return array<array{0: bool, 1: string|array<string>, 2: string, 3: string|Expression|array<string|Expression>, 4?: object|null}>
      */
-    public function getIsGrantedTests(): iterable
+    public function provideIsGrantedCases(): iterable
     {
         // empty
         yield [false, '', 'foo.bar', ''];

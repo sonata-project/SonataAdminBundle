@@ -44,7 +44,7 @@ final class ArrayToModelTransformerTest extends TestCase
     /**
      * @param \stdClass|array<string, mixed>|null $value
      *
-     * @dataProvider getReverseTransformTests
+     * @dataProvider provideReverseTransformCases
      */
     public function testReverseTransform(\stdClass|array|null $value): void
     {
@@ -56,7 +56,7 @@ final class ArrayToModelTransformerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{\stdClass|array<string, mixed>|null}>
      */
-    public function getReverseTransformTests(): iterable
+    public function provideReverseTransformCases(): iterable
     {
         yield [new \stdClass()];
         yield [[]];
@@ -65,7 +65,7 @@ final class ArrayToModelTransformerTest extends TestCase
     }
 
     /**
-     * @dataProvider getTransformTests
+     * @dataProvider provideTransformCases
      */
     public function testTransform(?\stdClass $expected, ?\stdClass $value): void
     {
@@ -77,7 +77,7 @@ final class ArrayToModelTransformerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{\stdClass|null, \stdClass|null}>
      */
-    public function getTransformTests(): iterable
+    public function provideTransformCases(): iterable
     {
         $foo = new \stdClass();
         yield [$foo, $foo];

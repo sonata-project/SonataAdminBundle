@@ -26,7 +26,7 @@ final class TraversableToCollectionTest extends TestCase
     /**
      * @param iterable<mixed, mixed> $value
      *
-     * @dataProvider provideTraversableValues
+     * @dataProvider provideTransformCases
      */
     public function testTransform(int $expectedCount, iterable $value): void
     {
@@ -39,7 +39,7 @@ final class TraversableToCollectionTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{int, iterable<mixed, mixed>}>
      */
-    public function provideTraversableValues(): iterable
+    public function provideTransformCases(): iterable
     {
         yield [0, []];
         yield [1, [null]];
@@ -51,7 +51,7 @@ final class TraversableToCollectionTest extends TestCase
     }
 
     /**
-     * @dataProvider provideInvalidValues
+     * @dataProvider provideFailedTransformCases
      */
     public function testFailedTransform(string $invalidType, mixed $value): void
     {
@@ -68,7 +68,7 @@ final class TraversableToCollectionTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, mixed}>
      */
-    public function provideInvalidValues(): iterable
+    public function provideFailedTransformCases(): iterable
     {
         yield ['"NULL"', null];
         yield ['"integer"', 0];
