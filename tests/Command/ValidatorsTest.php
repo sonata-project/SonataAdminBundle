@@ -35,10 +35,8 @@ final class ValidatorsTest extends TestCase
      */
     public function getValidateUsernameTests(): iterable
     {
-        return [
-            ['Foo', 'Foo'],
-            ['abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789', 'abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789'],
-        ];
+        yield ['Foo', 'Foo'];
+        yield ['abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789', 'abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789'];
     }
 
     public function testValidateUsernameWithException(): void
@@ -61,10 +59,8 @@ final class ValidatorsTest extends TestCase
      */
     public function getValidateClassTests(): iterable
     {
-        return [
-            [AbstractAdmin::class, AbstractAdmin::class],
-            [AbstractAdmin::class, 'Sonata/AdminBundle/Admin/AbstractAdmin'],
-        ];
+        yield [AbstractAdmin::class, AbstractAdmin::class];
+        yield [AbstractAdmin::class, 'Sonata/AdminBundle/Admin/AbstractAdmin'];
     }
 
     /**
@@ -82,11 +78,9 @@ final class ValidatorsTest extends TestCase
      */
     public function getValidateClassWithExceptionTests(): iterable
     {
-        return [
-            ['Foo:BarAdmin'],
-            ['Foo:Bar:Admin'],
-            ['Foo/Bar/Admin'],
-        ];
+        yield ['Foo:BarAdmin'];
+        yield ['Foo:Bar:Admin'];
+        yield ['Foo/Bar/Admin'];
     }
 
     /**
@@ -102,11 +96,9 @@ final class ValidatorsTest extends TestCase
      */
     public function getValidateAdminClassBasenameTests(): iterable
     {
-        return [
-            ['FooBarAdmin', 'FooBarAdmin'],
-            ['Foo\Foo\BarAdmin', 'Foo\Foo\BarAdmin'],
-            ['Foo\Foo\BarAdmin', 'Foo/Foo/BarAdmin'],
-        ];
+        yield ['FooBarAdmin', 'FooBarAdmin'];
+        yield ['Foo\Foo\BarAdmin', 'Foo\Foo\BarAdmin'];
+        yield ['Foo\Foo\BarAdmin', 'Foo/Foo/BarAdmin'];
     }
 
     /**
@@ -124,11 +116,9 @@ final class ValidatorsTest extends TestCase
      */
     public function getValidateAdminClassBasenameWithExceptionTests(): iterable
     {
-        return [
-            ['Foo:BarAdmin'],
-            ['Foo:Bar:Admin'],
-            ['*+-!:@&^%'],
-        ];
+        yield ['Foo:BarAdmin'];
+        yield ['Foo:Bar:Admin'];
+        yield ['*+-!:@&^%'];
     }
 
     /**
@@ -144,11 +134,9 @@ final class ValidatorsTest extends TestCase
      */
     public function getValidateControllerClassBasenameTests(): iterable
     {
-        return [
-            ['FooBarController', 'FooBarController'],
-            ['Foo\Foo\BarController', 'Foo/Foo/BarController'],
-            ['Foo\Foo\BarController', 'Foo\Foo\BarController'],
-        ];
+        yield ['FooBarController', 'FooBarController'];
+        yield ['Foo\Foo\BarController', 'Foo/Foo/BarController'];
+        yield ['Foo\Foo\BarController', 'Foo\Foo\BarController'];
     }
 
     /**
@@ -166,28 +154,26 @@ final class ValidatorsTest extends TestCase
      */
     public function getValidateControllerClassBasenameWithExceptionTests(): iterable
     {
-        return [
-            [' foobar '],
-            [' FooBar'],
-            ['Foo Bar'],
-            ['Foo-Bar'],
-            ['foo*'],
-            ['foo+'],
-            ['foo-'],
-            ['foo!'],
-            ['foo@'],
-            ['foo&'],
-            ['foo%'],
-            ['foo^'],
-            ['foo(bar)'],
-            ['foo[bar]'],
-            ['foo{bar}'],
-            ['Foo/Bar'],
-            ['Foo\Bar'],
-            ['Foo/BarControllr'],
-            ['Foo\BarControllr'],
-            ['Foo:BarControllr'],
-        ];
+        yield [' foobar '];
+        yield [' FooBar'];
+        yield ['Foo Bar'];
+        yield ['Foo-Bar'];
+        yield ['foo*'];
+        yield ['foo+'];
+        yield ['foo-'];
+        yield ['foo!'];
+        yield ['foo@'];
+        yield ['foo&'];
+        yield ['foo%'];
+        yield ['foo^'];
+        yield ['foo(bar)'];
+        yield ['foo[bar]'];
+        yield ['foo{bar}'];
+        yield ['Foo/Bar'];
+        yield ['Foo\Bar'];
+        yield ['Foo/BarControllr'];
+        yield ['Foo\BarControllr'];
+        yield ['Foo:BarControllr'];
     }
 
     /**
@@ -203,15 +189,13 @@ final class ValidatorsTest extends TestCase
      */
     public function getValidateServicesFileTests(): iterable
     {
-        return [
-            ['foobar', 'foobar'],
-            ['fooBar', 'fooBar'],
-            [' foo Bar ', ' foo Bar '],
-            ['Foo/Bar', '/Foo/Bar/'],
-            ['Foo/BAR', '/Foo/BAR/'],
-            ['Foo/Bar', '/Foo/Bar'],
-            ['Foo/Bar', 'Foo/Bar/'],
-        ];
+        yield ['foobar', 'foobar'];
+        yield ['fooBar', 'fooBar'];
+        yield [' foo Bar ', ' foo Bar '];
+        yield ['Foo/Bar', '/Foo/Bar/'];
+        yield ['Foo/BAR', '/Foo/BAR/'];
+        yield ['Foo/Bar', '/Foo/Bar'];
+        yield ['Foo/Bar', 'Foo/Bar/'];
     }
 
     /**
@@ -227,11 +211,9 @@ final class ValidatorsTest extends TestCase
      */
     public function getValidateServiceIdTests(): iterable
     {
-        return [
-            ['abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789'],
-            ['Foo_Bar_0123'],
-            ['Foo.Bar.0123'],
-        ];
+        yield ['abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789'];
+        yield ['Foo_Bar_0123'];
+        yield ['Foo.Bar.0123'];
     }
 
     /**
@@ -249,25 +231,23 @@ final class ValidatorsTest extends TestCase
      */
     public function getValidateServiceIdWithExceptionTests(): iterable
     {
-        return [
-            [' foobar '],
-            [' FooBar'],
-            ['Foo Bar'],
-            ['Foo-Bar'],
-            ['foo*'],
-            ['foo+'],
-            ['foo-'],
-            ['foo!'],
-            ['foo@'],
-            ['foo&'],
-            ['foo%'],
-            ['foo^'],
-            ['foo:'],
-            ['foo(bar)'],
-            ['foo[bar]'],
-            ['foo{bar}'],
-            ['Foo/Bar'],
-            ['Foo\Bar'],
-        ];
+        yield [' foobar '];
+        yield [' FooBar'];
+        yield ['Foo Bar'];
+        yield ['Foo-Bar'];
+        yield ['foo*'];
+        yield ['foo+'];
+        yield ['foo-'];
+        yield ['foo!'];
+        yield ['foo@'];
+        yield ['foo&'];
+        yield ['foo%'];
+        yield ['foo^'];
+        yield ['foo:'];
+        yield ['foo(bar)'];
+        yield ['foo[bar]'];
+        yield ['foo{bar}'];
+        yield ['Foo/Bar'];
+        yield ['Foo\Bar'];
     }
 }

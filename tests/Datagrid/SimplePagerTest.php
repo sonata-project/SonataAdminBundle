@@ -181,10 +181,8 @@ final class SimplePagerTest extends TestCase
      */
     public function getCurrentPageResultsReturnType(): iterable
     {
-        return [
-            [['foo', 'bar'], 2],
-            [['foo', 'bar'], 1],
-            [[], 1],
-        ];
+        yield [['foo', 'bar'], 2];
+        yield [['foo', 'bar'], 1];
+        yield [[], 1];
     }
 }

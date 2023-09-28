@@ -26,10 +26,8 @@ final class AdminExporterTest extends TestCase
      */
     public function provideExportFormats(): iterable
     {
-        return [
-            'no override' => [['xls'], [], ['xls']],
-            'override in admin' => [['csv'], ['csv'], ['xls']],
-        ];
+        yield 'no override' => [['xls'], [], ['xls']];
+        yield 'override in admin' => [['csv'], ['csv'], ['xls']];
     }
 
     /**

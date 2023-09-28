@@ -58,12 +58,10 @@ final class ArrayToModelTransformerTest extends TestCase
      */
     public function getReverseTransformTests(): iterable
     {
-        return [
-            [new \stdClass()],
-            [[]],
-            [['foo' => 'bar']],
-            [null],
-        ];
+        yield [new \stdClass()];
+        yield [[]];
+        yield [['foo' => 'bar']];
+        yield [null];
     }
 
     /**
@@ -82,10 +80,7 @@ final class ArrayToModelTransformerTest extends TestCase
     public function getTransformTests(): iterable
     {
         $foo = new \stdClass();
-
-        return [
-            [$foo, $foo],
-            [null, null],
-        ];
+        yield [$foo, $foo];
+        yield [null, null];
     }
 }

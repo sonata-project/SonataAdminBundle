@@ -32,12 +32,10 @@ final class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
     /**
      * @phpstan-return array<array{array<string, mixed>}>
      */
-    public function prototypeRenderingProvider(): array
+    public function prototypeRenderingProvider(): iterable
     {
-        return [
-            'shrinkable collection' => [['allow_delete' => true]],
-            'unshrinkable collection' => [['allow_delete' => false]],
-        ];
+        yield 'shrinkable collection' => [['allow_delete' => true]];
+        yield 'unshrinkable collection' => [['allow_delete' => false]];
     }
 
     /**

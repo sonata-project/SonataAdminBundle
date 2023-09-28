@@ -50,12 +50,10 @@ final class ModelToIdTransformerTest extends TestCase
     /**
      * @return array<array{int|string}>
      */
-    public function getReverseTransformValues(): array
+    public function getReverseTransformValues(): iterable
     {
-        return [
-            [0],
-            ['0'],
-        ];
+        yield [0];
+        yield ['0'];
     }
 
     public function testReverseTransformEmpty(): void

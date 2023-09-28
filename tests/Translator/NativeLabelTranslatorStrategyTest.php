@@ -31,18 +31,16 @@ final class NativeLabelTranslatorStrategyTest extends TestCase
     /**
      * @phpstan-return array<array{string, string}>
      */
-    public function getLabelTests(): array
+    public function getLabelTests(): iterable
     {
-        return [
-            ['Is Valid', 'isValid'],
-            ['Is Valid', 'is_Valid'],
-            ['Is0 Valid', 'is0Valid'],
-            ['Is Valid', '_isValid'],
-            ['Is Valid', '__isValid'],
-            ['Is Valid', 'isValid_'],
-            ['Is Valid', 'isValid__'],
-            ['Is Valid', '__isValid__'],
-            ['Is Valid Super Cool', 'isValid_SuperCool'],
-        ];
+        yield ['Is Valid', 'isValid'];
+        yield ['Is Valid', 'is_Valid'];
+        yield ['Is0 Valid', 'is0Valid'];
+        yield ['Is Valid', '_isValid'];
+        yield ['Is Valid', '__isValid'];
+        yield ['Is Valid', 'isValid_'];
+        yield ['Is Valid', 'isValid__'];
+        yield ['Is Valid', '__isValid__'];
+        yield ['Is Valid Super Cool', 'isValid_SuperCool'];
     }
 }

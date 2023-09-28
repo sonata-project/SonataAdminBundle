@@ -35,9 +35,7 @@ final class AdminAsParameterControllerTest extends WebTestCase
      */
     public function urlIsSuccessfulDataProvider(): iterable
     {
-        return [
-            ['/admin/tests/app/admin-as-parameter/test?uniqid=test'],
-            ['/admin/tests/app/admin-as-parameter/invokable?uniqid=invokable'],
-        ];
+        yield ['/admin/tests/app/admin-as-parameter/test?uniqid=test'];
+        yield ['/admin/tests/app/admin-as-parameter/invokable?uniqid=invokable'];
     }
 }

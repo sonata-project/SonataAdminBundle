@@ -52,9 +52,7 @@ final class AdminObjectAclDataTest extends TestCase
 
     public function testSetAcl(): AdminObjectAclData
     {
-        $acl = $this->getMockBuilder(Acl::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $acl = $this->createMock(Acl::class);
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAcl($acl);
 
@@ -83,9 +81,7 @@ final class AdminObjectAclDataTest extends TestCase
 
     public function testSetForm(): AdminObjectAclData
     {
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAclUsersForm($form);
 
@@ -104,9 +100,7 @@ final class AdminObjectAclDataTest extends TestCase
 
     public function testSetAclUsersForm(): AdminObjectAclData
     {
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAclUsersForm($form);
 
@@ -125,9 +119,7 @@ final class AdminObjectAclDataTest extends TestCase
 
     public function testSetAclRolesForm(): AdminObjectAclData
     {
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAclRolesForm($form);
 
@@ -170,8 +162,8 @@ final class AdminObjectAclDataTest extends TestCase
             static::assertIsString($permission);
         }
 
-        static::assertFalse(array_search('OWNER', $adminObjectAclData->getUserPermissions(), true));
-        static::assertFalse(array_search('MASTER', $adminObjectAclData->getUserPermissions(), true));
+        static::assertNotContains('OWNER', $adminObjectAclData->getUserPermissions());
+        static::assertNotContains('MASTER', $adminObjectAclData->getUserPermissions());
     }
 
     public function testIsOwner(): void

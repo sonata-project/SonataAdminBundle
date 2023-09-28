@@ -255,11 +255,9 @@ final class PoolTest extends TestCase
      */
     public function getEmptyRootAdminServiceNames(): iterable
     {
-        return [
-            [''],
-            ['   '],
-            ['|sonata.news.admin.child_of_empty_code'],
-        ];
+        yield [''];
+        yield ['   '];
+        yield ['|sonata.news.admin.child_of_empty_code'];
     }
 
     /**
@@ -291,11 +289,9 @@ final class PoolTest extends TestCase
      */
     public function getInvalidChildAdminServiceNames(): iterable
     {
-        return [
-            ['admin1|'],
-            ['admin1|nonexistent_code'],
-            ['admin1||admin3'],
-        ];
+        yield ['admin1|'];
+        yield ['admin1|nonexistent_code'];
+        yield ['admin1||admin3'];
     }
 
     /**
@@ -333,10 +329,8 @@ final class PoolTest extends TestCase
      */
     public function getAdminServiceNamesToCheck(): iterable
     {
-        return [
-            ['sonata.news.admin.post'],
-            ['sonata.news.admin.post|sonata.news.admin.comment'],
-        ];
+        yield ['sonata.news.admin.post'];
+        yield ['sonata.news.admin.post|sonata.news.admin.comment'];
     }
 
     /**
@@ -359,11 +353,9 @@ final class PoolTest extends TestCase
      */
     public function getInvalidAdminServiceNamesToCheck(): iterable
     {
-        return [
-            [''],
-            ['   '],
-            ['|sonata.news.admin.child_of_empty_code'],
-        ];
+        yield [''];
+        yield ['   '];
+        yield ['|sonata.news.admin.child_of_empty_code'];
     }
 
     public function testHasAdminByAdminCodeWithNonExistentCode(): void
@@ -393,11 +385,9 @@ final class PoolTest extends TestCase
      */
     public function getInvalidChildAdminServiceNamesToCheck(): iterable
     {
-        return [
-            ['sonata.news.admin.post|'],
-            ['sonata.news.admin.post|nonexistent_code'],
-            ['sonata.news.admin.post||admin3'],
-        ];
+        yield ['sonata.news.admin.post|'];
+        yield ['sonata.news.admin.post|nonexistent_code'];
+        yield ['sonata.news.admin.post||admin3'];
     }
 
     public function testGetAdminClasses(): void

@@ -27,137 +27,135 @@ final class ParametersManipulatorTest extends TestCase
      */
     public function provideMergeParameters(): iterable
     {
-        return [
+        yield [
             [
-                [
-                    DatagridInterface::SORT_ORDER => 'DESC',
-                    DatagridInterface::SORT_BY => 'id',
-                    'status' => [
-                        'type' => '1',
-                        'value' => 'foo',
-                    ],
+                DatagridInterface::SORT_ORDER => 'DESC',
+                DatagridInterface::SORT_BY => 'id',
+                'status' => [
+                    'type' => '1',
+                    'value' => 'foo',
                 ],
-                [
-                    'status' => [
-                        'type' => '2',
-                        'value' => 'foo',
-                    ],
+            ],
+            [
+                'status' => [
+                    'type' => '2',
+                    'value' => 'foo',
                 ],
-                [
-                    DatagridInterface::SORT_ORDER => 'DESC',
-                    DatagridInterface::SORT_BY => 'id',
-                    'status' => [
-                        'type' => '2',
-                        'value' => 'foo',
+            ],
+            [
+                DatagridInterface::SORT_ORDER => 'DESC',
+                DatagridInterface::SORT_BY => 'id',
+                'status' => [
+                    'type' => '2',
+                    'value' => 'foo',
+                ],
+            ],
+        ];
+        yield [
+            [
+                'status' => [
+                    'type' => '1',
+                ],
+            ],
+            [
+                'status' => [
+                    'value' => 'foo',
+                ],
+            ],
+            [
+                'status' => [
+                    'type' => '1',
+                    'value' => 'foo',
+                ],
+            ],
+        ];
+        yield [
+            [
+                'status' => [
+                    'type' => '1',
+                    'value' => 'foo',
+                ],
+            ],
+            [
+                'status' => [
+                    'type' => '2',
+                ],
+                DatagridInterface::PAGE => 2,
+                DatagridInterface::PER_PAGE => 25,
+            ],
+            [
+                'status' => [
+                    'type' => '2',
+                    'value' => 'foo',
+                ],
+                DatagridInterface::PAGE => 2,
+                DatagridInterface::PER_PAGE => 25,
+            ],
+        ];
+        yield [
+            [
+                'status' => [
+                    'type' => '1',
+                    'value' => [
+                        'foo',
+                        'bar',
                     ],
                 ],
             ],
             [
-                [
-                    'status' => [
-                        'type' => '1',
-                    ],
-                ],
-                [
-                    'status' => [
-                        'value' => 'foo',
-                    ],
-                ],
-                [
-                    'status' => [
-                        'type' => '1',
-                        'value' => 'foo',
+                'status' => [
+                    'value' => [
+                        'foo',
                     ],
                 ],
             ],
             [
-                [
-                    'status' => [
-                        'type' => '1',
-                        'value' => 'foo',
+                'status' => [
+                    'type' => '1',
+                    'value' => [
+                        'foo',
                     ],
-                ],
-                [
-                    'status' => [
-                        'type' => '2',
-                    ],
-                    DatagridInterface::PAGE => 2,
-                    DatagridInterface::PER_PAGE => 25,
-                ],
-                [
-                    'status' => [
-                        'type' => '2',
-                        'value' => 'foo',
-                    ],
-                    DatagridInterface::PAGE => 2,
-                    DatagridInterface::PER_PAGE => 25,
                 ],
             ],
+        ];
+        yield [
             [
-                [
-                    'status' => [
-                        'type' => '1',
-                        'value' => [
-                            'foo',
-                            'bar',
-                        ],
-                    ],
-                ],
-                [
-                    'status' => [
-                        'value' => [
-                            'foo',
-                        ],
-                    ],
-                ],
-                [
-                    'status' => [
-                        'type' => '1',
-                        'value' => [
-                            'foo',
-                        ],
+                'status' => [
+                    'value' => [
+                        'foo',
+                        'bar',
                     ],
                 ],
             ],
             [
-                [
-                    'status' => [
-                        'value' => [
-                            'foo',
-                            'bar',
-                        ],
-                    ],
-                ],
-                [
-                    'status' => [
-                        'value' => [
-                            'baz',
-                        ],
-                    ],
-                ],
-                [
-                    'status' => [
-                        'value' => [
-                            'baz',
-                        ],
+                'status' => [
+                    'value' => [
+                        'baz',
                     ],
                 ],
             ],
             [
-                [
-                    'status' => [
-                        'value' => [
-                            'foo',
-                            'bar',
-                        ],
+                'status' => [
+                    'value' => [
+                        'baz',
                     ],
                 ],
-                [
-                    'status' => '',
+            ],
+        ];
+        yield [
+            [
+                'status' => [
+                    'value' => [
+                        'foo',
+                        'bar',
+                    ],
                 ],
-                [
-                    'status' => '',
-                ],
+            ],
+            [
+                'status' => '',
+            ],
+            [
+                'status' => '',
             ],
         ];
     }

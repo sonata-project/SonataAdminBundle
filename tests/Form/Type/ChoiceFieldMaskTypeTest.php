@@ -45,15 +45,13 @@ final class ChoiceFieldMaskTypeTest extends TypeTestCase
     /**
      * @phpstan-return array<array{mixed}>
      */
-    public function setAllowedTypesProvider(): array
+    public function setAllowedTypesProvider(): iterable
     {
-        return [
-            'null' => [null],
-            'integer' => [1],
-            'boolean' => [false],
-            'string' => ['string'],
-            'class' => [new \stdClass()],
-        ];
+        yield 'null' => [null];
+        yield 'integer' => [1];
+        yield 'boolean' => [false];
+        yield 'string' => ['string'];
+        yield 'class' => [new \stdClass()];
     }
 
     /**

@@ -167,9 +167,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->session = new Session(new MockArraySessionStorage());
 
-        $this->twig = $this->getMockBuilder(Environment::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $this->twig = $this->createMock(Environment::class);
 
         $this->twig
             ->method('getRuntime')
@@ -189,8 +187,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->adminObjectAclManipulator = new AdminObjectAclManipulator($this->formFactory, MaskBuilder::class);
 
-        $this->csrfProvider = $this->getMockBuilder(CsrfTokenManagerInterface::class)
-            ->getMock();
+        $this->csrfProvider = $this->createMock(CsrfTokenManagerInterface::class);
 
         $this->csrfProvider
             ->method('getToken')
@@ -547,9 +544,7 @@ final class CRUDControllerTest extends TestCase
             ->method('checkAccess')
             ->with(static::equalTo('list'));
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $formView = $this->createStub(FormView::class);
 
@@ -867,16 +862,14 @@ final class CRUDControllerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, string, array<string, bool|float|int|string|null>, array<string, bool|float|int|string|null>, bool}>
      */
-    public function getRedirectToTests()
+    public function getRedirectToTests(): iterable
     {
-        return [
-            ['stdClass_edit', 'edit', [], [], false],
-            ['list', 'list', ['btn_update_and_list' => true], [], false],
-            ['list', 'list', ['btn_create_and_list' => true], [], false],
-            ['create', 'create', ['btn_create_and_create' => true], [], false],
-            ['create?subclass=foo', 'create', ['btn_create_and_create' => true, 'subclass' => 'foo'], [], true],
-            ['stdClass_edit?_tab=first_tab', 'edit', ['btn_update_and_edit' => true], ['_tab' => 'first_tab'], false],
-        ];
+        yield ['stdClass_edit', 'edit', [], [], false];
+        yield ['list', 'list', ['btn_update_and_list' => true], [], false];
+        yield ['list', 'list', ['btn_create_and_list' => true], [], false];
+        yield ['create', 'create', ['btn_create_and_create' => true], [], false];
+        yield ['create?subclass=foo', 'create', ['btn_create_and_create' => true, 'subclass' => 'foo'], [], true];
+        yield ['stdClass_edit?_tab=first_tab', 'edit', ['btn_update_and_edit' => true], ['_tab' => 'first_tab'], false];
     }
 
     public function testDeleteActionNotFoundException(): void
@@ -2796,9 +2789,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getSecurityInformation')
             ->willReturn([]);
 
-        $aclUsersForm = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $aclUsersForm = $this->createMock(Form::class);
 
         $aclUsersFormView = $this->createStub(FormView::class);
 
@@ -2806,9 +2797,7 @@ final class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($aclUsersFormView);
 
-        $aclRolesForm = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $aclRolesForm = $this->createMock(Form::class);
 
         $aclRolesFormView = $this->createStub(FormView::class);
 
@@ -2883,9 +2872,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getSecurityInformation')
             ->willReturn([]);
 
-        $aclUsersForm = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $aclUsersForm = $this->createMock(Form::class);
 
         $aclUsersForm->expects(static::once())
             ->method('isValid')
@@ -2897,9 +2884,7 @@ final class CRUDControllerTest extends TestCase
             ->method('createView')
             ->willReturn($aclUsersFormView);
 
-        $aclRolesForm = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $aclRolesForm = $this->createMock(Form::class);
 
         $aclRolesFormView = $this->createStub(FormView::class);
 
@@ -2976,17 +2961,13 @@ final class CRUDControllerTest extends TestCase
             ->method('getSecurityInformation')
             ->willReturn([]);
 
-        $aclUsersForm = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $aclUsersForm = $this->createMock(Form::class);
 
         $aclUsersForm
             ->method('createView')
             ->willReturn($this->createMock(FormView::class));
 
-        $aclRolesForm = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $aclRolesForm = $this->createMock(Form::class);
 
         $aclRolesForm
             ->method('getData')
@@ -3715,9 +3696,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
-        $form = $this->getMockBuilder(Form::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $form = $this->createMock(Form::class);
 
         $formView = $this->createStub(FormView::class);
 
@@ -4025,12 +4004,10 @@ final class CRUDControllerTest extends TestCase
      */
     public function getToStringValues(): iterable
     {
-        return [
-            ['', ''],
-            ['Foo', 'Foo'],
-            ['&lt;a href=&quot;http://foo&quot;&gt;Bar&lt;/a&gt;', '<a href="http://foo">Bar</a>'],
-            ['&lt;&gt;&amp;&quot;&#039;abcdefghijklmnopqrstuvwxyz*-+.,?_()[]\/', '<>&"\'abcdefghijklmnopqrstuvwxyz*-+.,?_()[]\/'],
-        ];
+        yield ['', ''];
+        yield ['Foo', 'Foo'];
+        yield ['&lt;a href=&quot;http://foo&quot;&gt;Bar&lt;/a&gt;', '<a href="http://foo">Bar</a>'];
+        yield ['&lt;&gt;&amp;&quot;&#039;abcdefghijklmnopqrstuvwxyz*-+.,?_()[]\/', '<>&"\'abcdefghijklmnopqrstuvwxyz*-+.,?_()[]\/'];
     }
 
     public function testBatchActionActionAnotherController(): void
