@@ -204,7 +204,7 @@ final class BaseGroupedMapperTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string, string, string|null, string}>
+     * @phpstan-return iterable<array{string, string, string|null, string}>
      */
     public function provideLabelCases(): iterable
     {

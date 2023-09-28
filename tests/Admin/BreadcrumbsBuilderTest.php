@@ -134,7 +134,7 @@ final class BreadcrumbsBuilderTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string}>
+     * @phpstan-return iterable<array{string}>
      */
     public function provideBuildBreadcrumbsCases(): iterable
     {

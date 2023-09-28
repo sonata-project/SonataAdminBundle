@@ -160,7 +160,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{mixed, string}>
+     * @phpstan-return iterable<array{mixed, string}>
      */
     public function provideReverseTransformMultipleInvalidTypeTestsCases(): iterable
     {

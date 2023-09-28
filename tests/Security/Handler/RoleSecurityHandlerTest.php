@@ -57,7 +57,7 @@ final class RoleSecurityHandlerTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string, string}>
+     * @phpstan-return iterable<array{string, string}>
      */
     public function provideGetBaseRoleCases(): iterable
     {
@@ -117,7 +117,7 @@ final class RoleSecurityHandlerTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{0: bool, 1: string|array<string>, 2: string, 3: string|Expression|array<string|Expression>, 4?: object|null}>
+     * @phpstan-return iterable<array{0: bool, 1: string|array<string>, 2: string, 3: string|Expression|array<string|Expression>, 4?: object|null}>
      */
     public function provideIsGrantedCases(): iterable
     {

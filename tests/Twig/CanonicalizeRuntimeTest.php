@@ -64,7 +64,7 @@ final class CanonicalizeRuntimeTest extends TestCase
     /**
      * NEXT_MAJOR: Remove this function.
      *
-     * @return array<array{?string, string}>
+     * @return iterable<array{?string, string}>
      */
     public function provideCanonicalizedLocaleForMomentCases(): iterable
     {
@@ -186,7 +186,7 @@ final class CanonicalizeRuntimeTest extends TestCase
     }
 
     /**
-     * @return array<array{?string, string}>
+     * @return iterable<array{?string, string}>
      */
     public function provideCanonicalizedLocaleForSelect2Cases(): iterable
     {

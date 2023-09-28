@@ -45,9 +45,9 @@ final class XEditableRuntimeTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<string, array{
-     *	array<string, mixed>,
-     *	array<array{value: string, text: string}>
+     * @phpstan-return iterable<string, array{
+     *     array<string, mixed>,
+     *     array<array{value: string, text: string}>
      * }>
      */
     public function provideGetXEditableChoicesIsIdempotentCases(): iterable

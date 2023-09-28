@@ -29,7 +29,7 @@ final class NativeLabelTranslatorStrategyTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string, string}>
+     * @phpstan-return iterable<array{string, string}>
      */
     public function provideLabelCases(): iterable
     {

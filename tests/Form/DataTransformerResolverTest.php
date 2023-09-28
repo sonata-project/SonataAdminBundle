@@ -55,7 +55,7 @@ final class DataTransformerResolverTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string}>
+     * @phpstan-return iterable<array{string}>
      */
     public function provideFieldTypes(): iterable
     {

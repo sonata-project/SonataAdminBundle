@@ -53,7 +53,7 @@ final class XEditableExtensionTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<string, array{
+     * @phpstan-return iterable<string, array{
      *	array<string, mixed>,
      *	array<array{value: string, text: string}>
      * }>

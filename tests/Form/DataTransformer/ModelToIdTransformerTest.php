@@ -48,7 +48,7 @@ final class ModelToIdTransformerTest extends TestCase
     }
 
     /**
-     * @return array<array{int|string}>
+     * @return iterable<array{int|string}>
      */
     public function provideReverseTransformCases(): iterable
     {

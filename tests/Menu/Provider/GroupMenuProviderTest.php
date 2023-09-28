@@ -383,7 +383,7 @@ final class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{Group}>
+     * @phpstan-return iterable<array{Group}>
      */
     public function getAdminGroups(): iterable
     {
@@ -426,7 +426,7 @@ final class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{Group}>
+     * @phpstan-return iterable<array{Group}>
      */
     public function getAdminGroupsMultipleRoles(): iterable
     {
@@ -523,7 +523,7 @@ final class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{Group}>
+     * @phpstan-return iterable<array{Group}>
      */
     public function provideGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTopCases(): iterable
     {
@@ -590,7 +590,7 @@ final class GroupMenuProviderTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{Group}>
+     * @phpstan-return iterable<array{Group}>
      */
     public function provideGetMenuProviderOnTopOptionsCases(): iterable
     {

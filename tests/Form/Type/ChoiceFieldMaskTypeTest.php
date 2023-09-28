@@ -43,7 +43,7 @@ final class ChoiceFieldMaskTypeTest extends TypeTestCase
     }
 
     /**
-     * @phpstan-return array<array{mixed}>
+     * @phpstan-return iterable<array{mixed}>
      */
     public function provideSetAllowedTypesCases(): iterable
     {
