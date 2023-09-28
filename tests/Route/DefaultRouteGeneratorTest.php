@@ -104,7 +104,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{0: string, 1: string, 2: array<string, mixed>, 3?: int}>
+     * @phpstan-return iterable<array{0: string, 1: string, 2: array<string, mixed>, 3?: int}>
      */
     public function provideGenerateUrlCases(): iterable
     {
@@ -223,7 +223,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string, string, string, array<string, mixed>}>
+     * @phpstan-return iterable<array{string, string, string, array<string, mixed>}>
      */
     public function provideGenerateUrlChildCases(): iterable
     {
@@ -296,7 +296,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string, string, array<string, mixed>}>
+     * @phpstan-return iterable<array{string, string, array<string, mixed>}>
      */
     public function provideGenerateUrlParentFieldDescriptionCases(): iterable
     {
@@ -396,7 +396,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string, string, array<string, mixed>}>
+     * @phpstan-return iterable<array{string, string, array<string, mixed>}>
      */
     public function provideGenerateUrlLoadCacheCases(): iterable
     {

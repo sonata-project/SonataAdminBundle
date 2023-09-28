@@ -30,7 +30,7 @@ final class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
     }
 
     /**
-     * @phpstan-return array<array{array<string, mixed>}>
+     * @phpstan-return iterable<array{array<string, mixed>}>
      */
     public function providePrototypeIsDeletableNoMatterTheShrinkabilityCases(): iterable
     {

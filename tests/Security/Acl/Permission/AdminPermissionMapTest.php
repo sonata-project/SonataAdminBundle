@@ -54,7 +54,7 @@ final class AdminPermissionMapTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{bool, string}>
+     * @phpstan-return iterable<array{bool, string}>
      */
     public function provideContainsReturnsABooleanCases(): iterable
     {

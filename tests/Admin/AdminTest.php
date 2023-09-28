@@ -330,7 +330,7 @@ final class AdminTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{class-string, string}>
      *
-     * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+     * @psalm-suppress MoreSpecificReturnType
      */
     public function provideGetBaseRoutePattern(): iterable
     {
@@ -339,58 +339,72 @@ final class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Post',
             '/sonata/news/post',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Application\Sonata\NewsBundle\Document\Post',
             '/sonata/news/post',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'MyApplication\MyBundle\Entity\Post',
             '/myapplication/my/post',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'MyApplication\MyBundle\Entity\Post\Category',
             '/myapplication/my/post-category',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'MyApplication\MyBundle\Entity\Product\Category',
             '/myapplication/my/product-category',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'MyApplication\MyBundle\Entity\Other\Product\Category',
             '/myapplication/my/other-product-category',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Symfony\Cmf\Bundle\FooBundle\Document\Menu',
             '/cmf/foo/menu',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Symfony\Cmf\Bundle\FooBundle\Doctrine\Phpcr\Menu',
             '/cmf/foo/menu',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu',
             '/symfony/barbar/menu',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu\Item',
             '/symfony/barbar/menu-item',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Symfony\Cmf\Bundle\FooBundle\Doctrine\Orm\Menu',
             '/cmf/foo/menu',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Symfony\Cmf\Bundle\FooBundle\Doctrine\MongoDB\Menu',
             '/cmf/foo/menu',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Symfony\Cmf\Bundle\FooBundle\Doctrine\CouchDB\Menu',
             '/cmf/foo/menu',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'AppBundle\Entity\User',
             '/app/user',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'App\Entity\User',
             '/app/user',
@@ -483,7 +497,7 @@ final class AdminTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{class-string, string}>
      *
-     * @psalm-suppress InvalidReturnType, InvalidReturnStatement
+     * @psalm-suppress MoreSpecificReturnType
      */
     public function provideGetBaseRouteName(): iterable
     {
@@ -492,58 +506,72 @@ final class AdminTest extends TestCase
             'Application\Sonata\NewsBundle\Entity\Post',
             'admin_sonata_news_post',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Application\Sonata\NewsBundle\Document\Post',
             'admin_sonata_news_post',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'MyApplication\MyBundle\Entity\Post',
             'admin_myapplication_my_post',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'MyApplication\MyBundle\Entity\Post\Category',
             'admin_myapplication_my_post_category',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'MyApplication\MyBundle\Entity\Product\Category',
             'admin_myapplication_my_product_category',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'MyApplication\MyBundle\Entity\Other\Product\Category',
             'admin_myapplication_my_other_product_category',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Symfony\Cmf\Bundle\FooBundle\Document\Menu',
             'admin_cmf_foo_menu',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Symfony\Cmf\Bundle\FooBundle\Doctrine\Phpcr\Menu',
             'admin_cmf_foo_menu',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu',
             'admin_symfony_barbar_menu',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu\Item',
             'admin_symfony_barbar_menu_item',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Symfony\Cmf\Bundle\FooBundle\Doctrine\Orm\Menu',
             'admin_cmf_foo_menu',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Symfony\Cmf\Bundle\FooBundle\Doctrine\MongoDB\Menu',
             'admin_cmf_foo_menu',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'Symfony\Cmf\Bundle\FooBundle\Doctrine\CouchDB\Menu',
             'admin_cmf_foo_menu',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'AppBundle\Entity\User',
             'admin_app_user',
         ];
+        // @phpstan-ignore-next-line
         yield [
             'App\Entity\User',
             'admin_app_user',

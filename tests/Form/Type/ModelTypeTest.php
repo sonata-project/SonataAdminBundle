@@ -110,7 +110,7 @@ final class ModelTypeTest extends TypeTestCase
     }
 
     /**
-     * @phpstan-return array<array{bool, bool, bool}>
+     * @phpstan-return iterable<array{bool, bool, bool}>
      */
     public function provideCompoundOptionCases(): iterable
     {

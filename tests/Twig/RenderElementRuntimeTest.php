@@ -488,7 +488,7 @@ final class RenderElementRuntimeTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string, string, mixed, array<string, mixed>}>
+     * @phpstan-return iterable<array{string, string, mixed, array<string, mixed>}>
      */
     public function provideRenderListElementCases(): iterable
     {
@@ -1489,7 +1489,7 @@ final class RenderElementRuntimeTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string, string, mixed, array<string, mixed>}>
+     * @phpstan-return iterable<array{string, string, mixed, array<string, mixed>}>
      */
     public function provideRenderViewElementCases(): iterable
     {
@@ -1991,7 +1991,7 @@ final class RenderElementRuntimeTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string, string, mixed, array<string, mixed>, string|null}>
+     * @phpstan-return iterable<array{string, string, mixed, array<string, mixed>, string|null}>
      */
     public function provideRenderViewElementCompareCases(): iterable
     {
