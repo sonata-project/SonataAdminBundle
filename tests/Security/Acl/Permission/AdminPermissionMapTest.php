@@ -56,22 +56,20 @@ final class AdminPermissionMapTest extends TestCase
     /**
      * @phpstan-return array<array{bool, string}>
      */
-    public function permissionProvider(): array
+    public function permissionProvider(): iterable
     {
-        return [
-            [true, AdminPermissionMap::PERMISSION_VIEW],
-            [true, AdminPermissionMap::PERMISSION_EDIT],
-            [true, AdminPermissionMap::PERMISSION_HISTORY],
-            [true, AdminPermissionMap::PERMISSION_CREATE],
-            [true, AdminPermissionMap::PERMISSION_DELETE],
-            [true, AdminPermissionMap::PERMISSION_UNDELETE],
-            [true, AdminPermissionMap::PERMISSION_LIST],
-            [true, AdminPermissionMap::PERMISSION_EXPORT],
-            [true, AdminPermissionMap::PERMISSION_OPERATOR],
-            [true, AdminPermissionMap::PERMISSION_MASTER],
-            [true, AdminPermissionMap::PERMISSION_OWNER],
-            [false, 'unknown permission'],
-        ];
+        yield [true, AdminPermissionMap::PERMISSION_VIEW];
+        yield [true, AdminPermissionMap::PERMISSION_EDIT];
+        yield [true, AdminPermissionMap::PERMISSION_HISTORY];
+        yield [true, AdminPermissionMap::PERMISSION_CREATE];
+        yield [true, AdminPermissionMap::PERMISSION_DELETE];
+        yield [true, AdminPermissionMap::PERMISSION_UNDELETE];
+        yield [true, AdminPermissionMap::PERMISSION_LIST];
+        yield [true, AdminPermissionMap::PERMISSION_EXPORT];
+        yield [true, AdminPermissionMap::PERMISSION_OPERATOR];
+        yield [true, AdminPermissionMap::PERMISSION_MASTER];
+        yield [true, AdminPermissionMap::PERMISSION_OWNER];
+        yield [false, 'unknown permission'];
     }
 
     /**

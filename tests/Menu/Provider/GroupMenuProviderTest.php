@@ -385,44 +385,42 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @phpstan-return array<array{Group}>
      */
-    public function getAdminGroups(): array
+    public function getAdminGroups(): iterable
     {
-        return [
+        yield [
             [
-                [
-                    'label' => 'foo',
-                    'icon' => '<i class="fas fa-edit"></i>',
-                    'translation_domain' => 'SonataAdminBundle',
-                    'items' => [
-                        [
-                            'admin' => 'sonata_admin_foo_service',
-                            'label' => 'fooLabel',
-                            'route' => 'FooServiceRoute',
-                            'route_params' => [],
-                            'route_absolute' => true,
-                            'roles' => [],
-                        ],
-                        [
-                            'admin' => '',
-                            'label' => 'route_label',
-                            'route' => 'FooRoute',
-                            'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
-                            'roles' => [],
-                        ],
-                        [
-                            'admin' => '',
-                            'label' => 'relative_route',
-                            'route' => 'FooRelativeRoute',
-                            'route_params' => ['baz' => 'qux'],
-                            'route_absolute' => false,
-                            'roles' => [],
-                        ],
+                'label' => 'foo',
+                'icon' => '<i class="fas fa-edit"></i>',
+                'translation_domain' => 'SonataAdminBundle',
+                'items' => [
+                    [
+                        'admin' => 'sonata_admin_foo_service',
+                        'label' => 'fooLabel',
+                        'route' => 'FooServiceRoute',
+                        'route_params' => [],
+                        'route_absolute' => true,
+                        'roles' => [],
                     ],
-                    'roles' => ['foo'],
-                    'keep_open' => false,
-                    'on_top' => false,
+                    [
+                        'admin' => '',
+                        'label' => 'route_label',
+                        'route' => 'FooRoute',
+                        'route_params' => ['foo' => 'bar'],
+                        'route_absolute' => true,
+                        'roles' => [],
+                    ],
+                    [
+                        'admin' => '',
+                        'label' => 'relative_route',
+                        'route' => 'FooRelativeRoute',
+                        'route_params' => ['baz' => 'qux'],
+                        'route_absolute' => false,
+                        'roles' => [],
+                    ],
                 ],
+                'roles' => ['foo'],
+                'keep_open' => false,
+                'on_top' => false,
             ],
         ];
     }
@@ -430,97 +428,96 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @phpstan-return array<array{Group}>
      */
-    public function getAdminGroupsMultipleRoles(): array
+    public function getAdminGroupsMultipleRoles(): iterable
     {
-        return [
+        yield [
+            // group for all roles, children with different roles
             [
-                // group for all roles, children with different roles
-                [
-                    'label' => 'foo',
-                    'icon' => '<i class="fas fa-edit"></i>',
-                    'translation_domain' => 'SonataAdminBundle',
-                    'items' => [
-                        [
-                            'admin' => '',
-                            'label' => 'route_label1',
-                            'route' => 'FooRoute1',
-                            'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
-                            'roles' => ['foo', 'bar'],
-                        ],
-                        [
-                            'admin' => '',
-                            'label' => 'route_label2',
-                            'route' => 'FooRoute2',
-                            'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
-                            'roles' => ['foo'],
-                        ],
-                        [
-                            'admin' => '',
-                            'label' => 'route_label3',
-                            'route' => 'FooRoute3',
-                            'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
-                            'roles' => ['bar'],
-                        ],
-                        [
-                            'admin' => '',
-                            'label' => 'route_label4',
-                            'route' => 'FooRoute4',
-                            'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
-                            'roles' => ['baz'],
-                        ],
+                'label' => 'foo',
+                'icon' => '<i class="fas fa-edit"></i>',
+                'translation_domain' => 'SonataAdminBundle',
+                'items' => [
+                    [
+                        'admin' => '',
+                        'label' => 'route_label1',
+                        'route' => 'FooRoute1',
+                        'route_params' => ['foo' => 'bar'],
+                        'route_absolute' => true,
+                        'roles' => ['foo', 'bar'],
                     ],
-                    'roles' => ['foo', 'bar'],
-                    'keep_open' => false,
-                    'on_top' => false,
-                ],
-            ], [
-                // group for one role, children with different roles
-                [
-                    'label' => 'foo',
-                    'icon' => '<i class="fas fa-edit"></i>',
-                    'translation_domain' => 'SonataAdminBundle',
-                    'items' => [
-                        [
-                            'admin' => '',
-                            'label' => 'route_label1',
-                            'route' => 'FooRoute1',
-                            'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
-                            'roles' => ['foo', 'bar'],
-                        ],
-                        [
-                            'admin' => '',
-                            'label' => 'route_label2',
-                            'route' => 'FooRoute2',
-                            'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
-                            'roles' => ['foo'],
-                        ],
-                        [
-                            'admin' => '',
-                            'label' => 'route_label3',
-                            'route' => 'FooRoute3',
-                            'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
-                            'roles' => ['bar'],
-                        ],
-                        [
-                            'admin' => '',
-                            'label' => 'route_label4',
-                            'route' => 'FooRoute4',
-                            'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
-                            'roles' => ['baz'],
-                        ],
+                    [
+                        'admin' => '',
+                        'label' => 'route_label2',
+                        'route' => 'FooRoute2',
+                        'route_params' => ['foo' => 'bar'],
+                        'route_absolute' => true,
+                        'roles' => ['foo'],
                     ],
-                    'roles' => ['baz'],
-                    'keep_open' => false,
-                    'on_top' => false,
+                    [
+                        'admin' => '',
+                        'label' => 'route_label3',
+                        'route' => 'FooRoute3',
+                        'route_params' => ['foo' => 'bar'],
+                        'route_absolute' => true,
+                        'roles' => ['bar'],
+                    ],
+                    [
+                        'admin' => '',
+                        'label' => 'route_label4',
+                        'route' => 'FooRoute4',
+                        'route_params' => ['foo' => 'bar'],
+                        'route_absolute' => true,
+                        'roles' => ['baz'],
+                    ],
                 ],
+                'roles' => ['foo', 'bar'],
+                'keep_open' => false,
+                'on_top' => false,
+            ],
+        ];
+        yield [
+            // group for one role, children with different roles
+            [
+                'label' => 'foo',
+                'icon' => '<i class="fas fa-edit"></i>',
+                'translation_domain' => 'SonataAdminBundle',
+                'items' => [
+                    [
+                        'admin' => '',
+                        'label' => 'route_label1',
+                        'route' => 'FooRoute1',
+                        'route_params' => ['foo' => 'bar'],
+                        'route_absolute' => true,
+                        'roles' => ['foo', 'bar'],
+                    ],
+                    [
+                        'admin' => '',
+                        'label' => 'route_label2',
+                        'route' => 'FooRoute2',
+                        'route_params' => ['foo' => 'bar'],
+                        'route_absolute' => true,
+                        'roles' => ['foo'],
+                    ],
+                    [
+                        'admin' => '',
+                        'label' => 'route_label3',
+                        'route' => 'FooRoute3',
+                        'route_params' => ['foo' => 'bar'],
+                        'route_absolute' => true,
+                        'roles' => ['bar'],
+                    ],
+                    [
+                        'admin' => '',
+                        'label' => 'route_label4',
+                        'route' => 'FooRoute4',
+                        'route_params' => ['foo' => 'bar'],
+                        'route_absolute' => true,
+                        'roles' => ['baz'],
+                    ],
+                ],
+                'roles' => ['baz'],
+                'keep_open' => false,
+                'on_top' => false,
             ],
         ];
     }
@@ -528,66 +525,66 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @phpstan-return array<array{Group}>
      */
-    public function getAdminGroupsMultipleRolesOnTop(): array
+    public function getAdminGroupsMultipleRolesOnTop(): iterable
     {
-        return [
+        yield [
             [
-                [
-                    'label' => 'foo1',
-                    'icon' => '<i class="fas fa-edit"></i>',
-                    'translation_domain' => 'SonataAdminBundle',
-                    'items' => [
-                        [
-                            'admin' => '',
-                            'label' => 'route_label1',
-                            'roles' => ['bar'],
-                            'route' => 'FooRoute1',
-                            'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
-                        ],
+                'label' => 'foo1',
+                'icon' => '<i class="fas fa-edit"></i>',
+                'translation_domain' => 'SonataAdminBundle',
+                'items' => [
+                    [
+                        'admin' => '',
+                        'label' => 'route_label1',
+                        'roles' => ['bar'],
+                        'route' => 'FooRoute1',
+                        'route_params' => ['foo' => 'bar'],
+                        'route_absolute' => true,
                     ],
-                    'roles' => ['foo', 'bar'],
-                    'on_top' => true,
-                    'keep_open' => false,
                 ],
-            ], [
-                [
-                    'label' => 'foo2',
-                    'icon' => '<i class="fas fa-edit"></i>',
-                    'translation_domain' => 'SonataAdminBundle',
-                    'items' => [
-                        [
-                            'admin' => '',
-                            'label' => 'route_label2',
-                            'roles' => ['bar'],
-                            'route' => 'FooRoute2',
-                            'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
-                        ],
+                'roles' => ['foo', 'bar'],
+                'on_top' => true,
+                'keep_open' => false,
+            ],
+        ];
+        yield [
+            [
+                'label' => 'foo2',
+                'icon' => '<i class="fas fa-edit"></i>',
+                'translation_domain' => 'SonataAdminBundle',
+                'items' => [
+                    [
+                        'admin' => '',
+                        'label' => 'route_label2',
+                        'roles' => ['bar'],
+                        'route' => 'FooRoute2',
+                        'route_params' => ['foo' => 'bar'],
+                        'route_absolute' => true,
                     ],
-                    'roles' => ['foo'],
-                    'on_top' => true,
-                    'keep_open' => false,
                 ],
-            ], [
-                [
-                    'label' => 'foo3',
-                    'icon' => '<i class="fas fa-edit"></i>',
-                    'translation_domain' => 'SonataAdminBundle',
-                    'items' => [
-                        [
-                            'admin' => '',
-                            'label' => 'route_label3',
-                            'roles' => ['bar'],
-                            'route' => 'FooRoute3',
-                            'route_params' => ['foo' => 'bar'],
-                            'route_absolute' => true,
-                        ],
+                'roles' => ['foo'],
+                'on_top' => true,
+                'keep_open' => false,
+            ],
+        ];
+        yield [
+            [
+                'label' => 'foo3',
+                'icon' => '<i class="fas fa-edit"></i>',
+                'translation_domain' => 'SonataAdminBundle',
+                'items' => [
+                    [
+                        'admin' => '',
+                        'label' => 'route_label3',
+                        'roles' => ['bar'],
+                        'route' => 'FooRoute3',
+                        'route_params' => ['foo' => 'bar'],
+                        'route_absolute' => true,
                     ],
-                    'roles' => ['bar'],
-                    'on_top' => true,
-                    'keep_open' => false,
                 ],
+                'roles' => ['bar'],
+                'on_top' => true,
+                'keep_open' => false,
             ],
         ];
     }
@@ -595,28 +592,26 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @phpstan-return array<array{Group}>
      */
-    public function getAdminGroupsWithOnTopOption(): array
+    public function getAdminGroupsWithOnTopOption(): iterable
     {
-        return [
+        yield [
             [
-                [
-                    'label' => 'foo_on_top',
-                    'icon' => '<i class="fas fa-edit"></i>',
-                    'translation_domain' => 'SonataAdminBundle',
-                    'keep_open' => false,
-                    'on_top' => true,
-                    'items' => [
-                        [
-                            'admin' => 'sonata_admin_foo_service',
-                            'label' => 'fooLabel',
-                            'route' => 'fakeRoute',
-                            'route_absolute' => true,
-                            'route_params' => [],
-                            'roles' => [],
-                        ],
+                'label' => 'foo_on_top',
+                'icon' => '<i class="fas fa-edit"></i>',
+                'translation_domain' => 'SonataAdminBundle',
+                'keep_open' => false,
+                'on_top' => true,
+                'items' => [
+                    [
+                        'admin' => 'sonata_admin_foo_service',
+                        'label' => 'fooLabel',
+                        'route' => 'fakeRoute',
+                        'route_absolute' => true,
+                        'route_params' => [],
+                        'roles' => [],
                     ],
-                    'roles' => [],
                 ],
+                'roles' => [],
             ],
         ];
     }

@@ -71,10 +71,7 @@ interface DatagridInterface
      */
     public function getColumns(): FieldDescriptionCollection;
 
-    /**
-     * @param mixed $value
-     */
-    public function setValue(string $name, ?string $operator, $value): void;
+    public function setValue(string $name, ?string $operator, mixed $value): void;
 
     public function getForm(): FormInterface;
 

@@ -26,14 +26,12 @@ final class BooleanToStringTransformerTest extends TestCase
      */
     public function provideTransform(): iterable
     {
-        return [
-            [null, null, '1'],
-            [false, null, '1'],
-            [true, '1', '1'],
-            [true, 'true', 'true'],
-            [true, 'yes', 'yes'],
-            [true, 'on', 'on'],
-        ];
+        yield [null, null, '1'];
+        yield [false, null, '1'];
+        yield [true, '1', '1'];
+        yield [true, 'true', 'true'];
+        yield [true, 'yes', 'yes'];
+        yield [true, 'on', 'on'];
     }
 
     /**
@@ -51,18 +49,16 @@ final class BooleanToStringTransformerTest extends TestCase
      */
     public function provideReverseTransform(): iterable
     {
-        return [
-            [null, false],
-            ['1', true],
-            ['true', true],
-            ['yes', true],
-            ['on', true],
-            ['0', false],
-            ['false', false],
-            ['no', false],
-            ['off', false],
-            ['', false],
-        ];
+        yield [null, false];
+        yield ['1', true];
+        yield ['true', true];
+        yield ['yes', true];
+        yield ['on', true];
+        yield ['0', false];
+        yield ['false', false];
+        yield ['no', false];
+        yield ['off', false];
+        yield ['', false];
     }
 
     /**

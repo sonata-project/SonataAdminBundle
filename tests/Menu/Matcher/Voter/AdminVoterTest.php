@@ -53,19 +53,17 @@ final class AdminVoterTest extends TestCase
      */
     public function provideData(): iterable
     {
-        return [
-            'no data' => [null, null, null, null],
-            'no route and granted' => [$this->getAdmin('_sonata_admin'), '_sonata_admin', null, null],
-            'no granted' => [$this->getAdmin('_sonata_admin', true), '_sonata_admin', null, null],
-            'no code' => [$this->getAdmin('_sonata_admin_code', true, true), '_sonata_admin', null, null],
-            'no code request' => [$this->getAdmin('_sonata_admin', true, true), '_sonata_admin_unexpected', null, null],
-            'no route' => [$this->getAdmin('_sonata_admin', false, true), '_sonata_admin', null, null],
-            'has admin' => [$this->getAdmin('_sonata_admin', true, true), '_sonata_admin', null, true],
-            'has child admin' => [$this->getChildAdmin('_sonata_admin', '_sonata_child_admin', true, true), '_sonata_admin|_sonata_child_admin', null, true],
-            'has bad child admin' => [$this->getChildAdmin('_sonata_admin', '_sonata_child_admin', true, true), '_sonata_admin|_sonata_child_admin_unexpected', null, null],
-            'direct link' => ['admin_post', null, 'admin_post', true],
-            'no direct link' => ['admin_post', null, 'admin_blog', null],
-        ];
+        yield 'no data' => [null, null, null, null];
+        yield 'no route and granted' => [$this->getAdmin('_sonata_admin'), '_sonata_admin', null, null];
+        yield 'no granted' => [$this->getAdmin('_sonata_admin', true), '_sonata_admin', null, null];
+        yield 'no code' => [$this->getAdmin('_sonata_admin_code', true, true), '_sonata_admin', null, null];
+        yield 'no code request' => [$this->getAdmin('_sonata_admin', true, true), '_sonata_admin_unexpected', null, null];
+        yield 'no route' => [$this->getAdmin('_sonata_admin', false, true), '_sonata_admin', null, null];
+        yield 'has admin' => [$this->getAdmin('_sonata_admin', true, true), '_sonata_admin', null, true];
+        yield 'has child admin' => [$this->getChildAdmin('_sonata_admin', '_sonata_child_admin', true, true), '_sonata_admin|_sonata_child_admin', null, true];
+        yield 'has bad child admin' => [$this->getChildAdmin('_sonata_admin', '_sonata_child_admin', true, true), '_sonata_admin|_sonata_child_admin_unexpected', null, null];
+        yield 'direct link' => ['admin_post', null, 'admin_post', true];
+        yield 'no direct link' => ['admin_post', null, 'admin_blog', null];
     }
 
     /**

@@ -206,11 +206,9 @@ final class BaseFieldDescriptionTest extends TestCase
      */
     public function getFieldValueWithFieldNameDataProvider(): iterable
     {
-        return [
-            ['getFakeFieldValue'],
-            ['isFakeFieldValue'],
-            ['hasFakeFieldValue'],
-        ];
+        yield ['getFakeFieldValue'];
+        yield ['isFakeFieldValue'];
+        yield ['hasFakeFieldValue'];
     }
 
     public function testGetFieldValueWithChainedFieldName(): void

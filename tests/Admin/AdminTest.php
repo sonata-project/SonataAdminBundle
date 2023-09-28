@@ -335,67 +335,65 @@ final class AdminTest extends TestCase
     public function provideGetBaseRoutePattern(): iterable
     {
         // @phpstan-ignore-next-line
-        return [
-            [
-                'Application\Sonata\NewsBundle\Entity\Post',
-                '/sonata/news/post',
-            ],
-            [
-                'Application\Sonata\NewsBundle\Document\Post',
-                '/sonata/news/post',
-            ],
-            [
-                'MyApplication\MyBundle\Entity\Post',
-                '/myapplication/my/post',
-            ],
-            [
-                'MyApplication\MyBundle\Entity\Post\Category',
-                '/myapplication/my/post-category',
-            ],
-            [
-                'MyApplication\MyBundle\Entity\Product\Category',
-                '/myapplication/my/product-category',
-            ],
-            [
-                'MyApplication\MyBundle\Entity\Other\Product\Category',
-                '/myapplication/my/other-product-category',
-            ],
-            [
-                'Symfony\Cmf\Bundle\FooBundle\Document\Menu',
-                '/cmf/foo/menu',
-            ],
-            [
-                'Symfony\Cmf\Bundle\FooBundle\Doctrine\Phpcr\Menu',
-                '/cmf/foo/menu',
-            ],
-            [
-                'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu',
-                '/symfony/barbar/menu',
-            ],
-            [
-                'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu\Item',
-                '/symfony/barbar/menu-item',
-            ],
-            [
-                'Symfony\Cmf\Bundle\FooBundle\Doctrine\Orm\Menu',
-                '/cmf/foo/menu',
-            ],
-            [
-                'Symfony\Cmf\Bundle\FooBundle\Doctrine\MongoDB\Menu',
-                '/cmf/foo/menu',
-            ],
-            [
-                'Symfony\Cmf\Bundle\FooBundle\Doctrine\CouchDB\Menu',
-                '/cmf/foo/menu',
-            ],
-            [
-                'AppBundle\Entity\User',
-                '/app/user',
-            ],
-            [
-                'App\Entity\User',
-                '/app/user',
-            ],
+        yield [
+            'Application\Sonata\NewsBundle\Entity\Post',
+            '/sonata/news/post',
+        ];
+        yield [
+            'Application\Sonata\NewsBundle\Document\Post',
+            '/sonata/news/post',
+        ];
+        yield [
+            'MyApplication\MyBundle\Entity\Post',
+            '/myapplication/my/post',
+        ];
+        yield [
+            'MyApplication\MyBundle\Entity\Post\Category',
+            '/myapplication/my/post-category',
+        ];
+        yield [
+            'MyApplication\MyBundle\Entity\Product\Category',
+            '/myapplication/my/product-category',
+        ];
+        yield [
+            'MyApplication\MyBundle\Entity\Other\Product\Category',
+            '/myapplication/my/other-product-category',
+        ];
+        yield [
+            'Symfony\Cmf\Bundle\FooBundle\Document\Menu',
+            '/cmf/foo/menu',
+        ];
+        yield [
+            'Symfony\Cmf\Bundle\FooBundle\Doctrine\Phpcr\Menu',
+            '/cmf/foo/menu',
+        ];
+        yield [
+            'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu',
+            '/symfony/barbar/menu',
+        ];
+        yield [
+            'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu\Item',
+            '/symfony/barbar/menu-item',
+        ];
+        yield [
+            'Symfony\Cmf\Bundle\FooBundle\Doctrine\Orm\Menu',
+            '/cmf/foo/menu',
+        ];
+        yield [
+            'Symfony\Cmf\Bundle\FooBundle\Doctrine\MongoDB\Menu',
+            '/cmf/foo/menu',
+        ];
+        yield [
+            'Symfony\Cmf\Bundle\FooBundle\Doctrine\CouchDB\Menu',
+            '/cmf/foo/menu',
+        ];
+        yield [
+            'AppBundle\Entity\User',
+            '/app/user',
+        ];
+        yield [
+            'App\Entity\User',
+            '/app/user',
         ];
     }
 
@@ -490,67 +488,65 @@ final class AdminTest extends TestCase
     public function provideGetBaseRouteName(): iterable
     {
         // @phpstan-ignore-next-line
-        return [
-            [
-                'Application\Sonata\NewsBundle\Entity\Post',
-                'admin_sonata_news_post',
-            ],
-            [
-                'Application\Sonata\NewsBundle\Document\Post',
-                'admin_sonata_news_post',
-            ],
-            [
-                'MyApplication\MyBundle\Entity\Post',
-                'admin_myapplication_my_post',
-            ],
-            [
-                'MyApplication\MyBundle\Entity\Post\Category',
-                'admin_myapplication_my_post_category',
-            ],
-            [
-                'MyApplication\MyBundle\Entity\Product\Category',
-                'admin_myapplication_my_product_category',
-            ],
-            [
-                'MyApplication\MyBundle\Entity\Other\Product\Category',
-                'admin_myapplication_my_other_product_category',
-            ],
-            [
-                'Symfony\Cmf\Bundle\FooBundle\Document\Menu',
-                'admin_cmf_foo_menu',
-            ],
-            [
-                'Symfony\Cmf\Bundle\FooBundle\Doctrine\Phpcr\Menu',
-                'admin_cmf_foo_menu',
-            ],
-            [
-                'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu',
-                'admin_symfony_barbar_menu',
-            ],
-            [
-                'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu\Item',
-                'admin_symfony_barbar_menu_item',
-            ],
-            [
-                'Symfony\Cmf\Bundle\FooBundle\Doctrine\Orm\Menu',
-                'admin_cmf_foo_menu',
-            ],
-            [
-                'Symfony\Cmf\Bundle\FooBundle\Doctrine\MongoDB\Menu',
-                'admin_cmf_foo_menu',
-            ],
-            [
-                'Symfony\Cmf\Bundle\FooBundle\Doctrine\CouchDB\Menu',
-                'admin_cmf_foo_menu',
-            ],
-            [
-                'AppBundle\Entity\User',
-                'admin_app_user',
-            ],
-            [
-                'App\Entity\User',
-                'admin_app_user',
-            ],
+        yield [
+            'Application\Sonata\NewsBundle\Entity\Post',
+            'admin_sonata_news_post',
+        ];
+        yield [
+            'Application\Sonata\NewsBundle\Document\Post',
+            'admin_sonata_news_post',
+        ];
+        yield [
+            'MyApplication\MyBundle\Entity\Post',
+            'admin_myapplication_my_post',
+        ];
+        yield [
+            'MyApplication\MyBundle\Entity\Post\Category',
+            'admin_myapplication_my_post_category',
+        ];
+        yield [
+            'MyApplication\MyBundle\Entity\Product\Category',
+            'admin_myapplication_my_product_category',
+        ];
+        yield [
+            'MyApplication\MyBundle\Entity\Other\Product\Category',
+            'admin_myapplication_my_other_product_category',
+        ];
+        yield [
+            'Symfony\Cmf\Bundle\FooBundle\Document\Menu',
+            'admin_cmf_foo_menu',
+        ];
+        yield [
+            'Symfony\Cmf\Bundle\FooBundle\Doctrine\Phpcr\Menu',
+            'admin_cmf_foo_menu',
+        ];
+        yield [
+            'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu',
+            'admin_symfony_barbar_menu',
+        ];
+        yield [
+            'Symfony\Bundle\BarBarBundle\Doctrine\Phpcr\Menu\Item',
+            'admin_symfony_barbar_menu_item',
+        ];
+        yield [
+            'Symfony\Cmf\Bundle\FooBundle\Doctrine\Orm\Menu',
+            'admin_cmf_foo_menu',
+        ];
+        yield [
+            'Symfony\Cmf\Bundle\FooBundle\Doctrine\MongoDB\Menu',
+            'admin_cmf_foo_menu',
+        ];
+        yield [
+            'Symfony\Cmf\Bundle\FooBundle\Doctrine\CouchDB\Menu',
+            'admin_cmf_foo_menu',
+        ];
+        yield [
+            'AppBundle\Entity\User',
+            'admin_app_user',
+        ];
+        yield [
+            'App\Entity\User',
+            'admin_app_user',
         ];
     }
 
@@ -1522,7 +1518,7 @@ final class AdminTest extends TestCase
 
         $parameters = $commentAdmin->getFilterParameters();
 
-        static::assertTrue(isset($parameters['post__author']));
+        static::assertArrayHasKey('post__author', $parameters);
         static::assertSame(['value' => $authorId], $parameters['post__author']);
     }
 
@@ -1644,13 +1640,11 @@ final class AdminTest extends TestCase
      */
     public function provideGetSubject(): iterable
     {
-        return [
-            [23],
-            ['azerty'],
-            ['4f69bbb5f14a13347f000092'],
-            ['0779ca8d-e2be-11e4-ac58-0242ac11000b'],
-            [sprintf('123%smy_type', AdapterInterface::ID_SEPARATOR)], // composite keys are supported
-        ];
+        yield [23];
+        yield ['azerty'];
+        yield ['4f69bbb5f14a13347f000092'];
+        yield ['0779ca8d-e2be-11e4-ac58-0242ac11000b'];
+        yield [sprintf('123%smy_type', AdapterInterface::ID_SEPARATOR)];
     }
 
     /**

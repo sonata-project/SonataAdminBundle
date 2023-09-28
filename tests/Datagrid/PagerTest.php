@@ -64,16 +64,14 @@ final class PagerTest extends TestCase
      */
     public function getGetMaxPerPage1Tests(): iterable
     {
-        return [
-            [123, 1, 123, 1],
-            [123, 321, 123, 321],
-            [1, 1, 1, 0],
-            [0, 0, 0, 0],
-            [1, 1, -1, 1],
-            [1, 1, -1, 0],
-            [1, 1, -1, -1],
-            [0, 0, 0, null],
-        ];
+        yield [123, 1, 123, 1];
+        yield [123, 321, 123, 321];
+        yield [1, 1, 1, 0];
+        yield [0, 0, 0, 0];
+        yield [1, 1, -1, 1];
+        yield [1, 1, -1, 0];
+        yield [1, 1, -1, -1];
+        yield [0, 0, 0, null];
     }
 
     public function testGetMaxPerPage2(): void

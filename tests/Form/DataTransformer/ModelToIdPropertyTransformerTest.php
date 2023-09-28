@@ -162,15 +162,13 @@ final class ModelToIdPropertyTransformerTest extends TestCase
     /**
      * @phpstan-return array<array{mixed, string}>
      */
-    public function getReverseTransformMultipleInvalidTypeTests(): array
+    public function getReverseTransformMultipleInvalidTypeTests(): iterable
     {
-        return [
-            [true, 'bool'],
-            [12, 'int'],
-            [12.9, 'float'],
-            ['_labels', 'string'],
-            [new \stdClass(), \stdClass::class],
-        ];
+        yield [true, 'bool'];
+        yield [12, 'int'];
+        yield [12.9, 'float'];
+        yield ['_labels', 'string'];
+        yield [new \stdClass(), \stdClass::class];
     }
 
     public function testTransform(): void

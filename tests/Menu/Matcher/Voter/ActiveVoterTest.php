@@ -49,10 +49,8 @@ final class ActiveVoterTest extends TestCase
      */
     public function provideData(): iterable
     {
-        return [
-            'active' => [true, true],
-            'no active' => [false, false],
-            'null' => [null, null],
-        ];
+        yield 'active' => [true, true];
+        yield 'no active' => [false, false];
+        yield 'null' => [null, null];
     }
 }

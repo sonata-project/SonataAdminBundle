@@ -565,10 +565,8 @@ final class DatagridTest extends TestCase
      */
     public function getBuildPagerWithPageTests(): iterable
     {
-        return [
-            [3, 50],
-            [3, ['value' => 50]],
-        ];
+        yield [3, 50];
+        yield [3, ['value' => 50]];
     }
 
     /**
@@ -605,9 +603,7 @@ final class DatagridTest extends TestCase
      */
     public function getBuildPagerWithPage2Tests(): iterable
     {
-        return [
-            [3, 50],
-        ];
+        yield [3, 50];
     }
 
     public function testSortParameters(): void
