@@ -798,7 +798,7 @@ final class CRUDControllerTest extends TestCase
      * @param array<string, bool|float|int|string|null> $queryParams
      * @param array<string, bool|float|int|string|null> $requestParams
      *
-     * @dataProvider getRedirectToTests
+     * @dataProvider provideRedirectToCases
      */
     public function testRedirectTo(
         string $expected,
@@ -862,7 +862,7 @@ final class CRUDControllerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, string, array<string, bool|float|int|string|null>, array<string, bool|float|int|string|null>, bool}>
      */
-    public function getRedirectToTests(): iterable
+    public function provideRedirectToCases(): iterable
     {
         yield ['stdClass_edit', 'edit', [], [], false];
         yield ['list', 'list', ['btn_update_and_list' => true], [], false];
@@ -3658,7 +3658,7 @@ final class CRUDControllerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{array<string, mixed>}>
      */
-    public function provideConfirmationData(): iterable
+    public function provideBatchActionWithConfirmationCases(): iterable
     {
         yield 'normal data' => [['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]];
         yield 'without all elements' => [['action' => 'delete', 'idx' => ['123', '456']]];
@@ -3670,7 +3670,7 @@ final class CRUDControllerTest extends TestCase
     /**
      * @param array<string, mixed> $data
      *
-     * @dataProvider provideConfirmationData
+     * @dataProvider provideBatchActionWithConfirmationCases
      */
     public function testBatchActionWithConfirmation(array $data): void
     {
@@ -3731,7 +3731,7 @@ final class CRUDControllerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideActionNames
+     * @dataProvider provideBatchActionNonRelevantActionCases
      *
      * @group legacy
      *
@@ -3777,7 +3777,7 @@ final class CRUDControllerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function provideActionNames(): iterable
+    public function provideBatchActionNonRelevantActionCases(): iterable
     {
         yield ['foo'];
         yield ['foo_bar'];

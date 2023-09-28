@@ -187,7 +187,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider getRenderListElementTests
+     * @dataProvider provideRenderListElementCases
      *
      * @psalm-suppress DeprecatedMethod
      */
@@ -303,7 +303,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider getRenderViewElementTests
+     * @dataProvider provideRenderViewElementCases
      *
      * @psalm-suppress DeprecatedMethod
      */
@@ -344,7 +344,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider getRenderViewElementCompareTests
+     * @dataProvider provideRenderViewElementCompareCases
      *
      * @psalm-suppress DeprecatedMethod
      */
@@ -525,7 +525,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @phpstan-return array<array{string, string, mixed, array<string, mixed>}>
      */
-    public function getRenderListElementTests(): array
+    public function provideRenderListElementCases(): iterable
     {
         $elements = [
             [
@@ -1551,7 +1551,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @phpstan-return array<array{string, string, mixed, array<string, mixed>}>
      */
-    public function getRenderViewElementTests(): array
+    public function provideRenderViewElementCases(): iterable
     {
         $elements = [
             ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]],
@@ -2069,7 +2069,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @phpstan-return array<array{string, string, mixed, array<string, mixed>, string|null}>
      */
-    public function getRenderViewElementCompareTests(): iterable
+    public function provideRenderViewElementCompareCases(): iterable
     {
         yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];
         yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];

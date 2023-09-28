@@ -56,7 +56,7 @@ final class AdminPermissionMapTest extends TestCase
     /**
      * @phpstan-return array<array{bool, string}>
      */
-    public function permissionProvider(): iterable
+    public function provideContainsReturnsABooleanCases(): iterable
     {
         yield [true, AdminPermissionMap::PERMISSION_VIEW];
         yield [true, AdminPermissionMap::PERMISSION_EDIT];
@@ -73,7 +73,7 @@ final class AdminPermissionMapTest extends TestCase
     }
 
     /**
-     * @dataProvider permissionProvider
+     * @dataProvider provideContainsReturnsABooleanCases
      */
     public function testContainsReturnsABoolean(bool $expectedResult, string $permission): void
     {

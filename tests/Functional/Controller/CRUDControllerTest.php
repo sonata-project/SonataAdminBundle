@@ -90,7 +90,7 @@ final class CRUDControllerTest extends WebTestCase
     }
 
     /**
-     * @dataProvider urlIsSuccessfulDataProvider
+     * @dataProvider provideUrlIsSuccessfulCases
      */
     public function testUrlIsSuccessful(string $url): void
     {
@@ -126,7 +126,7 @@ final class CRUDControllerTest extends WebTestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function urlIsSuccessfulDataProvider(): iterable
+    public function provideUrlIsSuccessfulCases(): iterable
     {
         yield ['/admin/tests/app/foo/browse'];
         // CustomAdminExtension route

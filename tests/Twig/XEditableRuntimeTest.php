@@ -24,7 +24,7 @@ final class XEditableRuntimeTest extends TestCase
      * @param array<string, mixed>         $options
      * @param array<array<string, string>> $expectedChoices
      *
-     * @dataProvider xEditableChoicesProvider
+     * @dataProvider provideGetXEditableChoicesIsIdempotentCases
      */
     public function testGetXEditableChoicesIsIdempotent(array $options, array $expectedChoices): void
     {
@@ -50,7 +50,7 @@ final class XEditableRuntimeTest extends TestCase
      *	array<array{value: string, text: string}>
      * }>
      */
-    public function xEditableChoicesProvider(): iterable
+    public function provideGetXEditableChoicesIsIdempotentCases(): iterable
     {
         yield 'needs processing' => [
             ['choices' => ['Status1' => 'Alias1', 'Status2' => 'Alias2']],

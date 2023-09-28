@@ -24,7 +24,7 @@ final class BooleanToStringTransformerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{bool|null, string|null, string}>
      */
-    public function provideTransform(): iterable
+    public function provideTransformCases(): iterable
     {
         yield [null, null, '1'];
         yield [false, null, '1'];
@@ -35,7 +35,7 @@ final class BooleanToStringTransformerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideTransform
+     * @dataProvider provideTransformCases
      */
     public function testTransform(?bool $value, ?string $expected, string $trueValue): void
     {
@@ -47,7 +47,7 @@ final class BooleanToStringTransformerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string|null, bool}>
      */
-    public function provideReverseTransform(): iterable
+    public function provideReverseTransformCases(): iterable
     {
         yield [null, false];
         yield ['1', true];
@@ -62,7 +62,7 @@ final class BooleanToStringTransformerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideReverseTransform
+     * @dataProvider provideReverseTransformCases
      */
     public function testReverseTransform(?string $value, bool $expected): void
     {

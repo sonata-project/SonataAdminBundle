@@ -183,7 +183,7 @@ final class RenderElementRuntimeTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider getRenderListElementTests
+     * @dataProvider provideRenderListElementCases
      */
     public function testRenderListElement(string $expected, string $type, mixed $value, array $options): void
     {
@@ -291,7 +291,7 @@ final class RenderElementRuntimeTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider getRenderViewElementTests
+     * @dataProvider provideRenderViewElementCases
      */
     public function testRenderViewElement(string $expected, string $type, mixed $value, array $options): void
     {
@@ -330,7 +330,7 @@ final class RenderElementRuntimeTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider getRenderViewElementCompareTests
+     * @dataProvider provideRenderViewElementCompareCases
      */
     public function testRenderViewElementCompare(
         string $expected,
@@ -490,7 +490,7 @@ final class RenderElementRuntimeTest extends TestCase
     /**
      * @phpstan-return array<array{string, string, mixed, array<string, mixed>}>
      */
-    public function getRenderListElementTests(): array
+    public function provideRenderListElementCases(): iterable
     {
         $elements = [
             [
@@ -1491,7 +1491,7 @@ final class RenderElementRuntimeTest extends TestCase
     /**
      * @phpstan-return array<array{string, string, mixed, array<string, mixed>}>
      */
-    public function getRenderViewElementTests(): iterable
+    public function provideRenderViewElementCases(): iterable
     {
         yield ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]];
         yield ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]];
@@ -1950,14 +1950,14 @@ final class RenderElementRuntimeTest extends TestCase
         ];
         yield [
             <<<'EOT'
-                    <th>Data</th> <td><div
-                            class="sonata-readmore"
-                            data-readmore-height="40"
-                            data-readmore-more="Read more"
-                            data-readmore-less="Close">
-                                A very long string
-                    </div></td>
-                    EOT
+                <th>Data</th> <td><div
+                        class="sonata-readmore"
+                        data-readmore-height="40"
+                        data-readmore-more="Read more"
+                        data-readmore-less="Close">
+                            A very long string
+                </div></td>
+                EOT
             ,
             FieldDescriptionInterface::TYPE_STRING,
             ' A very long string ',
@@ -1968,14 +1968,14 @@ final class RenderElementRuntimeTest extends TestCase
         ];
         yield [
             <<<'EOT'
-                    <th>Data</th> <td><div
-                            class="sonata-readmore"
-                            data-readmore-height="10"
-                            data-readmore-more="More"
-                            data-readmore-less="Less">
-                                A very long string
-                    </div></td>
-                    EOT
+                <th>Data</th> <td><div
+                        class="sonata-readmore"
+                        data-readmore-height="10"
+                        data-readmore-more="More"
+                        data-readmore-less="Less">
+                            A very long string
+                </div></td>
+                EOT
             ,
             FieldDescriptionInterface::TYPE_STRING,
             ' A very long string ',
@@ -1993,7 +1993,7 @@ final class RenderElementRuntimeTest extends TestCase
     /**
      * @phpstan-return array<array{string, string, mixed, array<string, mixed>, string|null}>
      */
-    public function getRenderViewElementCompareTests(): iterable
+    public function provideRenderViewElementCompareCases(): iterable
     {
         yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];
         yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];

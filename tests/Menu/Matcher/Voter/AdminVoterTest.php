@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class AdminVoterTest extends TestCase
 {
     /**
-     * @dataProvider provideData
+     * @dataProvider provideMatchingCases
      */
     public function testMatching(mixed $itemData, ?string $voterData, ?string $route, ?bool $expected): void
     {
@@ -51,7 +51,7 @@ final class AdminVoterTest extends TestCase
     /**
      * @return iterable<array{mixed, string|null, string|null, bool|null}>
      */
-    public function provideData(): iterable
+    public function provideMatchingCases(): iterable
     {
         yield 'no data' => [null, null, null, null];
         yield 'no route and granted' => [$this->getAdmin('_sonata_admin'), '_sonata_admin', null, null];

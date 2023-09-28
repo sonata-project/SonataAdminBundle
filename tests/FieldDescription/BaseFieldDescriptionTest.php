@@ -189,7 +189,7 @@ final class BaseFieldDescriptionTest extends TestCase
     }
 
     /**
-     * @dataProvider getFieldValueWithFieldNameDataProvider
+     * @dataProvider provideGetFieldValueWithMethodCases
      */
     public function testGetFieldValueWithMethod(string $method): void
     {
@@ -204,7 +204,7 @@ final class BaseFieldDescriptionTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function getFieldValueWithFieldNameDataProvider(): iterable
+    public function provideGetFieldValueWithMethodCases(): iterable
     {
         yield ['getFakeFieldValue'];
         yield ['isFakeFieldValue'];

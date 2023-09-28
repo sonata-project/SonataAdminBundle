@@ -506,7 +506,7 @@ final class DatagridTest extends TestCase
     /**
      * @phpstan-param int|array{value: int} $perPage
      *
-     * @dataProvider getBuildPagerWithPageTests
+     * @dataProvider provideBuildPagerWithPageCases
      */
     public function testBuildPagerWithPage(int $page, int|array $perPage): void
     {
@@ -563,14 +563,14 @@ final class DatagridTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{int, int|array{value: int}}>
      */
-    public function getBuildPagerWithPageTests(): iterable
+    public function provideBuildPagerWithPageCases(): iterable
     {
         yield [3, 50];
         yield [3, ['value' => 50]];
     }
 
     /**
-     * @dataProvider getBuildPagerWithPage2Tests
+     * @dataProvider provideBuildPagerWithPage2Cases
      */
     public function testBuildPagerWithPage2(int $page, int $perPage): void
     {
@@ -601,7 +601,7 @@ final class DatagridTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{int, int}>
      */
-    public function getBuildPagerWithPage2Tests(): iterable
+    public function provideBuildPagerWithPage2Cases(): iterable
     {
         yield [3, 50];
     }

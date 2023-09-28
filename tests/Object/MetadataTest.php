@@ -45,7 +45,7 @@ final class MetadataTest extends TestCase
     }
 
     /**
-     * @dataProvider isImageAvailableProvider
+     * @dataProvider provideIsImageAvailableCases
      */
     public function testIsImageAvailable(bool $expected, ?string $image): void
     {
@@ -58,7 +58,7 @@ final class MetadataTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{bool, string|null}>
      */
-    public function isImageAvailableProvider(): iterable
+    public function provideIsImageAvailableCases(): iterable
     {
         yield 'image is null' => [false, null];
         yield 'image is available' => [true, 'image.png'];

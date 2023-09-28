@@ -235,7 +235,7 @@ final class PoolTest extends TestCase
     }
 
     /**
-     * @dataProvider getEmptyRootAdminServiceNames
+     * @dataProvider provideGetAdminByAdminCodeWithInvalidRootCodeCases
      */
     public function testGetAdminByAdminCodeWithInvalidRootCode(string $adminId): void
     {
@@ -253,7 +253,7 @@ final class PoolTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function getEmptyRootAdminServiceNames(): iterable
+    public function provideGetAdminByAdminCodeWithInvalidRootCodeCases(): iterable
     {
         yield [''];
         yield ['   '];
@@ -261,7 +261,7 @@ final class PoolTest extends TestCase
     }
 
     /**
-     * @dataProvider getInvalidChildAdminServiceNames
+     * @dataProvider provideGetAdminByAdminCodeWithInvalidChildCodeCases
      */
     public function testGetAdminByAdminCodeWithInvalidChildCode(string $adminId): void
     {
@@ -287,7 +287,7 @@ final class PoolTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function getInvalidChildAdminServiceNames(): iterable
+    public function provideGetAdminByAdminCodeWithInvalidChildCodeCases(): iterable
     {
         yield ['admin1|'];
         yield ['admin1|nonexistent_code'];
@@ -295,7 +295,7 @@ final class PoolTest extends TestCase
     }
 
     /**
-     * @dataProvider getAdminServiceNamesToCheck
+     * @dataProvider provideHasAdminByAdminCodeCases
      */
     public function testHasAdminByAdminCode(string $adminId): void
     {
@@ -327,14 +327,14 @@ final class PoolTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function getAdminServiceNamesToCheck(): iterable
+    public function provideHasAdminByAdminCodeCases(): iterable
     {
         yield ['sonata.news.admin.post'];
         yield ['sonata.news.admin.post|sonata.news.admin.comment'];
     }
 
     /**
-     * @dataProvider getInvalidAdminServiceNamesToCheck
+     * @dataProvider provideHasAdminByAdminCodeWithInvalidCodesCases
      */
     public function testHasAdminByAdminCodeWithInvalidCodes(string $adminId): void
     {
@@ -351,7 +351,7 @@ final class PoolTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function getInvalidAdminServiceNamesToCheck(): iterable
+    public function provideHasAdminByAdminCodeWithInvalidCodesCases(): iterable
     {
         yield [''];
         yield ['   '];
@@ -364,7 +364,7 @@ final class PoolTest extends TestCase
     }
 
     /**
-     * @dataProvider getInvalidChildAdminServiceNamesToCheck
+     * @dataProvider provideHasAdminByAdminCodeWithInvalidChildCodesCases
      */
     public function testHasAdminByAdminCodeWithInvalidChildCodes(string $adminId): void
     {
@@ -383,7 +383,7 @@ final class PoolTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function getInvalidChildAdminServiceNamesToCheck(): iterable
+    public function provideHasAdminByAdminCodeWithInvalidChildCodesCases(): iterable
     {
         yield ['sonata.news.admin.post|'];
         yield ['sonata.news.admin.post|nonexistent_code'];

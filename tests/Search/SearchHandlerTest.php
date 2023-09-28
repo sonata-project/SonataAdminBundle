@@ -96,7 +96,7 @@ final class SearchHandlerTest extends TestCase
     /**
      * @phpstan-param class-string|null $expected
      *
-     * @dataProvider provideAdminSearchConfigurations
+     * @dataProvider provideAdminSearchCases
      */
     public function testAdminSearch(?string $expected, int $filterCallsCount, ?bool $enabled, string $adminCode): void
     {
@@ -133,7 +133,7 @@ final class SearchHandlerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{class-string|null, int, bool|null, string}>
      */
-    public function provideAdminSearchConfigurations(): iterable
+    public function provideAdminSearchCases(): iterable
     {
         yield 'admin_search_enabled' => [PagerInterface::class, 1, true, 'admin.foo'];
         yield 'admin_search_disabled' => [null, 0, false, 'admin.bar'];

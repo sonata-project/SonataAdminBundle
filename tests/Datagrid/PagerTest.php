@@ -42,7 +42,7 @@ final class PagerTest extends TestCase
     }
 
     /**
-     * @dataProvider getGetMaxPerPage1Tests
+     * @dataProvider provideGetMaxPerPage1Cases
      */
     public function testGetMaxPerPage1(int $expectedMaxPerPage, int $expectedPage, int $maxPerPage, ?int $page): void
     {
@@ -62,7 +62,7 @@ final class PagerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{int, int, int, int|null}>
      */
-    public function getGetMaxPerPage1Tests(): iterable
+    public function provideGetMaxPerPage1Cases(): iterable
     {
         yield [123, 1, 123, 1];
         yield [123, 321, 123, 321];

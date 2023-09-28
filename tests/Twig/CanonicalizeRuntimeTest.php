@@ -39,7 +39,7 @@ final class CanonicalizeRuntimeTest extends TestCase
     /**
      * NEXT_MAJOR: Remove this test.
      *
-     * @dataProvider momentLocalesProvider
+     * @dataProvider provideCanonicalizedLocaleForMomentCases
      *
      * @group legacy
      */
@@ -53,7 +53,7 @@ final class CanonicalizeRuntimeTest extends TestCase
     }
 
     /**
-     * @dataProvider select2LocalesProvider
+     * @dataProvider provideCanonicalizedLocaleForSelect2Cases
      */
     public function testCanonicalizedLocaleForSelect2(?string $expected, string $original): void
     {
@@ -66,7 +66,7 @@ final class CanonicalizeRuntimeTest extends TestCase
      *
      * @return array<array{?string, string}>
      */
-    public function momentLocalesProvider(): iterable
+    public function provideCanonicalizedLocaleForMomentCases(): iterable
     {
         yield ['af', 'af'];
         yield ['ar-dz', 'ar-dz'];
@@ -188,7 +188,7 @@ final class CanonicalizeRuntimeTest extends TestCase
     /**
      * @return array<array{?string, string}>
      */
-    public function select2LocalesProvider(): iterable
+    public function provideCanonicalizedLocaleForSelect2Cases(): iterable
     {
         yield ['ar', 'ar'];
         yield ['az', 'az'];

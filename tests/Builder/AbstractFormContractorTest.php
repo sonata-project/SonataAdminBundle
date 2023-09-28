@@ -207,7 +207,7 @@ final class AbstractFormContractorTest extends TestCase
     /**
      * @phpstan-param class-string $formType
      *
-     * @dataProvider getFieldDescriptionValidationProvider
+     * @dataProvider provideThrowsExceptionWithInvalidFieldDescriptionInGetDefaultOptionsCases
      */
     public function testThrowsExceptionWithInvalidFieldDescriptionInGetDefaultOptions(string $formType): void
     {
@@ -225,7 +225,7 @@ final class AbstractFormContractorTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{0: class-string}>
      */
-    public function getFieldDescriptionValidationProvider(): iterable
+    public function provideThrowsExceptionWithInvalidFieldDescriptionInGetDefaultOptionsCases(): iterable
     {
         yield 'ModelAutocompleteType, no target model' => [
             ModelAutocompleteType::class,

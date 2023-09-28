@@ -34,7 +34,7 @@ final class ModelTypeTest extends TypeTestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider getGetOptionsTests
+     * @dataProvider provideGetOptionsCases
      */
     public function testGetOptions(array $options, int $expectedModelManagerFindCalls): void
     {
@@ -72,7 +72,7 @@ final class ModelTypeTest extends TypeTestCase
     /**
      * @phpstan-return iterable<array-key, array{array<string, mixed>, int}>
      */
-    public function getGetOptionsTests(): iterable
+    public function provideGetOptionsCases(): iterable
     {
         yield [[], 1];
         yield [['choices' => null], 1];
@@ -80,7 +80,7 @@ final class ModelTypeTest extends TypeTestCase
     }
 
     /**
-     * @dataProvider getCompoundOptionTests
+     * @dataProvider provideCompoundOptionCases
      */
     public function testCompoundOption(bool $expectedCompound, bool $multiple, bool $expanded): void
     {
@@ -112,7 +112,7 @@ final class ModelTypeTest extends TypeTestCase
     /**
      * @phpstan-return array<array{bool, bool, bool}>
      */
-    public function getCompoundOptionTests(): iterable
+    public function provideCompoundOptionCases(): iterable
     {
         yield [true, true, true];
         // checkboxes

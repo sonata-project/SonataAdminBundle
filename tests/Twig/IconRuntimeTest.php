@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Twig\IconRuntime;
 final class IconRuntimeTest extends TestCase
 {
     /**
-     * @dataProvider iconProvider
+     * @dataProvider provideParseIconCases
      */
     public function testParseIcon(string $icon, string $expected): void
     {
@@ -31,7 +31,7 @@ final class IconRuntimeTest extends TestCase
     /**
      * @return iterable<array{string, string}>
      */
-    public function iconProvider(): iterable
+    public function provideParseIconCases(): iterable
     {
         yield ['', ''];
         yield ['<i class="fa fa-cog" aria-hidden="true"></i>', '<i class="fa fa-cog" aria-hidden="true"></i>'];

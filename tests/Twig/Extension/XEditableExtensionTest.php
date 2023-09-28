@@ -30,7 +30,7 @@ final class XEditableExtensionTest extends TestCase
      * @param array<string, mixed>         $options
      * @param array<array<string, string>> $expectedChoices
      *
-     * @dataProvider xEditableChoicesProvider
+     * @dataProvider provideGetXEditableChoicesIsIdempotentCases
      *
      * @psalm-suppress DeprecatedMethod
      */
@@ -58,7 +58,7 @@ final class XEditableExtensionTest extends TestCase
      *	array<array{value: string, text: string}>
      * }>
      */
-    public function xEditableChoicesProvider(): iterable
+    public function provideGetXEditableChoicesIsIdempotentCases(): iterable
     {
         yield 'needs processing' => [
             ['choices' => ['Status1' => 'Alias1', 'Status2' => 'Alias2']],

@@ -29,7 +29,7 @@ final class ProxyQueryResolverTest extends TestCase
     }
 
     /**
-     * @dataProvider provideInvalidData
+     * @dataProvider provideWithInvalidDataCases
      */
     public function testWithInvalidData(Request $request, ArgumentMetadata $argumentMetadata): void
     {
@@ -43,7 +43,7 @@ final class ProxyQueryResolverTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{Request, ArgumentMetadata}>
      */
-    public function provideInvalidData(): iterable
+    public function provideWithInvalidDataCases(): iterable
     {
         yield 'Object with no type' => [
             static::createRequest(),

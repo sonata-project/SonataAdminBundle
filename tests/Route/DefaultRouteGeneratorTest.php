@@ -53,7 +53,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     /**
      * @param array<string, mixed> $parameters
      *
-     * @dataProvider getGenerateUrlTests
+     * @dataProvider provideGenerateUrlCases
      */
     public function testGenerateUrl(
         string $expected,
@@ -106,7 +106,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     /**
      * @phpstan-return array<array{0: string, 1: string, 2: array<string, mixed>, 3?: int}>
      */
-    public function getGenerateUrlTests(): iterable
+    public function provideGenerateUrlCases(): iterable
     {
         yield ['/foo?abc=a123&efg=e456&default_param=default_val', 'foo', ['default_param' => 'default_val']];
         yield ['/foo/bar?abc=a123&efg=e456&default_param=default_val', 'base.Code.Bar.bar', ['default_param' => 'default_val']];
@@ -145,7 +145,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     /**
      * @param array<string, mixed> $parameters
      *
-     * @dataProvider getGenerateUrlChildTests
+     * @dataProvider provideGenerateUrlChildCases
      */
     public function testGenerateUrlChild(string $type, string $expected, string $name, array $parameters): void
     {
@@ -225,7 +225,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     /**
      * @phpstan-return array<array{string, string, string, array<string, mixed>}>
      */
-    public function getGenerateUrlChildTests(): iterable
+    public function provideGenerateUrlChildCases(): iterable
     {
         yield ['parent', '/foo?id=123&default_param=default_val', 'foo', ['id' => 123, 'default_param' => 'default_val']];
         yield ['parent', '/foo?id=123&default_param=default_val', 'base.Code.Parent.foo', ['id' => 123, 'default_param' => 'default_val']];
@@ -238,7 +238,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     /**
      * @param array<string, mixed> $parameters
      *
-     * @dataProvider getGenerateUrlParentFieldDescriptionTests
+     * @dataProvider provideGenerateUrlParentFieldDescriptionCases
      */
     public function testGenerateUrlParentFieldDescription(string $expected, string $name, array $parameters): void
     {
@@ -298,7 +298,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     /**
      * @phpstan-return array<array{string, string, array<string, mixed>}>
      */
-    public function getGenerateUrlParentFieldDescriptionTests(): iterable
+    public function provideGenerateUrlParentFieldDescriptionCases(): iterable
     {
         yield ['/foo?abc=a123&efg=e456&default_param=default_val&uniqid=foo_uniqueid&code=base.Code.Parent&pcode=parent_foo_code&puniqid=parent_foo_uniqueid', 'foo', ['default_param' => 'default_val']];
         // this second test does not make sense as we cannot have embeded admin with nested admin....
@@ -308,7 +308,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     /**
      * @param array<string, mixed> $parameters
      *
-     * @dataProvider getGenerateUrlLoadCacheTests
+     * @dataProvider provideGenerateUrlLoadCacheCases
      */
     public function testGenerateUrlLoadCache(string $expected, string $name, array $parameters): void
     {
@@ -398,7 +398,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     /**
      * @phpstan-return array<array{string, string, array<string, mixed>}>
      */
-    public function getGenerateUrlLoadCacheTests(): iterable
+    public function provideGenerateUrlLoadCacheCases(): iterable
     {
         yield ['/bar?abc=a123&efg=e456&id=123&default_param=default_val', 'bar', ['id' => 123, 'default_param' => 'default_val']];
     }
