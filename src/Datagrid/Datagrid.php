@@ -154,7 +154,7 @@ final class Datagrid implements DatagridInterface
         return $this->values;
     }
 
-    public function setValue(string $name, ?string $operator, $value): void
+    public function setValue(string $name, ?string $operator, mixed $value): void
     {
         $this->values[$name] = [
             'type' => $operator,

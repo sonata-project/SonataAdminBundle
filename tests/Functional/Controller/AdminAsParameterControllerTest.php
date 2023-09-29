@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 final class AdminAsParameterControllerTest extends WebTestCase
 {
     /**
-     * @dataProvider urlIsSuccessfulDataProvider
+     * @dataProvider provideUrlIsSuccessfulCases
      */
     public function testUrlIsSuccessful(string $url): void
     {
@@ -33,11 +33,9 @@ final class AdminAsParameterControllerTest extends WebTestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function urlIsSuccessfulDataProvider(): iterable
+    public function provideUrlIsSuccessfulCases(): iterable
     {
-        return [
-            ['/admin/tests/app/admin-as-parameter/test?uniqid=test'],
-            ['/admin/tests/app/admin-as-parameter/invokable?uniqid=invokable'],
-        ];
+        yield ['/admin/tests/app/admin-as-parameter/test?uniqid=test'];
+        yield ['/admin/tests/app/admin-as-parameter/invokable?uniqid=invokable'];
     }
 }

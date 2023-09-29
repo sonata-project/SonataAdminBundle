@@ -162,7 +162,7 @@ final class SimplePagerTest extends TestCase
     /**
      * @param string[] $queryReturnValues
      *
-     * @dataProvider getCurrentPageResultsReturnType
+     * @dataProvider provideGetCurrentPageResultsReturnTypeArrayCollectionCases
      */
     public function testGetCurrentPageResultsReturnTypeArrayCollection(array $queryReturnValues, int $maxPerPage): void
     {
@@ -179,12 +179,10 @@ final class SimplePagerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string[], int}>
      */
-    public function getCurrentPageResultsReturnType(): iterable
+    public function provideGetCurrentPageResultsReturnTypeArrayCollectionCases(): iterable
     {
-        return [
-            [['foo', 'bar'], 2],
-            [['foo', 'bar'], 1],
-            [[], 1],
-        ];
+        yield [['foo', 'bar'], 2];
+        yield [['foo', 'bar'], 1];
+        yield [[], 1];
     }
 }

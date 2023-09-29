@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Twig\IconRuntime;
 final class IconRuntimeTest extends TestCase
 {
     /**
-     * @dataProvider iconProvider
+     * @dataProvider provideParseIconCases
      */
     public function testParseIcon(string $icon, string $expected): void
     {
@@ -31,17 +31,15 @@ final class IconRuntimeTest extends TestCase
     /**
      * @return iterable<array{string, string}>
      */
-    public function iconProvider(): iterable
+    public function provideParseIconCases(): iterable
     {
-        return [
-            ['', ''],
-            ['<i class="fa fa-cog" aria-hidden="true"></i>', '<i class="fa fa-cog" aria-hidden="true"></i>'],
-            ['fa fa-cog', '<i class="fa fa-cog" aria-hidden="true"></i>'],
-            ['far fa-cog', '<i class="far fa-cog" aria-hidden="true"></i>'],
-            ['fas fa-cog', '<i class="fas fa-cog" aria-hidden="true"></i>'],
-            ['fab fa-font-awesome', '<i class="fab fa-font-awesome" aria-hidden="true"></i>'],
-            ['fal fa-cog', '<i class="fal fa-cog" aria-hidden="true"></i>'],
-            ['fad fa-cog', '<i class="fad fa-cog" aria-hidden="true"></i>'],
-        ];
+        yield ['', ''];
+        yield ['<i class="fa fa-cog" aria-hidden="true"></i>', '<i class="fa fa-cog" aria-hidden="true"></i>'];
+        yield ['fa fa-cog', '<i class="fa fa-cog" aria-hidden="true"></i>'];
+        yield ['far fa-cog', '<i class="far fa-cog" aria-hidden="true"></i>'];
+        yield ['fas fa-cog', '<i class="fas fa-cog" aria-hidden="true"></i>'];
+        yield ['fab fa-font-awesome', '<i class="fab fa-font-awesome" aria-hidden="true"></i>'];
+        yield ['fal fa-cog', '<i class="fal fa-cog" aria-hidden="true"></i>'];
+        yield ['fad fa-cog', '<i class="fad fa-cog" aria-hidden="true"></i>'];
     }
 }

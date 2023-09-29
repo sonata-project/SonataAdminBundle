@@ -183,7 +183,7 @@ final class RenderElementRuntimeTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider getRenderListElementTests
+     * @dataProvider provideRenderListElementCases
      */
     public function testRenderListElement(string $expected, string $type, mixed $value, array $options): void
     {
@@ -291,7 +291,7 @@ final class RenderElementRuntimeTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider getRenderViewElementTests
+     * @dataProvider provideRenderViewElementCases
      */
     public function testRenderViewElement(string $expected, string $type, mixed $value, array $options): void
     {
@@ -330,7 +330,7 @@ final class RenderElementRuntimeTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider getRenderViewElementCompareTests
+     * @dataProvider provideRenderViewElementCompareCases
      */
     public function testRenderViewElementCompare(
         string $expected,
@@ -488,9 +488,9 @@ final class RenderElementRuntimeTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string, string, mixed, array<string, mixed>}>
+     * @phpstan-return iterable<array{string, string, mixed, array<string, mixed>}>
      */
-    public function getRenderListElementTests(): array
+    public function provideRenderListElementCases(): iterable
     {
         $elements = [
             [
@@ -1489,552 +1489,548 @@ final class RenderElementRuntimeTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string, string, mixed, array<string, mixed>}>
+     * @phpstan-return iterable<array{string, string, mixed, array<string, mixed>}>
      */
-    public function getRenderViewElementTests(): array
+    public function provideRenderViewElementCases(): iterable
     {
-        return [
-            ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]],
-            ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]],
-            ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_TEXTAREA, 'Example', ['safe' => false]],
+        yield ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]];
+        yield ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]];
+        yield ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_TEXTAREA, 'Example', ['safe' => false]];
+        yield [
+            '<th>Data</th> <td><time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00"> December 24, 2013 10:11 </time></td>',
+            FieldDescriptionInterface::TYPE_DATETIME,
+            new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')), [],
+        ];
+        yield [
+            '<th>Data</th> <td><time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00"> 24.12.2013 10:11:12 </time></td>',
+            FieldDescriptionInterface::TYPE_DATETIME,
+            new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
+            ['format' => 'd.m.Y H:i:s'],
+        ];
+        yield [
+            '<th>Data</th> <td><time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00"> December 24, 2013 18:11 </time></td>',
+            FieldDescriptionInterface::TYPE_DATETIME,
+            new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
+            ['timezone' => 'Asia/Hong_Kong'],
+        ];
+        yield [
+            '<th>Data</th> <td><time datetime="2013-12-24" title="2013-12-24"> December 24, 2013 </time></td>',
+            FieldDescriptionInterface::TYPE_DATE,
+            new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
+            [],
+        ];
+        yield [
+            '<th>Data</th> <td><time datetime="2013-12-24" title="2013-12-24"> 24.12.2013 </time></td>',
+            FieldDescriptionInterface::TYPE_DATE,
+            new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
+            ['format' => 'd.m.Y'],
+        ];
+        yield [
+            '<th>Data</th> <td><time datetime="10:11:12+00:00" title="10:11:12+00:00"> 10:11:12 </time></td>',
+            FieldDescriptionInterface::TYPE_TIME,
+            new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
+            [],
+        ];
+        yield [
+            '<th>Data</th> <td><time datetime="10:11:12+00:00" title="10:11:12+00:00"> 18:11:12 </time></td>',
+            FieldDescriptionInterface::TYPE_TIME,
+            new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
+            ['timezone' => 'Asia/Hong_Kong'],
+        ];
+        yield ['<th>Data</th> <td>10.746135</td>', FieldDescriptionInterface::TYPE_FLOAT, 10.746135, ['safe' => false]];
+        yield ['<th>Data</th> <td>5678</td>', FieldDescriptionInterface::TYPE_INTEGER, 5678, ['safe' => false]];
+        yield ['<th>Data</th> <td>1074.6135 %</td>', FieldDescriptionInterface::TYPE_PERCENT, 10.746135, []];
+        yield ['<th>Data</th> <td>0 %</td>', FieldDescriptionInterface::TYPE_PERCENT, 0, []];
+        yield ['<th>Data</th> <td>EUR 10.746135</td>', FieldDescriptionInterface::TYPE_CURRENCY, 10.746135, ['currency' => 'EUR']];
+        yield ['<th>Data</th> <td>GBP 51.23456</td>', FieldDescriptionInterface::TYPE_CURRENCY, 51.23456, ['currency' => 'GBP']];
+        yield ['<th>Data</th> <td>EUR 0</td>', FieldDescriptionInterface::TYPE_CURRENCY, 0, ['currency' => 'EUR']];
+        yield [
+            '<th>Data</th> <td> <ul><li>1&nbsp;=>&nbsp;First</li><li>2&nbsp;=>&nbsp;Second</li></ul> </td>',
+            FieldDescriptionInterface::TYPE_ARRAY,
+            [1 => 'First', 2 => 'Second'],
+            ['safe' => false],
+        ];
+        yield [
+            '<th>Data</th> <td> [1&nbsp;=>&nbsp;First, 2&nbsp;=>&nbsp;Second] </td>',
+            FieldDescriptionInterface::TYPE_ARRAY,
+            [1 => 'First', 2 => 'Second'],
+            ['safe' => false, 'inline' => true],
+        ];
+        yield [
+            '<th>Data</th> <td><span class="label label-success">yes</span></td>',
+            FieldDescriptionInterface::TYPE_BOOLEAN,
+            true,
+            [],
+        ];
+        yield [
+            '<th>Data</th> <td><span class="label label-danger">yes</span></td>',
+            FieldDescriptionInterface::TYPE_BOOLEAN,
+            true,
+            ['inverse' => true],
+        ];
+        yield ['<th>Data</th> <td><span class="label label-danger">no</span></td>', FieldDescriptionInterface::TYPE_BOOLEAN, false, []];
+        yield [
+            '<th>Data</th> <td><span class="label label-success">no</span></td>',
+            FieldDescriptionInterface::TYPE_BOOLEAN,
+            false,
+            ['inverse' => true],
+        ];
+        yield [
+            '<th>Data</th> <td>Delete</td>',
+            FieldDescriptionInterface::TYPE_TRANS,
+            'action_delete',
+            ['safe' => false, 'value_translation_domain' => 'SonataAdminBundle'],
+        ];
+        yield [
+            '<th>Data</th> <td>Delete</td>',
+            FieldDescriptionInterface::TYPE_TRANS,
+            'delete',
+            ['safe' => false, 'value_translation_domain' => 'SonataAdminBundle', 'format' => 'action_%s'],
+        ];
+        yield ['<th>Data</th> <td>Status1</td>', FieldDescriptionInterface::TYPE_CHOICE, 'Status1', ['safe' => false]];
+        yield [
+            '<th>Data</th> <td>Alias1</td>',
+            FieldDescriptionInterface::TYPE_CHOICE,
+            'Status1',
+            ['safe' => false, 'choices' => [
+                'Status1' => 'Alias1',
+                'Status2' => 'Alias2',
+                'Status3' => 'Alias3',
+            ]],
+        ];
+        yield [
+            '<th>Data</th> <td>NoValidKeyInChoices</td>',
+            FieldDescriptionInterface::TYPE_CHOICE,
+            'NoValidKeyInChoices',
+            ['safe' => false, 'choices' => [
+                'Status1' => 'Alias1',
+                'Status2' => 'Alias2',
+                'Status3' => 'Alias3',
+            ]],
+        ];
+        yield [
+            '<th>Data</th> <td>Delete</td>',
+            FieldDescriptionInterface::TYPE_CHOICE,
+            'Foo',
+            ['safe' => false, 'choice_translation_domain' => 'SonataAdminBundle', 'choices' => [
+                'Foo' => 'action_delete',
+                'Status2' => 'Alias2',
+                'Status3' => 'Alias3',
+            ]],
+        ];
+        yield [
+            '<th>Data</th> <td>NoValidKeyInChoices</td>',
+            FieldDescriptionInterface::TYPE_CHOICE,
+            ['NoValidKeyInChoices'],
+            ['safe' => false, 'choices' => [
+                'Status1' => 'Alias1',
+                'Status2' => 'Alias2',
+                'Status3' => 'Alias3',
+            ], 'multiple' => true],
+        ];
+        yield [
+            '<th>Data</th> <td>NoValidKeyInChoices, Alias2</td>',
+            FieldDescriptionInterface::TYPE_CHOICE,
+            ['NoValidKeyInChoices', 'Status2'],
+            ['safe' => false, 'choices' => [
+                'Status1' => 'Alias1',
+                'Status2' => 'Alias2',
+                'Status3' => 'Alias3',
+            ], 'multiple' => true],
+        ];
+        yield [
+            '<th>Data</th> <td>Alias1, Alias3</td>',
+            FieldDescriptionInterface::TYPE_CHOICE,
+            ['Status1', 'Status3'],
+            ['safe' => false, 'choices' => [
+                'Status1' => 'Alias1',
+                'Status2' => 'Alias2',
+                'Status3' => 'Alias3',
+            ], 'multiple' => true],
+        ];
+        yield [
+            '<th>Data</th> <td>Alias1 | Alias3</td>',
+            FieldDescriptionInterface::TYPE_CHOICE,
+            ['Status1', 'Status3'], ['safe' => false, 'choices' => [
+                'Status1' => 'Alias1',
+                'Status2' => 'Alias2',
+                'Status3' => 'Alias3',
+            ], 'multiple' => true, 'delimiter' => ' | '],
+        ];
+        yield [
+            '<th>Data</th> <td>Delete, Alias3</td>',
+            FieldDescriptionInterface::TYPE_CHOICE,
+            ['Foo', 'Status3'],
+            ['safe' => false, 'choice_translation_domain' => 'SonataAdminBundle', 'choices' => [
+                'Foo' => 'action_delete',
+                'Status2' => 'Alias2',
+                'Status3' => 'Alias3',
+            ], 'multiple' => true],
+        ];
+        yield [
+            '<th>Data</th> <td><b>Alias1</b>, <b>Alias3</b></td>',
+            FieldDescriptionInterface::TYPE_CHOICE,
+            ['Status1', 'Status3'],
+            ['safe' => true, 'choices' => [
+                'Status1' => '<b>Alias1</b>',
+                'Status2' => '<b>Alias2</b>',
+                'Status3' => '<b>Alias3</b>',
+            ], 'multiple' => true],
+        ];
+        yield [
+            '<th>Data</th> <td>&lt;b&gt;Alias1&lt;/b&gt;, &lt;b&gt;Alias3&lt;/b&gt;</td>',
+            FieldDescriptionInterface::TYPE_CHOICE,
+            ['Status1', 'Status3'],
+            ['safe' => false, 'choices' => [
+                'Status1' => '<b>Alias1</b>',
+                'Status2' => '<b>Alias2</b>',
+                'Status3' => '<b>Alias3</b>',
+            ], 'multiple' => true],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="http://example.com">http://example.com</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'http://example.com',
+            ['safe' => false],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="http://example.com" target="_blank">http://example.com</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'http://example.com',
+            ['safe' => false, 'attributes' => ['target' => '_blank']],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="http://example.com" target="_blank" class="fooLink">http://example.com</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'http://example.com',
+            ['safe' => false, 'attributes' => ['target' => '_blank', 'class' => 'fooLink']],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="https://example.com">https://example.com</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'https://example.com',
+            ['safe' => false],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="http://example.com">example.com</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'http://example.com',
+            ['safe' => false, 'hide_protocol' => true],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="https://example.com">example.com</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'https://example.com',
+            ['safe' => false, 'hide_protocol' => true],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="http://example.com">http://example.com</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'http://example.com',
+            ['safe' => false, 'hide_protocol' => false],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="https://example.com">https://example.com</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'https://example.com',
+            ['safe' => false,
+            'hide_protocol' => false, ],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="http://example.com">Foo</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'Foo',
+            ['safe' => false, 'url' => 'http://example.com'],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="http://example.com">&lt;b&gt;Foo&lt;/b&gt;</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            '<b>Foo</b>',
+            ['safe' => false, 'url' => 'http://example.com'],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="http://example.com"><b>Foo</b></a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            '<b>Foo</b>',
+            ['safe' => true, 'url' => 'http://example.com'],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="/foo">Foo</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'Foo',
+            ['safe' => false, 'route' => ['name' => 'sonata_admin_foo']],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="http://localhost/foo">Foo</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'Foo',
+            ['safe' => false, 'route' => [
+                'name' => 'sonata_admin_foo',
+                'absolute' => true,
+            ]],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="/foo">foo/bar?a=b&amp;c=123456789</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'http://foo/bar?a=b&c=123456789',
             [
-                '<th>Data</th> <td><time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00"> December 24, 2013 10:11 </time></td>',
-                FieldDescriptionInterface::TYPE_DATETIME,
-                new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')), [],
+                'safe' => false,
+                'route' => ['name' => 'sonata_admin_foo'],
+                'hide_protocol' => true,
             ],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="http://localhost/foo">foo/bar?a=b&amp;c=123456789</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'http://foo/bar?a=b&c=123456789',
+            ['safe' => false, 'route' => [
+                'name' => 'sonata_admin_foo',
+                'absolute' => true,
+            ], 'hide_protocol' => true],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="/foo/abcd/efgh?param3=ijkl">Foo</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'Foo',
+            ['safe' => false, 'route' => [
+                'name' => 'sonata_admin_foo_param',
+                'parameters' => ['param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'],
+            ]],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="http://localhost/foo/abcd/efgh?param3=ijkl">Foo</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'Foo',
+            ['safe' => false, 'route' => [
+                'name' => 'sonata_admin_foo_param',
+                'absolute' => true,
+                'parameters' => [
+                    'param1' => 'abcd',
+                    'param2' => 'efgh',
+                    'param3' => 'ijkl',
+                ],
+            ]],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'Foo',
+            ['safe' => false, 'route' => [
+                'name' => 'sonata_admin_foo_object',
+                'parameters' => [
+                    'param1' => 'abcd',
+                    'param2' => 'efgh',
+                    'param3' => 'ijkl',
+                ],
+                'identifier_parameter_name' => 'barId',
+            ]],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="http://localhost/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'Foo',
+            ['safe' => false, 'route' => [
+                'name' => 'sonata_admin_foo_object',
+                'absolute' => true,
+                'parameters' => [
+                    'param1' => 'abcd',
+                    'param2' => 'efgh',
+                    'param3' => 'ijkl',
+                ],
+                'identifier_parameter_name' => 'barId',
+            ]],
+        ];
+        yield [
+            '<th>Data</th> <td> &nbsp;</td>',
+            FieldDescriptionInterface::TYPE_EMAIL,
+            null,
+            [],
+        ];
+        yield [
+            '<th>Data</th> <td> <a href="mailto:admin@admin.com">admin@admin.com</a></td>',
+            FieldDescriptionInterface::TYPE_EMAIL,
+            'admin@admin.com',
+            [],
+        ];
+        yield [
+            '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme', 'body' => 'Message Body']).'">admin@admin.com</a></td>',
+            FieldDescriptionInterface::TYPE_EMAIL,
+            'admin@admin.com',
+            ['subject' => 'Main Theme', 'body' => 'Message Body'],
+        ];
+        yield [
+            '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme']).'">admin@admin.com</a></td>',
+            FieldDescriptionInterface::TYPE_EMAIL,
+            'admin@admin.com',
+            ['subject' => 'Main Theme'],
+        ];
+        yield [
+            '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['body' => 'Message Body']).'">admin@admin.com</a></td>',
+            FieldDescriptionInterface::TYPE_EMAIL,
+            'admin@admin.com',
+            ['body' => 'Message Body'],
+        ];
+        yield [
+            '<th>Data</th> <td> admin@admin.com</td>',
+            FieldDescriptionInterface::TYPE_EMAIL,
+            'admin@admin.com',
+            ['as_string' => true, 'subject' => 'Main Theme', 'body' => 'Message Body'],
+        ];
+        yield [
+            '<th>Data</th> <td> admin@admin.com</td>',
+            FieldDescriptionInterface::TYPE_EMAIL,
+            'admin@admin.com',
+            ['as_string' => true, 'subject' => 'Main Theme'],
+        ];
+        yield [
+            '<th>Data</th> <td> admin@admin.com</td>',
+            FieldDescriptionInterface::TYPE_EMAIL,
+            'admin@admin.com',
+            ['as_string' => true, 'body' => 'Message Body'],
+        ];
+        yield [
+            '<th>Data</th> <td> <a href="mailto:admin@admin.com">admin@admin.com</a></td>',
+            FieldDescriptionInterface::TYPE_EMAIL,
+            'admin@admin.com',
+            ['as_string' => false],
+        ];
+        yield [
+            '<th>Data</th> <td> admin@admin.com</td>',
+            FieldDescriptionInterface::TYPE_EMAIL,
+            'admin@admin.com',
+            ['as_string' => true],
+        ];
+        yield [
+            '<th>Data</th> <td><p><strong>Creating a Template for the Field</strong> and form</p></td>',
+            FieldDescriptionInterface::TYPE_HTML,
+            '<p><strong>Creating a Template for the Field</strong> and form</p>',
+            [],
+        ];
+        yield [
+            '<th>Data</th> <td>Creating a Template for the Field and form</td>',
+            FieldDescriptionInterface::TYPE_HTML,
+            '<p><strong>Creating a Template for the Field</strong> and form</p>',
+            ['strip' => true],
+        ];
+        yield [
+            '<th>Data</th> <td>Creating a Template for the...</td>',
+            FieldDescriptionInterface::TYPE_HTML,
+            '<p><strong>Creating a Template for the Field</strong> and form</p>',
+            ['truncate' => true],
+        ];
+        yield [
+            '<th>Data</th> <td>Creatin...</td>',
+            FieldDescriptionInterface::TYPE_HTML,
+            '<p><strong>Creating a Template for the Field</strong> and form</p>',
+            ['truncate' => ['length' => 10]],
+        ];
+        yield [
+            '<th>Data</th> <td>Creating a Template for the Field...</td>',
+            FieldDescriptionInterface::TYPE_HTML,
+            '<p><strong>Creating a Template for the Field</strong> and form</p>',
+            ['truncate' => ['cut' => false]],
+        ];
+        yield [
+            '<th>Data</th> <td>Creating a Template for t etc.</td>',
+            FieldDescriptionInterface::TYPE_HTML,
+            '<p><strong>Creating a Template for the Field</strong> and form</p>',
+            ['truncate' => ['ellipsis' => ' etc.']],
+        ];
+        yield [
+            '<th>Data</th> <td>Creating a Template[...]</td>',
+            FieldDescriptionInterface::TYPE_HTML,
+            '<p><strong>Creating a Template for the Field</strong> and form</p>',
             [
-                '<th>Data</th> <td><time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00"> 24.12.2013 10:11:12 </time></td>',
-                FieldDescriptionInterface::TYPE_DATETIME,
-                new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
-                ['format' => 'd.m.Y H:i:s'],
-            ],
-            [
-                '<th>Data</th> <td><time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00"> December 24, 2013 18:11 </time></td>',
-                FieldDescriptionInterface::TYPE_DATETIME,
-                new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
-                ['timezone' => 'Asia/Hong_Kong'],
-            ],
-            [
-                '<th>Data</th> <td><time datetime="2013-12-24" title="2013-12-24"> December 24, 2013 </time></td>',
-                FieldDescriptionInterface::TYPE_DATE,
-                new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
-                [],
-            ],
-            [
-                '<th>Data</th> <td><time datetime="2013-12-24" title="2013-12-24"> 24.12.2013 </time></td>',
-                FieldDescriptionInterface::TYPE_DATE,
-                new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
-                ['format' => 'd.m.Y'],
-            ],
-            [
-                '<th>Data</th> <td><time datetime="10:11:12+00:00" title="10:11:12+00:00"> 10:11:12 </time></td>',
-                FieldDescriptionInterface::TYPE_TIME,
-                new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('Europe/London')),
-                [],
-            ],
-            [
-                '<th>Data</th> <td><time datetime="10:11:12+00:00" title="10:11:12+00:00"> 18:11:12 </time></td>',
-                FieldDescriptionInterface::TYPE_TIME,
-                new \DateTime('2013-12-24 10:11:12', new \DateTimeZone('UTC')),
-                ['timezone' => 'Asia/Hong_Kong'],
-            ],
-            ['<th>Data</th> <td>10.746135</td>', FieldDescriptionInterface::TYPE_FLOAT, 10.746135, ['safe' => false]],
-            ['<th>Data</th> <td>5678</td>', FieldDescriptionInterface::TYPE_INTEGER, 5678, ['safe' => false]],
-            ['<th>Data</th> <td>1074.6135 %</td>', FieldDescriptionInterface::TYPE_PERCENT, 10.746135, []],
-            ['<th>Data</th> <td>0 %</td>', FieldDescriptionInterface::TYPE_PERCENT, 0, []],
-            ['<th>Data</th> <td>EUR 10.746135</td>', FieldDescriptionInterface::TYPE_CURRENCY, 10.746135, ['currency' => 'EUR']],
-            ['<th>Data</th> <td>GBP 51.23456</td>', FieldDescriptionInterface::TYPE_CURRENCY, 51.23456, ['currency' => 'GBP']],
-            ['<th>Data</th> <td>EUR 0</td>', FieldDescriptionInterface::TYPE_CURRENCY, 0, ['currency' => 'EUR']],
-            [
-                '<th>Data</th> <td> <ul><li>1&nbsp;=>&nbsp;First</li><li>2&nbsp;=>&nbsp;Second</li></ul> </td>',
-                FieldDescriptionInterface::TYPE_ARRAY,
-                [1 => 'First', 2 => 'Second'],
-                ['safe' => false],
-            ],
-            [
-                '<th>Data</th> <td> [1&nbsp;=>&nbsp;First, 2&nbsp;=>&nbsp;Second] </td>',
-                FieldDescriptionInterface::TYPE_ARRAY,
-                [1 => 'First', 2 => 'Second'],
-                ['safe' => false, 'inline' => true],
-            ],
-            [
-                '<th>Data</th> <td><span class="label label-success">yes</span></td>',
-                FieldDescriptionInterface::TYPE_BOOLEAN,
-                true,
-                [],
-            ],
-            [
-                '<th>Data</th> <td><span class="label label-danger">yes</span></td>',
-                FieldDescriptionInterface::TYPE_BOOLEAN,
-                true,
-                ['inverse' => true],
-            ],
-            ['<th>Data</th> <td><span class="label label-danger">no</span></td>', FieldDescriptionInterface::TYPE_BOOLEAN, false, []],
-            [
-                '<th>Data</th> <td><span class="label label-success">no</span></td>',
-                FieldDescriptionInterface::TYPE_BOOLEAN,
-                false,
-                ['inverse' => true],
-            ],
-            [
-                '<th>Data</th> <td>Delete</td>',
-                FieldDescriptionInterface::TYPE_TRANS,
-                'action_delete',
-                ['safe' => false, 'value_translation_domain' => 'SonataAdminBundle'],
-            ],
-            [
-                '<th>Data</th> <td>Delete</td>',
-                FieldDescriptionInterface::TYPE_TRANS,
-                'delete',
-                ['safe' => false, 'value_translation_domain' => 'SonataAdminBundle', 'format' => 'action_%s'],
-            ],
-            ['<th>Data</th> <td>Status1</td>', FieldDescriptionInterface::TYPE_CHOICE, 'Status1', ['safe' => false]],
-            [
-                '<th>Data</th> <td>Alias1</td>',
-                FieldDescriptionInterface::TYPE_CHOICE,
-                'Status1',
-                ['safe' => false, 'choices' => [
-                    'Status1' => 'Alias1',
-                    'Status2' => 'Alias2',
-                    'Status3' => 'Alias3',
-                ]],
-            ],
-            [
-                '<th>Data</th> <td>NoValidKeyInChoices</td>',
-                FieldDescriptionInterface::TYPE_CHOICE,
-                'NoValidKeyInChoices',
-                ['safe' => false, 'choices' => [
-                    'Status1' => 'Alias1',
-                    'Status2' => 'Alias2',
-                    'Status3' => 'Alias3',
-                ]],
-            ],
-            [
-                '<th>Data</th> <td>Delete</td>',
-                FieldDescriptionInterface::TYPE_CHOICE,
-                'Foo',
-                ['safe' => false, 'choice_translation_domain' => 'SonataAdminBundle', 'choices' => [
-                    'Foo' => 'action_delete',
-                    'Status2' => 'Alias2',
-                    'Status3' => 'Alias3',
-                ]],
-            ],
-            [
-                '<th>Data</th> <td>NoValidKeyInChoices</td>',
-                FieldDescriptionInterface::TYPE_CHOICE,
-                ['NoValidKeyInChoices'],
-                ['safe' => false, 'choices' => [
-                    'Status1' => 'Alias1',
-                    'Status2' => 'Alias2',
-                    'Status3' => 'Alias3',
-                ], 'multiple' => true],
-            ],
-            [
-                '<th>Data</th> <td>NoValidKeyInChoices, Alias2</td>',
-                FieldDescriptionInterface::TYPE_CHOICE,
-                ['NoValidKeyInChoices', 'Status2'],
-                ['safe' => false, 'choices' => [
-                    'Status1' => 'Alias1',
-                    'Status2' => 'Alias2',
-                    'Status3' => 'Alias3',
-                ], 'multiple' => true],
-            ],
-            [
-                '<th>Data</th> <td>Alias1, Alias3</td>',
-                FieldDescriptionInterface::TYPE_CHOICE,
-                ['Status1', 'Status3'],
-                ['safe' => false, 'choices' => [
-                    'Status1' => 'Alias1',
-                    'Status2' => 'Alias2',
-                    'Status3' => 'Alias3',
-                ], 'multiple' => true],
-            ],
-            [
-                '<th>Data</th> <td>Alias1 | Alias3</td>',
-                FieldDescriptionInterface::TYPE_CHOICE,
-                ['Status1', 'Status3'], ['safe' => false, 'choices' => [
-                    'Status1' => 'Alias1',
-                    'Status2' => 'Alias2',
-                    'Status3' => 'Alias3',
-                ], 'multiple' => true, 'delimiter' => ' | '],
-            ],
-            [
-                '<th>Data</th> <td>Delete, Alias3</td>',
-                FieldDescriptionInterface::TYPE_CHOICE,
-                ['Foo', 'Status3'],
-                ['safe' => false, 'choice_translation_domain' => 'SonataAdminBundle', 'choices' => [
-                    'Foo' => 'action_delete',
-                    'Status2' => 'Alias2',
-                    'Status3' => 'Alias3',
-                ], 'multiple' => true],
-            ],
-            [
-                '<th>Data</th> <td><b>Alias1</b>, <b>Alias3</b></td>',
-                FieldDescriptionInterface::TYPE_CHOICE,
-                ['Status1', 'Status3'],
-                ['safe' => true, 'choices' => [
-                    'Status1' => '<b>Alias1</b>',
-                    'Status2' => '<b>Alias2</b>',
-                    'Status3' => '<b>Alias3</b>',
-                ], 'multiple' => true],
-            ],
-            [
-                '<th>Data</th> <td>&lt;b&gt;Alias1&lt;/b&gt;, &lt;b&gt;Alias3&lt;/b&gt;</td>',
-                FieldDescriptionInterface::TYPE_CHOICE,
-                ['Status1', 'Status3'],
-                ['safe' => false, 'choices' => [
-                    'Status1' => '<b>Alias1</b>',
-                    'Status2' => '<b>Alias2</b>',
-                    'Status3' => '<b>Alias3</b>',
-                ], 'multiple' => true],
-            ],
-            [
-                '<th>Data</th> <td><a href="http://example.com">http://example.com</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'http://example.com',
-                ['safe' => false],
-            ],
-            [
-                '<th>Data</th> <td><a href="http://example.com" target="_blank">http://example.com</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'http://example.com',
-                ['safe' => false, 'attributes' => ['target' => '_blank']],
-            ],
-            [
-                '<th>Data</th> <td><a href="http://example.com" target="_blank" class="fooLink">http://example.com</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'http://example.com',
-                ['safe' => false, 'attributes' => ['target' => '_blank', 'class' => 'fooLink']],
-            ],
-            [
-                '<th>Data</th> <td><a href="https://example.com">https://example.com</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'https://example.com',
-                ['safe' => false],
-            ],
-            [
-                '<th>Data</th> <td><a href="http://example.com">example.com</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'http://example.com',
-                ['safe' => false, 'hide_protocol' => true],
-            ],
-            [
-                '<th>Data</th> <td><a href="https://example.com">example.com</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'https://example.com',
-                ['safe' => false, 'hide_protocol' => true],
-            ],
-            [
-                '<th>Data</th> <td><a href="http://example.com">http://example.com</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'http://example.com',
-                ['safe' => false, 'hide_protocol' => false],
-            ],
-            [
-                '<th>Data</th> <td><a href="https://example.com">https://example.com</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'https://example.com',
-                ['safe' => false,
-                'hide_protocol' => false, ],
-            ],
-            [
-                '<th>Data</th> <td><a href="http://example.com">Foo</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'Foo',
-                ['safe' => false, 'url' => 'http://example.com'],
-            ],
-            [
-                '<th>Data</th> <td><a href="http://example.com">&lt;b&gt;Foo&lt;/b&gt;</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                '<b>Foo</b>',
-                ['safe' => false, 'url' => 'http://example.com'],
-            ],
-            [
-                '<th>Data</th> <td><a href="http://example.com"><b>Foo</b></a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                '<b>Foo</b>',
-                ['safe' => true, 'url' => 'http://example.com'],
-            ],
-            [
-                '<th>Data</th> <td><a href="/foo">Foo</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'Foo',
-                ['safe' => false, 'route' => ['name' => 'sonata_admin_foo']],
-            ],
-            [
-                '<th>Data</th> <td><a href="http://localhost/foo">Foo</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'Foo',
-                ['safe' => false, 'route' => [
-                    'name' => 'sonata_admin_foo',
-                    'absolute' => true,
-                ]],
-            ],
-            [
-                '<th>Data</th> <td><a href="/foo">foo/bar?a=b&amp;c=123456789</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'http://foo/bar?a=b&c=123456789',
-                [
-                    'safe' => false,
-                    'route' => ['name' => 'sonata_admin_foo'],
-                    'hide_protocol' => true,
+                'truncate' => [
+                    'length' => 20,
+                    'cut' => false,
+                    'ellipsis' => '[...]',
                 ],
             ],
+        ];
+        yield [
+            <<<'EOT'
+                <th>Data</th> <td><div
+                        class="sonata-readmore"
+                        data-readmore-height="40"
+                        data-readmore-more="Read more"
+                        data-readmore-less="Close">
+                            A very long string
+                </div></td>
+                EOT
+            ,
+            FieldDescriptionInterface::TYPE_STRING,
+            ' A very long string ',
             [
-                '<th>Data</th> <td><a href="http://localhost/foo">foo/bar?a=b&amp;c=123456789</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'http://foo/bar?a=b&c=123456789',
-                ['safe' => false, 'route' => [
-                    'name' => 'sonata_admin_foo',
-                    'absolute' => true,
-                ], 'hide_protocol' => true],
+                'collapse' => true,
+                'safe' => false,
             ],
+        ];
+        yield [
+            <<<'EOT'
+                <th>Data</th> <td><div
+                        class="sonata-readmore"
+                        data-readmore-height="10"
+                        data-readmore-more="More"
+                        data-readmore-less="Less">
+                            A very long string
+                </div></td>
+                EOT
+            ,
+            FieldDescriptionInterface::TYPE_STRING,
+            ' A very long string ',
             [
-                '<th>Data</th> <td><a href="/foo/abcd/efgh?param3=ijkl">Foo</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'Foo',
-                ['safe' => false, 'route' => [
-                    'name' => 'sonata_admin_foo_param',
-                    'parameters' => ['param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'],
-                ]],
-            ],
-            [
-                '<th>Data</th> <td><a href="http://localhost/foo/abcd/efgh?param3=ijkl">Foo</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'Foo',
-                ['safe' => false, 'route' => [
-                    'name' => 'sonata_admin_foo_param',
-                    'absolute' => true,
-                    'parameters' => [
-                        'param1' => 'abcd',
-                        'param2' => 'efgh',
-                        'param3' => 'ijkl',
-                    ],
-                ]],
-            ],
-            [
-                '<th>Data</th> <td><a href="/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'Foo',
-                ['safe' => false, 'route' => [
-                    'name' => 'sonata_admin_foo_object',
-                    'parameters' => [
-                        'param1' => 'abcd',
-                        'param2' => 'efgh',
-                        'param3' => 'ijkl',
-                    ],
-                    'identifier_parameter_name' => 'barId',
-                ]],
-            ],
-            [
-                '<th>Data</th> <td><a href="http://localhost/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a></td>',
-                FieldDescriptionInterface::TYPE_URL,
-                'Foo',
-                ['safe' => false, 'route' => [
-                    'name' => 'sonata_admin_foo_object',
-                    'absolute' => true,
-                    'parameters' => [
-                        'param1' => 'abcd',
-                        'param2' => 'efgh',
-                        'param3' => 'ijkl',
-                    ],
-                    'identifier_parameter_name' => 'barId',
-                ]],
-            ],
-            [
-                '<th>Data</th> <td> &nbsp;</td>',
-                FieldDescriptionInterface::TYPE_EMAIL,
-                null,
-                [],
-            ],
-            [
-                '<th>Data</th> <td> <a href="mailto:admin@admin.com">admin@admin.com</a></td>',
-                FieldDescriptionInterface::TYPE_EMAIL,
-                'admin@admin.com',
-                [],
-            ],
-            [
-                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme', 'body' => 'Message Body']).'">admin@admin.com</a></td>',
-                FieldDescriptionInterface::TYPE_EMAIL,
-                'admin@admin.com',
-                ['subject' => 'Main Theme', 'body' => 'Message Body'],
-            ],
-            [
-                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme']).'">admin@admin.com</a></td>',
-                FieldDescriptionInterface::TYPE_EMAIL,
-                'admin@admin.com',
-                ['subject' => 'Main Theme'],
-            ],
-            [
-                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['body' => 'Message Body']).'">admin@admin.com</a></td>',
-                FieldDescriptionInterface::TYPE_EMAIL,
-                'admin@admin.com',
-                ['body' => 'Message Body'],
-            ],
-            [
-                '<th>Data</th> <td> admin@admin.com</td>',
-                FieldDescriptionInterface::TYPE_EMAIL,
-                'admin@admin.com',
-                ['as_string' => true, 'subject' => 'Main Theme', 'body' => 'Message Body'],
-            ],
-            [
-                '<th>Data</th> <td> admin@admin.com</td>',
-                FieldDescriptionInterface::TYPE_EMAIL,
-                'admin@admin.com',
-                ['as_string' => true, 'subject' => 'Main Theme'],
-            ],
-            [
-                '<th>Data</th> <td> admin@admin.com</td>',
-                FieldDescriptionInterface::TYPE_EMAIL,
-                'admin@admin.com',
-                ['as_string' => true, 'body' => 'Message Body'],
-            ],
-            [
-                '<th>Data</th> <td> <a href="mailto:admin@admin.com">admin@admin.com</a></td>',
-                FieldDescriptionInterface::TYPE_EMAIL,
-                'admin@admin.com',
-                ['as_string' => false],
-            ],
-            [
-                '<th>Data</th> <td> admin@admin.com</td>',
-                FieldDescriptionInterface::TYPE_EMAIL,
-                'admin@admin.com',
-                ['as_string' => true],
-            ],
-            [
-                '<th>Data</th> <td><p><strong>Creating a Template for the Field</strong> and form</p></td>',
-                FieldDescriptionInterface::TYPE_HTML,
-                '<p><strong>Creating a Template for the Field</strong> and form</p>',
-                [],
-            ],
-            [
-                '<th>Data</th> <td>Creating a Template for the Field and form</td>',
-                FieldDescriptionInterface::TYPE_HTML,
-                '<p><strong>Creating a Template for the Field</strong> and form</p>',
-                ['strip' => true],
-            ],
-            [
-                '<th>Data</th> <td>Creating a Template for the...</td>',
-                FieldDescriptionInterface::TYPE_HTML,
-                '<p><strong>Creating a Template for the Field</strong> and form</p>',
-                ['truncate' => true],
-            ],
-            [
-                '<th>Data</th> <td>Creatin...</td>',
-                FieldDescriptionInterface::TYPE_HTML,
-                '<p><strong>Creating a Template for the Field</strong> and form</p>',
-                ['truncate' => ['length' => 10]],
-            ],
-            [
-                '<th>Data</th> <td>Creating a Template for the Field...</td>',
-                FieldDescriptionInterface::TYPE_HTML,
-                '<p><strong>Creating a Template for the Field</strong> and form</p>',
-                ['truncate' => ['cut' => false]],
-            ],
-            [
-                '<th>Data</th> <td>Creating a Template for t etc.</td>',
-                FieldDescriptionInterface::TYPE_HTML,
-                '<p><strong>Creating a Template for the Field</strong> and form</p>',
-                ['truncate' => ['ellipsis' => ' etc.']],
-            ],
-            [
-                '<th>Data</th> <td>Creating a Template[...]</td>',
-                FieldDescriptionInterface::TYPE_HTML,
-                '<p><strong>Creating a Template for the Field</strong> and form</p>',
-                [
-                    'truncate' => [
-                        'length' => 20,
-                        'cut' => false,
-                        'ellipsis' => '[...]',
-                    ],
+                'collapse' => [
+                    'height' => 10,
+                    'more' => 'More',
+                    'less' => 'Less',
                 ],
-            ],
-            [
-                <<<'EOT'
-                    <th>Data</th> <td><div
-                            class="sonata-readmore"
-                            data-readmore-height="40"
-                            data-readmore-more="Read more"
-                            data-readmore-less="Close">
-                                A very long string
-                    </div></td>
-                    EOT
-                ,
-                FieldDescriptionInterface::TYPE_STRING,
-                ' A very long string ',
-                [
-                    'collapse' => true,
-                    'safe' => false,
-                ],
-            ],
-            [
-                <<<'EOT'
-                    <th>Data</th> <td><div
-                            class="sonata-readmore"
-                            data-readmore-height="10"
-                            data-readmore-more="More"
-                            data-readmore-less="Less">
-                                A very long string
-                    </div></td>
-                    EOT
-                ,
-                FieldDescriptionInterface::TYPE_STRING,
-                ' A very long string ',
-                [
-                    'collapse' => [
-                        'height' => 10,
-                        'more' => 'More',
-                        'less' => 'Less',
-                    ],
-                    'safe' => false,
-                ],
+                'safe' => false,
             ],
         ];
     }
 
     /**
-     * @phpstan-return array<array{string, string, mixed, array<string, mixed>, string|null}>
+     * @phpstan-return iterable<array{string, string, mixed, array<string, mixed>, string|null}>
      */
-    public function getRenderViewElementCompareTests(): iterable
+    public function provideRenderViewElementCompareCases(): iterable
     {
-        return [
-            ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null],
-            ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null],
-            ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_TEXTAREA, 'Example', ['safe' => false], null],
-            ['<th>Data</th> <td>SonataAdmin<br/>Example</td><td>SonataAdmin<br/>Example</td>', 'virtual_field', 'Example', ['template' => 'custom_show_field.html.twig', 'safe' => false], 'SonataAdmin'],
-            ['<th class="diff">Data</th> <td>SonataAdmin<br/>Example</td><td>sonata-project/admin-bundle<br/>Example</td>', 'virtual_field', 'Example', ['template' => 'custom_show_field.html.twig', 'safe' => false], 'sonata-project/admin-bundle'],
-            [
-                '<th>Data</th> <td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> May 27, 2020 10:11 </time></td>'
-                .'<td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> May 27, 2020 10:11 </time></td>',
-                FieldDescriptionInterface::TYPE_DATETIME,
-                new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
-                [],
-                null,
-            ],
-            [
-                '<th>Data</th> <td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> 27.05.2020 10:11:12 </time></td>'
-                .'<td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> 27.05.2020 10:11:12 </time></td>',
-                FieldDescriptionInterface::TYPE_DATETIME,
-                new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
-                ['format' => 'd.m.Y H:i:s'],
-                null,
-            ],
-            [
-                '<th>Data</th> <td><time datetime="2020-05-27T10:11:12+00:00" title="2020-05-27T10:11:12+00:00"> May 27, 2020 18:11 </time></td>'
-                .'<td><time datetime="2020-05-27T10:11:12+00:00" title="2020-05-27T10:11:12+00:00"> May 27, 2020 18:11 </time></td>',
-                FieldDescriptionInterface::TYPE_DATETIME,
-                new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('UTC')),
-                ['timezone' => 'Asia/Hong_Kong'],
-                null,
-            ],
-            [
-                '<th>Data</th> <td><time datetime="2020-05-27" title="2020-05-27"> May 27, 2020 </time></td>'
-                .'<td><time datetime="2020-05-27" title="2020-05-27"> May 27, 2020 </time></td>',
-                FieldDescriptionInterface::TYPE_DATE,
-                new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
-                [],
-                null,
-            ],
+        yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];
+        yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];
+        yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_TEXTAREA, 'Example', ['safe' => false], null];
+        yield ['<th>Data</th> <td>SonataAdmin<br/>Example</td><td>SonataAdmin<br/>Example</td>', 'virtual_field', 'Example', ['template' => 'custom_show_field.html.twig', 'safe' => false], 'SonataAdmin'];
+        yield ['<th class="diff">Data</th> <td>SonataAdmin<br/>Example</td><td>sonata-project/admin-bundle<br/>Example</td>', 'virtual_field', 'Example', ['template' => 'custom_show_field.html.twig', 'safe' => false], 'sonata-project/admin-bundle'];
+        yield [
+            '<th>Data</th> <td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> May 27, 2020 10:11 </time></td>'
+            .'<td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> May 27, 2020 10:11 </time></td>',
+            FieldDescriptionInterface::TYPE_DATETIME,
+            new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
+            [],
+            null,
+        ];
+        yield [
+            '<th>Data</th> <td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> 27.05.2020 10:11:12 </time></td>'
+            .'<td><time datetime="2020-05-27T09:11:12+00:00" title="2020-05-27T09:11:12+00:00"> 27.05.2020 10:11:12 </time></td>',
+            FieldDescriptionInterface::TYPE_DATETIME,
+            new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
+            ['format' => 'd.m.Y H:i:s'],
+            null,
+        ];
+        yield [
+            '<th>Data</th> <td><time datetime="2020-05-27T10:11:12+00:00" title="2020-05-27T10:11:12+00:00"> May 27, 2020 18:11 </time></td>'
+            .'<td><time datetime="2020-05-27T10:11:12+00:00" title="2020-05-27T10:11:12+00:00"> May 27, 2020 18:11 </time></td>',
+            FieldDescriptionInterface::TYPE_DATETIME,
+            new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('UTC')),
+            ['timezone' => 'Asia/Hong_Kong'],
+            null,
+        ];
+        yield [
+            '<th>Data</th> <td><time datetime="2020-05-27" title="2020-05-27"> May 27, 2020 </time></td>'
+            .'<td><time datetime="2020-05-27" title="2020-05-27"> May 27, 2020 </time></td>',
+            FieldDescriptionInterface::TYPE_DATE,
+            new \DateTime('2020-05-27 10:11:12', new \DateTimeZone('Europe/London')),
+            [],
+            null,
         ];
     }
 

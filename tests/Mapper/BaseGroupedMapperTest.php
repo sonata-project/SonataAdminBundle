@@ -44,9 +44,7 @@ final class BaseGroupedMapperTest extends TestCase
 
     protected function setUp(): void
     {
-        $admin = $this->getMockBuilder(AbstractAdmin::class)
-            ->disableOriginalConstructor()
-            ->getMock();
+        $admin = $this->createMock(AbstractAdmin::class);
 
         $labelStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $labelStrategy
@@ -206,20 +204,18 @@ final class BaseGroupedMapperTest extends TestCase
     }
 
     /**
-     * @phpstan-return array<array{string, string, string|null, string}>
+     * @phpstan-return iterable<array{string, string, string|null, string}>
      */
-    public function labelDataProvider(): array
+    public function provideLabelCases(): iterable
     {
-        return [
-            'nominal use case not translated' => ['label_default', 'fooGroup1', null, 'label_foogroup1'],
-            'nominal use case translated' => ['label_default', 'fooGroup1', null, 'label_foogroup1'],
-            'custom label not translated' => ['label_default', 'fooGroup1', 'custom_label', 'custom_label'],
-            'custom label translated' => ['label_default', 'fooGroup1', 'custom_label', 'custom_label'],
-        ];
+        yield 'nominal use case not translated' => ['label_default', 'fooGroup1', null, 'label_foogroup1'];
+        yield 'nominal use case translated' => ['label_default', 'fooGroup1', null, 'label_foogroup1'];
+        yield 'custom label not translated' => ['label_default', 'fooGroup1', 'custom_label', 'custom_label'];
+        yield 'custom label translated' => ['label_default', 'fooGroup1', 'custom_label', 'custom_label'];
     }
 
     /**
-     * @dataProvider labelDataProvider
+     * @dataProvider provideLabelCases
      */
     public function testLabel(string $translated, string $name, ?string $label, string $expectedLabel): void
     {

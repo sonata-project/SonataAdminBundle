@@ -31,7 +31,7 @@ final class ModelToIdTransformerTest extends TestCase
     }
 
     /**
-     * @dataProvider getReverseTransformValues
+     * @dataProvider provideReverseTransformCases
      */
     public function testReverseTransform(int|string $value): void
     {
@@ -48,14 +48,12 @@ final class ModelToIdTransformerTest extends TestCase
     }
 
     /**
-     * @return array<array{int|string}>
+     * @return iterable<array{int|string}>
      */
-    public function getReverseTransformValues(): array
+    public function provideReverseTransformCases(): iterable
     {
-        return [
-            [0],
-            ['0'],
-        ];
+        yield [0];
+        yield ['0'];
     }
 
     public function testReverseTransformEmpty(): void
