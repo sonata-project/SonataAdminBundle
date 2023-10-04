@@ -17,7 +17,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 use Sonata\AdminBundle\Tests\Fixtures\Mapper\AbstractDummyGroupedMapper;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -28,7 +27,7 @@ use Symfony\Component\DependencyInjection\Container;
 final class BaseGroupedMapperTest extends TestCase
 {
     /**
-     * @var AbstractDummyGroupedMapper<object>&MockObject
+     * @var AbstractDummyGroupedMapper&MockObject
      */
     protected $baseGroupedMapper;
 
@@ -135,7 +134,7 @@ final class BaseGroupedMapperTest extends TestCase
         static::assertCount(1, $this->tabs);
         static::assertCount(1, $this->groups);
 
-        $this->baseGroupedMapper->expects(self::once())->method('remove')->with('field1');
+        $this->baseGroupedMapper->expects(static::once())->method('remove')->with('field1');
         $this->baseGroupedMapper->removeGroup('fooGroup1', 'fooTab1');
 
         static::assertCount(1, $this->tabs);
@@ -157,7 +156,7 @@ final class BaseGroupedMapperTest extends TestCase
         static::assertCount(1, $this->tabs);
         static::assertCount(1, $this->groups);
 
-        $this->baseGroupedMapper->expects(self::once())->method('remove')->with('field1');
+        $this->baseGroupedMapper->expects(static::once())->method('remove')->with('field1');
         $this->baseGroupedMapper->removeTab('fooTab1');
 
         static::assertCount(0, $this->tabs);
