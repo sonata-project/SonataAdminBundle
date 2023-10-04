@@ -29,6 +29,13 @@ abstract class AbstractDummyGroupedMapper extends BaseGroupedMapper
     ) {
     }
 
+    public function add(string $fieldName, ?string $name = null): self
+    {
+        $this->addFieldToCurrentGroup($fieldName, $name);
+
+        return $this;
+    }
+
     /**
      * @return AdminInterface<object>
      */
