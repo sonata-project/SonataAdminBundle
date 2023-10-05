@@ -17,7 +17,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 use Sonata\AdminBundle\Tests\Fixtures\Mapper\AbstractDummyGroupedMapper;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\DependencyInjection\Container;
@@ -28,7 +27,7 @@ use Symfony\Component\DependencyInjection\Container;
 final class BaseGroupedMapperTest extends TestCase
 {
     /**
-     * @var BaseGroupedMapper<object>&MockObject
+     * @var AbstractDummyGroupedMapper&MockObject
      */
     protected $baseGroupedMapper;
 
@@ -117,6 +116,50 @@ final class BaseGroupedMapperTest extends TestCase
         static::assertCount(0, $this->groups);
         static::assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooTab', ['tab' => true]));
         static::assertCount(1, $this->tabs);
+        static::assertCount(0, $this->groups);
+    }
+
+    public function testRemoveGroup(): void
+    {
+        static::assertCount(0, $this->tabs);
+        static::assertCount(0, $this->groups);
+
+        $this->baseGroupedMapper
+            ->tab('fooTab1')
+            ->with('fooGroup1')
+            ->add('field1', 'name1')
+            ->end()
+            ->end();
+
+        static::assertCount(1, $this->tabs);
+        static::assertCount(1, $this->groups);
+
+        $this->baseGroupedMapper->expects(static::once())->method('remove')->with('field1');
+        $this->baseGroupedMapper->removeGroup('fooGroup1', 'fooTab1');
+
+        static::assertCount(1, $this->tabs);
+        static::assertCount(0, $this->groups);
+    }
+
+    public function testRemoveTab(): void
+    {
+        static::assertCount(0, $this->tabs);
+        static::assertCount(0, $this->groups);
+
+        $this->baseGroupedMapper
+            ->tab('fooTab1')
+            ->with('fooGroup1')
+            ->add('field1', 'name1')
+            ->end()
+            ->end();
+
+        static::assertCount(1, $this->tabs);
+        static::assertCount(1, $this->groups);
+
+        $this->baseGroupedMapper->expects(static::once())->method('remove')->with('field1');
+        $this->baseGroupedMapper->removeTab('fooTab1');
+
+        static::assertCount(0, $this->tabs);
         static::assertCount(0, $this->groups);
     }
 
