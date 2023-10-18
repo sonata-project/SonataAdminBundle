@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.28.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.27.1...4.28.0) - 2023-10-19
+### Changed
+- [[#8116](https://github.com/sonata-project/SonataAdminBundle/pull/8116)] Automatically detect `base_template` and `admin` twig variable ([@core23](https://github.com/core23))
+
+### Deprecated
+- [[#8116](https://github.com/sonata-project/SonataAdminBundle/pull/8116)] Deprecate `CRUDController::renderWithExtraParams` method ([@core23](https://github.com/core23))
+- [[#8116](https://github.com/sonata-project/SonataAdminBundle/pull/8116)] Deprecate `CRUDController::addRenderExtraParams` method ([@core23](https://github.com/core23))
+- [[#8116](https://github.com/sonata-project/SonataAdminBundle/pull/8116)] Deprecate `CRUDController::getBaseTemplate` method ([@core23](https://github.com/core23))
+
+### Fixed
+- [[#8118](https://github.com/sonata-project/SonataAdminBundle/pull/8118)] Allow AdminExtractor to be used for abstract admins ([@core23](https://github.com/core23))
+- [[#8115](https://github.com/sonata-project/SonataAdminBundle/pull/8115)] `GroupMapper::removeTab` and `GroupMapper::removeGroup` ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.27.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.27.0...4.27.1) - 2023-09-21
 ### Added
 - [[#8105](https://github.com/sonata-project/SonataAdminBundle/pull/8105)] Allow to disable `icheck` and to be able to use still choice field mask with the expanded option ([@goetas](https://github.com/goetas))
