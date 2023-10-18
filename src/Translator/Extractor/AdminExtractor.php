@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Translator\Extractor;
 
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
@@ -70,6 +71,10 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
         foreach ($this->adminPool->getAdminServiceCodes() as $code) {
             $admin = $this->adminPool->getInstance($code);
 
+            if (!$this->isValidAdmin($admin)) {
+                continue;
+            }
+
             $this->labelStrategy = $admin->getLabelTranslatorStrategy();
             $this->domain = $admin->getTranslationDomain();
 
@@ -79,6 +84,7 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
             }
 
             $admin->setLabelTranslatorStrategy($this);
+
             $admin->setSubject($admin->getNewInstance());
 
             foreach (self::PUBLIC_ADMIN_METHODS as $method) {
@@ -116,5 +122,19 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
         $this->catalogue->set($label, $this->prefix.$label, $this->domain);
 
         return $label;
+    }
+
+    /**
+     * @param AdminInterface<object> $admin
+     */
+    private function isValidAdmin(AdminInterface $admin): bool
+    {
+        $class = $admin->getClass();
+
+        if (!class_exists($class)) {
+            return false;
+        }
+
+        return !(new \ReflectionClass($class))->isAbstract();
     }
 }
