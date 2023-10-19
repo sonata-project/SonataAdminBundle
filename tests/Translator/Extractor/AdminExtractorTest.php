@@ -51,8 +51,14 @@ final class AdminExtractorTest extends TestCase
 
         $this->fooAdmin->method('getShow')->willReturn(new FieldDescriptionCollection());
         $this->fooAdmin->method('getList')->willReturn(new FieldDescriptionCollection());
+        $this->fooAdmin
+            ->method('getClass')
+            ->willReturn(\stdClass::class);
         $this->barAdmin->method('getShow')->willReturn(new FieldDescriptionCollection());
         $this->barAdmin->method('getList')->willReturn(new FieldDescriptionCollection());
+        $this->barAdmin
+            ->method('getClass')
+            ->willReturn(\stdClass::class);
 
         $container = new Container();
         $container->set('foo_admin', $this->fooAdmin);
