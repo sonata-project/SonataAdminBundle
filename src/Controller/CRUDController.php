@@ -990,6 +990,25 @@ class CRUDController extends AbstractController
     }
 
     /**
+     * Add twig globals which are used in every template.
+     */
+    final public function setTwigGlobals(Request $request): void
+    {
+        $twig = $this->container->get('twig');
+        \assert($twig instanceof Environment);
+
+        $twig->addGlobal('admin', $this->admin);
+
+        if ($this->isXmlHttpRequest($request)) {
+            $baseTemplate = $this->templateRegistry->getTemplate('ajax');
+        } else {
+            $baseTemplate = $this->templateRegistry->getTemplate('layout');
+        }
+
+        $twig->addGlobal('base_template', $baseTemplate);
+    }
+
+    /**
      * Renders a view while passing mandatory parameters on to the template.
      *
      * @param string               $view       The view name
