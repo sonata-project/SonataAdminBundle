@@ -74,6 +74,7 @@ use Symfony\Component\Validator\Constraints\Uuid;
 use Symfony\Component\Validator\ConstraintViolation;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
+use Twig\Loader\ArrayLoader;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -381,6 +382,32 @@ final class CRUDControllerTest extends TestCase
         );
 
         $controller->configureAdmin($this->request);
+    }
+
+    public function testSetTwigGlobals(): void
+    {
+        $twig = new Environment(new ArrayLoader([]));
+        $this->container->set('twig', $twig);
+
+        $this->controller->setTwigGlobals($this->request);
+
+        $globals = $twig->getGlobals();
+        static::assertSame($this->admin, $globals['admin']);
+        static::assertSame('@SonataAdmin/standard_layout.html.twig', $globals['base_template']);
+    }
+
+    public function testSetTwigGlobalsWithAjaxRequest(): void
+    {
+        $this->request->request->set('_xml_http_request', true);
+
+        $twig = new Environment(new ArrayLoader([]));
+        $this->container->set('twig', $twig);
+
+        $this->controller->setTwigGlobals($this->request);
+
+        $globals = $twig->getGlobals();
+        static::assertSame($this->admin, $globals['admin']);
+        static::assertSame('@SonataAdmin/ajax_layout.html.twig', $globals['base_template']);
     }
 
     public function testGetBaseTemplate(): void

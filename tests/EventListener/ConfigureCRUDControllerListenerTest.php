@@ -22,6 +22,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Twig\Environment;
 
 final class ConfigureCRUDControllerListenerTest extends TestCase
 {
@@ -63,6 +64,21 @@ final class ConfigureCRUDControllerListenerTest extends TestCase
             ->method('get')
             ->with($request)
             ->willReturn($admin);
+
+        $twig = $this->createMock(Environment::class);
+        $container->set('twig', $twig);
+
+        $matcher = static::exactly(2);
+        $twig
+            ->expects($matcher)
+            ->method('addGlobal')
+            ->willReturnCallback(static function (string $name) use ($matcher) {
+                match ($matcher->getInvocationCount()) {
+                    1 => static::assertSame($name, 'admin'),
+                    2 => static::assertSame($name, 'base_template'),
+                    default => throw new \LogicException('Exactly 2 calls'),
+                };
+            });
 
         $this->listener->onKernelController($controllerEvent);
     }
