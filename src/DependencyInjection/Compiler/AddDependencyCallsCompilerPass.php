@@ -396,8 +396,8 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 \E_USER_DEPRECATED
             );
 
-            // NEXT_MAJOR: Uncomment the exception instead of the deprecation.
-            // throw new InvalidArgumentException(sprintf('Missing tag information "model_class" on service "%s".', $serviceId));
+        // NEXT_MAJOR: Uncomment the exception instead of the deprecation.
+        // throw new InvalidArgumentException(sprintf('Missing tag information "model_class" on service "%s".', $serviceId));
         } else {
             $methodCalls[] = ['setModelClass', [$modelClass]];
 
