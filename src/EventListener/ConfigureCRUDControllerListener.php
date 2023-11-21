@@ -38,6 +38,8 @@ final class ConfigureCRUDControllerListener implements EventSubscriberInterface
         $request = $event->getRequest();
 
         $controller->configureAdmin($request);
+
+        $controller->setTwigGlobals($request);
     }
 
     public static function getSubscribedEvents(): array
