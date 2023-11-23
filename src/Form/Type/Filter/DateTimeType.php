@@ -45,7 +45,7 @@ final class DateTimeType extends AbstractType
         $resolver->setDefaults([
             'operator_type' => DateOperatorType::class,
             'field_type' => FormDateTimeType::class,
-            'field_options' => ['date_format' => DateType::HTML5_FORMAT],
+            'field_options' => [],
         ]);
     }
 }

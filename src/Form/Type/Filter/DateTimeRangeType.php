@@ -46,7 +46,7 @@ final class DateTimeRangeType extends AbstractType
             'operator_type' => DateRangeOperatorType::class,
             'field_type' => FormDateTimeRangeType::class,
             'field_options' => [
-                'field_options' => ['date_format' => DateTimeType::HTML5_FORMAT],
+                'field_options' => [],
             ],
         ]);
     }
