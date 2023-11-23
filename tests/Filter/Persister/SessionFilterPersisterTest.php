@@ -71,8 +71,7 @@ final class SessionFilterPersisterTest extends TestCase
             DatagridInterface::PER_PAGE => 25,
         ];
         $this->session->expects(static::once())->method('set')
-            ->with('admin.customer.filter.parameters', $filters)
-            ->willReturn(null);
+            ->with('admin.customer.filter.parameters', $filters);
 
         $this->createPersister()->set('admin.customer', $filters);
     }
