@@ -146,7 +146,10 @@ final class AdminLayoutTest extends AbstractLayoutTestCase
         $view = $form->createView();
         $html = $this->renderRow($view);
 
-        self::assertMatchesXpath($html, '//div[@class="form-group"][@id="sonata-ba-field-container-name"]');
+        static::assertStringContainsString(
+            '<div class="foo form-group" id="sonata-ba-field-container-name">',
+            $html
+        );
     }
 
     public function testRowWithErrors(): void
@@ -158,7 +161,10 @@ final class AdminLayoutTest extends AbstractLayoutTestCase
         $view = $form->createView();
         $html = $this->renderRow($view);
 
-        self::assertMatchesXpath($html, '/div[@class="form-group has-error"][@id="sonata-ba-field-container-name"]');
+        static::assertStringContainsString(
+            '<div id="sonata-ba-field-container-name" class="form-group has-error">',
+            $html
+        );
     }
 
     public function testErrors(): void
@@ -208,9 +214,9 @@ final class AdminLayoutTest extends AbstractLayoutTestCase
         $view = $form->createView();
         $html = $this->renderRow($view);
 
-        self::assertMatchesXpath(
-            $html,
-            '//div[@class="foo form-group"][@data-value="bar"][@id="sonata-ba-field-container-name"]'
+        static::assertStringContainsString(
+            '<div class="foo form-group" data-value="bar" id="sonata-ba-field-container-name">',
+            $html
         );
     }
 
