@@ -147,7 +147,7 @@ final class AdminLayoutTest extends AbstractLayoutTestCase
         $html = $this->renderRow($view);
 
         static::assertStringContainsString(
-            '<div class="foo form-group" id="sonata-ba-field-container-name">',
+            '<div id="sonata-ba-field-container-name" class="form-group">',
             $html
         );
     }

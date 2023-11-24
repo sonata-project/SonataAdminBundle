@@ -16,7 +16,6 @@ namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 use Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType;
 use Sonata\AdminBundle\Form\Type\Operator\DateRangeOperatorType;
 use Sonata\Form\Type\DateTimeRangeType as FormDateTimeRangeType;
-use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**

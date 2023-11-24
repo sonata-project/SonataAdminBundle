@@ -25,8 +25,8 @@ final class FilterDataTest extends TestCase
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage(sprintf(
-            'The "type" parameter MUST be of type "integer" or "null", %s given.',
-            \is_object($type) ? 'instance of "'.$type::class.'"' : '"'.\gettype($type).'"'
+            'The "type" parameter MUST be of type "integer" or "null", "%s" given.',
+            \gettype($type)
         ));
 
         // @phpstan-ignore-next-line
