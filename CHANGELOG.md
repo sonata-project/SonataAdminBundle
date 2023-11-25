@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.29.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.28.1...4.29.0) - 2023-11-25
+### Added
+- [[#8127](https://github.com/sonata-project/SonataAdminBundle/pull/8127)] Symfony 7 support ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.28.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.28.0...4.28.1) - 2023-11-20
 ### Fixed
 - [[#8125](https://github.com/sonata-project/SonataAdminBundle/pull/8125)] Needing to submit form twice when using CRUDController::render() ([@AntoineRoue](https://github.com/AntoineRoue))
