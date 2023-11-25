@@ -51,9 +51,9 @@ final class TraversableToCollection
         }
 
         throw new \TypeError(sprintf(
-            'Argument 1 passed to "%s()" must be an iterable, %s given.',
+            'Argument 1 passed to "%s()" must be an iterable, "%s" given.',
             __METHOD__,
-            \is_object($value) ? 'instance of "'.$value::class.'"' : '"'.\gettype($value).'"'
+            \gettype($value)
         ));
     }
 }

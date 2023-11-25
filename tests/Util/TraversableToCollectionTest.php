@@ -74,6 +74,6 @@ final class TraversableToCollectionTest extends TestCase
         yield ['"integer"', 0];
         yield ['"integer"', 1];
         yield ['"string"', 'a'];
-        yield ['instance of "stdClass"', new \stdClass()];
+        yield ['"object"', new \stdClass()];
     }
 }

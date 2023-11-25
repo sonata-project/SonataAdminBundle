@@ -43,8 +43,8 @@ final class FilterData
         if (isset($data['type'])) {
             if (!\is_int($data['type']) && (!\is_string($data['type']) || !is_numeric($data['type']))) {
                 throw new \InvalidArgumentException(sprintf(
-                    'The "type" parameter MUST be of type "integer" or "null", %s given.',
-                    \is_object($data['type']) ? 'instance of "'.$data['type']::class.'"' : '"'.\gettype($data['type']).'"'
+                    'The "type" parameter MUST be of type "integer" or "null", "%s" given.',
+                    \gettype($data['type'])
                 ));
             }
 

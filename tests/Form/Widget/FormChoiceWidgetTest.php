@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Form\Widget;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormTypeInterface;
+use Symfony\Component\HttpKernel\Kernel;
 
 final class FormChoiceWidgetTest extends BaseWidgetTest
 {
@@ -40,10 +41,17 @@ final class FormChoiceWidgetTest extends BaseWidgetTest
 
         $html = $this->renderWidget($choice->createView());
 
-        static::assertStringContainsString(
-            '<li><div class="checkbox"><label><input type="checkbox" id="choice_0" name="choice[]" value="0" /><span class="control-label__text">[trans]some[/trans]</span></label></div></li>',
-            $this->cleanHtmlWhitespace($html)
-        );
+        if (0 !== preg_match("/7\..\../", Kernel::VERSION)) {
+            static::assertStringContainsString(
+                '<li><div class="checkbox"><label><input type="checkbox" id="choice_0" name="choice[]" value="0"><span class="control-label__text">[trans]some[/trans]</span></label></div></li>',
+                $this->cleanHtmlWhitespace($html)
+            );
+        } else {
+            static::assertStringContainsString(
+                '<li><div class="checkbox"><label><input type="checkbox" id="choice_0" name="choice[]" value="0" /><span class="control-label__text">[trans]some[/trans]</span></label></div></li>',
+                $this->cleanHtmlWhitespace($html)
+            );
+        }
     }
 
     public function testDefaultValueRendering(): void

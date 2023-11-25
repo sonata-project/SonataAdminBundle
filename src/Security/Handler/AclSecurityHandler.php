@@ -74,9 +74,9 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
             $this->superAdminRoles = [$superAdminRoles];
         } else {
             throw new \TypeError(sprintf(
-                'Argument 1 passed to "%s()" must be of type "array" or "string", %s given.',
+                'Argument 1 passed to "%s()" must be of type "array" or "string", "%s" given.',
                 __METHOD__,
-                \is_object($superAdminRoles) ? 'instance of "'.$superAdminRoles::class.'"' : '"'.\gettype($superAdminRoles).'"'
+                \gettype($superAdminRoles)
             ));
         }
     }
