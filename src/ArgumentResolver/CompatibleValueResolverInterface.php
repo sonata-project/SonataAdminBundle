@@ -23,7 +23,11 @@ if (interface_exists(ValueResolverInterface::class)) {
     {
     }
 } else {
-    /** @internal */
+    /**
+     * @internal
+     *
+     * @phpstan-ignore-next-line
+     */
     interface CompatibleValueResolverInterface extends ArgumentValueResolverInterface
     {
     }
