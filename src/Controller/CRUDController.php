@@ -994,10 +994,7 @@ class CRUDController extends AbstractController
      */
     final public function setTwigGlobals(Request $request): void
     {
-        $twig = $this->container->get('twig');
-        \assert($twig instanceof Environment);
-
-        $twig->addGlobal('admin', $this->admin);
+        $this->setTwigGlobal('admin', $this->admin);
 
         if ($this->isXmlHttpRequest($request)) {
             $baseTemplate = $this->templateRegistry->getTemplate('ajax');
@@ -1005,7 +1002,7 @@ class CRUDController extends AbstractController
             $baseTemplate = $this->templateRegistry->getTemplate('layout');
         }
 
-        $twig->addGlobal('base_template', $baseTemplate);
+        $this->setTwigGlobal('base_template', $baseTemplate);
     }
 
     /**
@@ -1540,6 +1537,18 @@ class CRUDController extends AbstractController
                 $parentAdmin->toString($parentAdminObject),
                 $this->admin->toString($object)
             ));
+        }
+    }
+
+    private function setTwigGlobal(string $name, mixed $value): void
+    {
+        $twig = $this->container->get('twig');
+        \assert($twig instanceof Environment);
+
+        try {
+            $twig->addGlobal($name, $value);
+        } catch (\LogicException) {
+            // Variable already set
         }
     }
 
