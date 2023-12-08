@@ -17,18 +17,14 @@ use Symfony\Component\HttpKernel\Controller\ArgumentValueResolverInterface;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 
 // TODO: Remove this interface when dropping support of Symfony < 6.2 and replace its usage with ValueResolverInterface
-if (interface_exists(ValueResolverInterface::class)) {
+if (interface_exists(ArgumentValueResolverInterface::class)) {
     /** @internal */
-    interface CompatibleValueResolverInterface extends ValueResolverInterface
+    interface CompatibleValueResolverInterface extends ArgumentValueResolverInterface
     {
     }
 } else {
-    /**
-     * @internal
-     *
-     * @phpstan-ignore-next-line
-     */
-    interface CompatibleValueResolverInterface extends ArgumentValueResolverInterface
+    /** @internal */
+    interface CompatibleValueResolverInterface extends ValueResolverInterface
     {
     }
 }
