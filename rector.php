@@ -19,7 +19,6 @@ declare(strict_types=1);
 
 use Rector\Config\RectorConfig;
 use Rector\Php70\Rector\FunctionLike\ExceptionHandlerTypehintRector;
-use Rector\Php71\Rector\FuncCall\CountOnNullRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\AddSeeTestAnnotationRector;
 use Rector\PHPUnit\CodeQuality\Rector\Class_\PreferPHPUnitThisCallRector;
 use Rector\PHPUnit\Set\PHPUnitLevelSetList;
@@ -41,7 +40,6 @@ return static function (RectorConfig $rectorConfig): void {
     $rectorConfig->importNames();
     $rectorConfig->importShortClasses(false);
     $rectorConfig->skip([
-        CountOnNullRector::class,
         ExceptionHandlerTypehintRector::class,
         AddSeeTestAnnotationRector::class,
         PreferPHPUnitThisCallRector::class,
