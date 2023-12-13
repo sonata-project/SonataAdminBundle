@@ -31,7 +31,7 @@ final class ProxyQuery implements ProxyQueryInterface
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function getSortBy(): ?string
+    public function getSortBy(): string
     {
         return 'e.id';
     }
@@ -41,7 +41,7 @@ final class ProxyQuery implements ProxyQueryInterface
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function getSortOrder(): ?string
+    public function getSortOrder(): string
     {
         return 'ASC';
     }
@@ -69,7 +69,7 @@ final class ProxyQuery implements ProxyQueryInterface
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function getMaxResults(): ?int
+    public function getMaxResults(): int
     {
         return 1;
     }

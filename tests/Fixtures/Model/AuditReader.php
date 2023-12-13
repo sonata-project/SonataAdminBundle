@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Model\Revision;
  */
 final class AuditReader implements AuditReaderInterface
 {
-    public function find(string $className, $id, $revisionId): ?object
+    public function find(string $className, $id, $revisionId): object
     {
         return new $className();
     }
@@ -33,7 +33,7 @@ final class AuditReader implements AuditReaderInterface
         ];
     }
 
-    public function findRevision(string $className, $revisionId): ?Revision
+    public function findRevision(string $className, $revisionId): Revision
     {
         return new Revision(1, new \DateTime(), 'Jack');
     }
