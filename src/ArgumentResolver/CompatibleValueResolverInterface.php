@@ -22,7 +22,7 @@ if (interface_exists(ValueResolverInterface::class)) {
     interface CompatibleValueResolverInterface extends ValueResolverInterface
     {
     }
-} else if (interface_exists(ArgumentValueResolverInterface::class)) {
+} elseif (interface_exists(ArgumentValueResolverInterface::class)) {
     /** @internal */
     interface CompatibleValueResolverInterface extends ArgumentValueResolverInterface
     {
