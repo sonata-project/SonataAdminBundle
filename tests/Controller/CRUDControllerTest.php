@@ -32,6 +32,9 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use Sonata\AdminBundle\Tests\App\Controller\CustomModelManagerExceptionMessageController;
+use Sonata\AdminBundle\Tests\App\Controller\CustomModelManagerThrowableMessageController;
+use Sonata\AdminBundle\Tests\App\Exception\NonModelManagerException;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchOtherController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
@@ -681,6 +684,84 @@ final class CRUDControllerTest extends TestCase
         $this->parameterBag->set('kernel.debug', true);
 
         $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
+    }
+
+    public function testBatchActionDeleteWithModelManagerExceptionAndCustomError(): void
+    {
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+
+        $exception = new ModelManagerException(
+            $message = 'message',
+            1234,
+            new \Exception($previousExceptionMessage = 'very useful message')
+        );
+
+        $modelManager->expects(static::once())
+            ->method('batchDelete')
+            ->willReturnCallback(static function () use ($exception): void {
+                throw $exception;
+            });
+
+        $this->admin->expects(static::once())
+            ->method('getModelManager')
+            ->willReturn($modelManager);
+
+        $this->admin->expects(static::once())
+            ->method('getFilterParameters')
+            ->willReturn(['foo' => 'bar']);
+
+        $customController = new CustomModelManagerExceptionMessageController();
+        $customController->setContainer($this->container);
+        $customController->configureAdmin($this->request);
+
+        $result = $customController->batchActionDelete($this->createMock(ProxyQueryInterface::class));
+
+        static::assertInstanceOf(RedirectResponse::class, $result);
+        static::assertSame(
+            [CustomModelManagerExceptionMessageController::ERROR_MESSAGE],
+            $this->session->getFlashBag()->get('sonata_flash_error')
+        );
+        static::assertSame('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
+    }
+
+    public function testBatchActionDeleteWithModelManagerThrowableCustomErrorAndHandleThrowableOnly(): void
+    {
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+
+        $exception = new ModelManagerException(
+            $message = 'message',
+            1234,
+            new \Exception($previousExceptionMessage = 'very useful message')
+        );
+
+        $modelManager->expects(static::once())
+            ->method('batchDelete')
+            ->willReturnCallback(static function () use ($exception): void {
+                throw $exception;
+            });
+
+        $this->admin->expects(static::once())
+            ->method('getModelManager')
+            ->willReturn($modelManager);
+
+        $this->admin->expects(static::once())
+            ->method('getFilterParameters')
+            ->willReturn(['foo' => 'bar']);
+
+        $customController = new CustomModelManagerThrowableMessageController();
+        $customController->setContainer($this->container);
+        $customController->configureAdmin($this->request);
+
+        $this->translator->expects(static::never())->method('trans');
+
+        $result = $customController->batchActionDelete($this->createMock(ProxyQueryInterface::class));
+
+        static::assertInstanceOf(RedirectResponse::class, $result);
+        static::assertSame(
+            [CustomModelManagerThrowableMessageController::ERROR_MESSAGE],
+            $this->session->getFlashBag()->get('sonata_flash_error')
+        );
+        static::assertSame('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
     }
 
     public function testShowActionNotFoundException(): void
@@ -1350,6 +1431,80 @@ final class CRUDControllerTest extends TestCase
         static::assertSame('list', $response->getTargetUrl());
     }
 
+    public function testDeleteActionWithModelManagerExceptionCustomError(): void
+    {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
+        $object = new \stdClass();
+
+        $this->admin->expects(static::once())->method('getObject')->willReturn($object);
+        $this->admin->expects(static::once())->method('checkAccess')->with(static::equalTo('delete'));
+
+        $this->translator->expects(static::never())->method('trans');
+
+        $exception = new ModelManagerException(
+            $message = 'message',
+            1234,
+            new \Exception($previousExceptionMessage = 'very useful message')
+        );
+
+        $this->admin->expects(static::once())
+            ->method('delete')
+            ->willReturnCallback(static function () use ($exception): void {
+                throw $exception;
+            });
+
+        $this->request->setMethod(Request::METHOD_DELETE);
+        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+
+        $customController = new CustomModelManagerExceptionMessageController();
+        $customController->setContainer($this->container);
+        $customController->configureAdmin($this->request);
+
+        $response = $customController->deleteAction($this->request);
+
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertSame([CustomModelManagerExceptionMessageController::ERROR_MESSAGE], $this->session->getFlashBag()->get('sonata_flash_error'));
+        static::assertSame('list', $response->getTargetUrl());
+    }
+
+    public function testDeleteActionWithModelManagerThrowableCustomError(): void
+    {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
+        $object = new \stdClass();
+
+        $this->admin->expects(static::once())->method('getObject')->willReturn($object);
+        $this->admin->expects(static::once())->method('checkAccess')->with(static::equalTo('delete'));
+
+        $this->translator->expects(static::never())->method('trans');
+
+        $exception = new ModelManagerException(
+            $message = 'message',
+            1234,
+            new \Exception($previousExceptionMessage = 'very useful message')
+        );
+
+        $this->admin->expects(static::once())
+            ->method('delete')
+            ->willReturnCallback(static function () use ($exception): void {
+                throw $exception;
+            });
+
+        $this->request->setMethod(Request::METHOD_DELETE);
+        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+
+        $customController = new CustomModelManagerThrowableMessageController();
+        $customController->setContainer($this->container);
+        $customController->configureAdmin($this->request);
+
+        $response = $customController->deleteAction($this->request);
+
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertSame([CustomModelManagerThrowableMessageController::ERROR_MESSAGE], $this->session->getFlashBag()->get('sonata_flash_error'));
+        static::assertSame('list', $response->getTargetUrl());
+    }
+
     public function testDeleteActionInvalidCsrfToken(): void
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
@@ -1650,6 +1805,176 @@ final class CRUDControllerTest extends TestCase
         static::assertInstanceOf(Response::class, $this->controller->editAction($this->request));
 
         static::assertSame(['sonata_flash_error' => ['flash_edit_error']], $this->session->getFlashBag()->all());
+    }
+
+    public function testEditActionWithModelManagerExceptionAndCustomError(): void
+    {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
+        $object = new \stdClass();
+
+        $this->admin->expects(static::once())
+            ->method('getObject')
+            ->willReturn($object);
+
+        $this->admin->expects(static::once())
+            ->method('checkAccess')
+            ->with(static::equalTo('edit'));
+
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('foo_normalized');
+
+        $form = $this->createMock(Form::class);
+
+        $this->admin->expects(static::once())
+            ->method('getForm')
+            ->willReturn($form);
+
+        $form->expects(static::once())
+            ->method('isSubmitted')
+            ->willReturn(true);
+
+        $form->expects(static::once())
+            ->method('isValid')
+            ->willReturn(true);
+
+        $this->translator->expects(static::never())->method('trans');
+
+        $this->request->setMethod(Request::METHOD_POST);
+
+        $formView = $this->createMock(FormView::class);
+
+        $form
+            ->method('createView')
+            ->willReturn($formView);
+
+        $form->expects(static::once())
+            ->method('getData')
+            ->willReturn($object);
+
+        $this->twig
+            ->expects(static::once())
+            ->method('render')
+            ->with('@SonataAdmin/CRUD/edit.html.twig', [
+                'admin' => $this->admin,
+                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'action' => 'edit',
+                'form' => $formView,
+                'object' => $object,
+                'objectId' => 'foo_normalized',
+            ]);
+
+        $customController = new CustomModelManagerExceptionMessageController();
+        $customController->setContainer($this->container);
+        $customController->configureAdmin($this->request);
+
+        $exception = new ModelManagerException(
+            $message = 'message',
+            1234,
+            new \Exception($previousExceptionMessage = 'very useful message')
+        );
+
+        $this->admin->expects(static::once())
+            ->method('update')
+            ->willReturnCallback(static function () use ($exception): void {
+                throw $exception;
+            });
+
+        $response = $customController->editAction($this->request);
+
+        static::assertInstanceOf(Response::class, $response);
+
+        static::assertSame(
+            ['sonata_flash_error' => [CustomModelManagerExceptionMessageController::ERROR_MESSAGE]],
+            $this->session->getFlashBag()->all()
+        );
+    }
+
+    public function testEditActionWithModelManagerThrowableAndCustomError(): void
+    {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
+        $object = new \stdClass();
+
+        $this->admin->expects(static::once())
+            ->method('getObject')
+            ->willReturn($object);
+
+        $this->admin->expects(static::once())
+            ->method('checkAccess')
+            ->with(static::equalTo('edit'));
+
+        $this->admin
+            ->method('getNormalizedIdentifier')
+            ->with(static::equalTo($object))
+            ->willReturn('foo_normalized');
+
+        $form = $this->createMock(Form::class);
+
+        $this->admin->expects(static::once())
+            ->method('getForm')
+            ->willReturn($form);
+
+        $form->expects(static::once())
+            ->method('isSubmitted')
+            ->willReturn(true);
+
+        $form->expects(static::once())
+            ->method('isValid')
+            ->willReturn(true);
+
+        $this->translator->expects(static::never())->method('trans');
+
+        $this->request->setMethod(Request::METHOD_POST);
+
+        $formView = $this->createMock(FormView::class);
+
+        $form
+            ->method('createView')
+            ->willReturn($formView);
+
+        $form->expects(static::once())
+            ->method('getData')
+            ->willReturn($object);
+
+        $this->twig
+            ->expects(static::once())
+            ->method('render')
+            ->with('@SonataAdmin/CRUD/edit.html.twig', [
+                'admin' => $this->admin,
+                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'action' => 'edit',
+                'form' => $formView,
+                'object' => $object,
+                'objectId' => 'foo_normalized',
+            ]);
+
+        $customController = new CustomModelManagerThrowableMessageController();
+        $customController->setContainer($this->container);
+        $customController->configureAdmin($this->request);
+
+        $exception = new ModelManagerException(
+            $message = 'message',
+            1234,
+            new \Exception($previousExceptionMessage = 'very useful message')
+        );
+
+        $this->admin->expects(static::once())
+            ->method('update')
+            ->willReturnCallback(static function () use ($exception): void {
+                throw $exception;
+            });
+
+        $response = $customController->editAction($this->request);
+
+        static::assertInstanceOf(Response::class, $response);
+
+        static::assertSame(
+            ['sonata_flash_error' => [CustomModelManagerThrowableMessageController::ERROR_MESSAGE]],
+            $this->session->getFlashBag()->all()
+        );
     }
 
     public function testEditActionAjaxSuccess(): void
@@ -2322,6 +2647,168 @@ final class CRUDControllerTest extends TestCase
 
         static::assertInstanceOf(Response::class, $this->controller->createAction($this->request));
         static::assertSame(['sonata_flash_error' => ['flash_create_error']], $this->session->getFlashBag()->all());
+    }
+
+    public function testCreateActionWithModelManagerExceptionAndCustomError(): void
+    {
+        $this->admin->expects(static::once())
+            ->method('checkAccess')
+            ->with(static::equalTo('create'));
+
+        $this->admin
+            ->method('getClass')
+            ->willReturn(\stdClass::class);
+
+        $object = new \stdClass();
+
+        $this->admin->expects(static::once())
+            ->method('getNewInstance')
+            ->willReturn($object);
+
+        $form = $this->createMock(Form::class);
+
+        $this->admin->expects(static::once())
+            ->method('getForm')
+            ->willReturn($form);
+
+        $form->expects(static::once())
+            ->method('isValid')
+            ->willReturn(true);
+
+        $this->translator->expects(static::never())->method('trans');
+
+        $form->expects(static::once())
+            ->method('isSubmitted')
+            ->willReturn(true);
+
+        $form->expects(static::once())
+            ->method('getData')
+            ->willReturn($object);
+
+        $this->request->setMethod(Request::METHOD_POST);
+
+        $formView = $this->createMock(FormView::class);
+
+        $form
+            ->method('createView')
+            ->willReturn($formView);
+
+        $this->twig
+            ->expects(static::once())
+            ->method('render')
+            ->with('@SonataAdmin/CRUD/edit.html.twig', [
+                'admin' => $this->admin,
+                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'action' => 'create',
+                'form' => $formView,
+                'object' => $object,
+                'objectId' => null,
+            ]);
+
+        $customController = new CustomModelManagerExceptionMessageController();
+        $customController->setContainer($this->container);
+        $customController->configureAdmin($this->request);
+
+        $exception = new ModelManagerException(
+            $message = 'message',
+            1234,
+            new \Exception($previousExceptionMessage = 'very useful message')
+        );
+
+        $this->admin->expects(static::once())
+            ->method('create')
+            ->willReturnCallback(static function () use ($exception): void {
+                throw $exception;
+            });
+
+        $response = $customController->createAction($this->request);
+
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame(
+            ['sonata_flash_error' => [CustomModelManagerExceptionMessageController::ERROR_MESSAGE]],
+            $this->session->getFlashBag()->all()
+        );
+    }
+
+    public function testCreateActionWithModelManagerThrowableAndCustomError(): void
+    {
+        $this->admin->expects(static::once())
+            ->method('checkAccess')
+            ->with(static::equalTo('create'));
+
+        $this->admin
+            ->method('getClass')
+            ->willReturn(\stdClass::class);
+
+        $object = new \stdClass();
+
+        $this->admin->expects(static::once())
+            ->method('getNewInstance')
+            ->willReturn($object);
+
+        $form = $this->createMock(Form::class);
+
+        $this->admin->expects(static::once())
+            ->method('getForm')
+            ->willReturn($form);
+
+        $form->expects(static::once())
+            ->method('isValid')
+            ->willReturn(true);
+
+        $this->translator->expects(static::never())->method('trans');
+
+        $form->expects(static::once())
+            ->method('isSubmitted')
+            ->willReturn(true);
+
+        $form->expects(static::once())
+            ->method('getData')
+            ->willReturn($object);
+
+        $this->request->setMethod(Request::METHOD_POST);
+
+        $formView = $this->createMock(FormView::class);
+
+        $form
+            ->method('createView')
+            ->willReturn($formView);
+
+        $this->twig
+            ->expects(static::once())
+            ->method('render')
+            ->with('@SonataAdmin/CRUD/edit.html.twig', [
+                'admin' => $this->admin,
+                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'action' => 'create',
+                'form' => $formView,
+                'object' => $object,
+                'objectId' => null,
+            ]);
+
+        $customController = new CustomModelManagerThrowableMessageController();
+        $customController->setContainer($this->container);
+        $customController->configureAdmin($this->request);
+
+        $exception = new ModelManagerException(
+            $message = 'message',
+            1234,
+            new \Exception($previousExceptionMessage = 'very useful message')
+        );
+
+        $this->admin->expects(static::once())
+            ->method('create')
+            ->willReturnCallback(static function () use ($exception): void {
+                throw $exception;
+            });
+
+        $response = $customController->createAction($this->request);
+
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame(
+            ['sonata_flash_error' => [CustomModelManagerThrowableMessageController::ERROR_MESSAGE]],
+            $this->session->getFlashBag()->all()
+        );
     }
 
     public function testCreateActionAjaxSuccess(): void
