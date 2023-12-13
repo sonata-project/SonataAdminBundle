@@ -50,7 +50,7 @@ final class TemplateRegistryExtension extends AbstractExtension
      * @throws ServiceNotFoundException
      * @throws ServiceCircularReferenceException
      */
-    public function getAdminTemplate(string $name, string $adminCode): ?string
+    public function getAdminTemplate(string $name, string $adminCode): string
     {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
@@ -68,7 +68,7 @@ final class TemplateRegistryExtension extends AbstractExtension
      *
      * @deprecated since sonata-project/admin-bundle version 4.7 use TemplateRegistryRuntime::getGlobalTemplate() instead
      */
-    public function getGlobalTemplate(string $name): ?string
+    public function getGlobalTemplate(string $name): string
     {
         @trigger_error(sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'

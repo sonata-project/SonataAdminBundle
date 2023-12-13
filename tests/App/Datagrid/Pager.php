@@ -79,7 +79,10 @@ final class Pager implements PagerInterface
         return false;
     }
 
-    public function getQuery(): ?ProxyQueryInterface
+    /**
+     * @phpstan-return ProxyQueryInterface<object>
+     */
+    public function getQuery(): ProxyQueryInterface
     {
         return new ProxyQuery();
     }
