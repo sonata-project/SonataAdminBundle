@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.29.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.29.0...4.29.1) - 2023-12-12
+### Fixed
+- [[#8136](https://github.com/sonata-project/SonataAdminBundle/pull/8136)] Fix clashing global twig variables (admin, base_template) if already set ([@core23](https://github.com/core23))
+
 ## [4.29.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.28.1...4.29.0) - 2023-11-25
 ### Added
 - [[#8127](https://github.com/sonata-project/SonataAdminBundle/pull/8127)] Symfony 7 support ([@VincentLanglet](https://github.com/VincentLanglet))
