@@ -174,6 +174,7 @@ final class Configuration implements ConfigurationInterface
 {
     /**
      * @psalm-suppress UndefinedInterfaceMethod
+     * @psalm-suppress PossiblyNullReference - end() can return null, apparently
      *
      * @see https://github.com/psalm/psalm-plugin-symfony/issues/174
      */
