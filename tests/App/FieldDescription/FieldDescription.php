@@ -21,7 +21,10 @@ final class FieldDescription extends BaseFieldDescription
     {
     }
 
-    public function getTargetEntity(): ?string
+    /**
+     * @return null
+     */
+    public function getTargetEntity()
     {
         return null;
     }
