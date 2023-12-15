@@ -1105,7 +1105,8 @@ class CRUDController extends AbstractController
 
     /**
      * @throws \Exception
-     * @return string|null|void A custom error message to display in the flag bag instead of the generic one
+     *
+     * @return string|void|null A custom error message to display in the flag bag instead of the generic one
      */
     protected function handleModelManagerException(\Exception $exception)
     {

@@ -34,7 +34,6 @@ use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\App\Controller\CustomModelManagerExceptionMessageController;
 use Sonata\AdminBundle\Tests\App\Controller\CustomModelManagerThrowableMessageController;
-use Sonata\AdminBundle\Tests\App\Exception\NonModelManagerException;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchOtherController;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
