@@ -1106,7 +1106,7 @@ class CRUDController extends AbstractController
     /**
      * @throws \Exception
      *
-     * @return string|void|null A custom error message to display in the flag bag instead of the generic one
+     * @return string|null A custom error message to display in the flag bag instead of the generic one
      */
     protected function handleModelManagerException(\Exception $exception)
     {
@@ -1130,6 +1130,8 @@ class CRUDController extends AbstractController
             $context['previous_exception_message'] = $exception->getPrevious()->getMessage();
         }
         $this->getLogger()->error($exception->getMessage(), $context);
+
+        return null;
     }
 
     /**
