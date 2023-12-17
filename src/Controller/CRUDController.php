@@ -1457,7 +1457,8 @@ class CRUDController extends AbstractController
                         $admin->getClassnameLabel(),
                         $objectId
                     ));
-                } elseif (null === $object) {
+                }
+                if (null === $object) {
                     /** @phpstan-var T $object */
                     $object = $adminObject;
                 }
