@@ -416,7 +416,8 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         $accessor = $this->getOption('accessor', $fieldName);
         if (!\is_string($accessor) && \is_callable($accessor)) {
             return $accessor($object);
-        } elseif (!\is_string($accessor) && !$accessor instanceof PropertyPathInterface) {
+        }
+        if (!\is_string($accessor) && !$accessor instanceof PropertyPathInterface) {
             throw new \TypeError(sprintf(
                 'The option "accessor" must be a string, a callable or a %s, %s given.',
                 PropertyPathInterface::class,
