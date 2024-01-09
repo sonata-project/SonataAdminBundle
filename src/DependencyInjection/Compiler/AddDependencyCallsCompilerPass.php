@@ -310,7 +310,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         } else {
             $groups = $groupDefaults;
 
-            uasort($groups, static fn (array $a, array $b): int => ($b['priority'] ?? 0) <=> ($a['priority'] ?? 0));
+            uasort($groups, static fn (array $a, array $b): int => $b['priority'] <=> $a['priority']);
         }
 
         if ($sortAdminsByPriority) {
