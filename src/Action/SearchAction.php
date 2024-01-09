@@ -34,7 +34,7 @@ final class SearchAction
             'base_template' => $request->isXmlHttpRequest() ?
                 $this->templateRegistry->getTemplate('ajax') :
                 $this->templateRegistry->getTemplate('layout'),
-            'query' => $request->get('q'),
+            'query' => $request->get('q', ''),
             'groups' => $this->pool->getDashboardGroups(),
         ]));
     }
