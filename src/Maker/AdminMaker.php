@@ -39,46 +39,46 @@ final class AdminMaker extends AbstractMaker
     /**
      * @phpstan-var class-string
      *
+     * @see AdminMaker::configure
+     *
      * @psalm-suppress PropertyNotSetInConstructor
      * @phpstan-ignore-next-line
-     *
-     * @see AdminMaker::configure
      */
     private string $modelClass;
 
     /**
+     * @see AdminMaker::configure
+     *
      * @psalm-suppress PropertyNotSetInConstructor
      * @phpstan-ignore-next-line
-     *
-     * @see AdminMaker::configure
      */
     private string $modelClassBasename;
 
     /**
+     * @see AdminMaker::configure
+     *
      * @psalm-suppress PropertyNotSetInConstructor
      * @phpstan-ignore-next-line
-     *
-     * @see AdminMaker::configure
      */
     private string $adminClassBasename;
 
     private ?string $controllerClassBasename = null;
 
     /**
+     * @see AdminMaker::configure
+     *
      * @psalm-suppress PropertyNotSetInConstructor
      * @phpstan-ignore-next-line
-     *
-     * @see AdminMaker::configure
      */
     private string $managerType;
 
     /**
      * @var ModelManagerInterface<object>
      *
+     * @see AdminMaker::configure
+     *
      * @psalm-suppress PropertyNotSetInConstructor
      * @phpstan-ignore-next-line
-     *
-     * @see AdminMaker::configure
      */
     private ModelManagerInterface $modelManager;
 
