@@ -28,6 +28,7 @@ parameters:
     featureToggles:
         skipCheckGenericClasses:
             - Symfony\Component\Form\AbstractType
+            - Symfony\Component\Form\FormBuilderInterface
             - Symfony\Component\Form\FormInterface
             - Symfony\Component\Form\FormTypeExtensionInterface
             - Symfony\Component\Form\FormTypeInterface
