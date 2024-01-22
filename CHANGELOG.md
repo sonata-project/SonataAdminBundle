@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.29.3](https://github.com/sonata-project/SonataAdminBundle/compare/4.29.2...4.29.3) - 2024-01-22
+### Fixed
+- [[#8149](https://github.com/sonata-project/SonataAdminBundle/pull/8149)] Fix possible null error in search ([@core23](https://github.com/core23))
+
 ## [4.29.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.29.1...4.29.2) - 2023-12-24
 ### Changed
 - [[#8141](https://github.com/sonata-project/SonataAdminBundle/pull/8141)] CRUDController::handleModelManagerException can now return a custom error message string for display in the flashbag instead of Sonata ones. Return type is removed from the signature ([@wadjei](https://github.com/wadjei))
