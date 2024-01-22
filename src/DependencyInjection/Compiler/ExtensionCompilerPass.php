@@ -88,7 +88,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                 }
                 $universalExtensions[$id][] = $attributes;
 
-                if (!$target || !$container->hasDefinition($target)) {
+                if (false === $target || !$container->hasDefinition($target)) {
                     continue;
                 }
 

@@ -470,14 +470,14 @@ class CRUDController extends AbstractController
             $nonRelevantMessage = 0 !== \count($idx) || $allElements; // at least one item is selected
         }
 
-        if (!$nonRelevantMessage) { // default non relevant message (if false of null)
+        if (!\is_string($nonRelevantMessage) && true !== $nonRelevantMessage) { // default non relevant message
             $nonRelevantMessage = 'flash_batch_empty';
         }
 
         $datagrid = $this->admin->getDatagrid();
         $datagrid->buildPager();
 
-        if (true !== $nonRelevantMessage) {
+        if (\is_string($nonRelevantMessage)) {
             $this->addFlash(
                 'sonata_flash_info',
                 $this->trans($nonRelevantMessage, [], 'SonataAdminBundle')
