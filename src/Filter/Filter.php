@@ -81,7 +81,7 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
         return $default;
     }
 
-    final public function setOption(string $name, $value): void
+    final public function setOption(string $name, mixed $value): void
     {
         $this->options[$name] = $value;
     }
@@ -105,7 +105,7 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
         return $default;
     }
 
-    final public function setFieldOption(string $name, $value): void
+    final public function setFieldOption(string $name, mixed $value): void
     {
         $this->options['field_options'][$name] = $value;
     }
