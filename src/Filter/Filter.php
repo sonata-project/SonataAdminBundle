@@ -72,7 +72,7 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
         return str_replace('.', '__', $this->getName());
     }
 
-    final public function getOption(string $name, $default = null)
+    final public function getOption(string $name, mixed $default = null)
     {
         if (\array_key_exists($name, $this->options)) {
             return $this->options[$name];
@@ -96,7 +96,7 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
         return $this->getOption('field_options', []);
     }
 
-    final public function getFieldOption(string $name, $default = null)
+    final public function getFieldOption(string $name, mixed $default = null)
     {
         if (isset($this->options['field_options'][$name]) && \is_array($this->options['field_options'])) {
             return $this->options['field_options'][$name];
