@@ -66,16 +66,11 @@ interface FilterInterface
     public function getOptions(): array;
 
     /**
-     * @param mixed $default
-     *
      * @return mixed
      */
-    public function getOption(string $name, $default = null);
+    public function getOption(string $name, mixed $default = null);
 
-    /**
-     * @param mixed $value
-     */
-    public function setOption(string $name, $value): void;
+    public function setOption(string $name, mixed $value): void;
 
     /**
      * @param array<string, mixed> $options
@@ -112,16 +107,11 @@ interface FilterInterface
     public function getFieldOptions(): array;
 
     /**
-     * @param mixed $default
-     *
      * @return mixed
      */
-    public function getFieldOption(string $name, $default = null);
+    public function getFieldOption(string $name, mixed $default = null);
 
-    /**
-     * @param mixed $value
-     */
-    public function setFieldOption(string $name, $value): void;
+    public function setFieldOption(string $name, mixed $value): void;
 
     public function getFieldType(): string;
 
