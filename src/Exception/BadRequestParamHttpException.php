@@ -22,12 +22,11 @@ final class BadRequestParamHttpException extends BadRequestHttpException
 {
     /**
      * @param string|string[] $expectedTypes
-     * @param mixed           $value
      */
     public function __construct(
         string $name,
         $expectedTypes,
-        $value
+        mixed $value
     ) {
         if (!\is_array($expectedTypes)) {
             $expectedTypes = [$expectedTypes];

@@ -33,18 +33,12 @@ final class AdminPoolLoader extends Loader
         parent::__construct();
     }
 
-    /**
-     * @param mixed $resource
-     */
-    public function supports($resource, ?string $type = null): bool
+    public function supports(mixed $resource, ?string $type = null): bool
     {
         return self::ROUTE_TYPE_NAME === $type;
     }
 
-    /**
-     * @param mixed $resource
-     */
-    public function load($resource, ?string $type = null): SymfonyRouteCollection
+    public function load(mixed $resource, ?string $type = null): SymfonyRouteCollection
     {
         $collection = new SymfonyRouteCollection();
         foreach ($this->pool->getAdminServiceCodes() as $code) {
