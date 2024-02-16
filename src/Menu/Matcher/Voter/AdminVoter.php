@@ -33,7 +33,6 @@ final class AdminVoter implements VoterInterface
     public function matchItem(ItemInterface $item): ?bool
     {
         $admin = $item->getExtra('admin');
-
         $request = $this->requestStack->getMainRequest();
 
         if ($admin instanceof AdminInterface
@@ -46,16 +45,45 @@ final class AdminVoter implements VoterInterface
                 return true;
             }
 
-            foreach ($admin->getChildren() as $child) {
-                if ($child->getBaseCodeRoute() === $requestCode) {
-                    return true;
+            if ($this->hasChildren($admin)) {
+                $isMatch = $this->matchChildren($admin->getChildren(), $requestCode);
+
+                if (null !== $isMatch) {
+                    return $isMatch;
                 }
             }
         }
 
         $route = $item->getExtra('route');
+
         if (null !== $route && null !== $request && $route === $request->get('_route')) {
             return true;
+        }
+
+        return null;
+    }
+
+    /**
+     * @param AdminInterface<object> $admin
+     */
+    private function hasChildren(AdminInterface $admin): bool
+    {
+        return [] !== $admin->getChildren();
+    }
+
+    /**
+     * @param array<int, AdminInterface<object>> $children
+     */
+    private function matchChildren(array $children, mixed $requestCode): ?bool
+    {
+        foreach ($children as $child) {
+            if ($child->getBaseCodeRoute() === $requestCode) {
+                return true;
+            }
+
+            if ($this->hasChildren($child) && true === $this->matchChildren($child->getChildren(), $requestCode)) {
+                return true;
+            }
         }
 
         return null;
