@@ -176,7 +176,7 @@ Frontend assets are all located under `assets` directory, with the following str
 * `assets/images` for the images
 * `assets/vendor` for the third party assets that can't be loaded via [NPM](https://www.npmjs.com/)
 
-This `assets` directory contains only the source code, and it is not directly accesible for the
+This `assets` directory contains only the source code, and it is not directly accessible for the
 website, because is not placed under the `src/Resources/public`.
 
 If you take a look at the `src/Resources/public` you will see a lot of minified assets, this is done with
