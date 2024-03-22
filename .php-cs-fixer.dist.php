@@ -45,7 +45,7 @@ $rules = [
     'no_useless_return' => true,
     'no_superfluous_elseif' => true,
     'no_superfluous_phpdoc_tags' => ['allow_mixed' => true, 'remove_inheritdoc' => true],
-    'nullable_type_declaration_for_default_null_value' => ['use_nullable_type_declaration' => true],
+    'nullable_type_declaration_for_default_null_value' => true,
     'ordered_class_elements' => true,
     'ordered_imports' => ['sort_algorithm' => 'alpha', 'imports_order' => ['class', 'function', 'const']],
     'phpdoc_order' => ['order' => ['var', 'param', 'throws', 'return', 'phpstan-var', 'psalm-var', 'phpstan-param', 'psalm-param', 'phpstan-return', 'psalm-return']],
