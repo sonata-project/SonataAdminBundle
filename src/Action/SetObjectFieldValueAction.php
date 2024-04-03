@@ -160,6 +160,7 @@ final class SetObjectFieldValueAction
             return new JsonResponse(implode("\n", $messages), Response::HTTP_BAD_REQUEST);
         }
 
+        \assert(\is_object($object));
         $admin->update($object);
 
         // render the widget

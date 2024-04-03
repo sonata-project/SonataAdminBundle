@@ -175,7 +175,8 @@ final class FormMapperTest extends TestCase
             ->method('getDefaultOptions')
             ->willReturn([]);
 
-        $this->formMapper->with('foobar', [
+        $this->formMapper
+            ->with('foobar', [
                 'translation_domain' => 'Foobar',
             ])
             ->add('foo', TextType::class)

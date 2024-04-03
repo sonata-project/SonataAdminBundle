@@ -864,7 +864,7 @@ final class RenderElementExtensionTest extends TestCase
                         </span>
                     </td>
                     EOT
-            ,
+                ,
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 true,
                 ['editable' => true],
@@ -1314,7 +1314,7 @@ final class RenderElementExtensionTest extends TestCase
                 FieldDescriptionInterface::TYPE_URL,
                 'http://foo/bar?a=b&c=123456789',
                 ['route' => ['name' => 'sonata_admin_foo'],
-                'hide_protocol' => true, ],
+                    'hide_protocol' => true, ],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
@@ -1335,7 +1335,7 @@ final class RenderElementExtensionTest extends TestCase
                 'Foo',
                 [
                     'route' => ['name' => 'sonata_admin_foo_param',
-                    'parameters' => ['param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'], ],
+                        'parameters' => ['param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'], ],
                 ],
             ],
             [
@@ -1345,9 +1345,11 @@ final class RenderElementExtensionTest extends TestCase
                 FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 [
-                    'route' => ['name' => 'sonata_admin_foo_param',
-                    'absolute' => true,
-                    'parameters' => ['param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'], ],
+                    'route' => [
+                        'name' => 'sonata_admin_foo_param',
+                        'absolute' => true,
+                        'parameters' => ['param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'],
+                    ],
                 ],
             ],
             [
@@ -1357,9 +1359,11 @@ final class RenderElementExtensionTest extends TestCase
                 FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 [
-                    'route' => ['name' => 'sonata_admin_foo_object',
-                    'parameters' => ['param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'],
-                    'identifier_parameter_name' => 'barId', ],
+                    'route' => [
+                        'name' => 'sonata_admin_foo_object',
+                        'parameters' => ['param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'],
+                        'identifier_parameter_name' => 'barId',
+                    ],
                 ],
             ],
             [
@@ -1369,10 +1373,12 @@ final class RenderElementExtensionTest extends TestCase
                 FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 [
-                    'route' => ['name' => 'sonata_admin_foo_object',
-                    'absolute' => true,
-                    'parameters' => ['param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'],
-                    'identifier_parameter_name' => 'barId', ],
+                    'route' => [
+                        'name' => 'sonata_admin_foo_object',
+                        'absolute' => true,
+                        'parameters' => ['param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'],
+                        'identifier_parameter_name' => 'barId',
+                    ],
                 ],
             ],
             [
@@ -1794,8 +1800,7 @@ final class RenderElementExtensionTest extends TestCase
                 '<th>Data</th> <td><a href="https://example.com">https://example.com</a></td>',
                 FieldDescriptionInterface::TYPE_URL,
                 'https://example.com',
-                ['safe' => false,
-                'hide_protocol' => false, ],
+                ['safe' => false, 'hide_protocol' => false],
             ],
             [
                 '<th>Data</th> <td><a href="http://example.com">Foo</a></td>',

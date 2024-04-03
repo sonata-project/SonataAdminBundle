@@ -43,8 +43,8 @@ final class AdminLayoutTest extends AbstractLayoutTestCase
             TextType::class,
             null,
             [
-            'translation_domain' => false,
-        ]
+                'translation_domain' => false,
+            ]
         );
         $html = $this->renderLabel($form->createView());
 
@@ -65,8 +65,8 @@ final class AdminLayoutTest extends AbstractLayoutTestCase
             TextType::class,
             null,
             [
-            'translation_domain' => 'custom_domain',
-        ]
+                'translation_domain' => 'custom_domain',
+            ]
         );
         $html = $this->renderLabel($form->createView());
 
