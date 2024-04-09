@@ -1481,7 +1481,12 @@ class CRUDController extends AbstractController
      */
     final protected function getSelectedTab(Request $request): array
     {
-        return array_filter(['_tab' => (string) $request->request->get('_tab')]);
+        $tab = (string) $request->request->get('_tab');
+        if ('' === $tab) {
+            return [];
+        }
+
+        return ['_tab' => $tab];
     }
 
     /**

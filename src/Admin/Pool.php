@@ -86,19 +86,20 @@ final class Pool
         $groups = [];
 
         foreach ($this->adminGroups as $name => $adminGroup) {
-            $items = array_values(array_filter(array_map(function (array $item): ?AdminInterface {
+            $items = [];
+            foreach ($adminGroup['items'] as $item) {
                 // NEXT_MAJOR: Remove the '' check
                 if (!isset($item['admin']) || '' === $item['admin']) {
-                    return null;
+                    continue;
                 }
 
                 $admin = $this->getInstance($item['admin']);
 
-                // NEXT_MAJOR: Keep the if part.
+                // NEXT_MAJOR: Keep the "if" part.
                 // @phpstan-ignore-next-line
                 if (method_exists($admin, 'showInDashboard')) {
                     if (!$admin->showInDashboard()) {
-                        return null;
+                        continue;
                     }
                 } else {
                     @trigger_error(sprintf(
@@ -111,12 +112,12 @@ final class Pool
                      * @psalm-suppress DeprecatedMethod, DeprecatedConstant
                      */
                     if (!$admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD)) {
-                        return null;
+                        continue;
                     }
                 }
 
-                return $admin;
-            }, $adminGroup['items'])));
+                $items[] = $admin;
+            }
 
             if ([] !== $items) {
                 $groups[$name] = ['items' => $items] + $adminGroup;
