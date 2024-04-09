@@ -15,26 +15,18 @@ namespace Sonata\AdminBundle\Search;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-final class SearchHandler
+final class SearchHandler implements SearchHandlerInterface
 {
     /**
      * @var array<string, bool>
      */
     private array $adminsSearchConfig = [];
 
-    /**
-     * @throws \RuntimeException
-     *
-     * @phpstan-template T of object
-     * @phpstan-param AdminInterface<T> $admin
-     * @phpstan-return PagerInterface<ProxyQueryInterface<T>>|null
-     */
     public function search(AdminInterface $admin, string $term, int $page = 0, int $offset = 20): ?PagerInterface
     {
         // If the search is disabled for the whole admin, skip any further processing.

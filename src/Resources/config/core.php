@@ -33,6 +33,7 @@ use Sonata\AdminBundle\Request\AdminFetcher;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Route\AdminPoolLoader;
 use Sonata\AdminBundle\Search\SearchHandler;
+use Sonata\AdminBundle\Search\SearchHandlerInterface;
 use Sonata\AdminBundle\SonataConfiguration;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
@@ -123,6 +124,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->alias(AuditManagerInterface::class, 'sonata.admin.audit.manager')
 
         ->set('sonata.admin.search.handler', SearchHandler::class)
+
+        ->alias(SearchHandlerInterface::class, 'sonata.admin.search.handler')
 
         ->set('sonata.admin.controller.crud', CRUDController::class)
             ->public()

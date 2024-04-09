@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Block;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Search\SearchableFilterInterface;
-use Sonata\AdminBundle\Search\SearchHandler;
+use Sonata\AdminBundle\Search\SearchHandlerInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
@@ -37,7 +37,7 @@ final class AdminSearchBlockService extends AbstractBlockService
     public function __construct(
         Environment $twig,
         private Pool $pool,
-        private SearchHandler $searchHandler,
+        private SearchHandlerInterface $searchHandler,
         private TemplateRegistryInterface $templateRegistry,
         private string $emptyBoxesOption,
         private string $adminRoute
