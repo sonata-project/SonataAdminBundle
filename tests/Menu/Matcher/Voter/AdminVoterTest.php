@@ -62,6 +62,8 @@ final class AdminVoterTest extends TestCase
         yield 'has admin' => [$this->getAdmin('_sonata_admin', true, true), '_sonata_admin', null, true];
         yield 'has child admin' => [$this->getChildAdmin('_sonata_admin', '_sonata_child_admin', true, true), '_sonata_admin|_sonata_child_admin', null, true];
         yield 'has bad child admin' => [$this->getChildAdmin('_sonata_admin', '_sonata_child_admin', true, true), '_sonata_admin|_sonata_child_admin_unexpected', null, null];
+        yield 'has nested child admin' => [$this->getNestedChildAdmin('_sonata_admin', '_sonata_child_admin', '_sonata_nested_child_admin', true, true), '_sonata_admin|_sonata_child_admin|_sonata_nested_child_admin', null, true];
+        yield 'has bad nested child admin' => [$this->getNestedChildAdmin('_sonata_admin', '_sonata_child_admin', '_sonata_nested_child_admin', true, true), '_sonata_admin|_sonata_child_admin|_sonata_nested_child_admin_unexpected', null, null];
         yield 'direct link' => ['admin_post', null, 'admin_post', true];
         yield 'no direct link' => ['admin_post', null, 'admin_blog', null];
     }
@@ -81,7 +83,7 @@ final class AdminVoterTest extends TestCase
             ->with('list')
             ->willReturn($granted);
         $admin
-            ->method('getCode')
+            ->method('getBaseCodeRoute')
             ->willReturn($code);
         $admin
             ->method('getChildren')
@@ -109,7 +111,7 @@ final class AdminVoterTest extends TestCase
             ->with('list')
             ->willReturn($granted);
         $parentAdmin
-            ->method('getCode')
+            ->method('getBaseCodeRoute')
             ->willReturn($parentCode);
 
         $childAdmin = $this->createMock(AdminInterface::class);
@@ -122,5 +124,49 @@ final class AdminVoterTest extends TestCase
             ->willReturn([$childAdmin]);
 
         return $parentAdmin;
+    }
+
+    /**
+     * @return AdminInterface<object>
+     */
+    private function getNestedChildAdmin(
+        string $grandParentCode,
+        string $parentCode,
+        string $childCode,
+        bool $list = false,
+        bool $granted = false
+    ): AdminInterface {
+        $grandParentAdmin = $this->createMock(AdminInterface::class);
+        $grandParentAdmin
+            ->method('hasRoute')
+            ->with('list')
+            ->willReturn($list);
+        $grandParentAdmin
+            ->method('hasAccess')
+            ->with('list')
+            ->willReturn($granted);
+        $grandParentAdmin
+            ->method('getBaseCodeRoute')
+            ->willReturn($grandParentCode);
+
+        $parentAdmin = $this->createMock(AdminInterface::class);
+        $parentAdmin
+            ->method('getBaseCodeRoute')
+            ->willReturn(sprintf('%s|%s', $grandParentCode, $parentCode));
+
+        $grandParentAdmin
+            ->method('getChildren')
+            ->willReturn([$parentAdmin]);
+
+        $childAdmin = $this->createMock(AdminInterface::class);
+        $childAdmin
+            ->method('getBaseCodeRoute')
+            ->willReturn(sprintf('%s|%s|%s', $grandParentCode, $parentCode, $childCode));
+
+        $parentAdmin
+            ->method('getChildren')
+            ->willReturn([$childAdmin]);
+
+        return $grandParentAdmin;
     }
 }
