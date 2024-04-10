@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.30.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.29.3...4.30.0) - 2024-04-10
+### Added
+- [[#8170](https://github.com/sonata-project/SonataAdminBundle/pull/8170)] SearchHandlerInterface ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Deprecated
+- [[#8172](https://github.com/sonata-project/SonataAdminBundle/pull/8172)] Not implementing `FilterInterface::showFilter` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#8172](https://github.com/sonata-project/SonataAdminBundle/pull/8172)] Not implementing `FilterInterface::getLabelTranslationParameters` ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#8172](https://github.com/sonata-project/SonataAdminBundle/pull/8172)] Not implementing `FilterInterface::withAdvancedFilter` ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Fixed
+- [[#8173](https://github.com/sonata-project/SonataAdminBundle/pull/8173)] Active state in side menu for nested child admins ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#8172](https://github.com/sonata-project/SonataAdminBundle/pull/8172)] `label_translation_parameters` option usage ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.29.3](https://github.com/sonata-project/SonataAdminBundle/compare/4.29.2...4.29.3) - 2024-01-22
 ### Fixed
 - [[#8149](https://github.com/sonata-project/SonataAdminBundle/pull/8149)] Fix possible null error in search ([@core23](https://github.com/core23))
