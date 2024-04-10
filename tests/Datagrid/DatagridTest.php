@@ -25,6 +25,7 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Sonata\AdminBundle\Form\Type\Filter\FilterDataType;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -318,7 +319,7 @@ final class DatagridTest extends TestCase
     public function testBuildPager(): void
     {
         $filter1 = $this->getMockBuilder(FilterInterface::class)
-            ->addMethods(['getFormOptions'])
+            ->addMethods(['getFormOptions', 'getLabelTranslationParameters'])
             ->getMockForAbstractClass();
         $filter1->expects(static::once())
             ->method('getName')
@@ -330,13 +331,16 @@ final class DatagridTest extends TestCase
             ->method('isActive')
             ->willReturn(false);
         $filter1
+            ->method('getFieldType')
+            ->willReturn(TextType::class);
+        $filter1
             ->method('getFormOptions')
             ->willReturn(['operator_options' => ['help' => 'baz1']]);
 
         $this->datagrid->addFilter($filter1);
 
         $filter2 = $this->getMockBuilder(FilterInterface::class)
-            ->addMethods(['getFormOptions'])
+            ->addMethods(['getFormOptions', 'getLabelTranslationParameters'])
             ->getMockForAbstractClass();
         $filter2->expects(static::once())
             ->method('getName')
@@ -347,6 +351,9 @@ final class DatagridTest extends TestCase
         $filter2
             ->method('isActive')
             ->willReturn(true);
+        $filter2
+            ->method('getFieldType')
+            ->willReturn(TextType::class);
         $filter2
             ->method('getFormOptions')
             ->willReturn(['operator_options' => ['help' => 'baz2']]);
@@ -374,12 +381,13 @@ final class DatagridTest extends TestCase
         $this->datagrid->setValue('fooFormName', $type, $value);
 
         $filter = $this->getMockBuilder(FilterInterface::class)
-            ->addMethods(['getFormOptions'])
+            ->addMethods(['getFormOptions', 'getLabelTranslationParameters'])
             ->getMockForAbstractClass();
         $filter->expects(static::once())->method('getName')->willReturn('foo');
         $filter->method('getFormName')->willReturn('fooFormName');
         $filter->method('isActive')->willReturn(false);
         $filter->method('getFormOptions')->willReturn(['operator_options' => ['help' => 'baz2']]);
+        $filter->method('getFieldType')->willReturn(TextType::class);
         $filter->expects(static::exactly($applyCallNumber))->method('apply');
 
         $this->datagrid->addFilter($filter);
@@ -430,7 +438,7 @@ final class DatagridTest extends TestCase
     public function testBuildPagerWithException(): void
     {
         $filter = $this->getMockBuilder(FilterInterface::class)
-            ->addMethods(['getFormOptions'])
+            ->addMethods(['getFormOptions', 'getLabelTranslationParameters'])
             ->getMockForAbstractClass();
         $filter->expects(static::once())
             ->method('getName')
@@ -443,6 +451,9 @@ final class DatagridTest extends TestCase
         $filter
             ->method('isActive')
             ->willReturn(false);
+        $filter
+            ->method('getFieldType')
+            ->willReturn(TextType::class);
         $filter
             ->method('getFormOptions')
             ->willReturn(['operator_options' => ['help' => 'baz']]);
@@ -475,7 +486,7 @@ final class DatagridTest extends TestCase
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, [DatagridInterface::SORT_BY => $sortBy]);
 
         $filter = $this->getMockBuilder(FilterInterface::class)
-            ->addMethods(['getFormOptions'])
+            ->addMethods(['getFormOptions', 'getLabelTranslationParameters'])
             ->getMockForAbstractClass();
         $filter->expects(static::once())
             ->method('getName')
@@ -486,6 +497,9 @@ final class DatagridTest extends TestCase
         $filter
             ->method('isActive')
             ->willReturn(false);
+        $filter
+            ->method('getFieldType')
+            ->willReturn(TextType::class);
         $filter
             ->method('getFormOptions')
             ->willReturn(['operator_options' => ['help' => 'baz']]);
@@ -526,7 +540,7 @@ final class DatagridTest extends TestCase
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, [DatagridInterface::SORT_BY => $sortBy, DatagridInterface::PAGE => $page, DatagridInterface::PER_PAGE => $perPage]);
 
         $filter = $this->getMockBuilder(FilterInterface::class)
-            ->addMethods(['getFormOptions'])
+            ->addMethods(['getFormOptions', 'getLabelTranslationParameters'])
             ->getMockForAbstractClass();
         $filter->expects(static::once())
             ->method('getName')
@@ -537,6 +551,9 @@ final class DatagridTest extends TestCase
         $filter
             ->method('isActive')
             ->willReturn(false);
+        $filter
+            ->method('getFieldType')
+            ->willReturn(TextType::class);
         $filter
             ->method('getFormOptions')
             ->willReturn(['operator_options' => ['help' => 'baz']]);
