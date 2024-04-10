@@ -258,7 +258,7 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
      */
     final public function getLabelTranslationParameters(): array
     {
-        return $this->getOption('label_translation_parameters');
+        return $this->getOption('label_translation_parameters', []);
     }
 
     final public function withAdvancedFilter(): bool
