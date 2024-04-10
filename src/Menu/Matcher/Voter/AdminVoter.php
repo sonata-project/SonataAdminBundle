@@ -32,31 +32,22 @@ final class AdminVoter implements VoterInterface
 
     public function matchItem(ItemInterface $item): ?bool
     {
-        $admin = $item->getExtra('admin');
         $request = $this->requestStack->getMainRequest();
+        if (null === $request) {
+            return null;
+        }
 
-        if ($admin instanceof AdminInterface
+        $admin = $item->getExtra('admin');
+        if (
+            $admin instanceof AdminInterface
             && $admin->hasRoute('list') && $admin->hasAccess('list')
-            && null !== $request
+            && $this->match($admin, $request->get('_sonata_admin'))
         ) {
-            $requestCode = $request->get('_sonata_admin');
-
-            if ($admin->getCode() === $requestCode) {
-                return true;
-            }
-
-            if ($this->hasChildren($admin)) {
-                $isMatch = $this->matchChildren($admin->getChildren(), $requestCode);
-
-                if (null !== $isMatch) {
-                    return $isMatch;
-                }
-            }
+            return true;
         }
 
         $route = $item->getExtra('route');
-
-        if (null !== $route && null !== $request && $route === $request->get('_route')) {
+        if (null !== $route && $route === $request->get('_route')) {
             return true;
         }
 
@@ -66,26 +57,18 @@ final class AdminVoter implements VoterInterface
     /**
      * @param AdminInterface<object> $admin
      */
-    private function hasChildren(AdminInterface $admin): bool
+    private function match(AdminInterface $admin, mixed $requestCode): bool
     {
-        return [] !== $admin->getChildren();
-    }
+        if ($admin->getBaseCodeRoute() === $requestCode) {
+            return true;
+        }
 
-    /**
-     * @param array<int, AdminInterface<object>> $children
-     */
-    private function matchChildren(array $children, mixed $requestCode): ?bool
-    {
-        foreach ($children as $child) {
-            if ($child->getBaseCodeRoute() === $requestCode) {
-                return true;
-            }
-
-            if ($this->hasChildren($child) && true === $this->matchChildren($child->getChildren(), $requestCode)) {
+        foreach ($admin->getChildren() as $child) {
+            if ($this->match($child, $requestCode)) {
                 return true;
             }
         }
 
-        return null;
+        return false;
     }
 }
