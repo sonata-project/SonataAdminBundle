@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.30.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.30.0...4.30.1) - 2024-04-10
+### Fixed
+- [[#8175](https://github.com/sonata-project/SonataAdminBundle/pull/8175)] `Filter::getLabelTranslationParameters` implementation ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.30.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.29.3...4.30.0) - 2024-04-10
 ### Added
 - [[#8170](https://github.com/sonata-project/SonataAdminBundle/pull/8170)] SearchHandlerInterface ([@VincentLanglet](https://github.com/VincentLanglet))
