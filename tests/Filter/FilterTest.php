@@ -27,6 +27,8 @@ final class FilterTest extends TestCase
         static::assertSame(TextType::class, $filter->getFieldType());
         static::assertSame([], $filter->getFieldOptions());
         static::assertNull($filter->getLabel());
+        static::assertNull($filter->getTranslationDomain());
+        static::assertSame([], $filter->getLabelTranslationParameters());
 
         $options = [
             'label' => 'foo',
