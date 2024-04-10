@@ -45,10 +45,10 @@ file that was distributed with this source code.
                 <div class="matches">
                     {% for name, filter in filters %}
                         <a class="label label-primary" href="{{ admin.generateUrl('list', {'filter': {(filter.formName): {'value': term}}}) }}">
-                            {% if filter.option('translation_domain') is same as(false) %}
-                                {{ filter.option('label') }}
+                            {% if filter.translationDomain is same as(false) %}
+                                {{ filter.label }}
                             {% else %}
-                                {{ filter.option('label')|trans({}, filter.option('translation_domain', admin.translationDomain)) }}
+                                {{ filter.label|trans({}, filter.translationDomain ?? admin.translationDomain) }}
                             {% endif %}
                         </a>
                     {% endfor %}

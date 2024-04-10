@@ -248,6 +248,24 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
         ];
     }
 
+    final public function showFilter(): ?bool
+    {
+        return $this->getOption('show_filter');
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    final public function getLabelTranslationParameters(): array
+    {
+        return $this->getOption('label_translation_parameters');
+    }
+
+    final public function withAdvancedFilter(): bool
+    {
+        return $this->getOption('advanced_filter');
+    }
+
     final protected function setActive(bool $active): void
     {
         $this->active = $active;

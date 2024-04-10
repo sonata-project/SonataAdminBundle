@@ -256,7 +256,8 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block list_filters_actions %}
-    {% set displayableFilters = admin.datagrid.filters|filter(filter => filter.option('show_filter') is not same as (false)) %}
+    {# NEXT_MAJOR: Remove |default(filter.option('show_filter')) #}
+    {% set displayableFilters = admin.datagrid.filters|filter(filter => filter.showFilter|default(filter.option('show_filter')) is not same as (false)) %}
     {%- if displayableFilters|length %}
         <ul class="nav navbar-nav navbar-right">
 
@@ -270,14 +271,17 @@ file that was distributed with this source code.
 
                 <ul class="dropdown-menu dropdown-menu-scrollable" role="menu">
                     {% for filter in displayableFilters %}
-                        {% set filterDisplayed = filter.isActive() or filter.option('show_filter') is same as (true) %}
+                        {# NEXT_MAJOR: Remove |default(filter.option('show_filter')) #}
+                        {% set filterDisplayed = filter.isActive() or filter.showFilter|default(filter.option('show_filter')) is same as (true) %}
                         <li>
                             <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
                                 <i class="far {{ filterDisplayed ? 'fa-check-square' : 'fa-square' }}"></i>
                                 {% if filter.label is not same as(false) %}
                                     {% if filter.translationDomain is same as(false) %}
                                         {{ filter.label }}
-                                    {% else %}
+                                    {% elseif filter.labelTranslationParameters is defined %}
+                                        {{ filter.label|trans(filter.labelTranslationParameters, filter.translationDomain ?? admin.translationDomain) }}
+                                    {% else %} {# NEXT_MAJOR: remove the else part and change elseif to else #}
                                         {{ filter.label|trans(filter.option('label_translation_parameters', {}), filter.translationDomain ?? admin.translationDomain) }}
                                     {% endif %}
                                 {% endif %}
@@ -310,7 +314,8 @@ file that was distributed with this source code.
                             <div class="col-sm-9">
                                 {% set withAdvancedFilter = false %}
                                 {% for filter in admin.datagrid.filters %}
-                                    {% set filterDisplayed = filter.isActive() or filter.option('show_filter') is same as (true) %}
+                                    {# NEXT_MAJOR: Remove |default(filter.option('show_filter')) #}
+                                    {% set filterDisplayed = filter.isActive() or filter.showFilter|default(filter.option('show_filter')) is same as (true) %}
                                     {% set filterCanBeDisplayed = filter.option('show_filter') is not same as(false) %}
                                     <div class="form-group {% block sonata_list_filter_group_class %}{% endblock %}" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ filterCanBeDisplayed ? 'true' : 'false' }}" style="display: {% if filterDisplayed %}block{% else %}none{% endif %}">
                                         {% if filter.label is not same as(false) %}
@@ -343,7 +348,8 @@ file that was distributed with this source code.
                                         {% endif %}
                                     </div>
 
-                                    {% if filter.option('advanced_filter') %}
+                                    {# NEXT_MAJOR: Remove |default(filter.option('advanced_filter')) #}
+                                    {% if filter.withAdvancedFilter|default(filter.option('advanced_filter')) %}
                                         {% set withAdvancedFilter = true %}
                                     {% endif %}
                                 {% endfor %}

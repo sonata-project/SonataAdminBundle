@@ -20,6 +20,9 @@ use Sonata\AdminBundle\Filter\Model\FilterData;
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @method array getFormOptions();
+ * @method bool|null showFilter();
+ * @method array getLabelTranslationParameters();
+ * @method bool withAdvancedFilter();
  */
 interface FilterInterface
 {
