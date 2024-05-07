@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.30.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.30.1...4.30.2) - 2024-05-07
+### Fixed
+- [[#8177](https://github.com/sonata-project/SonataAdminBundle/pull/8177)] Batch consistency ([@pietaj](https://github.com/pietaj))
+
 ## [4.30.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.30.0...4.30.1) - 2024-04-10
 ### Fixed
 - [[#8175](https://github.com/sonata-project/SonataAdminBundle/pull/8175)] `Filter::getLabelTranslationParameters` implementation ([@VincentLanglet](https://github.com/VincentLanglet))
