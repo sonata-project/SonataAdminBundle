@@ -21,5 +21,6 @@
         <!-- Psalm equivalent of PHPStan config `treatPhpDocTypesAsCertain: false` -->
         <DocblockTypeContradiction errorLevel="suppress"/>
         <RedundantConditionGivenDocblockType errorLevel="suppress"/>
+        <MissingClassConstType errorLevel="suppress"/>
     </issueHandlers>
 </psalm>
