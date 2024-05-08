@@ -45,7 +45,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @throws \LogicException
      *
-     * @return static
+     * @return $this
      */
     final public function with(string $name, array $options = []): self
     {
@@ -168,7 +168,7 @@ abstract class BaseGroupedMapper implements MapperInterface
     /**
      * Only nested add if the condition match true.
      *
-     * @return static
+     * @return $this
      */
     final public function ifTrue(bool $bool): self
     {
@@ -180,7 +180,7 @@ abstract class BaseGroupedMapper implements MapperInterface
     /**
      * Only nested add if the condition match false.
      *
-     * @return static
+     * @return $this
      */
     final public function ifFalse(bool $bool): self
     {
@@ -192,7 +192,7 @@ abstract class BaseGroupedMapper implements MapperInterface
     /**
      * @throws \LogicException
      *
-     * @return static
+     * @return $this
      */
     final public function ifEnd(): self
     {
@@ -210,7 +210,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @param array<string, mixed> $options
      *
-     * @return static
+     * @return $this
      */
     final public function tab(string $name, array $options = []): self
     {
@@ -222,7 +222,7 @@ abstract class BaseGroupedMapper implements MapperInterface
      *
      * @throws \LogicException
      *
-     * @return static
+     * @return $this
      */
     final public function end(): self
     {
@@ -256,9 +256,9 @@ abstract class BaseGroupedMapper implements MapperInterface
      * @param string $tab            The tab the group belongs to, defaults to 'default'
      * @param bool   $deleteEmptyTab Whether or not the Tab should be deleted, when the deleted group leaves the tab empty after deletion
      *
-     * @return static
+     * @return $this
      */
-    final public function removeGroup(string $group, string $tab = 'default', bool $deleteEmptyTab = false)
+    final public function removeGroup(string $group, string $tab = 'default', bool $deleteEmptyTab = false): self
     {
         $groups = $this->getGroups();
 
@@ -293,7 +293,7 @@ abstract class BaseGroupedMapper implements MapperInterface
     /**
      * Removes a tab.
      *
-     * @return static
+     * @return $this
      */
     final public function removeTab(string $tab): self
     {

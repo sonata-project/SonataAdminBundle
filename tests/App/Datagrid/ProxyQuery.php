@@ -21,12 +21,12 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
  */
 final class ProxyQuery implements ProxyQueryInterface
 {
-    public function execute()
+    public function execute(): iterable
     {
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function setSortBy(array $parentAssociationMappings, array $fieldMapping): ProxyQueryInterface
+    public function setSortBy(array $parentAssociationMappings, array $fieldMapping): self
     {
         throw new \BadMethodCallException('Not implemented.');
     }
@@ -36,7 +36,7 @@ final class ProxyQuery implements ProxyQueryInterface
         return 'e.id';
     }
 
-    public function setSortOrder(string $sortOrder): ProxyQueryInterface
+    public function setSortOrder(string $sortOrder): self
     {
         throw new \BadMethodCallException('Not implemented.');
     }
@@ -46,7 +46,7 @@ final class ProxyQuery implements ProxyQueryInterface
         return 'ASC';
     }
 
-    public function setFirstResult(?int $firstResult): ProxyQueryInterface
+    public function setFirstResult(?int $firstResult): self
     {
         if (null === $firstResult) {
             return $this;
@@ -60,7 +60,7 @@ final class ProxyQuery implements ProxyQueryInterface
         throw new \BadMethodCallException('Not implemented.');
     }
 
-    public function setMaxResults(?int $maxResults): ProxyQueryInterface
+    public function setMaxResults(?int $maxResults): self
     {
         if (null === $maxResults) {
             return $this;

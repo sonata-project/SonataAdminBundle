@@ -37,7 +37,7 @@ interface MapperInterface
     public function has(string $key): bool;
 
     /**
-     * @return static
+     * @return $this
      */
     public function remove(string $key);
 
@@ -51,7 +51,7 @@ interface MapperInterface
     /**
      * @param string[] $keys
      *
-     * @return static
+     * @return $this
      */
     public function reorder(array $keys);
 }

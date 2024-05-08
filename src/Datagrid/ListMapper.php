@@ -60,9 +60,11 @@ final class ListMapper implements MapperInterface
     /**
      * @param array<string, mixed> $fieldDescriptionOptions
      *
+     * @return $this
+     *
      * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
-    public function addIdentifier(string $name, ?string $type = null, array $fieldDescriptionOptions = []): static
+    public function addIdentifier(string $name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
         $fieldDescriptionOptions['identifier'] = true;
 
@@ -74,9 +76,11 @@ final class ListMapper implements MapperInterface
      *
      * @throws \LogicException
      *
+     * @return $this
+     *
      * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
-    public function add(string $name, ?string $type = null, array $fieldDescriptionOptions = []): static
+    public function add(string $name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
         if (
             isset($fieldDescriptionOptions['role'])
@@ -151,7 +155,7 @@ final class ListMapper implements MapperInterface
         return $this->list->has($key);
     }
 
-    public function remove(string $key): static
+    public function remove(string $key): self
     {
         $this->getAdmin()->removeListFieldDescription($key);
         $this->list->remove($key);
@@ -164,7 +168,7 @@ final class ListMapper implements MapperInterface
         return array_keys($this->list->getElements());
     }
 
-    public function reorder(array $keys): static
+    public function reorder(array $keys): self
     {
         $this->list->reorder($keys);
 

@@ -21,14 +21,6 @@ final class FieldDescription extends BaseFieldDescription
     {
     }
 
-    /**
-     * @return null
-     */
-    public function getTargetEntity()
-    {
-        return null;
-    }
-
     public function getTargetModel(): ?string
     {
         return null;
@@ -47,7 +39,7 @@ final class FieldDescription extends BaseFieldDescription
         return false;
     }
 
-    public function getValue(object $object)
+    public function getValue(object $object): mixed
     {
         return $this->getFieldValue($object, $this->fieldName);
     }

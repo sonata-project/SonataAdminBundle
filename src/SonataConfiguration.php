@@ -66,10 +66,7 @@ final class SonataConfiguration
         return $this->logo;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getOption(string $name, mixed $default = null)
+    public function getOption(string $name, mixed $default = null): mixed
     {
         return $this->options[$name] ?? $default;
     }

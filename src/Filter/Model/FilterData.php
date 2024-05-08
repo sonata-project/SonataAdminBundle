@@ -56,10 +56,7 @@ final class FilterData
         return new self($type, \array_key_exists('value', $data), $data['value'] ?? null);
     }
 
-    /**
-     * @return mixed
-     */
-    public function getValue()
+    public function getValue(): mixed
     {
         if (!$this->hasValue) {
             throw new \LogicException('The FilterData object does not have a value.');

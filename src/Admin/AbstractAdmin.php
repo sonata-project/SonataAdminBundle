@@ -1413,7 +1413,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $parameters;
     }
 
-    final public function getPersistentParameter(string $name, mixed $default = null)
+    final public function getPersistentParameter(string $name, mixed $default = null): mixed
     {
         $parameters = $this->getPersistentParameters();
 

@@ -27,7 +27,7 @@ interface RouteCollectionInterface
      * @param string[]              $schemes
      * @param string[]              $methods
      *
-     * @return static
+     * @return $this
      */
     public function add(
         string $name,
@@ -44,7 +44,7 @@ interface RouteCollectionInterface
     public function getCode(string $name): string;
 
     /**
-     * @return static
+     * @return $this
      */
     public function addCollection(self $collection): self;
 
@@ -63,14 +63,14 @@ interface RouteCollectionInterface
     public function get(string $name): Route;
 
     /**
-     * @return static
+     * @return $this
      */
     public function remove(string $name): self;
 
     /**
      * @throws \InvalidArgumentException
      *
-     * @return static
+     * @return $this
      */
     public function restore(string $name): self;
 
@@ -79,12 +79,12 @@ interface RouteCollectionInterface
      *
      * @param string[]|string $routeList
      *
-     * @return static
+     * @return $this
      */
     public function clearExcept($routeList): self;
 
     /**
-     * @return static
+     * @return $this
      */
     public function clear(): self;
 

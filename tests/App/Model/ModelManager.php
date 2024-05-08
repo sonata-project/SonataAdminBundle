@@ -114,7 +114,7 @@ final class ModelManager implements ModelManagerInterface, LockInterface
     {
     }
 
-    public function getLockVersion(object $object)
+    public function getLockVersion(object $object): mixed
     {
         return null;
     }

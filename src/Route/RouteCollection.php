@@ -53,7 +53,7 @@ final class RouteCollection implements RouteCollectionInterface
         array $schemes = [],
         array $methods = [],
         string $condition = ''
-    ): RouteCollectionInterface {
+    ): self {
         $pattern = sprintf('%s/%s', $this->baseRoutePattern, $pattern ?? $name);
         $code = $this->getCode($name);
 
@@ -84,7 +84,7 @@ final class RouteCollection implements RouteCollectionInterface
         return sprintf('%s.%s', $this->baseCodeRoute, $name);
     }
 
-    public function addCollection(RouteCollectionInterface $collection): RouteCollectionInterface
+    public function addCollection(RouteCollectionInterface $collection): self
     {
         foreach ($collection->getElements() as $code => $element) {
             $this->addElement($code, $element);
@@ -127,14 +127,14 @@ final class RouteCollection implements RouteCollectionInterface
         throw new \InvalidArgumentException(sprintf('Element "%s" does not exist.', $name));
     }
 
-    public function remove(string $name): RouteCollectionInterface
+    public function remove(string $name): self
     {
         unset($this->elements[$this->getCode($name)]);
 
         return $this;
     }
 
-    public function restore(string $name): RouteCollectionInterface
+    public function restore(string $name): self
     {
         if ($this->hasCached($name)) {
             $code = $this->getCode($name);
@@ -146,12 +146,7 @@ final class RouteCollection implements RouteCollectionInterface
         throw new \InvalidArgumentException(sprintf('Element "%s" does not exist in cache.', $name));
     }
 
-    /**
-     * @param string|string[] $routeList
-     *
-     * @return static
-     */
-    public function clearExcept($routeList): RouteCollectionInterface
+    public function clearExcept($routeList): self
     {
         if (!\is_array($routeList)) {
             $routeList = [$routeList];
@@ -172,7 +167,7 @@ final class RouteCollection implements RouteCollectionInterface
         return $this;
     }
 
-    public function clear(): RouteCollectionInterface
+    public function clear(): self
     {
         $this->elements = [];
 

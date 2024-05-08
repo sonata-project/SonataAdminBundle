@@ -21,7 +21,7 @@ interface RepositoryInterface
     /**
      * @return T|null
      */
-    public function byId(string $id);
+    public function byId(string $id): ?EntityInterface;
 
     /**
      * @return array<T>

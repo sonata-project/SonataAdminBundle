@@ -33,28 +33,28 @@ interface ProxyQueryInterface
      * @param array<array<string, mixed>> $parentAssociationMappings
      * @param array<string, mixed>        $fieldMapping
      *
-     * @return static
+     * @return $this
      */
     public function setSortBy(array $parentAssociationMappings, array $fieldMapping): self;
 
     public function getSortBy(): ?string;
 
     /**
-     * @return static
+     * @return $this
      */
     public function setSortOrder(string $sortOrder): self;
 
     public function getSortOrder(): ?string;
 
     /**
-     * @return static
+     * @return $this
      */
     public function setFirstResult(?int $firstResult): self;
 
     public function getFirstResult(): ?int;
 
     /**
-     * @return static
+     * @return $this
      */
     public function setMaxResults(?int $maxResults): self;
 
