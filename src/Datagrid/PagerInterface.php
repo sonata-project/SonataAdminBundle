@@ -81,6 +81,8 @@ interface PagerInterface
 
     public function countResults(): int;
 
+    public function displayCountResults(bool $rendering = true): int|string;
+
     /**
      * Returns an array of page numbers to use in pagination links.
      *

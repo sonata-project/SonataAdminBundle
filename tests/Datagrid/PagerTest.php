@@ -37,7 +37,7 @@ final class PagerTest extends TestCase
             true,
             true,
             true,
-            ['countResults']
+            ['countResults', 'displayCountResults']
         );
     }
 

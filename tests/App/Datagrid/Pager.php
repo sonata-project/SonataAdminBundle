@@ -106,6 +106,11 @@ final class Pager implements PagerInterface
         return 1;
     }
 
+    public function displayCountResults(bool $rendering = true): int|string
+    {
+        return 1;
+    }
+
     public function getLinks(?int $nbLinks = null): array
     {
         return [];

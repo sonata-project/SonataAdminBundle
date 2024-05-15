@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Datagrid;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Sonata\AdminBundle\Util\TraversableToCollection;
+use Traversable;
 
 /**
  * @author Lukas Kahwe Smith <smith@pooteeweet.org>
@@ -44,16 +45,35 @@ final class SimplePager extends Pager
      * If set to 3 the pager will generate links to the next three pages
      * etc.
      */
-    public function __construct(
-        int $maxPerPage = 10,
-        private int $threshold = 1
-    ) {
+    public function __construct(int $maxPerPage = 10, private int $threshold = 1)
+    {
         parent::__construct($maxPerPage);
     }
 
     public function countResults(): int
     {
         return ($this->getPage() - 1) * $this->getMaxPerPage() + ($this->thresholdCount ?? 0);
+    }
+
+    public function displayCountResults(bool $rendering = true): int|string
+    {
+        $countResults = $this->countResults() > $this->getMaxPerPage()
+            ? $this->getMaxPerPage()
+            : $this->countResults();
+
+        if ($this->getPage() > 1) {
+            $countResults = $this->countResults();
+        }
+
+        if ($this->getLastPage() === $this->getPage()) {
+            $rendering = false;
+        }
+
+        if (!$rendering) {
+            return $countResults;
+        }
+
+        return sprintf('%s+', $countResults);
     }
 
     public function getCurrentPageResults(): iterable
