@@ -29,8 +29,7 @@ interface MetadataInterface
     public function getOptions(): array;
 
     /**
-     * @param string $name    The option key
-     * @param mixed  $default The default value if option not found
+     * @param string $name
      *
      * @return mixed
      */
