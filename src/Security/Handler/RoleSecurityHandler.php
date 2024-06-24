@@ -71,17 +71,8 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
             $attributes = [$attributes];
         }
 
-        // NEXT_MAJOR: Change the foreach to a single check.
-        $useAll = false;
-        foreach ($attributes as $pos => $attribute) {
-            // If the attribute is not already a ROLE_ we generate the related role.
-            if (\is_string($attribute) && !str_starts_with($attribute, 'ROLE_')) {
-                $attributes[$pos] = sprintf($this->getBaseRole($admin), $attribute);
-                // All the admin related role are available when you have the `_ALL` role.
-                $useAll = true;
-            }
-        }
-
+        $useAll = $this->hasOnlyAdminRoles($attributes);
+        $attributes = $this->mapAttributes($attributes, $admin);
         $allRole = sprintf($this->getBaseRole($admin), 'ALL');
 
         try {
@@ -124,5 +115,40 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
         }
 
         return false;
+    }
+
+    /**
+     * @param array<string|Expression> $attributes
+     */
+    private function hasOnlyAdminRoles(mixed $attributes): bool
+    {
+        // NEXT_MAJOR: Change the foreach to a single check.
+        foreach ($attributes as $attribute) {
+            // If the attribute is not already a ROLE_ we generate the related role.
+            if (\is_string($attribute) && !str_starts_with($attribute, 'ROLE_')) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @param array<string|Expression> $attributes
+     * @param AdminInterface<object>   $admin
+     *
+     * @return array<string|Expression>
+     */
+    private function mapAttributes(mixed $attributes, AdminInterface $admin): array
+    {
+        // NEXT_MAJOR: Change the foreach to a single check.
+        foreach ($attributes as $pos => $attribute) {
+            // If the attribute is not already a ROLE_ we generate the related role.
+            if (\is_string($attribute) && !str_starts_with($attribute, 'ROLE_')) {
+                $attributes[$pos] = sprintf($this->getBaseRole($admin), $attribute);
+            }
+        }
+
+        return $attributes;
     }
 }
