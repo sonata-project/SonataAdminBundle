@@ -68,6 +68,54 @@ final class RoleSecurityHandlerTest extends TestCase
     }
 
     /**
+     * @dataProvider provideIsGrantedWithSecurityInformationCases
+     *
+     * @param array<string, string[]> $informationMapping
+     * @param string[]                $userRoles
+     */
+    public function testIsGrantedWithSecurityInformation(array $informationMapping, array $userRoles, bool $expected): void
+    {
+        $handler = new RoleSecurityHandler($this->authorizationChecker, 'ROLE_SUPER_ADMIN');
+
+        $subject = new \stdClass();
+
+        $this->admin
+            ->method('getCode')
+            ->willReturn('test');
+        $this->admin->expects(static::once())
+            ->method('getSecurityInformation')
+            ->willReturn($informationMapping);
+
+        $this->authorizationChecker
+            ->method('isGranted')
+            ->willReturnCallback(static function (mixed $attribute, mixed $subject = null) use ($userRoles): bool {
+                if ($attribute instanceof Expression) {
+                    $attribute = (string) $attribute;
+                }
+
+                if (\in_array($attribute, $userRoles, true)) {
+                    return $subject instanceof \stdClass;
+                }
+
+                return false;
+            });
+
+        static::assertSame($expected, $handler->isGranted($this->admin, 'EDIT', $subject));
+    }
+
+    /**
+     * @phpstan-return iterable<array{array<string, string[]>, string[], bool}>
+     */
+    public function provideIsGrantedWithSecurityInformationCases(): iterable
+    {
+        yield 'default mapping' => [[], ['ROLE_TEST_EDIT'], true];
+        yield 'with single mapping' => [['VIEW' => ['EDIT', 'SHOW']], ['ROLE_TEST_VIEW'], true];
+        yield 'with multiple mappings' => [['WRITE' => ['EDIT', 'SHOW'], 'MANAGE' => ['EDIT', 'SHOW', 'DELETE']], ['ROLE_TEST_MANAGE'], true];
+        yield 'with all mapping' => [['ADMIN' => ['ALL']], ['ROLE_TEST_ALL'], true];
+        yield 'with missing permission' => [['SHOW' => ['VIEW', 'SHOW']], ['ROLE_TEST_VIEW'], false];
+    }
+
+    /**
      * NEXT_MAJOR: Remove the group legacy and only keep string $superAdminRoles and string|Expression $operation in dataProvider.
      *
      * @group legacy

@@ -120,7 +120,7 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
     /**
      * @param array<string|Expression> $attributes
      */
-    private function hasOnlyAdminRoles(mixed $attributes): bool
+    private function hasOnlyAdminRoles(array $attributes): bool
     {
         // NEXT_MAJOR: Change the foreach to a single check.
         foreach ($attributes as $attribute) {
@@ -139,16 +139,28 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
      *
      * @return array<string|Expression>
      */
-    private function mapAttributes(mixed $attributes, AdminInterface $admin): array
+    private function mapAttributes(array $attributes, AdminInterface $admin): array
     {
-        // NEXT_MAJOR: Change the foreach to a single check.
-        foreach ($attributes as $pos => $attribute) {
-            // If the attribute is not already a ROLE_ we generate the related role.
-            if (\is_string($attribute) && !str_starts_with($attribute, 'ROLE_')) {
-                $attributes[$pos] = sprintf($this->getBaseRole($admin), $attribute);
+        $mappedAttributes = [];
+
+        foreach ($attributes as $attribute) {
+            if (!\is_string($attribute) || str_starts_with($attribute, 'ROLE_')) {
+                $mappedAttributes[] = $attribute;
+
+                continue;
+            }
+
+            $baseRole = $this->getBaseRole($admin);
+
+            $mappedAttributes[] = sprintf($baseRole, $attribute);
+
+            foreach ($admin->getSecurityInformation() as $role => $permissions) {
+                if (\in_array($attribute, $permissions, true)) {
+                    $mappedAttributes[] = sprintf($baseRole, $role);
+                }
             }
         }
 
-        return $attributes;
+        return array_unique($mappedAttributes);
     }
 }
