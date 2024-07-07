@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Sonata\AdminBundle\Templating\LayoutStorage\LayoutStorageInterface;
 use Sonata\AdminBundle\Twig\BreadcrumbsRuntime;
 use Sonata\AdminBundle\Twig\CanonicalizeRuntime;
 use Sonata\AdminBundle\Twig\Extension\BreadcrumbsExtension;
@@ -80,6 +81,8 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 service('sonata.admin.global_template_registry'),
                 service('sonata.admin.pool'),
+                service(LayoutStorageInterface::class),
+                param('sonata.admin.configuration.use_layouts'),
             ])
 
         // NEXT_MAJOR: Remove the `args()` call.

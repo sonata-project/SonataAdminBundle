@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Twig;
 
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
+use Sonata\AdminBundle\Templating\LayoutStorage\LayoutStorageInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
 use Symfony\Component\DependencyInjection\Exception\ServiceNotFoundException;
@@ -27,7 +28,8 @@ final class TemplateRegistryRuntime implements RuntimeExtensionInterface
      */
     public function __construct(
         private TemplateRegistryInterface $globalTemplateRegistry,
-        private Pool $pool
+        private Pool $pool,
+        private LayoutStorageInterface $layoutStorage
     ) {
     }
 
@@ -37,12 +39,12 @@ final class TemplateRegistryRuntime implements RuntimeExtensionInterface
      */
     public function getAdminTemplate(string $name, string $adminCode): string
     {
-        return $this->getTemplateRegistry($adminCode)->getTemplate($name);
+        return $this->getTemplateRegistry($adminCode)->getTemplate($name, $this->layoutStorage->get());
     }
 
     public function getGlobalTemplate(string $name): string
     {
-        return $this->globalTemplateRegistry->getTemplate($name);
+        return $this->globalTemplateRegistry->getTemplate($name, $this->layoutStorage->get());
     }
 
     /**

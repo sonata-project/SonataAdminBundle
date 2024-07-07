@@ -123,6 +123,54 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *     },
  *     search: bool,
  *     show_mosaic_button: bool,
+ *     use_layouts: bool,
+ *     allow_layouts: list<string>,
+ *     layouts: array{
+ *         name: string,
+ *         templates: array{
+ *             acl: string,
+ *             action: string,
+ *             action_create: string,
+ *             add_block: string,
+ *             ajax: string,
+ *             base_list_field: string,
+ *             batch: string,
+ *             batch_confirmation: string,
+ *             button_acl: string,
+ *             button_create: string,
+ *             button_edit: string,
+ *             button_history: string,
+ *             button_list: string,
+ *             button_show: string,
+ *             dashboard: string,
+ *             delete: string,
+ *             edit: string,
+ *             filter: string,
+ *             filter_theme: list<string>,
+ *             form_theme: list<string>,
+ *             history: string,
+ *             history_revision_timestamp: string,
+ *             inner_list_row: string,
+ *             knp_menu_template: string,
+ *             layout: string,
+ *             list: string,
+ *             list_block: string,
+ *             outer_list_rows_list: string,
+ *             outer_list_rows_mosaic: string,
+ *             outer_list_rows_tree: string,
+ *             pager_links: string,
+ *             pager_results: string,
+ *             preview: string,
+ *             search: string,
+ *             search_result_block: string,
+ *             select: string,
+ *             short_object_description: string,
+ *             show: string,
+ *             show_compare: string,
+ *             tab_menu_template: string,
+ *             user_block: string,
+ *      },
+ *     },
  *     templates: array{
  *         acl: string,
  *         action: string,
@@ -560,6 +608,67 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
 
+                ->booleanNode('use_layouts')->defaultFalse()->end()
+                ->arrayNode('allow_layouts')
+                    ->prototype('scalar')->defaultValue(['default'])->end()
+                ->end()
+                ->arrayNode('layouts')
+                    ->prototype('array')
+                        ->children()
+                            ->scalarNode('name')->cannotBeEmpty()->end()
+                            ->arrayNode('templates')
+                                ->addDefaultsIfNotSet()
+                                ->children()
+                                    ->scalarNode('user_block')->defaultValue('@SonataAdmin/Core/user_block.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('add_block')->defaultValue('@SonataAdmin/Core/add_block.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('layout')->defaultValue('@SonataAdmin/standard_layout.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('ajax')->defaultValue('@SonataAdmin/ajax_layout.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('dashboard')->defaultValue('@SonataAdmin/Core/dashboard.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('search')->defaultValue('@SonataAdmin/Core/search.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('list')->defaultValue('@SonataAdmin/CRUD/list.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('filter')->defaultValue('@SonataAdmin/Form/filter_admin_fields.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('show')->defaultValue('@SonataAdmin/CRUD/show.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('show_compare')->defaultValue('@SonataAdmin/CRUD/show_compare.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('edit')->defaultValue('@SonataAdmin/CRUD/edit.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('preview')->defaultValue('@SonataAdmin/CRUD/preview.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('history')->defaultValue('@SonataAdmin/CRUD/history.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('acl')->defaultValue('@SonataAdmin/CRUD/acl.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('history_revision_timestamp')->defaultValue('@SonataAdmin/CRUD/history_revision_timestamp.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('action')->defaultValue('@SonataAdmin/CRUD/action.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('select')->defaultValue('@SonataAdmin/CRUD/list__select.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('list_block')->defaultValue('@SonataAdmin/Block/block_admin_list.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('search_result_block')->defaultValue('@SonataAdmin/Block/block_search_result.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('short_object_description')->defaultValue('@SonataAdmin/Helper/short-object-description.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('delete')->defaultValue('@SonataAdmin/CRUD/delete.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('batch')->defaultValue('@SonataAdmin/CRUD/list__batch.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('batch_confirmation')->defaultValue('@SonataAdmin/CRUD/batch_confirmation.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('inner_list_row')->defaultValue('@SonataAdmin/CRUD/list_inner_row.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('outer_list_rows_mosaic')->defaultValue('@SonataAdmin/CRUD/list_outer_rows_mosaic.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('outer_list_rows_list')->defaultValue('@SonataAdmin/CRUD/list_outer_rows_list.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('outer_list_rows_tree')->defaultValue('@SonataAdmin/CRUD/list_outer_rows_tree.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('base_list_field')->defaultValue('@SonataAdmin/CRUD/base_list_field.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('pager_links')->defaultValue('@SonataAdmin/Pager/links.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('pager_results')->defaultValue('@SonataAdmin/Pager/results.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('tab_menu_template')->defaultValue('@SonataAdmin/Core/tab_menu_template.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('knp_menu_template')->defaultValue('@SonataAdmin/Menu/sonata_menu.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('action_create')->defaultValue('@SonataAdmin/CRUD/dashboard__action_create.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('button_acl')->defaultValue('@SonataAdmin/Button/acl_button.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('button_create')->defaultValue('@SonataAdmin/Button/create_button.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('button_edit')->defaultValue('@SonataAdmin/Button/edit_button.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('button_history')->defaultValue('@SonataAdmin/Button/history_button.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('button_list')->defaultValue('@SonataAdmin/Button/list_button.html.twig')->cannotBeEmpty()->end()
+                                    ->scalarNode('button_show')->defaultValue('@SonataAdmin/Button/show_button.html.twig')->cannotBeEmpty()->end()
+                                    ->arrayNode('form_theme')
+                                        ->prototype('scalar')->end()
+                                    ->end()
+                                    ->arrayNode('filter_theme')
+                                        ->prototype('scalar')->end()
+                                    ->end()
+                                ->end()
+                            ->end()
+                        ->end()
+                    ->end()
+                ->end()
                 ->arrayNode('templates')
                     ->addDefaultsIfNotSet()
                     ->children()

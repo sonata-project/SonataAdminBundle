@@ -94,22 +94,42 @@ There are several other templates that can be customized, enabling you to fine-t
 * ``pager_results`` : renders the dropdown that lets you choose the number of
   elements per page on list views
 
-Configuring templates
----------------------
+Configuring layouts and templates
+---------------------------------
 
-The main goal of this template structure is to make it comfortable for you
+The main goal of this layout/template structure is to make it comfortable for you
 to customize the ones you need. You can extend the ones you want in your own bundle, and
-tell ``SonataAdminBundle`` to use your templates instead of the default ones. You can do so
+tell ``SonataAdminBundle`` to use your layouts/templates instead of the default ones. You can do so
 in several ways.
 
-You can specify your templates in the config file:
+You can specify your layouts/templates in the config file:
 
 .. code-block:: yaml
 
     # config/packages/sonata_admin.yaml
 
     sonata_admin:
-        templates:
+        use_layouts: false
+        allow_layouts: [default] # [custom, default] - the first defined layout will be used as default
+        layouts:
+            default:
+                name: 'Sonata Admin - AdminLTE 2'
+                templates:
+                    layout:                     '@SonataAdmin/standard_layout.html.twig'
+                    ...
+                    button_show:                '@SonataAdmin/Button/show_button.html.twig'
+                    form_theme:                 []
+                    filter_theme:               []
+            custom_layout:
+                name: 'Sonata Admin - AdminLTE 3'
+                templates:
+                    layout:                     '@SonataAdmin/AdminLTE3/standard_layout.html.twig'
+                    ...
+                    button_show:                '@SonataAdmin/AdminLTE3/Button/show_button.html.twig'
+                    form_theme:                 []
+                    filter_theme:               []
+
+        templates: # it is "default" layout
             layout:                     '@SonataAdmin/standard_layout.html.twig'
             ajax:                       '@SonataAdmin/ajax_layout.html.twig'
             list:                       '@SonataAdmin/CRUD/list.html.twig'
@@ -167,12 +187,13 @@ can specify the templates to use in the ``Admin`` service definition:
             class: App\Admin\PostAdmin
             calls:
                 - [setTemplate, ['edit', 'PostAdmin/edit.html.twig']]
+                - [setTemplate, ['edit', 'PostAdmin/edit.html.twig', 'custom_layout']]
             tags:
                 - { name: sonata.admin, model_class: App\Entity\Post, manager_type: orm, group: 'Content', label: 'Post' }
 
 .. note::
 
-    A ``setTemplates(array $templates)`` (notice the plural) method also
+    A ``setTemplates(array $templates, string $layout = 'default')`` (notice the plural) method also
     exists, that allows you to set multiple templates at once.
 
 Changes made using the ``setTemplate()`` and ``setTemplates()`` methods

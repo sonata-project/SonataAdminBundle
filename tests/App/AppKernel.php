@@ -98,6 +98,7 @@ final class AppKernel extends Kernel
         }
 
         $containerBuilder->loadFromExtension('security', $securityConfig);
+        $containerBuilder->loadFromExtension('security', $securityConfig);
 
         $containerBuilder->loadFromExtension('twig', [
             'default_path' => sprintf('%s/templates', $this->getProjectDir()),

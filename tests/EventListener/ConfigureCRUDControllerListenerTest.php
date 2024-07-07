@@ -18,6 +18,7 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\EventListener\ConfigureCRUDControllerListener;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
+use Sonata\AdminBundle\Templating\LayoutStorage\LayoutStorageInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
@@ -44,6 +45,13 @@ final class ConfigureCRUDControllerListenerTest extends TestCase
 
         $adminFetcher = $this->createMock(AdminFetcherInterface::class);
         $container->set('sonata.admin.request.fetcher', $adminFetcher);
+
+        $layoutStorage = $this->createMock(LayoutStorageInterface::class);
+
+        $layoutStorage
+            ->method('get')
+            ->willReturn('default');
+        $container->set('sonata.admin.layout_cookie_storage', $layoutStorage);
 
         $request = new Request([], [], [
             '_sonata_admin' => 'admin.code',

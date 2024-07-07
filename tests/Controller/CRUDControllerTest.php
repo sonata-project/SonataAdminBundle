@@ -31,6 +31,7 @@ use Sonata\AdminBundle\Model\AuditReaderInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
+use Sonata\AdminBundle\Templating\LayoutStorage\LayoutStorageInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Tests\App\Controller\CustomModelManagerExceptionMessageController;
 use Sonata\AdminBundle\Tests\App\Controller\CustomModelManagerThrowableMessageController;
@@ -109,6 +110,8 @@ final class CRUDControllerTest extends TestCase
     private ContainerInterface $container;
 
     private AdminObjectAclManipulator $adminObjectAclManipulator;
+
+    private LayoutStorageInterface $layoutStorage;
 
     /**
      * @var array<string, \ReflectionMethod>
@@ -190,6 +193,12 @@ final class CRUDControllerTest extends TestCase
 
         $this->adminObjectAclManipulator = new AdminObjectAclManipulator($this->formFactory, MaskBuilder::class);
 
+        $this->layoutStorage = $this->createMock(LayoutStorageInterface::class);
+
+        $this->layoutStorage
+            ->method('get')
+            ->willReturn('default');
+
         $this->csrfProvider = $this->createMock(CsrfTokenManagerInterface::class);
 
         $this->csrfProvider
@@ -217,6 +226,7 @@ final class CRUDControllerTest extends TestCase
         $this->container->set('sonata.admin.admin_exporter', $adminExporter);
         $this->container->set('sonata.admin.audit.manager', $this->auditManager);
         $this->container->set('sonata.admin.object.manipulator.acl.admin', $this->adminObjectAclManipulator);
+        $this->container->set('sonata.admin.layout_cookie_storage', $this->layoutStorage);
         $this->container->set('security.csrf.token_manager', $this->csrfProvider);
         $this->container->set('logger', $this->logger);
         $this->container->set('translator', $this->translator);
@@ -237,20 +247,20 @@ final class CRUDControllerTest extends TestCase
         $this->parameterBag->set('kernel.debug', false);
 
         $this->templateRegistry->method('getTemplate')->willReturnMap([
-            ['ajax', '@SonataAdmin/ajax_layout.html.twig'],
-            ['layout', '@SonataAdmin/standard_layout.html.twig'],
-            ['show', '@SonataAdmin/CRUD/show.html.twig'],
-            ['show_compare', '@SonataAdmin/CRUD/show_compare.html.twig'],
-            ['edit', '@SonataAdmin/CRUD/edit.html.twig'],
-            ['dashboard', '@SonataAdmin/Core/dashboard.html.twig'],
-            ['search', '@SonataAdmin/Core/search.html.twig'],
-            ['list', '@SonataAdmin/CRUD/list.html.twig'],
-            ['preview', '@SonataAdmin/CRUD/preview.html.twig'],
-            ['history', '@SonataAdmin/CRUD/history.html.twig'],
-            ['acl', '@SonataAdmin/CRUD/acl.html.twig'],
-            ['delete', '@SonataAdmin/CRUD/delete.html.twig'],
-            ['batch', '@SonataAdmin/CRUD/list__batch.html.twig'],
-            ['batch_confirmation', '@SonataAdmin/CRUD/batch_confirmation.html.twig'],
+            ['ajax', 'default', '@SonataAdmin/ajax_layout.html.twig'],
+            ['layout', 'default', '@SonataAdmin/standard_layout.html.twig'],
+            ['show', 'default', '@SonataAdmin/CRUD/show.html.twig'],
+            ['show_compare', 'default', '@SonataAdmin/CRUD/show_compare.html.twig'],
+            ['edit', 'default', '@SonataAdmin/CRUD/edit.html.twig'],
+            ['dashboard', 'default', '@SonataAdmin/Core/dashboard.html.twig'],
+            ['search', 'default', '@SonataAdmin/Core/search.html.twig'],
+            ['list', 'default', '@SonataAdmin/CRUD/list.html.twig'],
+            ['preview', 'default', '@SonataAdmin/CRUD/preview.html.twig'],
+            ['history', 'default', '@SonataAdmin/CRUD/history.html.twig'],
+            ['acl', 'default', '@SonataAdmin/CRUD/acl.html.twig'],
+            ['delete', 'default', '@SonataAdmin/CRUD/delete.html.twig'],
+            ['batch', 'default', '@SonataAdmin/CRUD/list__batch.html.twig'],
+            ['batch_confirmation', 'default', '@SonataAdmin/CRUD/batch_confirmation.html.twig'],
         ]);
 
         $this->admin->method('getIdParameter')->willReturn('id');

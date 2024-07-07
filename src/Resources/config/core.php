@@ -35,6 +35,8 @@ use Sonata\AdminBundle\Route\AdminPoolLoader;
 use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Search\SearchHandlerInterface;
 use Sonata\AdminBundle\SonataConfiguration;
+use Sonata\AdminBundle\Templating\LayoutStorage\CookieLayoutStorage;
+use Sonata\AdminBundle\Templating\LayoutStorage\LayoutStorageInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
 use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\Extractor\AdminExtractor;
@@ -152,6 +154,13 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 param('sonata.admin.configuration.templates'),
             ])
+
+        ->set('sonata.admin.layout_cookie_storage', CookieLayoutStorage::class)
+            ->args([
+                service('request_stack'),
+            ])
+
+        ->alias(LayoutStorageInterface::class, 'sonata.admin.layout_cookie_storage')
 
         ->set('sonata.admin.request.fetcher', AdminFetcher::class)
             ->args([

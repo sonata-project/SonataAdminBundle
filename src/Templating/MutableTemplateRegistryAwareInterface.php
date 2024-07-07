@@ -24,10 +24,10 @@ interface MutableTemplateRegistryAwareInterface
 
     public function hasTemplateRegistry(): bool;
 
-    public function setTemplate(string $name, string $template): void;
+    public function setTemplate(string $name, string $template /* ,string $layout = 'default' */): void;
 
     /**
      * @param array<string, string> $templates
      */
-    public function setTemplates(array $templates): void;
+    public function setTemplates(array $templates /* ,string $layout = 'default' */): void;
 }

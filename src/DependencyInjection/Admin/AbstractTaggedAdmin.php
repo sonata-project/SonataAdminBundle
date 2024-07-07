@@ -524,13 +524,39 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
         $this->templateRegistry = $templateRegistry;
     }
 
-    final public function setTemplates(array $templates): void
+    final public function setTemplates(array $templates, /* string $layout = 'default' */): void
     {
-        $this->getTemplateRegistry()->setTemplates($templates);
+        if (\func_num_args() < 2) {
+            @trigger_error(
+                'Not passing the "string $layout" argument explicitly is deprecated since sonata-project/admin-bundle x.y and will be required in 5.0.',
+                \E_USER_DEPRECATED
+            );
+
+            $this->getTemplateRegistry()->setTemplates($templates, 'default');
+        }
+
+        $layout = \func_get_arg(1);
+
+        // NEXT_MAJOR: Remove code before this comment
+
+        $this->getTemplateRegistry()->setTemplates($templates, $layout);
     }
 
-    final public function setTemplate(string $name, string $template): void
+    final public function setTemplate(string $name, string $template, /* string $layout = 'default' */): void
     {
-        $this->getTemplateRegistry()->setTemplate($name, $template);
+        if (\func_num_args() < 2) {
+            @trigger_error(
+                'Not passing the "string $layout" argument explicitly is deprecated since sonata-project/admin-bundle x.y and will be required in 5.0.',
+                \E_USER_DEPRECATED
+            );
+
+            $this->getTemplateRegistry()->setTemplate($name, $template, 'default');
+        }
+
+        $layout = \func_get_arg(1);
+
+        // NEXT_MAJOR: Remove code before this comment
+
+        $this->getTemplateRegistry()->setTemplate($name, $template, $layout);
     }
 }

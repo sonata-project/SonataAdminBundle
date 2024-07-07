@@ -109,10 +109,13 @@ final class SonataAdminExtension extends Extension
         if (false === $config['options']['lock_protection']) {
             $container->removeDefinition('sonata.admin.lock.extension');
         }
-
+        $defaultLayout = ['name' => 'AdminLTE2', 'templates' => $config['templates']];
         $container->setParameter('sonata.admin.configuration.global_search.empty_boxes', $config['global_search']['empty_boxes']);
         $container->setParameter('sonata.admin.configuration.global_search.admin_route', $config['global_search']['admin_route']);
         $container->setParameter('sonata.admin.configuration.templates', $config['templates']);
+        $container->setParameter('sonata.admin.configuration.use_layouts', $config['use_layouts']);
+        $container->setParameter('sonata.admin.configuration.allow_layouts', $config['allow_layouts']);
+        $container->setParameter('sonata.admin.configuration.layouts', ['default' => $defaultLayout] + $config['layouts']);
         $container->setParameter('sonata.admin.configuration.default_admin_services', $config['default_admin_services']);
         $container->setParameter('sonata.admin.configuration.default_controller', $config['default_controller']);
         $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);

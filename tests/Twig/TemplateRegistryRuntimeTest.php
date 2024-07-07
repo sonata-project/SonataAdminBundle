@@ -17,6 +17,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
+use Sonata\AdminBundle\Templating\LayoutStorage\LayoutStorageInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Twig\TemplateRegistryRuntime;
@@ -39,13 +40,16 @@ final class TemplateRegistryRuntimeTest extends TestCase
             ->method('getTemplateRegistry')
             ->willReturn($adminTemplateRegistry);
 
+        $layoutStorage = $this->createStub(LayoutStorageInterface::class);
         $container = new Container();
         $container->set('admin.post', $admin);
         $pool = new Pool($container, ['admin.post']);
 
         $this->templateRegistryRuntime = new TemplateRegistryRuntime(
             $templateRegistry,
-            $pool
+            $pool,
+            $layoutStorage,
+            false
         );
     }
 

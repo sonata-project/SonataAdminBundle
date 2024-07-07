@@ -21,7 +21,7 @@ interface MutableTemplateRegistryInterface extends TemplateRegistryInterface
     /**
      * @param array<string, string> $templates 'name' => 'file_path.html.twig'
      */
-    public function setTemplates(array $templates): void;
+    public function setTemplates(array $templates /* ,string $layout = 'default' */): void;
 
-    public function setTemplate(string $name, string $template): void;
+    public function setTemplate(string $name, string $template /* ,string $layout = 'default' */): void;
 }

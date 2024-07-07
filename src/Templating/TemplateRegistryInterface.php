@@ -77,9 +77,9 @@ interface TemplateRegistryInterface
     /**
      * @return array<string, string> 'name' => 'file_path.html.twig'
      */
-    public function getTemplates(): array;
+    public function getTemplates(/* string $layout */): array;
 
-    public function getTemplate(string $name): string;
+    public function getTemplate(string $name /* ,string $layout */): string;
 
-    public function hasTemplate(string $name): bool;
+    public function hasTemplate(string $name /* ,string $layout */): bool;
 }

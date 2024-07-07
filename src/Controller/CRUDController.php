@@ -26,6 +26,8 @@ use Sonata\AdminBundle\Exception\ModelManagerThrowable;
 use Sonata\AdminBundle\Form\FormErrorIteratorToConstraintViolationList;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
+use Sonata\AdminBundle\Templating\LayoutStorage\CookieLayoutStorage;
+use Sonata\AdminBundle\Templating\LayoutStorage\LayoutStorageInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
 use Sonata\AdminBundle\Util\AdminObjectAclData;
@@ -94,6 +96,7 @@ class CRUDController extends AbstractController
             'sonata.exporter.exporter' => '?'.ExporterInterface::class,
             'sonata.admin.admin_exporter' => '?'.AdminExporter::class,
             'sonata.admin.security.acl_user_manager' => '?'.AdminAclUserManagerInterface::class,
+            'sonata.admin.layout_cookie_storage' => LayoutStorageInterface::class,
 
             'controller_resolver' => 'controller_resolver',
             'http_kernel' => HttpKernelInterface::class,
@@ -127,7 +130,7 @@ class CRUDController extends AbstractController
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-        $template = $this->templateRegistry->getTemplate('list');
+        $template = $this->getTemplate('list');
 
         if ($this->container->has('sonata.admin.admin_exporter')) {
             $exporter = $this->container->get('sonata.admin.admin_exporter');
@@ -262,7 +265,7 @@ class CRUDController extends AbstractController
             return $this->redirectTo($request, $object);
         }
 
-        $template = $this->templateRegistry->getTemplate('delete');
+        $template = $this->getTemplate('delete');
 
         /**
          * @psalm-suppress DeprecatedMethod
@@ -373,7 +376,7 @@ class CRUDController extends AbstractController
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFormTheme());
 
-        $template = $this->templateRegistry->getTemplate($templateKey);
+        $template = $this->getTemplate($templateKey);
 
         /**
          * @psalm-suppress DeprecatedMethod
@@ -496,7 +499,7 @@ class CRUDController extends AbstractController
             $formView = $datagrid->getForm()->createView();
             $this->setFormTheme($formView, $this->admin->getFilterTheme());
 
-            $template = $batchAction['template'] ?? $this->templateRegistry->getTemplate('batch_confirmation');
+            $template = $batchAction['template'] ?? $this->getTemplate('batch_confirmation');
 
             /**
              * @psalm-suppress DeprecatedMethod
@@ -645,7 +648,7 @@ class CRUDController extends AbstractController
         // set the theme for the current Admin Form
         $this->setFormTheme($formView, $this->admin->getFormTheme());
 
-        $template = $this->templateRegistry->getTemplate($templateKey);
+        $template = $this->getTemplate($templateKey);
 
         /**
          * @psalm-suppress DeprecatedMethod
@@ -680,7 +683,7 @@ class CRUDController extends AbstractController
 
         $fields = $this->admin->getShow();
 
-        $template = $this->templateRegistry->getTemplate('show');
+        $template = $this->getTemplate('show');
 
         /**
          * @psalm-suppress DeprecatedMethod
@@ -721,7 +724,7 @@ class CRUDController extends AbstractController
 
         $revisions = $reader->findRevisions($this->admin->getClass(), $objectId);
 
-        $template = $this->templateRegistry->getTemplate('history');
+        $template = $this->getTemplate('history');
 
         /**
          * @psalm-suppress DeprecatedMethod
@@ -775,7 +778,7 @@ class CRUDController extends AbstractController
 
         $this->admin->setSubject($object);
 
-        $template = $this->templateRegistry->getTemplate('show');
+        $template = $this->getTemplate('show');
 
         /**
          * @psalm-suppress DeprecatedMethod
@@ -838,7 +841,7 @@ class CRUDController extends AbstractController
 
         $this->admin->setSubject($baseObject);
 
-        $template = $this->templateRegistry->getTemplate('show_compare');
+        $template = $this->getTemplate('show_compare');
 
         /**
          * @psalm-suppress DeprecatedMethod
@@ -949,7 +952,7 @@ class CRUDController extends AbstractController
             }
         }
 
-        $template = $this->templateRegistry->getTemplate('acl');
+        $template = $this->getTemplate('acl');
 
         /**
          * @psalm-suppress DeprecatedMethod
@@ -997,9 +1000,9 @@ class CRUDController extends AbstractController
         $this->setTwigGlobal('admin', $this->admin);
 
         if ($this->isXmlHttpRequest($request)) {
-            $baseTemplate = $this->templateRegistry->getTemplate('ajax');
+            $baseTemplate = $this->getTemplate('ajax');
         } else {
-            $baseTemplate = $this->templateRegistry->getTemplate('layout');
+            $baseTemplate = $this->getTemplate('layout');
         }
 
         $this->setTwigGlobal('base_template', $baseTemplate);
@@ -1096,10 +1099,10 @@ class CRUDController extends AbstractController
         \assert(null !== $request);
 
         if ($this->isXmlHttpRequest($request)) {
-            return $this->templateRegistry->getTemplate('ajax');
+            return $this->getTemplate('ajax');
         }
 
-        return $this->templateRegistry->getTemplate('layout');
+        return $this->getTemplate('layout');
     }
 
     /**
@@ -1612,5 +1615,12 @@ class CRUDController extends AbstractController
         }
 
         return false;
+    }
+
+    private function getTemplate(string $name): string
+    {
+        $cookieLayoutStorage = $this->container->get('sonata.admin.layout_cookie_storage');
+
+        return $this->templateRegistry->getTemplate($name, $cookieLayoutStorage->get());
     }
 }
