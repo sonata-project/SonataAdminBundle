@@ -1130,7 +1130,7 @@ class CRUDController extends AbstractController
         }
         $this->getLogger()->error($exception->getMessage(), $context);
 
-        return null;
+        return $exception->getMessage();
     }
 
     /**
@@ -1154,7 +1154,7 @@ class CRUDController extends AbstractController
         }
         $this->getLogger()->error($exception->getMessage(), $context);
 
-        return null;
+        return $exception->getMessage();
     }
 
     /**
