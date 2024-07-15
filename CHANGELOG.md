@@ -2,6 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.31.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.30.2...4.31.0) - 2024-07-15
+### Added
+- [[#8192](https://github.com/sonata-project/SonataAdminBundle/pull/8192)]  Enable security information mapping for `RoleSecurityHandler` ([@core23](https://github.com/core23))
+
+### Fixed
+- [[#8187](https://github.com/sonata-project/SonataAdminBundle/pull/8187)] Symfony 7.1 deprecation about `Symfony\Component\HttpKernel\DependencyInjection\Extension` usage ([@AirBair](https://github.com/AirBair))
+
 ## [4.30.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.30.1...4.30.2) - 2024-05-07
 ### Fixed
 - [[#8177](https://github.com/sonata-project/SonataAdminBundle/pull/8177)] Batch consistency ([@pietaj](https://github.com/pietaj))
