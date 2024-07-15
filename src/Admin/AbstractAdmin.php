@@ -1840,7 +1840,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         preg_match(self::CLASS_REGEX, $this->getModelClass(), $matches);
 
-        if ([] === $matches) {
+        if (!isset($matches[1], $matches[3], $matches[5])) {
             throw new \LogicException(sprintf(
                 'Please define a default `baseRoutePattern` value for the admin class `%s`',
                 static::class
@@ -1877,7 +1877,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         preg_match(self::CLASS_REGEX, $this->getModelClass(), $matches);
 
-        if ([] === $matches) {
+        if (!isset($matches[1], $matches[3], $matches[5])) {
             throw new \LogicException(sprintf(
                 'Cannot automatically determine base route name,'
                 .' please define a default `baseRouteName` value for the admin class `%s`',
