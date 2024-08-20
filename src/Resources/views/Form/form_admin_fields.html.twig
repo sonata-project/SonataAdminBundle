@@ -305,7 +305,7 @@ file that was distributed with this source code.
             {{ form_errors(form.time) }}
 
             {% if form.date.vars.widget == 'single_text' %}
-                <div class="col-sm-2">
+                <div class="col-sm-6">
                     {{ form_widget(form.date) }}
                 </div>
             {% else %}
@@ -313,7 +313,7 @@ file that was distributed with this source code.
             {% endif %}
 
             {% if form.time.vars.widget == 'single_text' %}
-                <div class="col-sm-2">
+                <div class="col-sm-6">
                     {{ form_widget(form.time) }}
                 </div>
             {% else %}
