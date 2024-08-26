@@ -171,7 +171,7 @@ final class RouteCollectionTest extends TestCase
 
         $route = $routeCollection->get($name);
 
-        $combinedPattern = sprintf('/%s/%s', $baseRoutePattern, $pattern);
+        $combinedPattern = \sprintf('/%s/%s', $baseRoutePattern, $pattern);
 
         static::assertSame($combinedPattern, $route->getPath());
         static::assertArrayHasKey('_controller', $route->getDefaults());

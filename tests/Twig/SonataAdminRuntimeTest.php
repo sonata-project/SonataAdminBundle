@@ -81,10 +81,10 @@ final class SonataAdminRuntimeTest extends TestCase
         $this->environment->addExtension(new FakeTemplateRegistryExtension());
 
         // routing extension
-        $xmlFileLoader = new XmlFileLoader(new FileLocator([sprintf('%s/../../src/Resources/config/routing', __DIR__)]));
+        $xmlFileLoader = new XmlFileLoader(new FileLocator([\sprintf('%s/../../src/Resources/config/routing', __DIR__)]));
         $routeCollection = $xmlFileLoader->load('sonata_admin.xml');
 
-        $xmlFileLoader = new XmlFileLoader(new FileLocator([sprintf('%s/../Fixtures/Resources/config/routing', __DIR__)]));
+        $xmlFileLoader = new XmlFileLoader(new FileLocator([\sprintf('%s/../Fixtures/Resources/config/routing', __DIR__)]));
         $testRouteCollection = $xmlFileLoader->load('routing.xml');
 
         $routeCollection->addCollection($testRouteCollection);

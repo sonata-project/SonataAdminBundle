@@ -67,7 +67,7 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
                     // Otherwise expect a __toString() method in the entity
                     $valueObject = (string) $model;
                 } else {
-                    throw new TransformationFailedException(sprintf(
+                    throw new TransformationFailedException(\sprintf(
                         'Unable to convert the model "%s" to string, provide "property" option'
                         .' or implement "__toString()" method in your model.',
                         $this->class
@@ -80,7 +80,7 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
 
                 $identifier = $this->modelManager->getNormalizedIdentifier($model);
                 if (null === $identifier) {
-                    throw new TransformationFailedException(sprintf(
+                    throw new TransformationFailedException(\sprintf(
                         'No identifier was found for the model "%s".',
                         $this->class
                     ));
@@ -93,7 +93,7 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
             foreach ($choices as $valueObject => $idx) {
                 if (\count($idx) > 1) { // avoid issue with identical values ...
                     foreach ($idx as $id) {
-                        $finalChoices[sprintf('%s (id: %s)', $valueObject, $id)] = $id;
+                        $finalChoices[\sprintf('%s (id: %s)', $valueObject, $id)] = $id;
                     }
                 } else {
                     $finalChoices[$valueObject] = current($idx);

@@ -516,7 +516,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getParentAssociationMapping(): ?string
     {
         if (!$this->isChild()) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" has no parent.',
                 static::class
             ));
@@ -534,7 +534,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         if ($this->isChild()) { // the admin class is a child, prefix it with the parent route pattern
-            $this->cachedBaseRoutePattern = sprintf(
+            $this->cachedBaseRoutePattern = \sprintf(
                 '%s/%s/%s',
                 $this->getParent()->getBaseRoutePattern(),
                 $this->getParent()->getRouterIdParameter(),
@@ -559,7 +559,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         if ($this->isChild()) { // the admin class is a child, prefix it with the parent route name
-            $this->cachedBaseRouteName = sprintf(
+            $this->cachedBaseRouteName = \sprintf(
                 '%s_%s',
                 $this->getParent()->getBaseRouteName(),
                 $this->generateBaseRouteName(true)
@@ -582,7 +582,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             \assert(\is_string($subClass));
 
             if (!$this->hasSubClass($subClass)) {
-                throw new \LogicException(sprintf('Subclass "%s" is not defined.', $subClass));
+                throw new \LogicException(\sprintf('Subclass "%s" is not defined.', $subClass));
             }
 
             return $this->getSubClass($subClass);
@@ -631,7 +631,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getActiveSubClass(): string
     {
         if (!$this->hasActiveSubClass()) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" has no active subclass.',
                 static::class
             ));
@@ -643,7 +643,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getActiveSubclassCode(): string
     {
         if (!$this->hasActiveSubClass()) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" has no active subclass.',
                 static::class
             ));
@@ -652,7 +652,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $subClass = (string) $this->getRequest()->query->get('subclass');
 
         if (!$this->hasSubClass($subClass)) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" has no active subclass.',
                 static::class
             ));
@@ -708,7 +708,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     public function getRouterIdParameter(): string
     {
-        return sprintf('{%s}', $this->getIdParameter());
+        return \sprintf('{%s}', $this->getIdParameter());
     }
 
     public function getIdParameter(): string
@@ -716,7 +716,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $parameter = 'id';
 
         for ($i = 0; $i < $this->getChildDepth(); ++$i) {
-            $parameter = sprintf('child%s', ucfirst($parameter));
+            $parameter = \sprintf('child%s', ucfirst($parameter));
         }
 
         return $parameter;
@@ -800,7 +800,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function defineFormBuilder(FormBuilderInterface $formBuilder): void
     {
         if (!$this->hasSubject()) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" has no subject.',
                 static::class
             ));
@@ -1029,7 +1029,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getParentFieldDescription(): FieldDescriptionInterface
     {
         if (!$this->hasParentFieldDescription()) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" has no parent field description.',
                 static::class
             ));
@@ -1049,7 +1049,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function setSubject(?object $subject): void
     {
         if (null !== $subject && !is_a($subject, $this->getModelClass(), true)) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" does not allow this subject: %s, use the one register with this admin class %s',
                 static::class,
                 $subject::class,
@@ -1063,7 +1063,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getSubject(): object
     {
         if (!$this->hasSubject()) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" has no subject.',
                 static::class
             ));
@@ -1100,7 +1100,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->buildForm();
 
         if (!$this->hasFormFieldDescription($name)) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" has no form field description for the field %s.',
                 static::class,
                 $name
@@ -1153,7 +1153,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->buildShow();
 
         if (!$this->hasShowFieldDescription($name)) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" has no show field description for the field %s.',
                 static::class,
                 $name
@@ -1192,7 +1192,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->buildList();
 
         if (!$this->hasListFieldDescription($name)) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" has no list field description for %s.',
                 static::class,
                 $name
@@ -1224,7 +1224,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $this->buildDatagrid();
 
         if (!$this->hasFilterFieldDescription($name)) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" has no filter field description for the field %s.',
                 static::class,
                 $name
@@ -1269,7 +1269,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         if ($parentAdmin->getCode() === $child->getCode()) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Circular reference detected! The child admin `%s` is already in the parent tree of the `%s` admin.',
                 $child->getCode(),
                 $this->getCode()
@@ -1295,7 +1295,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getChild(string $code): AdminInterface
     {
         if (!$this->hasChild($code)) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" has no child for the code %s.',
                 static::class,
                 $code
@@ -1314,7 +1314,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getParent(): AdminInterface
     {
         if (null === $this->parent) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" has no parent.',
                 static::class
             ));
@@ -1385,7 +1385,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getUniqId(): string
     {
         if (null === $this->uniqId) {
-            $this->uniqId = sprintf('s%s', uniqid());
+            $this->uniqId = \sprintf('s%s', uniqid());
         }
 
         return $this->uniqId;
@@ -1394,7 +1394,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function getClassnameLabel(): string
     {
         if (null === $this->classnameLabel) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" has no classname label. Did you forgot to initialize the admin ?',
                 static::class
             ));
@@ -1523,7 +1523,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function showIn(string $context): bool
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
-            @trigger_error(sprintf(
+            @trigger_error(\sprintf(
                 'The "%s()" method is deprecated since sonata-project/admin-bundle version 4.7 and will be'
                 .' removed in 5.0 version. Use showInDashboard() instead.',
                 __METHOD__
@@ -1546,7 +1546,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         if (\is_array($name)) {
             @trigger_error(
-                sprintf(
+                \sprintf(
                     'Passing an array as argument 1 of "%s()" is deprecated since sonata-project/admin-bundle 4.6'
                     .' and will throw an error in 5.0. You MUST pass a string instead.',
                     __METHOD__
@@ -1555,7 +1555,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             );
         }
 
-        $objectRef = null !== $object ? sprintf('/%s#%s', spl_object_hash($object), $this->id($object) ?? '') : '';
+        $objectRef = null !== $object ? \sprintf('/%s#%s', spl_object_hash($object), $this->id($object) ?? '') : '';
         $key = md5(json_encode($name, \JSON_THROW_ON_ERROR).$objectRef);
 
         if (!\array_key_exists($key, $this->cacheIsGranted)) {
@@ -1623,7 +1623,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $key = array_search($extension, $this->extensions, true);
         if (false === $key) {
             throw new \InvalidArgumentException(
-                sprintf('The extension "%s" was not set to the "%s" admin.', $extension::class, self::class)
+                \sprintf('The extension "%s" was not set to the "%s" admin.', $extension::class, self::class)
             );
         }
 
@@ -1649,7 +1649,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             $class = BCHelper::getClass($object);
         }
 
-        return sprintf('%s:%s', $class, spl_object_hash($object));
+        return \sprintf('%s:%s', $class, spl_object_hash($object));
     }
 
     final public function supportsPreviewMode(): bool
@@ -1693,7 +1693,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
     final public function setListMode(string $mode): void
     {
-        $this->getRequest()->getSession()->set(sprintf('%s.list_mode', $this->getCode()), $mode);
+        $this->getRequest()->getSession()->set(\sprintf('%s.list_mode', $this->getCode()), $mode);
     }
 
     final public function getListMode(): string
@@ -1703,7 +1703,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             return $defaultListMode;
         }
 
-        return $this->getRequest()->getSession()->get(sprintf('%s.list_mode', $this->getCode()), $defaultListMode);
+        return $this->getRequest()->getSession()->get(\sprintf('%s.list_mode', $this->getCode()), $defaultListMode);
     }
 
     final public function checkAccess(string $action, ?object $object = null): void
@@ -1711,7 +1711,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         $access = $this->getAccess();
 
         if (!\array_key_exists($action, $access)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'Action "%s" could not be found in access mapping.'
                 .' Please make sure your action is defined into your admin class accessMapping property.',
                 $action
@@ -1724,7 +1724,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         foreach ($access[$action] as $role) {
             if (false === $this->isGranted($role, $object)) {
-                throw new AccessDeniedException(sprintf('Access Denied to the action %s and role %s', $action, $role));
+                throw new AccessDeniedException(\sprintf('Access Denied to the action %s and role %s', $action, $role));
             }
         }
     }
@@ -1829,7 +1829,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         // NEXT_MAJOR: Remove this code
         if (null !== $this->baseRoutePattern) {
-            @trigger_error(sprintf(
+            @trigger_error(\sprintf(
                 'Overriding the baseRoutePattern property is deprecated since sonata-project/admin-bundle 4.15.'
                 .' You MUST override the method %s() instead.',
                 __METHOD__
@@ -1841,7 +1841,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         preg_match(self::CLASS_REGEX, $this->getModelClass(), $matches);
 
         if (!isset($matches[1], $matches[3], $matches[5])) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Please define a default `baseRoutePattern` value for the admin class `%s`',
                 static::class
             ));
@@ -1851,7 +1851,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             return $this->urlize($matches[5], '-');
         }
 
-        return sprintf(
+        return \sprintf(
             '/%s%s/%s',
             '' === $matches[1] ? '' : $this->urlize($matches[1], '-').'/',
             $this->urlize($matches[3], '-'),
@@ -1866,7 +1866,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         // NEXT_MAJOR: Remove this code
         if (null !== $this->baseRouteName) {
-            @trigger_error(sprintf(
+            @trigger_error(\sprintf(
                 'Overriding the baseRouteName property is deprecated since sonata-project/admin-bundle 4.15.'
                 .' You MUST override the method %s() instead.',
                 __METHOD__
@@ -1878,7 +1878,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         preg_match(self::CLASS_REGEX, $this->getModelClass(), $matches);
 
         if (!isset($matches[1], $matches[3], $matches[5])) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Cannot automatically determine base route name,'
                 .' please define a default `baseRouteName` value for the admin class `%s`',
                 static::class
@@ -1889,7 +1889,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             return $this->urlize($matches[5]);
         }
 
-        return sprintf(
+        return \sprintf(
             'admin_%s%s_%s',
             '' === $matches[1] ? '' : $this->urlize($matches[1]).'_',
             $this->urlize($matches[3]),
@@ -2161,7 +2161,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             return $this->subClasses[$name];
         }
 
-        throw new \LogicException(sprintf('Unable to find the subclass `%s` for admin `%s`', $name, static::class));
+        throw new \LogicException(\sprintf('Unable to find the subclass `%s` for admin `%s`', $name, static::class));
     }
 
     /**
@@ -2212,7 +2212,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     protected function getPermissionsShow(string $context): array
     {
         if ('sonata_deprecation_mute' !== (\func_get_args()[1] ?? null)) {
-            @trigger_error(sprintf(
+            @trigger_error(\sprintf(
                 'The "%s()" method is deprecated since sonata-project/admin-bundle version 4.7 and will be'
                 .' removed in 5.0 version.',
                 __METHOD__

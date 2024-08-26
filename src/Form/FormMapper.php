@@ -174,7 +174,7 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
      */
     public function create(string $name, ?string $type = null, array $options = []): FormBuilderInterface
     {
-        @trigger_error(sprintf(
+        @trigger_error(\sprintf(
             'The "%s()" method is deprecated since sonata-project/admin-bundle version 4.15 and will be'
             .' removed in 5.0 version.',
             __METHOD__

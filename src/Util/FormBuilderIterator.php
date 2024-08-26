@@ -52,7 +52,7 @@ final class FormBuilderIterator extends \RecursiveArrayIterator
     {
         $name = $this->iterator->current();
 
-        return sprintf('%s_%s', $this->prefix, $name);
+        return \sprintf('%s_%s', $this->prefix, $name);
     }
 
     public function next(): void

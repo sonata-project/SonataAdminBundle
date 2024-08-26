@@ -31,9 +31,9 @@ final class IconRuntime implements RuntimeExtensionInterface
             && !str_starts_with($icon, 'fal ')
             && !str_starts_with($icon, 'fad ')
         ) {
-            throw new \InvalidArgumentException(sprintf('The icon format "%s" is not supported.', $icon));
+            throw new \InvalidArgumentException(\sprintf('The icon format "%s" is not supported.', $icon));
         }
 
-        return sprintf('<i class="%s" aria-hidden="true"></i>', $icon);
+        return \sprintf('<i class="%s" aria-hidden="true"></i>', $icon);
     }
 }

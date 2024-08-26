@@ -123,12 +123,12 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                 // NEXT_MAJOR: Remove the fallback to $defaultModelClass and use null instead.
                 $modelClass = $attributes['model_class'] ?? $defaultModelClass;
                 if (null === $modelClass) {
-                    throw new InvalidArgumentException(sprintf('Missing tag attribute "model_class" on service "%s".', $id));
+                    throw new InvalidArgumentException(\sprintf('Missing tag attribute "model_class" on service "%s".', $id));
                 }
 
                 $class = $container->getParameterBag()->resolveValue($modelClass);
                 if (!\is_string($class)) {
-                    throw new \TypeError(sprintf(
+                    throw new \TypeError(\sprintf(
                         'Tag attribute "model_class" for service "%s" must be of type string, %s given.',
                         $id,
                         get_debug_type($class)
@@ -159,7 +159,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
 
             foreach ($extensions as $extension => $attributes) {
                 if (!$container->has($extension)) {
-                    throw new \InvalidArgumentException(sprintf(
+                    throw new \InvalidArgumentException(\sprintf(
                         'Unable to find extension service for id %s',
                         $extension
                     ));
@@ -219,12 +219,12 @@ final class ExtensionCompilerPass implements CompilerPassInterface
                     // NEXT_MAJOR: Remove the fallback to $defaultModelClass and use null instead.
                     $modelClass = $attributes['model_class'] ?? $defaultModelClass;
                     if (null === $modelClass) {
-                        throw new InvalidArgumentException(sprintf('Missing tag attribute "model_class" on service "%s".', $id));
+                        throw new InvalidArgumentException(\sprintf('Missing tag attribute "model_class" on service "%s".', $id));
                     }
 
                     $class = $container->getParameterBag()->resolveValue($modelClass);
                     if (!\is_string($class)) {
-                        throw new \TypeError(sprintf(
+                        throw new \TypeError(\sprintf(
                             'Tag attribute "model_class" for service "%s" must be of type string, %s given.',
                             $id,
                             get_debug_type($class)

@@ -32,7 +32,7 @@ final class BadRequestParamHttpException extends BadRequestHttpException
             $expectedTypes = [$expectedTypes];
         }
 
-        $message = sprintf(
+        $message = \sprintf(
             'Expected request parameter "%s" of type "%s", %s given',
             $name,
             implode('|', $expectedTypes),

@@ -31,22 +31,22 @@ final class PreCRUDController extends CRUDController
 {
     protected function preCreate(Request $request, object $object): Response
     {
-        return new Response(sprintf('preCreate called: %s', $object->getId()));
+        return new Response(\sprintf('preCreate called: %s', $object->getId()));
     }
 
     protected function preEdit(Request $request, object $object): Response
     {
-        return new Response(sprintf('preEdit called: %s', $object->getId()));
+        return new Response(\sprintf('preEdit called: %s', $object->getId()));
     }
 
     protected function preDelete(Request $request, object $object): Response
     {
-        return new Response(sprintf('preDelete called: %s', $object->getId()));
+        return new Response(\sprintf('preDelete called: %s', $object->getId()));
     }
 
     protected function preShow(Request $request, object $object): Response
     {
-        return new Response(sprintf('preShow called: %s', $object->getId()));
+        return new Response(\sprintf('preShow called: %s', $object->getId()));
     }
 
     protected function preList(Request $request): Response

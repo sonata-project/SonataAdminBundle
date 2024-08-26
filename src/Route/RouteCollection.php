@@ -40,7 +40,7 @@ final class RouteCollection implements RouteCollectionInterface
 
     public function getRouteName(string $name): string
     {
-        return sprintf('%s_%s', $this->baseRouteName, $name);
+        return \sprintf('%s_%s', $this->baseRouteName, $name);
     }
 
     public function add(
@@ -54,7 +54,7 @@ final class RouteCollection implements RouteCollectionInterface
         array $methods = [],
         string $condition = ''
     ): self {
-        $pattern = sprintf('%s/%s', $this->baseRoutePattern, $pattern ?? $name);
+        $pattern = \sprintf('%s/%s', $this->baseRoutePattern, $pattern ?? $name);
         $code = $this->getCode($name);
 
         if (!isset($defaults['_controller'])) {
@@ -81,7 +81,7 @@ final class RouteCollection implements RouteCollectionInterface
             return $name;
         }
 
-        return sprintf('%s.%s', $this->baseCodeRoute, $name);
+        return \sprintf('%s.%s', $this->baseCodeRoute, $name);
     }
 
     public function addCollection(RouteCollectionInterface $collection): self
@@ -124,7 +124,7 @@ final class RouteCollection implements RouteCollectionInterface
             return $this->elements[$code];
         }
 
-        throw new \InvalidArgumentException(sprintf('Element "%s" does not exist.', $name));
+        throw new \InvalidArgumentException(\sprintf('Element "%s" does not exist.', $name));
     }
 
     public function remove(string $name): self
@@ -143,7 +143,7 @@ final class RouteCollection implements RouteCollectionInterface
             return $this;
         }
 
-        throw new \InvalidArgumentException(sprintf('Element "%s" does not exist in cache.', $name));
+        throw new \InvalidArgumentException(\sprintf('Element "%s" does not exist in cache.', $name));
     }
 
     public function clearExcept($routeList): self
@@ -230,7 +230,7 @@ final class RouteCollection implements RouteCollectionInterface
         if (\is_callable($element)) {
             $resolvedElement = $element();
             if (!$resolvedElement instanceof Route) {
-                throw new \TypeError(sprintf(
+                throw new \TypeError(\sprintf(
                     'Element resolved by code "%s" must be an instance of "%s"',
                     $code,
                     Route::class

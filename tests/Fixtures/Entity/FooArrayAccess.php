@@ -46,12 +46,12 @@ final class FooArrayAccess implements \ArrayAccess, \Stringable
 
     public function offsetSet($offset, $value): void
     {
-        throw new \BadMethodCallException(sprintf('Array access of class %s is read-only!', self::class));
+        throw new \BadMethodCallException(\sprintf('Array access of class %s is read-only!', self::class));
     }
 
     public function offsetUnset($offset): void
     {
-        throw new \BadMethodCallException(sprintf('Array access of class %s is read-only!', self::class));
+        throw new \BadMethodCallException(\sprintf('Array access of class %s is read-only!', self::class));
     }
 
     public function getBar(): ?string

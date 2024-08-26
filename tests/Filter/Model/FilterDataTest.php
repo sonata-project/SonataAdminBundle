@@ -24,7 +24,7 @@ final class FilterDataTest extends TestCase
     public function testTypeMustBeNumericOrNull(mixed $type): void
     {
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage(sprintf(
+        $this->expectExceptionMessage(\sprintf(
             'The "type" parameter MUST be of type "integer" or "null", "%s" given.',
             \gettype($type)
         ));

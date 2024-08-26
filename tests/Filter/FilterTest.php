@@ -107,7 +107,7 @@ final class FilterTest extends TestCase
         $filter = new FooFilter();
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage(sprintf(
+        $this->expectExceptionMessage(\sprintf(
             'Seems like you didn\'t call `initialize()` on the filter `%s`. Did you create it through `%s::create()`?',
             FooFilter::class,
             FilterFactory::class

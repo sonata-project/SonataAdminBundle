@@ -48,7 +48,7 @@ final class BaseGroupedMapperTest extends TestCase
         $labelStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $labelStrategy
             ->method('getLabel')
-            ->willReturnCallback(static fn (string $label): string => sprintf('label_%s', strtolower($label)));
+            ->willReturnCallback(static fn (string $label): string => \sprintf('label_%s', strtolower($label)));
 
         $admin->setLabelTranslatorStrategy($labelStrategy);
 

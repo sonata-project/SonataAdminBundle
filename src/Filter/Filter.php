@@ -50,7 +50,7 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
     final public function getName(): string
     {
         if (null === $this->name) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Seems like you didn\'t call `initialize()` on the filter `%s`. Did you create it through `%s::create()`?',
                 static::class,
                 FilterFactory::class
@@ -125,7 +125,7 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
         $fieldName = $this->getOption('field_name');
 
         if (null === $fieldName) {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'The option `field_name` must be set for field: `%s`',
                 $this->getName()
             ));
@@ -144,7 +144,7 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
         $fieldMapping = $this->getOption('field_mapping');
 
         if (null === $fieldMapping) {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'The option `field_mapping` must be set for field: `%s`',
                 $this->getName()
             ));
@@ -158,7 +158,7 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
         $associationMapping = $this->getOption('association_mapping');
 
         if (null === $associationMapping) {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'The option `association_mapping` must be set for field: `%s`',
                 $this->getName()
             ));
@@ -215,7 +215,7 @@ abstract class Filter implements FilterInterface, ChainableFilterInterface
     final public function getPreviousFilter(): FilterInterface
     {
         if (!$this->hasPreviousFilter()) {
-            throw new \LogicException(sprintf('Filter "%s" has no previous filter.', $this->getName()));
+            throw new \LogicException(\sprintf('Filter "%s" has no previous filter.', $this->getName()));
         }
 
         return $this->previousFilter;

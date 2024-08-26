@@ -63,7 +63,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     ) {
         // NEXT_MAJOR: Keep only the elseif part and add typehint.
         if (\is_array($superAdminRoles)) {
-            @trigger_error(sprintf(
+            @trigger_error(\sprintf(
                 'Passing an array as argument 1 of "%s()" is deprecated since sonata-project/admin-bundle 4.6'
                 .' and will throw an error in 5.0. You MUST pass a string instead.',
                 __METHOD__
@@ -73,7 +73,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         } elseif (\is_string($superAdminRoles)) {
             $this->superAdminRoles = [$superAdminRoles];
         } else {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'Argument 1 passed to "%s()" must be of type "array" or "string", "%s" given.',
                 __METHOD__,
                 \gettype($superAdminRoles)
@@ -105,7 +105,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     {
         // NEXT_MAJOR: Remove this and add string typehint to $attributes and rename it $attribute.
         if (\is_array($attributes)) {
-            @trigger_error(sprintf(
+            @trigger_error(\sprintf(
                 'Passing an array as argument 1 of "%s()" is deprecated since sonata-project/admin-bundle 4.6'
                 .' and will throw an error in 5.0. You MUST pass a string instead.',
                 __METHOD__
@@ -128,7 +128,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
 
     public function getBaseRole(AdminInterface $admin): string
     {
-        return sprintf('ROLE_%s_%%s', str_replace('.', '_', strtoupper($admin->getCode())));
+        return \sprintf('ROLE_%s_%%s', str_replace('.', '_', strtoupper($admin->getCode())));
     }
 
     public function buildSecurityInformation(AdminInterface $admin): array
@@ -137,7 +137,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
 
         $results = [];
         foreach ($admin->getSecurityInformation() as $role => $permissions) {
-            $results[sprintf($baseRole, $role)] = $permissions;
+            $results[\sprintf($baseRole, $role)] = $permissions;
         }
 
         return $results;

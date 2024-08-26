@@ -102,7 +102,7 @@ final class Pool
                         continue;
                     }
                 } else {
-                    @trigger_error(sprintf(
+                    @trigger_error(\sprintf(
                         'Not implementing "%s::showInDashboard()" is deprecated since sonata-project/admin-bundle 4.7'
                         .' and will fail in 5.0.',
                         AdminInterface::class
@@ -139,7 +139,7 @@ final class Pool
     public function getAdminByClass(string $class): AdminInterface
     {
         if (!$this->hasAdminByClass($class)) {
-            throw new AdminClassNotFoundException(sprintf('Pool has no admin for the class %s.', $class));
+            throw new AdminClassNotFoundException(\sprintf('Pool has no admin for the class %s.', $class));
         }
 
         if (isset($this->adminClasses[$class][self::DEFAULT_ADMIN_KEY])) {
@@ -147,7 +147,7 @@ final class Pool
         }
 
         if (1 !== \count($this->adminClasses[$class])) {
-            throw new TooManyAdminClassException(sprintf(
+            throw new TooManyAdminClassException(\sprintf(
                 'Unable to find a valid admin for the class: %s, there are too many registered: %s.'
                 .' Please define a default one with the tag attribute `default: true` in your admin configuration.',
                 $class,
@@ -182,7 +182,7 @@ final class Pool
 
         foreach ($codes as $code) {
             if (!\in_array($code, $this->adminServiceCodes, true)) {
-                throw new AdminCodeNotFoundException(sprintf(
+                throw new AdminCodeNotFoundException(\sprintf(
                     'Argument 1 passed to %s() must contain a valid admin reference, "%s" found at "%s".',
                     __METHOD__,
                     $code,
@@ -191,7 +191,7 @@ final class Pool
             }
 
             if (!$admin->hasChild($code)) {
-                throw new AdminCodeNotFoundException(sprintf(
+                throw new AdminCodeNotFoundException(\sprintf(
                     'Argument 1 passed to %s() must contain a valid admin hierarchy,'
                     .' "%s" is not a valid child for "%s"',
                     __METHOD__,
@@ -259,7 +259,7 @@ final class Pool
         }
 
         if (!\in_array($code, $this->adminServiceCodes, true)) {
-            $msg = sprintf('Admin service "%s" not found in admin pool.', $code);
+            $msg = \sprintf('Admin service "%s" not found in admin pool.', $code);
             $shortest = -1;
             $closest = null;
             $alternatives = [];
@@ -278,7 +278,7 @@ final class Pool
             if (null !== $closest) {
                 asort($alternatives);
                 unset($alternatives[$closest]);
-                $msg = sprintf(
+                $msg = \sprintf(
                     'Admin service "%s" not found in admin pool. Did you mean "%s" or one of those: [%s]?',
                     $code,
                     $closest,
@@ -292,7 +292,7 @@ final class Pool
         $admin = $this->container->get($code);
 
         if (!$admin instanceof AdminInterface) {
-            throw new \InvalidArgumentException(sprintf('Found service "%s" is not a valid admin service', $code));
+            throw new \InvalidArgumentException(\sprintf('Found service "%s" is not a valid admin service', $code));
         }
 
         return $admin;

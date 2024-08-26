@@ -59,7 +59,7 @@ final class AuditManager implements AuditManagerInterface
             if (\in_array($class, $classes, true)) {
                 $service = $this->container->get($readerId);
                 if (!$service instanceof AuditReaderInterface) {
-                    throw new \LogicException(sprintf(
+                    throw new \LogicException(\sprintf(
                         'Service "%s" MUST implement interface "%s".',
                         $readerId,
                         AuditReaderInterface::class,
@@ -73,6 +73,6 @@ final class AuditManager implements AuditManagerInterface
             }
         }
 
-        throw new \LogicException(sprintf('The class "%s" does not have any reader manager', $class));
+        throw new \LogicException(\sprintf('The class "%s" does not have any reader manager', $class));
     }
 }

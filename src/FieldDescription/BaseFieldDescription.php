@@ -237,7 +237,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     final public function getParent(): AdminInterface
     {
         if (!$this->hasParent()) {
-            throw new \LogicException(sprintf('%s has no parent.', static::class));
+            throw new \LogicException(\sprintf('%s has no parent.', static::class));
         }
 
         return $this->parent;
@@ -275,7 +275,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     final public function getAssociationAdmin(): AdminInterface
     {
         if (!$this->hasAssociationAdmin()) {
-            throw new \LogicException(sprintf('%s has no association admin.', static::class));
+            throw new \LogicException(\sprintf('%s has no association admin.', static::class));
         }
 
         return $this->associationAdmin;
@@ -297,7 +297,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     final public function getAdmin(): AdminInterface
     {
         if (!$this->hasAdmin()) {
-            throw new \LogicException(sprintf('%s has no admin.', static::class));
+            throw new \LogicException(\sprintf('%s has no admin.', static::class));
         }
 
         return $this->admin;
@@ -318,7 +318,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         }
 
         if (!\is_array($this->options[$name])) {
-            throw new \RuntimeException(sprintf('The key `%s` does not point to an array value', $name));
+            throw new \RuntimeException(\sprintf('The key `%s` does not point to an array value', $name));
         }
 
         $this->options[$name] = array_merge($this->options[$name], $options);
@@ -392,7 +392,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         if ($dotPos > 0) {
             $child = $this->getFieldValue($object, substr($fieldName, 0, $dotPos));
             if (null !== $child && !\is_object($child)) {
-                throw new NoValueException(sprintf(
+                throw new NoValueException(\sprintf(
                     <<<'EXCEPTION'
                         Unexpected value when accessing to the property "%s" on the class "%s" for the field "%s".
                         Expected object|null, got %s.
@@ -413,7 +413,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             return $accessor($object);
         }
         if (!\is_string($accessor) && !$accessor instanceof PropertyPathInterface) {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'The option "accessor" must be a string, a callable or a %s, %s given.',
                 PropertyPathInterface::class,
                 \is_object($accessor) ? 'instance of '.$accessor::class : \gettype($accessor)
@@ -428,7 +428,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
             return $propertyAccessor->getValue($object, $accessor);
         } catch (ExceptionInterface $exception) {
             throw new NoValueException(
-                sprintf('Cannot access property "%s" in class "%s".', $this->getName(), $this->getAdmin()->getClass()),
+                \sprintf('Cannot access property "%s" in class "%s".', $this->getName(), $this->getAdmin()->getClass()),
                 $exception->getCode(),
                 $exception
             );

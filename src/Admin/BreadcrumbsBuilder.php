@@ -92,7 +92,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         $menu = $this->createMenuItem(
             $admin,
             $menu,
-            sprintf('%s_list', $admin->getClassnameLabel()),
+            \sprintf('%s_list', $admin->getClassnameLabel()),
             $admin->getTranslationDomain(),
             [
                 'uri' => $admin->hasRoute('list') && $admin->hasAccess('list') ?
@@ -139,7 +139,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         return $this->createMenuItem(
             $admin,
             $menu,
-            sprintf('%s_%s', $admin->getClassnameLabel(), $action),
+            \sprintf('%s_%s', $admin->getClassnameLabel(), $action),
             $admin->getTranslationDomain()
         );
     }

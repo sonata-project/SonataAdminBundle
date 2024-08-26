@@ -188,7 +188,7 @@ final class AdminTypeTest extends TypeTestCase
 
     public function testArrayCollectionNotFound(): void
     {
-        $parentSubject = new class() {
+        $parentSubject = new class {
             /** @var mixed[] */
             public $foo = [];
         };
@@ -204,7 +204,7 @@ final class AdminTypeTest extends TypeTestCase
 
         $modelManager = $this->createStub(ModelManagerInterface::class);
 
-        $newInstance = new class() {
+        $newInstance = new class {
             private ?object $bar = null;
 
             public function setBar(object $bar): void
@@ -250,7 +250,7 @@ final class AdminTypeTest extends TypeTestCase
 
     public function testArrayCollectionByReferenceNotFound(): void
     {
-        $parentSubject = new class() {
+        $parentSubject = new class {
             /** @var mixed[] */
             public $foo = [];
 
@@ -270,7 +270,7 @@ final class AdminTypeTest extends TypeTestCase
 
         $modelManager = $this->createStub(ModelManagerInterface::class);
 
-        $newInstance = new class() {
+        $newInstance = new class {
             private ?object $bar = null;
 
             public function setBar(object $bar): void

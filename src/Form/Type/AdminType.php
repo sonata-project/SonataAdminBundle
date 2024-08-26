@@ -78,7 +78,7 @@ final class AdminType extends AbstractType
                     $parentPath = implode(
                         '',
                         array_map(
-                            static fn (array $associationMapping): string => sprintf('%s.', $associationMapping['fieldName']),
+                            static fn (array $associationMapping): string => \sprintf('%s.', $associationMapping['fieldName']),
                             $this->getFieldDescription($options)->getParentAssociationMappings()
                         )
                     );

@@ -32,7 +32,7 @@ final class DefaultRouteGeneratorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->cacheTempFolder = sprintf('%s/sonata_test_route', sys_get_temp_dir());
+        $this->cacheTempFolder = \sprintf('%s/sonata_test_route', sys_get_temp_dir());
 
         $filesystem = new Filesystem();
         $filesystem->remove($this->cacheTempFolder);
@@ -90,8 +90,8 @@ final class DefaultRouteGeneratorTest extends TestCase
                 }
 
                 return match ($name) {
-                    'admin_acme_foo' => sprintf('%s/foo%s', $domain, $params),
-                    'admin_acme_child_bar' => sprintf('%s/foo/bar%s', $domain, $params),
+                    'admin_acme_foo' => \sprintf('%s/foo%s', $domain, $params),
+                    'admin_acme_child_bar' => \sprintf('%s/foo/bar%s', $domain, $params),
                     default => throw new \LogicException('Not implemented'),
                 };
             });
@@ -112,7 +112,7 @@ final class DefaultRouteGeneratorTest extends TestCase
         yield ['/foo/bar?abc=a123&efg=e456&default_param=default_val', 'base.Code.Bar.bar', ['default_param' => 'default_val']];
         yield ['/foo/bar?abc=a123&efg=e456&default_param=default_val', 'base.Code.Bar.bar', ['default_param' => 'default_val'], RouterInterface::ABSOLUTE_PATH];
         yield [
-            sprintf('%s/foo/bar?abc=a123&efg=e456&default_param=default_val', self::ROUTER_DOMAIN),
+            \sprintf('%s/foo/bar?abc=a123&efg=e456&default_param=default_val', self::ROUTER_DOMAIN),
             'base.Code.Bar.bar',
             ['default_param' => 'default_val'],
             RouterInterface::ABSOLUTE_URL,
@@ -208,9 +208,9 @@ final class DefaultRouteGeneratorTest extends TestCase
                 }
 
                 return match ($name) {
-                    'admin_acme_foo' => sprintf('/foo%s', $params),
-                    'admin_acme_child_bar' => sprintf('/foo/bar%s', $params),
-                    'admin_child_bar' => sprintf('/bar%s', $params),
+                    'admin_acme_foo' => \sprintf('/foo%s', $params),
+                    'admin_acme_child_bar' => \sprintf('/foo/bar%s', $params),
+                    'admin_child_bar' => \sprintf('/bar%s', $params),
                     default => throw new \LogicException('Not implemented'),
                 };
             });
@@ -271,8 +271,8 @@ final class DefaultRouteGeneratorTest extends TestCase
                 }
 
                 return match ($name) {
-                    'admin_acme_foo' => sprintf('/foo%s', $params),
-                    'admin_acme_child_bar' => sprintf('/foo/bar%s', $params),
+                    'admin_acme_foo' => \sprintf('/foo%s', $params),
+                    'admin_acme_child_bar' => \sprintf('/foo/bar%s', $params),
                     default => throw new \LogicException('Not implemented'),
                 };
             });
@@ -380,8 +380,8 @@ final class DefaultRouteGeneratorTest extends TestCase
                 }
 
                 return match ($name) {
-                    'admin_acme_child_bar' => sprintf('/foo/bar%s', $params),
-                    'admin_acme_child_standalone_bar' => sprintf('/bar%s', $params),
+                    'admin_acme_child_bar' => \sprintf('/foo/bar%s', $params),
+                    'admin_acme_child_standalone_bar' => \sprintf('/bar%s', $params),
                     default => throw new \LogicException('Not implemented'),
                 };
             });

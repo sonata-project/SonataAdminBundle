@@ -86,7 +86,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
 
             if ($this->isAnyInstanceOf($type, [ModelAutocompleteType::class])) {
                 if (!$fieldDescription->hasAssociationAdmin()) {
-                    throw new \InvalidArgumentException(sprintf(
+                    throw new \InvalidArgumentException(\sprintf(
                         'The current field `%s` is not linked to an admin.'
                         .' Please create one for the target model: `%s`.',
                         $fieldDescription->getName(),
@@ -96,7 +96,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
             }
         } elseif ($this->isAnyInstanceOf($type, [AdminType::class])) {
             if (!$fieldDescription->hasAssociationAdmin()) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'The current field `%s` is not linked to an admin.'
                     .' Please create one for the target model: `%s`.',
                     $fieldDescription->getName(),
@@ -105,7 +105,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
             }
 
             if (!$fieldDescription->describesSingleValuedAssociation()) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'You are trying to add `%s` field `%s` which is not a One-To-One or Many-To-One association.'
                     .' You SHOULD use `%s` instead.',
                     AdminType::class,
@@ -125,7 +125,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
             CollectionType::class,
         ])) {
             if (!$fieldDescription->hasAssociationAdmin()) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'The current field `%s` is not linked to an admin.'
                     .' Please create one for the target model: `%s`.',
                     $fieldDescription->getName(),

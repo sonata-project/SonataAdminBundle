@@ -40,7 +40,7 @@ final class Validators
         $class = str_replace('/', '\\', $class);
 
         if (!class_exists($class)) {
-            throw new \InvalidArgumentException(sprintf('The class "%s" does not exist.', $class));
+            throw new \InvalidArgumentException(\sprintf('The class "%s" does not exist.', $class));
         }
 
         return $class;
@@ -54,7 +54,7 @@ final class Validators
         $adminClassBasename = str_replace('/', '\\', $adminClassBasename);
 
         if (str_contains($adminClassBasename, ':')) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'The admin class name must not contain a ":" (colon sign)'
                 .' ("%s" given, expecting something like PostAdmin")',
                 $adminClassBasename
@@ -72,7 +72,7 @@ final class Validators
         $controllerClassBasename = str_replace('/', '\\', $controllerClassBasename);
 
         if (str_contains($controllerClassBasename, ':')) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'The controller class name must not contain a ":" (colon sign)'
                 .' ("%s" given, expecting something like PostAdminController")',
                 $controllerClassBasename
@@ -97,7 +97,7 @@ final class Validators
     public static function validateServiceId(string $serviceId): string
     {
         if (1 === preg_match('/[^A-Za-z\._0-9]/', $serviceId, $matches)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'Service ID "%s" contains invalid character "%s".',
                 $serviceId,
                 $matches[0]

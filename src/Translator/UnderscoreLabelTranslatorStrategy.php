@@ -22,6 +22,6 @@ final class UnderscoreLabelTranslatorStrategy implements LabelTranslatorStrategy
     {
         $label = str_replace('.', '_', $label);
 
-        return sprintf('%s.%s_%s', $context, $type, strtolower(preg_replace('~(?<=\\w)([A-Z])~', '_$1', $label) ?? ''));
+        return \sprintf('%s.%s_%s', $context, $type, strtolower(preg_replace('~(?<=\\w)([A-Z])~', '_$1', $label) ?? ''));
     }
 }

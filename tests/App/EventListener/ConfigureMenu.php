@@ -29,6 +29,6 @@ final class ConfigureMenu implements EventSubscriberInterface
 
     public function configureMenu(ConfigureMenuEvent $configureMenuEvent): void
     {
-        $configureMenuEvent->getMenu()->addChild(sprintf('Dynamic Menu %s', ++$this->counter))->setAttribute('class', 'dynamic-menu');
+        $configureMenuEvent->getMenu()->addChild(\sprintf('Dynamic Menu %s', ++$this->counter))->setAttribute('class', 'dynamic-menu');
     }
 }

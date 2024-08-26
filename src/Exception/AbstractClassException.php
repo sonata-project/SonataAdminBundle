@@ -23,6 +23,6 @@ final class AbstractClassException extends \InvalidArgumentException
      */
     public function __construct(string $class)
     {
-        parent::__construct(sprintf('Cannot initialize abstract class: %s', $class));
+        parent::__construct(\sprintf('Cannot initialize abstract class: %s', $class));
     }
 }

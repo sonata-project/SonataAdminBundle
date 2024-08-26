@@ -39,7 +39,7 @@ final class ListAdminCommand extends Command
         $output->writeln('<info>Admin services:</info>');
         foreach ($this->pool->getAdminServiceCodes() as $code) {
             $instance = $this->pool->getInstance($code);
-            $output->writeln(sprintf(
+            $output->writeln(\sprintf(
                 '  <info>%-40s</info> %-60s',
                 $code,
                 $instance->getClass()

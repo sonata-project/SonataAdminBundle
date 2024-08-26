@@ -342,7 +342,7 @@ class CRUDController extends AbstractController
                 } catch (LockException) {
                     $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', [
                         '%name%' => $this->escapeHtml($this->admin->toString($existingObject)),
-                        '%link_start%' => sprintf('<a href="%s">', $this->admin->generateObjectUrl('edit', $existingObject)),
+                        '%link_start%' => \sprintf('<a href="%s">', $this->admin->generateObjectUrl('edit', $existingObject)),
                         '%link_end%' => '</a>',
                     ], 'SonataAdminBundle'));
                 }
@@ -395,7 +395,7 @@ class CRUDController extends AbstractController
         $restMethod = $request->getMethod();
 
         if (Request::METHOD_POST !== $restMethod) {
-            throw $this->createNotFoundException(sprintf(
+            throw $this->createNotFoundException(\sprintf(
                 'Invalid request method given "%s", %s expected',
                 $restMethod,
                 Request::METHOD_POST
@@ -450,17 +450,17 @@ class CRUDController extends AbstractController
         try {
             $batchActionExecutable = $this->getBatchActionExecutable($action);
         } catch (\Throwable $error) {
-            $finalAction = sprintf('batchAction%s', $camelizedAction);
-            throw new \RuntimeException(sprintf('A `%s::%s` method must be callable or create a `controller` configuration for your batch action.', $this->admin->getBaseControllerName(), $finalAction), 0, $error);
+            $finalAction = \sprintf('batchAction%s', $camelizedAction);
+            throw new \RuntimeException(\sprintf('A `%s::%s` method must be callable or create a `controller` configuration for your batch action.', $this->admin->getBaseControllerName(), $finalAction), 0, $error);
         }
 
         $batchAction = $this->admin->getBatchActions()[$action];
 
-        $isRelevantAction = sprintf('batchAction%sIsRelevant', $camelizedAction);
+        $isRelevantAction = \sprintf('batchAction%sIsRelevant', $camelizedAction);
 
         if (method_exists($this, $isRelevantAction)) {
             // NEXT_MAJOR: Remove if above in sonata-project/admin-bundle 5.0
-            @trigger_error(sprintf(
+            @trigger_error(\sprintf(
                 'The is relevant hook via "%s()" is deprecated since sonata-project/admin-bundle 4.12'
                 .' and will not be call in 5.0. Move the logic to your controller.',
                 $isRelevantAction,
@@ -711,7 +711,7 @@ class CRUDController extends AbstractController
         \assert($manager instanceof AuditManagerInterface);
 
         if (!$manager->hasReader($this->admin->getClass())) {
-            throw $this->createNotFoundException(sprintf(
+            throw $this->createNotFoundException(\sprintf(
                 'unable to find the audit reader for class : %s',
                 $this->admin->getClass()
             ));
@@ -753,7 +753,7 @@ class CRUDController extends AbstractController
         \assert($manager instanceof AuditManagerInterface);
 
         if (!$manager->hasReader($this->admin->getClass())) {
-            throw $this->createNotFoundException(sprintf(
+            throw $this->createNotFoundException(\sprintf(
                 'unable to find the audit reader for class : %s',
                 $this->admin->getClass()
             ));
@@ -765,7 +765,7 @@ class CRUDController extends AbstractController
         $object = $reader->find($this->admin->getClass(), $objectId, $revision);
 
         if (null === $object) {
-            throw $this->createNotFoundException(sprintf(
+            throw $this->createNotFoundException(\sprintf(
                 'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                 $objectId,
                 $revision,
@@ -806,7 +806,7 @@ class CRUDController extends AbstractController
         \assert($manager instanceof AuditManagerInterface);
 
         if (!$manager->hasReader($this->admin->getClass())) {
-            throw $this->createNotFoundException(sprintf(
+            throw $this->createNotFoundException(\sprintf(
                 'unable to find the audit reader for class : %s',
                 $this->admin->getClass()
             ));
@@ -817,7 +817,7 @@ class CRUDController extends AbstractController
         // retrieve the base revision
         $baseObject = $reader->find($this->admin->getClass(), $objectId, $baseRevision);
         if (null === $baseObject) {
-            throw $this->createNotFoundException(sprintf(
+            throw $this->createNotFoundException(\sprintf(
                 'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                 $objectId,
                 $baseRevision,
@@ -828,7 +828,7 @@ class CRUDController extends AbstractController
         // retrieve the compare revision
         $compareObject = $reader->find($this->admin->getClass(), $objectId, $compareRevision);
         if (null === $compareObject) {
-            throw $this->createNotFoundException(sprintf(
+            throw $this->createNotFoundException(\sprintf(
                 'unable to find the targeted object `%s` from the revision `%s` with classname : `%s`',
                 $objectId,
                 $compareRevision,
@@ -875,7 +875,7 @@ class CRUDController extends AbstractController
         \assert($exporter instanceof ExporterInterface);
 
         if (!\in_array($format, $allowedExportFormats, true)) {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'Export in format `%s` is not allowed for class: `%s`. Allowed formats are: `%s`',
                 $format,
                 $this->admin->getClass(),
@@ -980,7 +980,7 @@ class CRUDController extends AbstractController
         $this->admin = $admin;
 
         if (!$this->admin->hasTemplateRegistry()) {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'Unable to find the template registry related to the current admin (%s).',
                 $this->admin->getCode()
             ));
@@ -1113,7 +1113,7 @@ class CRUDController extends AbstractController
             return $this->handleModelManagerThrowable($exception);
         }
 
-        @trigger_error(sprintf(
+        @trigger_error(\sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 3.107 and will be removed in 5.0.',
             __METHOD__
         ), \E_USER_DEPRECATED);
@@ -1288,7 +1288,7 @@ class CRUDController extends AbstractController
 
             $baseRole = $admin->getSecurityHandler()->getBaseRole($admin);
             foreach ($admin->getSecurityInformation() as $role => $_permissions) {
-                $role = sprintf($baseRole, $role);
+                $role = \sprintf($baseRole, $role);
                 $aclRoles[] = $role;
             }
         }
@@ -1454,7 +1454,7 @@ class CRUDController extends AbstractController
             if (\is_string($objectId) || \is_int($objectId)) {
                 $adminObject = $admin->getObject($objectId);
                 if (null === $adminObject) {
-                    throw $this->createNotFoundException(sprintf(
+                    throw $this->createNotFoundException(\sprintf(
                         'Unable to find %s object with id: %s.',
                         $admin->getClassnameLabel(),
                         $objectId
@@ -1465,7 +1465,7 @@ class CRUDController extends AbstractController
                     $object = $adminObject;
                 }
             } elseif ($strict || $admin !== $this->admin) {
-                throw $this->createNotFoundException(sprintf(
+                throw $this->createNotFoundException(\sprintf(
                     'Unable to find the %s object id of the admin "%s".',
                     $admin->getClassnameLabel(),
                     $admin::class
@@ -1520,7 +1520,7 @@ class CRUDController extends AbstractController
 
         $parentAdminObject = $parentAdmin->getObject($parentId);
         if (null === $parentAdminObject) {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'No object was found in the admin "%s" for the id "%s".',
                 $parentAdmin::class,
                 $parentId
@@ -1540,7 +1540,7 @@ class CRUDController extends AbstractController
         $parentObjectMatches = $this->equalsOrContains($objectParent, $parentAdminObject);
 
         if (!$parentObjectMatches) {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'There is no association between "%s" and "%s"',
                 $parentAdmin->toString($parentAdminObject),
                 $this->admin->toString($object)
@@ -1564,13 +1564,13 @@ class CRUDController extends AbstractController
     {
         $batchActions = $this->admin->getBatchActions();
         if (!\array_key_exists($action, $batchActions)) {
-            throw new \RuntimeException(sprintf('The `%s` batch action is not defined', $action));
+            throw new \RuntimeException(\sprintf('The `%s` batch action is not defined', $action));
         }
 
-        $controller = $batchActions[$action]['controller'] ?? sprintf(
+        $controller = $batchActions[$action]['controller'] ?? \sprintf(
             '%s::%s',
             $this->admin->getBaseControllerName(),
-            sprintf('batchAction%s', (new UnicodeString($action))->camel()->title(true)->toString())
+            \sprintf('batchAction%s', (new UnicodeString($action))->camel()->title(true)->toString())
         );
 
         // This will throw an exception when called so we know if it's possible or not to call the controller.
@@ -1579,7 +1579,7 @@ class CRUDController extends AbstractController
             ->getController(new Request([], [], ['_controller' => $controller]));
 
         if (!$exists) {
-            throw new \RuntimeException(sprintf('Controller for action `%s` cannot be resolved', $action));
+            throw new \RuntimeException(\sprintf('Controller for action `%s` cannot be resolved', $action));
         }
 
         return function (ProxyQueryInterface $query, Request $request) use ($controller): Response {

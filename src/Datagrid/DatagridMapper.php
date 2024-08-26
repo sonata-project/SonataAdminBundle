@@ -74,7 +74,7 @@ final class DatagridMapper implements MapperInterface
         }
 
         if ($this->getAdmin()->hasFilterFieldDescription($name)) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Duplicate field name "%s" in datagrid mapper. Names should be unique.',
                 $name
             ));

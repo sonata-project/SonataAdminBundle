@@ -32,7 +32,7 @@ final class AdminFetcher implements AdminFetcherInterface
             $route = $request->get('_route', '');
             \assert(\is_string($route));
 
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'There is no `_sonata_admin` defined for the current route `%s`.',
                 $route
             ));

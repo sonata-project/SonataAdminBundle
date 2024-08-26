@@ -199,13 +199,13 @@ final class ListMapperTest extends TestCase
     public function testAutoAddVirtualOption(): void
     {
         foreach (['actions', 'batch', 'select'] as $type) {
-            $this->listMapper->add(sprintf('_%s', $type), $type);
+            $this->listMapper->add(\sprintf('_%s', $type), $type);
         }
 
         foreach ($this->fieldDescriptionCollection->getElements() as $field) {
             static::assertTrue(
                 $field->getOption('virtual_field', false),
-                sprintf('Failed asserting that FieldDescription with name "%s" is tagged with virtual flag.', $field->getName())
+                \sprintf('Failed asserting that FieldDescription with name "%s" is tagged with virtual flag.', $field->getName())
             );
         }
     }

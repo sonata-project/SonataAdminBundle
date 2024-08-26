@@ -44,7 +44,7 @@ final class TestExtension implements FormExtensionInterface
     public function getType($name): FormTypeInterface
     {
         if (!isset($this->types[$name])) {
-            throw new InvalidArgumentException(sprintf('Type "%s" is not supported.', $name));
+            throw new InvalidArgumentException(\sprintf('Type "%s" is not supported.', $name));
         }
 
         return $this->types[$name];

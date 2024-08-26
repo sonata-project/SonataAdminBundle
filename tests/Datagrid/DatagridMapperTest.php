@@ -101,7 +101,7 @@ final class DatagridMapperTest extends TestCase
 
         $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
         $labelTranslatorStrategy->method('getLabel')->willReturnCallback(
-            static fn (string $label, string $context = '', string $type = ''): string => sprintf('%s.%s_%s', $context, $type, $label)
+            static fn (string $label, string $context = '', string $type = ''): string => \sprintf('%s.%s_%s', $context, $type, $label)
         );
 
         $this->admin

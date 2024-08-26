@@ -38,7 +38,7 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
 
             $class = $definition->getClass();
             if (null === $class || !is_subclass_of($class, ModelManagerInterface::class)) {
-                throw new LogicException(sprintf(
+                throw new LogicException(\sprintf(
                     'Service "%s" must implement `%s`.',
                     $id,
                     ModelManagerInterface::class

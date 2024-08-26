@@ -121,7 +121,7 @@ final class Datagrid implements DatagridInterface
     public function getFilter(string $name): FilterInterface
     {
         if (!$this->hasFilter($name)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new \InvalidArgumentException(\sprintf(
                 'Filter named "%s" doesn\'t exist.',
                 $name
             ));
@@ -140,7 +140,7 @@ final class Datagrid implements DatagridInterface
         $orderedFilters = [];
         foreach ($keys as $name) {
             if (!$this->hasFilter($name)) {
-                throw new \InvalidArgumentException(sprintf('Filter "%s" does not exist.', $name));
+                throw new \InvalidArgumentException(\sprintf('Filter "%s" does not exist.', $name));
             }
 
             $orderedFilters[$name] = $this->filters[$name];

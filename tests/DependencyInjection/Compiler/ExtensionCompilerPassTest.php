@@ -70,8 +70,8 @@ final class ExtensionCompilerPassTest extends TestCase
     {
         $this->extension->load([], $container = $this->getContainer());
 
-        static::assertTrue($container->hasParameter(sprintf('%s.extension.map', $this->root)));
-        static::assertIsArray($extensionMap = $container->getParameter(sprintf('%s.extension.map', $this->root)));
+        static::assertTrue($container->hasParameter(\sprintf('%s.extension.map', $this->root)));
+        static::assertIsArray($extensionMap = $container->getParameter(\sprintf('%s.extension.map', $this->root)));
 
         static::assertSame([], $extensionMap);
     }
@@ -82,7 +82,7 @@ final class ExtensionCompilerPassTest extends TestCase
     public function testFlattenEmptyExtensionConfiguration(): void
     {
         $this->extension->load([], $container = $this->getContainer());
-        $extensionMap = $container->getParameter(sprintf('%s.extension.map', $this->root));
+        $extensionMap = $container->getParameter(\sprintf('%s.extension.map', $this->root));
 
         $method = new \ReflectionMethod(
             ExtensionCompilerPass::class,
@@ -116,7 +116,7 @@ final class ExtensionCompilerPassTest extends TestCase
     {
         $config = $this->getConfig();
         $this->extension->load([$config], $container = $this->getContainer());
-        $extensionMap = $container->getParameter(sprintf('%s.extension.map', $this->root));
+        $extensionMap = $container->getParameter(\sprintf('%s.extension.map', $this->root));
 
         $method = new \ReflectionMethod(
             ExtensionCompilerPass::class,

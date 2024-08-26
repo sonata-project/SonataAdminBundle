@@ -96,7 +96,7 @@ abstract class BaseGroupedMapper implements MapperInterface
                     throw new \LogicException('New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.');
                 }
 
-                throw new \LogicException(sprintf(
+                throw new \LogicException(\sprintf(
                     'You should close previous tab "%s" with end() before adding new tab "%s".',
                     $this->currentTab,
                     $name
@@ -104,7 +104,7 @@ abstract class BaseGroupedMapper implements MapperInterface
             }
 
             if (null !== $this->currentGroup) {
-                throw new \LogicException(sprintf('You should open tab before adding new group "%s".', $name));
+                throw new \LogicException(\sprintf('You should open tab before adding new group "%s".', $name));
             }
 
             if (!isset($tabs[$name])) {
@@ -119,7 +119,7 @@ abstract class BaseGroupedMapper implements MapperInterface
             $this->currentTab = $code;
         } else {
             if (null !== $this->currentGroup) {
-                throw new \LogicException(sprintf(
+                throw new \LogicException(\sprintf(
                     'You should close previous group "%s" with end() before adding new tab "%s".',
                     $this->currentGroup,
                     $name
@@ -139,7 +139,7 @@ abstract class BaseGroupedMapper implements MapperInterface
             // if no tab is selected, we go the the main one named '_' ..
             if ('default' !== $this->currentTab) {
                 // groups with the same name can be on different tabs, so we prefix them in order to make unique group name
-                $code = sprintf('%s.%s', $this->currentTab, $name);
+                $code = \sprintf('%s.%s', $this->currentTab, $name);
             }
 
             $groups = $this->getGroups();
@@ -264,7 +264,7 @@ abstract class BaseGroupedMapper implements MapperInterface
 
         // When the default tab is used, the tabname is not prepended to the index in the group array
         if ('default' !== $tab) {
-            $group = sprintf('%s.%s', $tab, $group);
+            $group = \sprintf('%s.%s', $tab, $group);
         }
 
         if (isset($groups[$group])) {

@@ -169,10 +169,10 @@ final class ExplainAdminCommandTest extends TestCase
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName(), 'admin' => 'acme.admin.foo']);
 
-        $explainAdminText = file_get_contents(sprintf('%s/../Fixtures/Command/explain_admin.txt', __DIR__));
+        $explainAdminText = file_get_contents(\sprintf('%s/../Fixtures/Command/explain_admin.txt', __DIR__));
         static::assertNotFalse($explainAdminText);
 
-        static::assertSame(sprintf(
+        static::assertSame(\sprintf(
             str_replace("\n", \PHP_EOL, $explainAdminText),
             $this->admin::class,
             $modelManager::class,

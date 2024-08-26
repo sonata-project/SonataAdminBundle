@@ -44,6 +44,6 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
             return $this->templates[$name];
         }
 
-        throw new \InvalidArgumentException(sprintf('Template named "%s" doesn\'t exist.', $name));
+        throw new \InvalidArgumentException(\sprintf('Template named "%s" doesn\'t exist.', $name));
     }
 }

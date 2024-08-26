@@ -61,7 +61,7 @@ final class FieldDescriptionCollection implements \ArrayAccess, \Countable
     public function get(string $name): FieldDescriptionInterface
     {
         if (!$this->has($name)) {
-            throw new \InvalidArgumentException(sprintf('Element "%s" does not exist.', $name));
+            throw new \InvalidArgumentException(\sprintf('Element "%s" does not exist.', $name));
         }
 
         return $this->elements[$name];
@@ -120,7 +120,7 @@ final class FieldDescriptionCollection implements \ArrayAccess, \Countable
         $orderedElements = [];
         foreach ($keys as $name) {
             if (!$this->has($name)) {
-                throw new \InvalidArgumentException(sprintf('Element "%s" does not exist.', $name));
+                throw new \InvalidArgumentException(\sprintf('Element "%s" does not exist.', $name));
             }
 
             $orderedElements[$name] = $this->elements[$name];

@@ -67,7 +67,7 @@ final class AdminSearchCompilerPass implements CompilerPassInterface
         }
 
         if (!\is_bool($globalSearch)) {
-            throw new LogicException(sprintf(
+            throw new LogicException(\sprintf(
                 'Attribute "%s" in tag "%s" at service "%s" must be of type boolean, "%s" given.',
                 self::TAG_ATTRIBUTE_TOGGLE_SEARCH,
                 TaggedAdminInterface::ADMIN_TAG,

@@ -36,9 +36,9 @@ abstract class BaseMenuTest extends TestCase
     {
         // Adapt to both bundle and project-wide test strategy
         $twigPaths = array_filter([
-            sprintf('%s/../../../../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views', __DIR__),
-            sprintf('%s/../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views', __DIR__),
-            sprintf('%s/../../../src/Resources/views', __DIR__),
+            \sprintf('%s/../../../../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views', __DIR__),
+            \sprintf('%s/../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views', __DIR__),
+            \sprintf('%s/../../../src/Resources/views', __DIR__),
         ], 'is_dir');
 
         $loader = new FilesystemLoader($twigPaths);
@@ -73,7 +73,7 @@ abstract class BaseMenuTest extends TestCase
      */
     protected function cleanHtmlWhitespace(string $html): string
     {
-        $html = preg_replace_callback('/>([^<]+)</', static fn ($value): string => sprintf('>%s<', trim($value[1])), $html);
+        $html = preg_replace_callback('/>([^<]+)</', static fn ($value): string => \sprintf('>%s<', trim($value[1])), $html);
 
         return $html ?? '';
     }
