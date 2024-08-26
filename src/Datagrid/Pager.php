@@ -189,6 +189,14 @@ abstract class Pager implements PagerInterface
         return $this->query;
     }
 
+    /**
+     * Returns whether `countResults()` is the exact number of results or only a lower bound.
+     */
+    public function isDeterministic(): bool
+    {
+        return true;
+    }
+
     final protected function setLastPage(int $page): void
     {
         $this->lastPage = $page;
