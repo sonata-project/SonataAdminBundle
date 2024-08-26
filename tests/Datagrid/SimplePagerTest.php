@@ -89,7 +89,7 @@ final class SimplePagerTest extends TestCase
         static::assertSame(23, $this->pager->countResults());
     }
 
-    public function testLasPage(): void
+    public function testLastPage(): void
     {
         $this->proxyQuery->expects(static::once())
             ->method('execute')
