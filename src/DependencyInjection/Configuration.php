@@ -392,7 +392,7 @@ final class Configuration implements ConfigurationInterface
                                             $disallowedItems = ['items', 'label'];
                                             foreach ($disallowedItems as $item) {
                                                 if (isset($items[$item])) {
-                                                    throw new \InvalidArgumentException(sprintf(
+                                                    throw new \InvalidArgumentException(\sprintf(
                                                         'The config value "%s" cannot be used alongside "provider" config value',
                                                         $item
                                                     ));

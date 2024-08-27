@@ -28,7 +28,7 @@ final class ServicesManipulatorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->file = sprintf('%s/%s.yml', sys_get_temp_dir(), lcg_value());
+        $this->file = \sprintf('%s/%s.yml', sys_get_temp_dir(), lcg_value());
         $this->servicesManipulator = new ServicesManipulator($this->file);
     }
 

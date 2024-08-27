@@ -52,7 +52,7 @@ final class TemplateRegistryExtension extends AbstractExtension
      */
     public function getAdminTemplate(string $name, string $adminCode): string
     {
-        @trigger_error(sprintf(
+        @trigger_error(\sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
@@ -70,7 +70,7 @@ final class TemplateRegistryExtension extends AbstractExtension
      */
     public function getGlobalTemplate(string $name): string
     {
-        @trigger_error(sprintf(
+        @trigger_error(\sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,

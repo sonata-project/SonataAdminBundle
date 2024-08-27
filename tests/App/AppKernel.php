@@ -51,12 +51,12 @@ final class AppKernel extends Kernel
 
     public function getCacheDir(): string
     {
-        return sprintf('%scache', $this->getBaseDir());
+        return \sprintf('%scache', $this->getBaseDir());
     }
 
     public function getLogDir(): string
     {
-        return sprintf('%slog', $this->getBaseDir());
+        return \sprintf('%slog', $this->getBaseDir());
     }
 
     public function getProjectDir(): string
@@ -66,7 +66,7 @@ final class AppKernel extends Kernel
 
     protected function configureRoutes(RoutingConfigurator $routes): void
     {
-        $routes->import(sprintf('%s/config/routes.yml', $this->getProjectDir()));
+        $routes->import(\sprintf('%s/config/routes.yml', $this->getProjectDir()));
     }
 
     protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader): void
@@ -100,13 +100,13 @@ final class AppKernel extends Kernel
         $containerBuilder->loadFromExtension('security', $securityConfig);
 
         $containerBuilder->loadFromExtension('twig', [
-            'default_path' => sprintf('%s/templates', $this->getProjectDir()),
+            'default_path' => \sprintf('%s/templates', $this->getProjectDir()),
             'strict_variables' => true,
             'exception_controller' => null,
             'form_themes' => ['@SonataAdmin/Form/form_admin_fields.html.twig'],
         ]);
 
-        $loader->load(sprintf('%s/config/services.yml', $this->getProjectDir()));
+        $loader->load(\sprintf('%s/config/services.yml', $this->getProjectDir()));
 
         /*
          * TODO: Remove when support for SonataBlockBundle 4 is dropped.
@@ -116,6 +116,6 @@ final class AppKernel extends Kernel
 
     private function getBaseDir(): string
     {
-        return sprintf('%s/sonata-admin-bundle/var/', sys_get_temp_dir());
+        return \sprintf('%s/sonata-admin-bundle/var/', sys_get_temp_dir());
     }
 }

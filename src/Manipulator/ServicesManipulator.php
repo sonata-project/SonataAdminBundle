@@ -45,7 +45,7 @@ final class ServicesManipulator
         if (is_file($this->file)) {
             $content = file_get_contents($this->file);
             if (false === $content) {
-                throw new \RuntimeException(sprintf('Cannot read the file "%s".', realpath($this->file)));
+                throw new \RuntimeException(\sprintf('Cannot read the file "%s".', realpath($this->file)));
             }
 
             $code = rtrim($content);
@@ -57,7 +57,7 @@ final class ServicesManipulator
 
             if (\array_key_exists('services', $data)) {
                 if (\array_key_exists($serviceId, (array) $data['services'])) {
-                    throw new \RuntimeException(sprintf(
+                    throw new \RuntimeException(\sprintf(
                         'The service "%s" is already defined in the file "%s".',
                         $serviceId,
                         realpath($this->file)
@@ -73,7 +73,7 @@ final class ServicesManipulator
             }
         }
 
-        $code .= sprintf(
+        $code .= \sprintf(
             $this->template,
             $serviceId,
             $adminClass,
@@ -85,7 +85,7 @@ final class ServicesManipulator
         @mkdir(\dirname($this->file), 0777, true);
 
         if (false === @file_put_contents($this->file, $code)) {
-            throw new \RuntimeException(sprintf(
+            throw new \RuntimeException(\sprintf(
                 'Unable to append service "%s" to the file "%s". You will have to do it manually.',
                 $serviceId,
                 $this->file

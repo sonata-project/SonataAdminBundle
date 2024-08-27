@@ -24,18 +24,18 @@ final class MaskBuilderTest extends TestCase
         static::assertSame(MaskBuilder::ALL_OFF, $builder->getPattern());
 
         $builder->add('view');
-        static::assertSame(sprintf('%sV', str_repeat('.', 31)), $builder->getPattern());
+        static::assertSame(\sprintf('%sV', str_repeat('.', 31)), $builder->getPattern());
 
         $builder->add('owner');
-        static::assertSame(sprintf('%sN......V', str_repeat('.', 24)), $builder->getPattern());
+        static::assertSame(\sprintf('%sN......V', str_repeat('.', 24)), $builder->getPattern());
 
         $builder->add('list');
-        static::assertSame(sprintf('%sL....N......V', str_repeat('.', 19)), $builder->getPattern());
+        static::assertSame(\sprintf('%sL....N......V', str_repeat('.', 19)), $builder->getPattern());
 
         $builder->add('export');
-        static::assertSame(sprintf('%sEL....N......V', str_repeat('.', 18)), $builder->getPattern());
+        static::assertSame(\sprintf('%sEL....N......V', str_repeat('.', 18)), $builder->getPattern());
 
         $builder->add(1 << 10);
-        static::assertSame(sprintf('%sEL.%s..N......V', str_repeat('.', 18), MaskBuilder::ON), $builder->getPattern());
+        static::assertSame(\sprintf('%sEL.%s..N......V', str_repeat('.', 18), MaskBuilder::ON), $builder->getPattern());
     }
 }

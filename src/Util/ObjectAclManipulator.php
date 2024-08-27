@@ -47,7 +47,7 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
         $countUpdated = 0;
         $securityHandler = $admin->getSecurityHandler();
         if (!$securityHandler instanceof AclSecurityHandlerInterface) {
-            $output->writeln(sprintf('Admin `%s` is not configured to use ACL : <info>ignoring</info>', $admin->getCode()));
+            $output->writeln(\sprintf('Admin `%s` is not configured to use ACL : <info>ignoring</info>', $admin->getCode()));
 
             return [0, 0];
         }
@@ -73,7 +73,7 @@ abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
             try {
                 $securityHandler->updateAcl($acl);
             } catch (\Exception $e) {
-                $output->writeln(sprintf('Error saving ObjectIdentity (%s, %s) ACL : %s <info>ignoring</info>', $oid->getIdentifier(), $oid->getType(), $e->getMessage()));
+                $output->writeln(\sprintf('Error saving ObjectIdentity (%s, %s) ACL : %s <info>ignoring</info>', $oid->getIdentifier(), $oid->getType(), $e->getMessage()));
             }
         }
 

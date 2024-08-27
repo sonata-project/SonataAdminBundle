@@ -120,7 +120,7 @@ final class AdminHelperTest extends TestCase
         $subObject->expects(static::atLeastOnce())->method('getMore')->willReturn('Value');
 
         $this->expectException(\Exception::class);
-        $this->expectExceptionMessage(sprintf('Could not get element id from %s Failing part: calls', $path));
+        $this->expectExceptionMessage(\sprintf('Could not get element id from %s Failing part: calls', $path));
 
         $this->getMethodAsPublic('getElementAccessPath')->invoke(
             $this->helper,
@@ -183,7 +183,7 @@ final class AdminHelperTest extends TestCase
             ->method('getRequest')
             ->willReturn($request);
 
-        $foo = new class() {
+        $foo = new class {
             /** @var object[] */
             public array $bar = [];
         };
@@ -326,7 +326,7 @@ final class AdminHelperTest extends TestCase
         $admin->method('getFormBuilder')->willReturn($formBuilder);
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(sprintf('Collection must be an instance of %s or array, "%s" given.', \ArrayAccess::class, \gettype(null)));
+        $this->expectExceptionMessage(\sprintf('Collection must be an instance of %s or array, "%s" given.', \ArrayAccess::class, \gettype(null)));
         $this->helper->appendFormFieldElement($admin, $foo, 'test_bar');
     }
 
@@ -386,7 +386,7 @@ final class AdminHelperTest extends TestCase
             ->method('getRequest')
             ->willReturn($request);
 
-        $foo = new class() {
+        $foo = new class {
             /** @var Collection<int, Bar> */
             private Collection $bar;
 
@@ -497,7 +497,7 @@ final class AdminHelperTest extends TestCase
             ->method('getRequest')
             ->willReturn($request);
 
-        $foo = new class() {
+        $foo = new class {
             /** @var Collection<int, Bar> */
             private Collection $bar;
 
@@ -606,14 +606,14 @@ final class AdminHelperTest extends TestCase
         $admin->expects(static::once())->method('getFormBuilder')->willReturn($formBuilder);
 
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(sprintf('Collection must be an instance of %s or array, "string" given.', \ArrayAccess::class));
+        $this->expectExceptionMessage(\sprintf('Collection must be an instance of %s or array, "string" given.', \ArrayAccess::class));
 
         $this->helper->appendFormFieldElement($admin, $object, 'uniquePartOfId_sub_object_0_and_more_0_final_data');
     }
 
     public function testAppendFormFieldElementOnNestedWithSameNamedCollection(): void
     {
-        $subObject = new class() {
+        $subObject = new class {
             /** @var Collection<int, \stdClass> */
             private Collection $collection;
 

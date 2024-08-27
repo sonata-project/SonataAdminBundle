@@ -40,7 +40,7 @@ final class RoutesCache
      */
     public function load(AdminInterface $admin): array
     {
-        $filename = sprintf('%s/route_%s', $this->cacheFolder, md5($admin->getCode()));
+        $filename = \sprintf('%s/route_%s', $this->cacheFolder, md5($admin->getCode()));
 
         $cache = new ConfigCache($filename, $this->debug);
         if ($cache->isFresh()) {

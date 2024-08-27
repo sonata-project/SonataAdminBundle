@@ -50,7 +50,7 @@ final class TraversableToCollection
             return new ArrayCollection($value);
         }
 
-        throw new \TypeError(sprintf(
+        throw new \TypeError(\sprintf(
             'Argument 1 passed to "%s()" must be an iterable, "%s" given.',
             __METHOD__,
             \gettype($value)

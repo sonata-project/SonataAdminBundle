@@ -201,7 +201,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getModelClass(): string
     {
         if (null === $this->modelClass) {
-            throw new \LogicException(sprintf('Admin "%s" has no model class.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no model class.', static::class));
         }
 
         return $this->modelClass;
@@ -215,7 +215,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getBaseControllerName(): string
     {
         if (null === $this->baseControllerName) {
-            throw new \LogicException(sprintf('Admin "%s" has no base controller name.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no base controller name.', static::class));
         }
 
         return $this->baseControllerName;
@@ -259,7 +259,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getManagerType(): string
     {
         if (null === $this->managerType) {
-            throw new \LogicException(sprintf('Admin "%s" has no manager type.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no manager type.', static::class));
         }
 
         return $this->managerType;
@@ -289,7 +289,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getFilterPersister(): FilterPersisterInterface
     {
         if (!$this->hasFilterPersister()) {
-            throw new \LogicException(sprintf('Admin "%s" has no filter persister.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no filter persister.', static::class));
         }
 
         return $this->filterPersister;
@@ -311,7 +311,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getModelManager(): ModelManagerInterface
     {
         if (null === $this->modelManager) {
-            throw new \LogicException(sprintf('Admin "%s" has no model manager.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no model manager.', static::class));
         }
 
         return $this->modelManager;
@@ -325,7 +325,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getDataSource(): DataSourceInterface
     {
         if (null === $this->dataSource) {
-            throw new \LogicException(sprintf('Admin "%s" has no data source.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no data source.', static::class));
         }
 
         return $this->dataSource;
@@ -339,7 +339,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     public function getFieldDescriptionFactory(): FieldDescriptionFactoryInterface
     {
         if (null === $this->fieldDescriptionFactory) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Admin "%s" has no field description factory.',
                 static::class
             ));
@@ -356,7 +356,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getFormContractor(): FormContractorInterface
     {
         if (null === $this->formContractor) {
-            throw new \LogicException(sprintf('Admin "%s" has no form contractor.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no form contractor.', static::class));
         }
 
         return $this->formContractor;
@@ -370,7 +370,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getShowBuilder(): ShowBuilderInterface
     {
         if (null === $this->showBuilder) {
-            throw new \LogicException(sprintf('Admin "%s" has no show builder.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no show builder.', static::class));
         }
 
         return $this->showBuilder;
@@ -384,7 +384,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getListBuilder(): ListBuilderInterface
     {
         if (null === $this->listBuilder) {
-            throw new \LogicException(sprintf('Admin "%s" has no list builder.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no list builder.', static::class));
         }
 
         return $this->listBuilder;
@@ -398,7 +398,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getDatagridBuilder(): DatagridBuilderInterface
     {
         if (null === $this->datagridBuilder) {
-            throw new \LogicException(sprintf('Admin "%s" has no datagrid builder.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no datagrid builder.', static::class));
         }
 
         return $this->datagridBuilder;
@@ -412,7 +412,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getTranslator(): TranslatorInterface
     {
         if (null === $this->translator) {
-            throw new \LogicException(sprintf('Admin "%s" has no translator.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no translator.', static::class));
         }
 
         return $this->translator;
@@ -426,7 +426,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getConfigurationPool(): Pool
     {
         if (null === $this->configurationPool) {
-            throw new \LogicException(sprintf('Admin "%s" has no pool.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no pool.', static::class));
         }
 
         return $this->configurationPool;
@@ -440,7 +440,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getRouteGenerator(): RouteGeneratorInterface
     {
         if (null === $this->routeGenerator) {
-            throw new \LogicException(sprintf('Admin "%s" has no route generator.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no route generator.', static::class));
         }
 
         return $this->routeGenerator;
@@ -454,7 +454,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getSecurityHandler(): SecurityHandlerInterface
     {
         if (null === $this->securityHandler) {
-            throw new \LogicException(sprintf('Admin "%s" has no security handler.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no security handler.', static::class));
         }
 
         return $this->securityHandler;
@@ -468,7 +468,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getMenuFactory(): FactoryInterface
     {
         if (null === $this->menuFactory) {
-            throw new \LogicException(sprintf('Admin "%s" has no security handler.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no security handler.', static::class));
         }
 
         return $this->menuFactory;
@@ -482,7 +482,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getRouteBuilder(): RouteBuilderInterface
     {
         if (null === $this->routeBuilder) {
-            throw new \LogicException(sprintf('Admin "%s" has no route builder.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no route builder.', static::class));
         }
 
         return $this->routeBuilder;
@@ -496,7 +496,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getLabelTranslatorStrategy(): LabelTranslatorStrategyInterface
     {
         if (null === $this->labelTranslatorStrategy) {
-            throw new \LogicException(sprintf('Admin "%s" has no label translator strategy.', static::class));
+            throw new \LogicException(\sprintf('Admin "%s" has no label translator strategy.', static::class));
         }
 
         return $this->labelTranslatorStrategy;
@@ -505,7 +505,7 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
     final public function getTemplateRegistry(): MutableTemplateRegistryInterface
     {
         if (!$this->hasTemplateRegistry()) {
-            throw new \LogicException(sprintf('Unable to find the template registry for admin `%s`.', static::class));
+            throw new \LogicException(\sprintf('Unable to find the template registry for admin `%s`.', static::class));
         }
 
         return $this->templateRegistry;

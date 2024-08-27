@@ -43,17 +43,17 @@ final class AddFilterTypeCompilerPass implements CompilerPassInterface
 
             $class = $serviceDefinition->getClass();
             if (null === $class) {
-                throw new InvalidArgumentException(sprintf('The service "%s" has no class.', $id));
+                throw new InvalidArgumentException(\sprintf('The service "%s" has no class.', $id));
             }
 
             $reflectionClass = $container->getReflectionClass($class);
 
             if (null === $reflectionClass) {
-                throw new InvalidArgumentException(sprintf('Class "%s" used for service "%s" cannot be found.', $class, $id));
+                throw new InvalidArgumentException(\sprintf('Class "%s" used for service "%s" cannot be found.', $class, $id));
             }
 
             if (!$reflectionClass->isSubclassOf(FilterInterface::class)) {
-                throw new InvalidArgumentException(sprintf('Service "%s" MUST implement interface "%s".', $id, FilterInterface::class));
+                throw new InvalidArgumentException(\sprintf('Service "%s" MUST implement interface "%s".', $id, FilterInterface::class));
             }
 
             $services[$class] = new Reference($id);

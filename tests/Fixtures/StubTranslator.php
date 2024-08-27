@@ -28,7 +28,7 @@ final class StubTranslator implements TranslatorInterface
         $transOpeningTag = '[trans]';
 
         if (null !== $domain) {
-            $transOpeningTag = sprintf('[trans domain=%s]', $domain);
+            $transOpeningTag = \sprintf('[trans domain=%s]', $domain);
         }
 
         return $transOpeningTag.strtr($id, $parameters).'[/trans]';

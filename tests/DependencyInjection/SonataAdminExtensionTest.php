@@ -398,7 +398,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $skin = $options['skin'];
 
         $defaultStylesheets = $this->defaultConfiguration['assets']['stylesheets'];
-        $defaultStylesheets[] = sprintf(
+        $defaultStylesheets[] = \sprintf(
             'bundles/sonataadmin/admin-lte-skins/%s.min.css',
             $skin
         );

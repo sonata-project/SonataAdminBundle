@@ -56,7 +56,7 @@ final class TraversableToCollectionTest extends TestCase
     public function testFailedTransform(string $invalidType, mixed $value): void
     {
         $this->expectException(\TypeError::class);
-        $this->expectExceptionMessage(sprintf(
+        $this->expectExceptionMessage(\sprintf(
             'Argument 1 passed to "Sonata\AdminBundle\Util\TraversableToCollection::transform()" must be an iterable, %s given.',
             $invalidType
         ));

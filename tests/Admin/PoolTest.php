@@ -276,7 +276,7 @@ final class PoolTest extends TestCase
         $pool = new Pool($this->container, ['admin1']);
 
         $this->expectException(AdminCodeNotFoundException::class);
-        $this->expectExceptionMessageMatches(sprintf(
+        $this->expectExceptionMessageMatches(\sprintf(
             '{^Argument 1 passed to Sonata\\\AdminBundle\\\Admin\\\Pool::getAdminByAdminCode\(\) must contain a valid admin reference, "[^"]+" found at "%s"\.$}',
             $adminId
         ));

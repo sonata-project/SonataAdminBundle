@@ -27,7 +27,7 @@ final class ObjectManipulatorTest extends TestCase
 
         $instance = new \stdClass();
 
-        $object = new class() {
+        $object = new class {
             /** @var object[] */
             private array $fooBars = [];
 
@@ -62,7 +62,7 @@ final class ObjectManipulatorTest extends TestCase
 
         $instance = new \stdClass();
 
-        $object2 = new class() {
+        $object2 = new class {
             /** @var object[] */
             private array $fooBars = [];
 
@@ -84,7 +84,7 @@ final class ObjectManipulatorTest extends TestCase
             }
         };
 
-        $object1 = new class() {
+        $object1 = new class {
             private ?object $parent = null;
 
             public function setParent(object $parent): void
@@ -112,7 +112,7 @@ final class ObjectManipulatorTest extends TestCase
 
         $instance = new \stdClass();
 
-        $object = new class() {
+        $object = new class {
             /** @var object[] */
             private array $entries = [];
 
@@ -147,7 +147,7 @@ final class ObjectManipulatorTest extends TestCase
 
         $object = new \stdClass();
 
-        $instance = new class() {
+        $instance = new class {
             private ?object $parent = null;
 
             public function setParent(object $parent): void
@@ -190,7 +190,7 @@ final class ObjectManipulatorTest extends TestCase
 
         $object2 = new \stdClass();
 
-        $instance = new class() {
+        $instance = new class {
             private ?object $fooBar = null;
 
             public function setFooBar(object $foobar): void
@@ -204,7 +204,7 @@ final class ObjectManipulatorTest extends TestCase
             }
         };
 
-        $object1 = new class() {
+        $object1 = new class {
             private ?object $parent = null;
 
             public function setParent(object $parent): void
@@ -231,7 +231,7 @@ final class ObjectManipulatorTest extends TestCase
         $fieldDescription->expects(static::once())->method('getParentAssociationMappings')->willReturn([]);
 
         $object = new \stdClass();
-        $instance = new class() {
+        $instance = new class {
             /** @var object|null */
             public $parent;
         };
@@ -248,7 +248,7 @@ final class ObjectManipulatorTest extends TestCase
         $fieldDescription->expects(static::once())->method('getParentAssociationMappings')->willReturn([['fieldName' => 'parent']]);
 
         $object2 = new \stdClass();
-        $instance = new class() {
+        $instance = new class {
             /** @var object|null */
             public $fooBar;
         };

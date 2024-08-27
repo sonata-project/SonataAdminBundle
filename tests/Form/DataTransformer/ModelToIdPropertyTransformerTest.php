@@ -154,7 +154,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
 
         $this->expectException(UnexpectedTypeException::class);
-        $this->expectExceptionMessage(sprintf('Expected argument of type "array", "%s" given', $type));
+        $this->expectExceptionMessage(\sprintf('Expected argument of type "array", "%s" given', $type));
 
         $transformer->reverseTransform($params);
     }

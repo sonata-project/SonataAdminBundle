@@ -47,9 +47,9 @@ final class FilterData
     {
         if (isset($data['type'])) {
             if (!\is_int($data['type']) && (!\is_string($data['type']) || !is_numeric($data['type']))) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'The "type" parameter MUST be of type "integer" or "null", "%s" given.',
-                    \gettype($data['type']) // @phpstan-ignore-line https://github.com/phpstan/phpstan/issues/11207
+                    \gettype($data['type'])
                 ));
             }
 

@@ -117,7 +117,7 @@ final class AdminVoterTest extends TestCase
         $childAdmin = $this->createMock(AdminInterface::class);
         $childAdmin
             ->method('getBaseCodeRoute')
-            ->willReturn(sprintf('%s|%s', $parentCode, $childCode));
+            ->willReturn(\sprintf('%s|%s', $parentCode, $childCode));
 
         $parentAdmin
             ->method('getChildren')
@@ -152,7 +152,7 @@ final class AdminVoterTest extends TestCase
         $parentAdmin = $this->createMock(AdminInterface::class);
         $parentAdmin
             ->method('getBaseCodeRoute')
-            ->willReturn(sprintf('%s|%s', $grandParentCode, $parentCode));
+            ->willReturn(\sprintf('%s|%s', $grandParentCode, $parentCode));
 
         $grandParentAdmin
             ->method('getChildren')
@@ -161,7 +161,7 @@ final class AdminVoterTest extends TestCase
         $childAdmin = $this->createMock(AdminInterface::class);
         $childAdmin
             ->method('getBaseCodeRoute')
-            ->willReturn(sprintf('%s|%s|%s', $grandParentCode, $parentCode, $childCode));
+            ->willReturn(\sprintf('%s|%s|%s', $grandParentCode, $parentCode, $childCode));
 
         $parentAdmin
             ->method('getChildren')

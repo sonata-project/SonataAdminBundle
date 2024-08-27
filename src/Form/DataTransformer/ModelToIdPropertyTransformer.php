@@ -158,7 +158,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
         foreach ($collection as $model) {
             $id = $this->modelManager->getNormalizedIdentifier($model);
             if (null === $id) {
-                throw new TransformationFailedException(sprintf(
+                throw new TransformationFailedException(\sprintf(
                     'No identifier was found for the model "%s".',
                     $this->className
                 ));
@@ -169,7 +169,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
             } elseif ($model instanceof \Stringable) {
                 $label = $model->__toString();
             } else {
-                throw new TransformationFailedException(sprintf(
+                throw new TransformationFailedException(\sprintf(
                     'Unable to convert the model %s to String, model must have a \'__toString()\' method defined',
                     $this->className
                 ));

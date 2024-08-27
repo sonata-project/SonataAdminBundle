@@ -221,7 +221,7 @@ final class AdminObjectAclData
         $reflectionClass = new \ReflectionClass(new $this->maskBuilderClass());
         $this->masks = [];
         foreach ($permissions as $permission) {
-            $this->masks[$permission] = $reflectionClass->getConstant(sprintf('MASK_%s', $permission));
+            $this->masks[$permission] = $reflectionClass->getConstant(\sprintf('MASK_%s', $permission));
         }
     }
 }

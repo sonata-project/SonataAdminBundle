@@ -84,7 +84,7 @@ final class RenderElementExtension extends AbstractExtension
         FieldDescriptionInterface $fieldDescription,
         array $params = []
     ): string {
-        @trigger_error(sprintf(
+        @trigger_error(\sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
@@ -105,7 +105,7 @@ final class RenderElementExtension extends AbstractExtension
         FieldDescriptionInterface $fieldDescription,
         object $object
     ): string {
-        @trigger_error(sprintf(
+        @trigger_error(\sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
@@ -129,7 +129,7 @@ final class RenderElementExtension extends AbstractExtension
         mixed $baseObject,
         mixed $compareObject
     ): string {
-        @trigger_error(sprintf(
+        @trigger_error(\sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,
@@ -149,7 +149,7 @@ final class RenderElementExtension extends AbstractExtension
      */
     public function renderRelationElement(mixed $element, FieldDescriptionInterface $fieldDescription): mixed
     {
-        @trigger_error(sprintf(
+        @trigger_error(\sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
             .'  Use "%s::%s()" instead.',
             __METHOD__,

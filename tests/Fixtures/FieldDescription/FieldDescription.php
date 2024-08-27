@@ -19,22 +19,22 @@ final class FieldDescription extends BaseFieldDescription
 {
     public function getTargetEntity(): ?string
     {
-        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
+        throw new \BadMethodCallException(\sprintf('Implement %s() method.', __METHOD__));
     }
 
     public function getTargetModel(): ?string
     {
-        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
+        throw new \BadMethodCallException(\sprintf('Implement %s() method.', __METHOD__));
     }
 
     public function isIdentifier(): bool
     {
-        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
+        throw new \BadMethodCallException(\sprintf('Implement %s() method.', __METHOD__));
     }
 
     public function getValue(object $object): void
     {
-        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
+        throw new \BadMethodCallException(\sprintf('Implement %s() method.', __METHOD__));
     }
 
     public function describesSingleValuedAssociation(): bool

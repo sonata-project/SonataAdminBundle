@@ -91,7 +91,7 @@ final class AdminTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->cacheTempFolder = sprintf('%s/sonata_test_route', sys_get_temp_dir());
+        $this->cacheTempFolder = \sprintf('%s/sonata_test_route', sys_get_temp_dir());
         $filesystem = new Filesystem();
         $filesystem->remove($this->cacheTempFolder);
     }
@@ -436,7 +436,7 @@ final class AdminTest extends TestCase
         $commentAdmin->setModelClass(Comment::class);
         $commentAdmin->setParent($postAdmin, 'post');
 
-        static::assertSame(sprintf('%s/{id}/comment', $expected), $commentAdmin->getBaseRoutePattern());
+        static::assertSame(\sprintf('%s/{id}/comment', $expected), $commentAdmin->getBaseRoutePattern());
     }
 
     /**
@@ -458,7 +458,7 @@ final class AdminTest extends TestCase
         $commentAdmin->setParent($postAdmin, 'post');
         $commentVoteAdmin->setParent($commentAdmin, 'comment');
 
-        static::assertSame(sprintf('%s/{id}/comment/{childId}/commentvote', $expected), $commentVoteAdmin->getBaseRoutePattern());
+        static::assertSame(\sprintf('%s/{id}/comment/{childId}/commentvote', $expected), $commentVoteAdmin->getBaseRoutePattern());
     }
 
     public function testGetBaseRoutePatternWithSpecifiedPattern(): void
@@ -744,7 +744,7 @@ final class AdminTest extends TestCase
         $request->query->set('subclass', 'inject');
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage(sprintf('Admin "%s" has no active subclass.', PostAdmin::class));
+        $this->expectExceptionMessage(\sprintf('Admin "%s" has no active subclass.', PostAdmin::class));
 
         $admin->getActiveSubclassCode();
     }
@@ -811,7 +811,7 @@ final class AdminTest extends TestCase
         $admin = new PostAdmin();
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage(sprintf(
+        $this->expectExceptionMessage(\sprintf(
             'Admin "%s" has no label translator strategy.',
             PostAdmin::class
         ));
@@ -934,7 +934,7 @@ final class AdminTest extends TestCase
         $admin = new PostAdmin();
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage(sprintf(
+        $this->expectExceptionMessage(\sprintf(
             'Admin "%s" has no model manager.',
             PostAdmin::class
         ));
@@ -975,7 +975,7 @@ final class AdminTest extends TestCase
         $admin = new PostAdmin();
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage(sprintf('Admin "%s" has no route generator.', PostAdmin::class));
+        $this->expectExceptionMessage(\sprintf('Admin "%s" has no route generator.', PostAdmin::class));
 
         $admin->getRouteGenerator();
     }
@@ -995,7 +995,7 @@ final class AdminTest extends TestCase
         $admin = new PostAdmin();
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage(sprintf('Admin "%s" has no pool.', PostAdmin::class));
+        $this->expectExceptionMessage(\sprintf('Admin "%s" has no pool.', PostAdmin::class));
 
         $admin->getConfigurationPool();
     }
@@ -1579,7 +1579,7 @@ final class AdminTest extends TestCase
                     'foo' => $fooFieldDescription,
                     'bar' => $barFieldDescription,
                     'baz' => $bazFieldDescription,
-                    default => throw new \RuntimeException(sprintf('Unknown filter name "%s"', $name)),
+                    default => throw new \RuntimeException(\sprintf('Unknown filter name "%s"', $name)),
                 };
 
                 $fieldDescription->setName($name);
@@ -1672,7 +1672,7 @@ final class AdminTest extends TestCase
         yield ['azerty'];
         yield ['4f69bbb5f14a13347f000092'];
         yield ['0779ca8d-e2be-11e4-ac58-0242ac11000b'];
-        yield [sprintf('123%smy_type', AdapterInterface::ID_SEPARATOR)];
+        yield [\sprintf('123%smy_type', AdapterInterface::ID_SEPARATOR)];
     }
 
     /**
@@ -1738,7 +1738,7 @@ final class AdminTest extends TestCase
         $admin->setModelClass(Post::class);
 
         $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage(sprintf(
+        $this->expectExceptionMessage(\sprintf(
             'Admin "%s" does not allow this subject: %s, use the one register with this admin class %s',
             PostAdmin::class,
             Comment::class,
@@ -1887,7 +1887,7 @@ final class AdminTest extends TestCase
         $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $labelTranslatorStrategy
             ->method('getLabel')
-            ->willReturnCallback(static fn (string $label, string $context = '', string $type = ''): string => sprintf('%s.%s_%s', $context, $type, $label));
+            ->willReturnCallback(static fn (string $label, string $context = '', string $type = ''): string => \sprintf('%s.%s_%s', $context, $type, $label));
 
         $admin = new PostAdmin();
         $admin->setRouteBuilder($pathInfo);
@@ -2293,7 +2293,7 @@ final class AdminTest extends TestCase
         $formFactory = new FormFactory(new FormRegistry([], new ResolvedFormTypeFactory()));
         $datagridBuilder = new DatagridBuilder($formFactory, $pager, $proxyQuery);
 
-        $translator->method('trans')->willReturnCallback(static fn (string $label): string => sprintf('trans(%s)', $label));
+        $translator->method('trans')->willReturnCallback(static fn (string $label): string => \sprintf('trans(%s)', $label));
 
         $modelManager->expects(static::once())->method('getExportFields')->willReturn([
             'key' => 'field',

@@ -369,7 +369,7 @@ final class ShowMapperTest extends TestCase
         $name = 'name';
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage(
-            sprintf('Duplicate field %s "name" in show mapper. Names should be unique.', $name)
+            \sprintf('Duplicate field %s "name" in show mapper. Names should be unique.', $name)
         );
 
         $this->showMapper->add($name);

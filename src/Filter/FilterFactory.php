@@ -28,13 +28,13 @@ final class FilterFactory implements FilterFactoryInterface
     public function create(string $name, string $type, array $options = []): FilterInterface
     {
         if (!$this->container->has($type)) {
-            throw new \RuntimeException(sprintf('No attached service to type named `%s`', $type));
+            throw new \RuntimeException(\sprintf('No attached service to type named `%s`', $type));
         }
 
         $filter = $this->container->get($type);
 
         if (!$filter instanceof FilterInterface) {
-            throw new \RuntimeException(sprintf('The service `%s` must implement `FilterInterface`', $type));
+            throw new \RuntimeException(\sprintf('The service `%s` must implement `FilterInterface`', $type));
         }
 
         $filter->initialize($name, $options);

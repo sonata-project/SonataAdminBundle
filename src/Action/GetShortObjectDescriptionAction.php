@@ -54,7 +54,7 @@ final class GetShortObjectDescriptionAction
         try {
             $object = $admin->getObject($objectId);
             if (null === $object) {
-                throw new NotFoundHttpException(sprintf('Could not find subject for id "%s"', $objectId));
+                throw new NotFoundHttpException(\sprintf('Could not find subject for id "%s"', $objectId));
             }
         } finally {
             // Restore the subclass if present to reduce impact of the parameter removal above.

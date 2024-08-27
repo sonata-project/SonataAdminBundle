@@ -75,7 +75,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
         }
 
         return new TwigRendererEngine(
-            [sprintf('%s_admin_fields.html.twig', $this->type)],
+            [\sprintf('%s_admin_fields.html.twig', $this->type)],
             $environment
         );
     }
@@ -91,8 +91,8 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     protected function getTemplatePaths(): array
     {
         $twigPaths = array_filter([
-            sprintf('%s/../../../vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form', __DIR__),
-            sprintf('%s/../../../src/Resources/views/Form', __DIR__),
+            \sprintf('%s/../../../vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form', __DIR__),
+            \sprintf('%s/../../../src/Resources/views/Form', __DIR__),
         ], 'is_dir');
 
         return array_merge(parent::getTemplatePaths(), $twigPaths);

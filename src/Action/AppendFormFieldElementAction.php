@@ -48,7 +48,7 @@ final class AppendFormFieldElementAction
         } elseif (\is_string($objectId) || \is_int($objectId)) {
             $subject = $admin->getObject($objectId);
             if (null === $subject) {
-                throw new NotFoundHttpException(sprintf(
+                throw new NotFoundHttpException(\sprintf(
                     'Unable to find the object id: %s, class: %s',
                     $objectId,
                     $admin->getClass()

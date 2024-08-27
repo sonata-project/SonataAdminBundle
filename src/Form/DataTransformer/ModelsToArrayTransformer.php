@@ -55,7 +55,7 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
         foreach ($value as $model) {
             $identifier = $this->modelManager->getNormalizedIdentifier($model);
             if (null === $identifier) {
-                throw new TransformationFailedException(sprintf(
+                throw new TransformationFailedException(\sprintf(
                     'No identifier was found for the model "%s".',
                     $this->class
                 ));
@@ -101,7 +101,7 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
         foreach ($queryResult as $model) {
             $identifier = $this->modelManager->getNormalizedIdentifier($model);
             if (null === $identifier) {
-                throw new TransformationFailedException(sprintf(
+                throw new TransformationFailedException(\sprintf(
                     'No identifier was found for the model "%s".',
                     $this->class
                 ));
@@ -112,7 +112,7 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
 
         foreach ($value as $identifier) {
             if (!isset($modelsById[$identifier])) {
-                throw new TransformationFailedException(sprintf(
+                throw new TransformationFailedException(\sprintf(
                     'No model was found for the identifier "%s".',
                     $identifier,
                 ));

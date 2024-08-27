@@ -106,9 +106,9 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
 
             $blockSuffix = preg_replace('#^_([a-z0-9]{14})_(.++)$#', '$2', $lastBlockPrefix);
 
-            $blockPrefixes[] = sprintf('%s_%s', $baseName, $baseType);
-            $blockPrefixes[] = sprintf('%s_%s_%s_%s', $baseName, $baseType, $view->parent->vars['name'], $view->vars['name']);
-            $blockPrefixes[] = sprintf('%s_%s_%s_%s', $baseName, $baseType, $view->parent->vars['name'], $blockSuffix);
+            $blockPrefixes[] = \sprintf('%s_%s', $baseName, $baseType);
+            $blockPrefixes[] = \sprintf('%s_%s_%s_%s', $baseName, $baseType, $view->parent->vars['name'], $view->vars['name']);
+            $blockPrefixes[] = \sprintf('%s_%s_%s_%s', $baseName, $baseType, $view->parent->vars['name'], $blockSuffix);
 
             $view->vars['block_prefixes'] = array_unique($blockPrefixes);
             $view->vars['sonata_admin_enabled'] = true;
@@ -145,9 +145,9 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
 
             $blockSuffix = preg_replace('#^_([a-z0-9]{14})_(.++)$#', '$2', $lastBlockPrefix);
 
-            $blockPrefixes[] = sprintf('%s_%s', $baseName, $baseType);
-            $blockPrefixes[] = sprintf('%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType);
-            $blockPrefixes[] = sprintf('%s_%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType, $blockSuffix);
+            $blockPrefixes[] = \sprintf('%s_%s', $baseName, $baseType);
+            $blockPrefixes[] = \sprintf('%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType);
+            $blockPrefixes[] = \sprintf('%s_%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType, $blockSuffix);
 
             if (isset($sonataAdmin['block_name']) && false !== $sonataAdmin['block_name']) {
                 $blockPrefixes[] = $sonataAdmin['block_name'];
@@ -204,7 +204,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
      */
     public function getValueFromFieldDescription(?object $object, FieldDescriptionInterface $fieldDescription): mixed
     {
-        @trigger_error(sprintf(
+        @trigger_error(\sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.3 and will be removed in 5.0.',
             __METHOD__
         ), \E_USER_DEPRECATED);

@@ -60,8 +60,8 @@ final class AdminMakerTest extends TestCase
             ->willReturn(['bar', 'baz']);
 
         $this->modelManagers = ['sonata.admin.manager.orm' => $managerOrmProxy];
-        $this->servicesFile = sprintf('%s.yml', lcg_value());
-        $this->projectDirectory = sprintf('%s/sonata-admin-bundle/', sys_get_temp_dir());
+        $this->servicesFile = \sprintf('%s.yml', lcg_value());
+        $this->projectDirectory = \sprintf('%s/sonata-admin-bundle/', sys_get_temp_dir());
         $this->filesystem = new Filesystem();
     }
 
@@ -100,7 +100,7 @@ final class AdminMakerTest extends TestCase
         $autoloaderUtil = $this->createMock(AutoloaderUtil::class);
         $autoloaderUtil
             ->method('getPathForFutureClass')
-            ->willReturnCallback(fn (string $className): string => sprintf('%s/%s.php', $this->projectDirectory, str_replace('\\', '/', $className)));
+            ->willReturnCallback(fn (string $className): string => \sprintf('%s/%s.php', $this->projectDirectory, str_replace('\\', '/', $className)));
 
         $fileManager = new FileManager(
             $this->filesystem,

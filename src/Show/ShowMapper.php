@@ -76,7 +76,7 @@ final class ShowMapper extends BaseGroupedMapper
                 $fieldDescriptionOptions
             );
         } else {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Duplicate field name "%s" in show mapper. Names should be unique.',
                 $name
             ));

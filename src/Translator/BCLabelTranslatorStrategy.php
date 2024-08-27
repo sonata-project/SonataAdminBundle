@@ -24,14 +24,14 @@ final class BCLabelTranslatorStrategy implements LabelTranslatorStrategyInterfac
 {
     public function getLabel(string $label, string $context = '', string $type = ''): string
     {
-        @trigger_error(sprintf(
+        @trigger_error(\sprintf(
             'The "%s" class is deprecated since sonata-project/admin-bundle version 4.19 and will be'
             .' removed in 5.0 version.',
             self::class
         ), \E_USER_DEPRECATED);
 
         if ('breadcrumb' === $context) {
-            return sprintf('%s.%s_%s', $context, $type, strtolower($label));
+            return \sprintf('%s.%s_%s', $context, $type, strtolower($label));
         }
 
         return ucfirst(strtolower($label));

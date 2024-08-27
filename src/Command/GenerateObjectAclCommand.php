@@ -66,7 +66,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
             try {
                 $this->getUserModelClass($input, $output);
             } catch (\Exception $e) {
-                $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+                $output->writeln(\sprintf('<error>%s</error>', $e->getMessage()));
 
                 return 1;
             }
@@ -83,12 +83,12 @@ final class GenerateObjectAclCommand extends QuestionableCommand
                 $admin = $this->pool->getInstance($code);
             } catch (\Exception $e) {
                 $output->writeln('<error>Warning : The admin class cannot be initiated from the command line</error>');
-                $output->writeln(sprintf('<error>%s</error>', $e->getMessage()));
+                $output->writeln(\sprintf('<error>%s</error>', $e->getMessage()));
 
                 continue;
             }
 
-            if ($input->getOption('step') && !$this->askConfirmation($input, $output, sprintf("<question>Generate ACLs for the object instances handled by \"%s\"?</question>\n", $code), 'no')) {
+            if ($input->getOption('step') && !$this->askConfirmation($input, $output, \sprintf("<question>Generate ACLs for the object instances handled by \"%s\"?</question>\n", $code), 'no')) {
                 continue;
             }
 
@@ -104,7 +104,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
                 $securityIdentity = new UserSecurityIdentity($objectOwner, $this->getUserModelClass($input, $output));
             }
 
-            $manipulatorId = sprintf('sonata.admin.manipulator.acl.object.%s', $admin->getManagerType());
+            $manipulatorId = \sprintf('sonata.admin.manipulator.acl.object.%s', $admin->getManagerType());
             if (!isset($this->aclObjectManipulators[$manipulatorId])) {
                 $output->writeln('Admin class is using a manager type that has no manipulator implemented : <info>ignoring</info>');
 
@@ -137,7 +137,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
             }
 
             if (!class_exists($userModelFromInput)) {
-                throw new \InvalidArgumentException(sprintf(
+                throw new \InvalidArgumentException(\sprintf(
                     'The "user_model" name be a fully qualified class name'
                     .' ("%s" given, expecting something like App\Model\User)',
                     $userModelFromInput

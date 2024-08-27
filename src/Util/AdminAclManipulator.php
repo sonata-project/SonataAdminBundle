@@ -38,7 +38,7 @@ final class AdminAclManipulator implements AdminAclManipulatorInterface
     {
         $securityHandler = $admin->getSecurityHandler();
         if (!$securityHandler instanceof AclSecurityHandlerInterface) {
-            $output->writeln(sprintf('Admin `%s` is not configured to use ACL : <info>ignoring</info>', $admin->getCode()));
+            $output->writeln(\sprintf('Admin `%s` is not configured to use ACL : <info>ignoring</info>', $admin->getCode()));
 
             return;
         }
@@ -51,13 +51,13 @@ final class AdminAclManipulator implements AdminAclManipulatorInterface
         }
 
         // create admin ACL
-        $output->writeln(sprintf(' > install ACL for %s', $admin->getCode()));
+        $output->writeln(\sprintf(' > install ACL for %s', $admin->getCode()));
         $configResult = $this->addAdminClassAces($output, $acl, $securityHandler, $admin);
 
         if ($configResult) {
             $securityHandler->updateAcl($acl);
         } else {
-            $output->writeln(sprintf('   - %s , no roles and permissions found', $newAcl ? 'skip' : 'removed'));
+            $output->writeln(\sprintf('   - %s , no roles and permissions found', $newAcl ? 'skip' : 'removed'));
             $securityHandler->deleteAcl($objectIdentity);
         }
     }
@@ -92,13 +92,13 @@ final class AdminAclManipulator implements AdminAclManipulatorInterface
                         $action = 'update';
                     }
 
-                    $output->writeln(sprintf('   - %s role: %s, permissions: %s', $action, $role, json_encode($roleAdminPermissions, \JSON_THROW_ON_ERROR)));
+                    $output->writeln(\sprintf('   - %s role: %s, permissions: %s', $action, $role, json_encode($roleAdminPermissions, \JSON_THROW_ON_ERROR)));
 
                     $builder->reset();
                 } elseif (false !== $aceIndex) {
                     $acl->deleteClassAce($aceIndex);
 
-                    $output->writeln(sprintf('   - remove role: %s', $role));
+                    $output->writeln(\sprintf('   - remove role: %s', $role));
                 }
             }
 

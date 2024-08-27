@@ -113,11 +113,11 @@ final class ListMapper implements MapperInterface
         }
 
         if (\array_key_exists('identifier', $fieldDescriptionOptions) && !\is_bool($fieldDescriptionOptions['identifier'])) {
-            throw new \InvalidArgumentException(sprintf('Value for "identifier" option must be boolean, %s given.', \gettype($fieldDescriptionOptions['identifier'])));
+            throw new \InvalidArgumentException(\sprintf('Value for "identifier" option must be boolean, %s given.', \gettype($fieldDescriptionOptions['identifier'])));
         }
 
         if ($this->getAdmin()->hasListFieldDescription($name)) {
-            throw new \LogicException(sprintf(
+            throw new \LogicException(\sprintf(
                 'Duplicate field name "%s" in list mapper. Names should be unique.',
                 $name
             ));

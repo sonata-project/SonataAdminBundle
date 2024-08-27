@@ -37,7 +37,7 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
     ) {
         // NEXT_MAJOR: Keep only the elseif part and add typehint.
         if (\is_array($superAdminRoles)) {
-            @trigger_error(sprintf(
+            @trigger_error(\sprintf(
                 'Passing an array as argument 1 of "%s()" is deprecated since sonata-project/admin-bundle 4.6'
                 .' and will throw an error in 5.0. You MUST pass a string instead.',
                 __METHOD__
@@ -47,7 +47,7 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
         } elseif (\is_string($superAdminRoles)) {
             $this->superAdminRoles = [$superAdminRoles];
         } else {
-            throw new \TypeError(sprintf(
+            throw new \TypeError(\sprintf(
                 'Argument 1 passed to "%s()" must be of type "array" or "string", "%s" given.',
                 __METHOD__,
                 \gettype($superAdminRoles)
@@ -59,7 +59,7 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
     {
         // NEXT_MAJOR: Remove this and add string typehint to $attributes and rename it $attribute.
         if (\is_array($attributes)) {
-            @trigger_error(sprintf(
+            @trigger_error(\sprintf(
                 'Passing an array as argument 1 of "%s()" is deprecated since sonata-project/admin-bundle 4.6'
                 .' and will throw an error in 5.0. You MUST pass a string instead.',
                 __METHOD__
@@ -73,7 +73,7 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
 
         $useAll = $this->hasOnlyAdminRoles($attributes);
         $attributes = $this->mapAttributes($attributes, $admin);
-        $allRole = sprintf($this->getBaseRole($admin), 'ALL');
+        $allRole = \sprintf($this->getBaseRole($admin), 'ALL');
 
         try {
             // NEXT_MAJOR: Remove the method isAnyGranted and use $this->authorizationChecker->isGranted instead.
@@ -87,7 +87,7 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
 
     public function getBaseRole(AdminInterface $admin): string
     {
-        return sprintf('ROLE_%s_%%s', str_replace('.', '_', strtoupper($admin->getCode())));
+        return \sprintf('ROLE_%s_%%s', str_replace('.', '_', strtoupper($admin->getCode())));
     }
 
     public function buildSecurityInformation(AdminInterface $admin): array
@@ -152,11 +152,11 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
 
             $baseRole = $this->getBaseRole($admin);
 
-            $mappedAttributes[] = sprintf($baseRole, $attribute);
+            $mappedAttributes[] = \sprintf($baseRole, $attribute);
 
             foreach ($admin->getSecurityInformation() as $role => $permissions) {
                 if (\in_array($attribute, $permissions, true)) {
-                    $mappedAttributes[] = sprintf($baseRole, $role);
+                    $mappedAttributes[] = \sprintf($baseRole, $role);
                 }
             }
         }

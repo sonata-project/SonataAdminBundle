@@ -194,11 +194,11 @@ final class CRUDControllerTest extends TestCase
 
         $this->csrfProvider
             ->method('getToken')
-            ->willReturnCallback(static fn (string $intention): CsrfToken => new CsrfToken($intention, sprintf('csrf-token-123_%s', $intention)));
+            ->willReturnCallback(static fn (string $intention): CsrfToken => new CsrfToken($intention, \sprintf('csrf-token-123_%s', $intention)));
 
         $this->csrfProvider
             ->method('isTokenValid')
-            ->willReturnCallback(static fn (CsrfToken $token): bool => $token->getValue() === sprintf('csrf-token-123_%s', $token->getId()));
+            ->willReturnCallback(static fn (CsrfToken $token): bool => $token->getValue() === \sprintf('csrf-token-123_%s', $token->getId()));
 
         $this->logger = $this->createMock(LoggerInterface::class);
 
@@ -275,7 +275,7 @@ final class CRUDControllerTest extends TestCase
             ->method('generateObjectUrl')
             ->willReturnCallback(
                 static function (string $name, object $object, array $parameters = []): string {
-                    $result = sprintf('%s_%s', $object::class, $name);
+                    $result = \sprintf('%s_%s', $object::class, $name);
                     if ([] !== $parameters) {
                         $result .= '?'.http_build_query($parameters);
                     }
@@ -3528,7 +3528,7 @@ final class CRUDControllerTest extends TestCase
         static::assertInstanceOf(RedirectResponse::class, $response);
 
         static::assertSame(['flash_acl_edit_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
-        static::assertSame(sprintf('%s_acl', DummyDomainObject::class), $response->getTargetUrl());
+        static::assertSame(\sprintf('%s_acl', DummyDomainObject::class), $response->getTargetUrl());
     }
 
     public function testHistoryViewRevisionActionAccessDenied(): void

@@ -91,7 +91,7 @@ final class ModelManagerCompilerPassTest extends TestCase
         $compilerPass = new ModelManagerCompilerPass();
 
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage(sprintf('Service "sonata.admin.manager.test" must implement `%s`.', ModelManagerInterface::class));
+        $this->expectExceptionMessage(\sprintf('Service "sonata.admin.manager.test" must implement `%s`.', ModelManagerInterface::class));
 
         $compilerPass->process($containerBuilder);
     }
