@@ -47,6 +47,35 @@ final class CRUDControllerTest extends WebTestCase
         );
     }
 
+    public function testImmutableArrayErrorMessageIsDisplayOnce(): void
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+        $client->setMaxRedirects(1);
+        $client->request(Request::METHOD_GET, '/admin/tests/app/foo/create', ['with_form_errors' => '1']);
+        $crawler = $client->submitForm('Create', []);
+        file_put_contents('tmp.html', $crawler->html());
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertCount(
+            1,
+            $crawler->filter('.sonata-ba-field li:contains("This field is missing.")')
+        );
+    }
+
+    public function testCollectionErrorMessageIsDisplayOnce(): void
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+        $client->setMaxRedirects(1);
+        $client->request(Request::METHOD_GET, '/admin/tests/app/foo/create', ['with_form_errors' => '1']);
+        $crawler = $client->submitForm('Create', []);
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertCount(
+            1,
+            $crawler->filter('.sonata-ba-field li:contains("This collection should contain 2 elements or more.")')
+        );
+    }
+
     /**
      * https://github.com/sonata-project/SonataAdminBundle/issues/6904.
      */
