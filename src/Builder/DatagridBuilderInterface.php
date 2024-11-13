@@ -33,7 +33,7 @@ interface DatagridBuilderInterface extends BuilderInterface
     public function addFilter(
         DatagridInterface $datagrid,
         ?string $type,
-        FieldDescriptionInterface $fieldDescription
+        FieldDescriptionInterface $fieldDescription,
     ): void;
 
     /**

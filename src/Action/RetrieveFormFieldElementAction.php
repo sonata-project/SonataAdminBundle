@@ -27,7 +27,7 @@ final class RetrieveFormFieldElementAction
     public function __construct(
         private Environment $twig,
         private AdminFetcherInterface $adminFetcher,
-        private AdminHelper $helper
+        private AdminHelper $helper,
     ) {
     }
 

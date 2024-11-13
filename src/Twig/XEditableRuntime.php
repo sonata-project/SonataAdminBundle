@@ -40,7 +40,7 @@ final class XEditableRuntime implements RuntimeExtensionInterface
      */
     public function __construct(
         private TranslatorInterface $translator,
-        private array $xEditableTypeMapping = self::FIELD_DESCRIPTION_MAPPING
+        private array $xEditableTypeMapping = self::FIELD_DESCRIPTION_MAPPING,
     ) {
     }
 

@@ -465,7 +465,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
     private function fixTemplates(
         string $serviceId,
         ContainerBuilder $container,
-        Definition $definition
+        Definition $definition,
     ): void {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
         \assert(\is_array($definedTemplates));
@@ -527,7 +527,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
     private function replaceDefaultArguments(
         array $defaultArguments,
         Definition $definition,
-        ?Definition $parentDefinition = null
+        ?Definition $parentDefinition = null,
     ): void {
         $arguments = $definition->getArguments();
         $parentArguments = null !== $parentDefinition ? $parentDefinition->getArguments() : [];

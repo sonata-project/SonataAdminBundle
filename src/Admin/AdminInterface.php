@@ -33,6 +33,8 @@ use Symfony\Component\HttpFoundation\Request;
  * @method bool showInDashboard()
  * @method void removeExtension(AdminExtensionInterface $extension)
  *
+ * @phpstan-method void removeExtension(AdminExtensionInterface<T> $extension)
+ *
  * @phpstan-import-type FieldDescriptionOptions from FieldDescriptionInterface
  *
  * @phpstan-template T of object

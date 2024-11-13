@@ -30,7 +30,7 @@ final class ExplainAdminCommand extends Command
      * @internal This class should only be used through the console
      */
     public function __construct(
-        private Pool $pool
+        private Pool $pool,
     ) {
         parent::__construct();
     }

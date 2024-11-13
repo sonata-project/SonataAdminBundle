@@ -353,7 +353,7 @@ final class RenderElementExtensionTest extends TestCase
         string $type,
         mixed $value,
         array $options,
-        ?string $objectName
+        ?string $objectName,
     ): void {
         $this->fieldDescription
             ->method('getValue')

@@ -40,7 +40,7 @@ final class ShowMapper extends BaseGroupedMapper
     public function __construct(
         private ShowBuilderInterface $builder,
         private FieldDescriptionCollection $list,
-        private AdminInterface $admin
+        private AdminInterface $admin,
     ) {
     }
 

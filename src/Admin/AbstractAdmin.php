@@ -1370,7 +1370,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     /**
      * Returns true if the admin has children, false otherwise.
      *
-     * @phpstan-assert-if-true non-empty-array $this->children
+     * @phpstan-assert-if-true non-empty-array<string, AdminInterface<object>> $this->children
      */
     final public function hasChildren(): bool
     {

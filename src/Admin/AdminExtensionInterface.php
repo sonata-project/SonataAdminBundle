@@ -28,6 +28,8 @@ use Sonata\AdminBundle\Show\ShowMapper;
  *
  * @method void preBatchAction(AdminInterface $admin, string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements)
  *
+ * @phpstan-method void preBatchAction(AdminInterface<T> $admin, string $actionName, ProxyQueryInterface<T> $query, array<mixed> &$idx, bool $allElements)
+ *
  * @phpstan-template T of object
  */
 interface AdminExtensionInterface
@@ -68,7 +70,7 @@ interface AdminExtensionInterface
         AdminInterface $admin,
         MenuItemInterface $menu,
         string $action,
-        ?AdminInterface $childAdmin = null
+        ?AdminInterface $childAdmin = null,
     ): void;
 
     /**
@@ -137,6 +139,7 @@ interface AdminExtensionInterface
     // /**
     // * @param mixed[] $idx
     // * @phpstan-param AdminInterface<T> $admin
+    // * @phpstan-param ProxyQueryInterface<T> $query
     // */
     // public function preBatchAction(AdminInterface $admin, string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements): void;
 
@@ -203,7 +206,7 @@ interface AdminExtensionInterface
         AdminInterface $admin,
         array $list,
         string $action,
-        ?object $object = null
+        ?object $object = null,
     ): array;
 
     /**

@@ -40,7 +40,7 @@ final class ModelChoiceLoader implements ChoiceLoaderInterface
         private string $class,
         private ?string $property = null,
         private ?object $query = null,
-        private ?array $choices = null
+        private ?array $choices = null,
     ) {
         if (null !== $query && !$this->modelManager->supportsQuery($query)) {
             throw new InvalidArgumentException('The model manager does not support the query.');

@@ -48,7 +48,7 @@ final class PersistenceEvent extends Event
     public function __construct(
         private AdminInterface $admin,
         private object $object,
-        private string $type
+        private string $type,
     ) {
     }
 

@@ -88,7 +88,7 @@ final class AdminMaker extends AbstractMaker
     public function __construct(
         private string $projectDirectory,
         private array $availableModelManagers,
-        private string $defaultController
+        private string $defaultController,
     ) {
         $this->skeletonDirectory = \sprintf('%s/../Resources/skeleton', __DIR__);
     }
@@ -220,7 +220,7 @@ final class AdminMaker extends AbstractMaker
         InputInterface $input,
         ConsoleStyle $io,
         string $adminClassFullName,
-        string $controllerClassFullName
+        string $controllerClassFullName,
     ): void {
         $servicesFile = $input->getOption('services');
         if (null !== $servicesFile) {
@@ -250,7 +250,7 @@ final class AdminMaker extends AbstractMaker
     private function generateController(
         ConsoleStyle $io,
         Generator $generator,
-        ClassNameDetails $controllerClassNameDetails
+        ClassNameDetails $controllerClassNameDetails,
     ): void {
         $controllerClassFullName = $controllerClassNameDetails->getFullName();
         $generator->generateClass(
@@ -273,7 +273,7 @@ final class AdminMaker extends AbstractMaker
     private function generateAdmin(
         ConsoleStyle $io,
         Generator $generator,
-        ClassNameDetails $adminClassNameDetails
+        ClassNameDetails $adminClassNameDetails,
     ): void {
         $adminClassFullName = $adminClassNameDetails->getFullName();
 

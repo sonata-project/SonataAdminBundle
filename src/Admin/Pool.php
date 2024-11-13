@@ -62,7 +62,7 @@ final class Pool
         private ContainerInterface $container,
         private array $adminServiceCodes = [],
         private array $adminGroups = [],
-        private array $adminClasses = []
+        private array $adminClasses = [],
     ) {
     }
 

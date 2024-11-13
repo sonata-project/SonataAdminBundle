@@ -37,7 +37,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
      */
     public function __construct(
         private array $defaultClasses,
-        private array $options
+        private array $options,
     ) {
     }
 

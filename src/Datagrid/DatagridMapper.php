@@ -39,7 +39,7 @@ final class DatagridMapper implements MapperInterface
     public function __construct(
         private DatagridBuilderInterface $builder,
         private DatagridInterface $datagrid,
-        private AdminInterface $admin
+        private AdminInterface $admin,
     ) {
     }
 
@@ -63,7 +63,7 @@ final class DatagridMapper implements MapperInterface
         string $name,
         ?string $type = null,
         array $filterOptions = [],
-        array $fieldDescriptionOptions = []
+        array $fieldDescriptionOptions = [],
     ): self {
         if (
             isset($fieldDescriptionOptions['role'])

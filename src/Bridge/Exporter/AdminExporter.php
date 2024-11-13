@@ -22,7 +22,7 @@ use Sonata\Exporter\ExporterInterface;
 final class AdminExporter
 {
     public function __construct(
-        private ExporterInterface $exporter
+        private ExporterInterface $exporter,
     ) {
     }
 

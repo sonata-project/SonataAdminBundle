@@ -69,7 +69,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
     final public function getDefaultOptions(
         ?string $type,
         FieldDescriptionInterface $fieldDescription,
-        array $formOptions = []
+        array $formOptions = [],
     ): array {
         $options = [];
         $options['sonata_field_description'] = $fieldDescription;

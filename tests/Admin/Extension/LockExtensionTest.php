@@ -231,7 +231,7 @@ final class LockExtensionTest extends TestCase
     private function configureAdmin(
         ModelManagerInterface $modelManager,
         string $uniqId = '',
-        ?Request $request = null
+        ?Request $request = null,
     ): void {
         $this->admin->method('getUniqId')->willReturn($uniqId);
         $this->admin->method('getModelManager')->willReturn($modelManager);

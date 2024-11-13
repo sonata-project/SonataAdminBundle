@@ -380,7 +380,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
         array &$targets,
         string $target,
         string $extension,
-        array $attributes
+        array $attributes,
     ): void {
         if (!isset($targets[$target])) {
             /** @phpstan-var \SplPriorityQueue<int, Reference> $queue */

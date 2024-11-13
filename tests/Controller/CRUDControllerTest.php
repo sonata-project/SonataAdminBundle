@@ -912,7 +912,7 @@ final class CRUDControllerTest extends TestCase
         string $route,
         array $queryParams,
         array $requestParams,
-        bool $hasActiveSubclass
+        bool $hasActiveSubclass,
     ): void {
         $this->admin
             ->method('hasActiveSubclass')
@@ -4654,7 +4654,7 @@ final class CRUDControllerTest extends TestCase
         string $id,
         array $parameters = [],
         ?string $domain = null,
-        ?string $locale = null
+        ?string $locale = null,
     ): void {
         $this->translator->expects(static::once())
             ->method('trans')

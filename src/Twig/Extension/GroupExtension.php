@@ -30,7 +30,7 @@ final class GroupExtension extends AbstractExtension
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        private GroupRuntime $groupRuntime
+        private GroupRuntime $groupRuntime,
     ) {
     }
 

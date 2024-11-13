@@ -29,7 +29,7 @@ final class AdminListBlockService extends AbstractBlockService
     public function __construct(
         Environment $twig,
         private Pool $pool,
-        private TemplateRegistryInterface $templateRegistry
+        private TemplateRegistryInterface $templateRegistry,
     ) {
         parent::__construct($twig);
     }

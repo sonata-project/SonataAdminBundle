@@ -42,7 +42,7 @@ final class AdminObjectAclManipulator
      */
     public function __construct(
         private FormFactoryInterface $formFactory,
-        private string $maskBuilderClass
+        private string $maskBuilderClass,
     ) {
     }
 

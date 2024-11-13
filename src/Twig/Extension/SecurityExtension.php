@@ -25,7 +25,7 @@ final class SecurityExtension extends AbstractExtension
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        private SecurityRuntime $securityRuntime
+        private SecurityRuntime $securityRuntime,
     ) {
     }
 

@@ -26,7 +26,7 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        private PropertyAccessorInterface $propertyAccessor
+        private PropertyAccessorInterface $propertyAccessor,
     ) {
     }
 
@@ -40,7 +40,7 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
         Environment $environment,
         $listElement,
         FieldDescriptionInterface $fieldDescription,
-        array $params = []
+        array $params = [],
     ): string {
         $template = $this->getTemplate(
             $fieldDescription,
@@ -61,7 +61,7 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
     public function renderViewElement(
         Environment $environment,
         FieldDescriptionInterface $fieldDescription,
-        object $object
+        object $object,
     ): string {
         $template = $this->getTemplate(
             $fieldDescription,
@@ -84,7 +84,7 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
         Environment $environment,
         FieldDescriptionInterface $fieldDescription,
         object $baseObject,
-        object $compareObject
+        object $compareObject,
     ): string {
         $template = $this->getTemplate(
             $fieldDescription,
@@ -174,7 +174,7 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
      */
     private function getObjectAndValueFromListElement(
         $listElement,
-        FieldDescriptionInterface $fieldDescription
+        FieldDescriptionInterface $fieldDescription,
     ): array {
         if (\is_object($listElement)) {
             $object = $listElement;
@@ -204,7 +204,7 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
         FieldDescriptionInterface $fieldDescription,
         TemplateWrapper $template,
         array $parameters,
-        Environment $environment
+        Environment $environment,
     ): string {
         $content = $template->render($parameters);
 
@@ -236,7 +236,7 @@ final class RenderElementRuntime implements RuntimeExtensionInterface
     private function getTemplate(
         FieldDescriptionInterface $fieldDescription,
         string $defaultTemplate,
-        Environment $environment
+        Environment $environment,
     ): TemplateWrapper {
         $templateName = $fieldDescription->getTemplate() ?? $defaultTemplate;
 

@@ -24,7 +24,7 @@ final class SearchAction
     public function __construct(
         private Pool $pool,
         private TemplateRegistryInterface $templateRegistry,
-        private Environment $twig
+        private Environment $twig,
     ) {
     }
 

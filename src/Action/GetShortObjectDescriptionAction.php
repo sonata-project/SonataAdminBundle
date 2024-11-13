@@ -26,7 +26,7 @@ final class GetShortObjectDescriptionAction
 {
     public function __construct(
         private Environment $twig,
-        private AdminFetcherInterface $adminFetcher
+        private AdminFetcherInterface $adminFetcher,
     ) {
     }
 

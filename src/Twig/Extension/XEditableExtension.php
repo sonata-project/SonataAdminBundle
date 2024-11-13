@@ -41,7 +41,7 @@ final class XEditableExtension extends AbstractExtension
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        private XEditableRuntime $xEditableRuntime
+        private XEditableRuntime $xEditableRuntime,
     ) {
     }
 

@@ -52,7 +52,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
         private string $className,
         private $property,
         private bool $multiple = false,
-        ?callable $toStringCallback = null
+        ?callable $toStringCallback = null,
     ) {
         if ('' === $property) {
             throw new InvalidArgumentException('The property must be non empty.');

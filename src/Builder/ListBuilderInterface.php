@@ -43,6 +43,6 @@ interface ListBuilderInterface extends BuilderInterface
     public function addField(
         FieldDescriptionCollection $list,
         ?string $type,
-        FieldDescriptionInterface $fieldDescription
+        FieldDescriptionInterface $fieldDescription,
     ): void;
 }

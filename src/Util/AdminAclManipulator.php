@@ -30,7 +30,7 @@ final class AdminAclManipulator implements AdminAclManipulatorInterface
      * @phpstan-param class-string<MaskBuilderInterface> $maskBuilderClass
      */
     public function __construct(
-        private string $maskBuilderClass
+        private string $maskBuilderClass,
     ) {
     }
 
@@ -66,7 +66,7 @@ final class AdminAclManipulator implements AdminAclManipulatorInterface
         OutputInterface $output,
         MutableAclInterface $acl,
         AclSecurityHandlerInterface $securityHandler,
-        AdminInterface $admin
+        AdminInterface $admin,
     ): bool {
         if (\count($securityHandler->getAdminPermissions()) > 0) {
             $builder = new $this->maskBuilderClass();

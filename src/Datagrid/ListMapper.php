@@ -48,7 +48,7 @@ final class ListMapper implements MapperInterface
     public function __construct(
         private ListBuilderInterface $builder,
         private FieldDescriptionCollection $list,
-        private AdminInterface $admin
+        private AdminInterface $admin,
     ) {
     }
 

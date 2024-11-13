@@ -28,7 +28,7 @@ final class ObjectManipulator
     public static function addInstance(
         object $object,
         object $instance,
-        FieldDescriptionInterface $parentFieldDescription
+        FieldDescriptionInterface $parentFieldDescription,
     ): object {
         $associationMapping = $parentFieldDescription->getAssociationMapping();
         $parentAssociationMappings = $parentFieldDescription->getParentAssociationMappings();
@@ -62,7 +62,7 @@ final class ObjectManipulator
     public static function setObject(
         object $instance,
         object $object,
-        FieldDescriptionInterface $parentFieldDescription
+        FieldDescriptionInterface $parentFieldDescription,
     ): object {
         $mappedBy = $parentFieldDescription->getAssociationMapping()['mappedBy'] ?? null;
         if (!\is_string($mappedBy)) {

@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\App\Model;
 final class Baz implements EntityInterface
 {
     public function __construct(
-        private string $id
+        private string $id,
     ) {
     }
 

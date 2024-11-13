@@ -31,7 +31,7 @@ final class SetupAclCommand extends Command
      */
     public function __construct(
         private Pool $pool,
-        private AdminAclManipulatorInterface $aclManipulator
+        private AdminAclManipulatorInterface $aclManipulator,
     ) {
         parent::__construct();
     }

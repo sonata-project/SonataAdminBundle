@@ -51,7 +51,7 @@ final class AdminExtractor implements ExtractorInterface, LabelTranslatorStrateg
 
     public function __construct(
         private Pool $adminPool,
-        private BreadcrumbsBuilderInterface $breadcrumbsBuilder
+        private BreadcrumbsBuilderInterface $breadcrumbsBuilder,
     ) {
     }
 

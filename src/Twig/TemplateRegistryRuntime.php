@@ -27,7 +27,7 @@ final class TemplateRegistryRuntime implements RuntimeExtensionInterface
      */
     public function __construct(
         private TemplateRegistryInterface $globalTemplateRegistry,
-        private Pool $pool
+        private Pool $pool,
     ) {
     }
 

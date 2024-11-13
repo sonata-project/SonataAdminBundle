@@ -32,7 +32,7 @@ abstract class AbstractSonataAdminExtension extends Extension
     protected function fixTemplatesConfiguration(
         array $configs,
         ContainerBuilder $container,
-        array $defaultSonataDoctrineConfig = []
+        array $defaultSonataDoctrineConfig = [],
     ): array {
         $defaultConfig = [
             'templates' => [

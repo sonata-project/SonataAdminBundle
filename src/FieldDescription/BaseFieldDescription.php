@@ -137,7 +137,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
         array $fieldMapping = [],
         array $associationMapping = [],
         array $parentAssociationMappings = [],
-        ?string $fieldName = null
+        ?string $fieldName = null,
     ) {
         $this->setName($name);
 

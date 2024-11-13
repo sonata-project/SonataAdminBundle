@@ -49,7 +49,7 @@ final class ConfigureEvent extends Event
     public function __construct(
         private AdminInterface $admin,
         private MapperInterface $mapper,
-        private string $type
+        private string $type,
     ) {
     }
 

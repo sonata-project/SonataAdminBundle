@@ -24,7 +24,7 @@ final class SecurityRuntime implements RuntimeExtensionInterface
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        private ?AuthorizationCheckerInterface $securityChecker = null
+        private ?AuthorizationCheckerInterface $securityChecker = null,
     ) {
     }
 

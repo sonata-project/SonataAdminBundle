@@ -36,7 +36,7 @@ class AdminHelper
     private const FORM_FIELD_DELETE = '_delete';
 
     public function __construct(
-        private PropertyAccessorInterface $propertyAccessor
+        private PropertyAccessorInterface $propertyAccessor,
     ) {
     }
 

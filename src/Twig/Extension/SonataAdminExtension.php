@@ -29,7 +29,7 @@ final class SonataAdminExtension extends AbstractExtension
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        private SonataAdminRuntime $sonataAdminRuntime
+        private SonataAdminRuntime $sonataAdminRuntime,
     ) {
     }
 

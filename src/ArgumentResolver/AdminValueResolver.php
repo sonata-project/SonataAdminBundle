@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 final class AdminValueResolver implements CompatibleValueResolverInterface
 {
     public function __construct(
-        private AdminFetcherInterface $adminFetcher
+        private AdminFetcherInterface $adminFetcher,
     ) {
     }
 

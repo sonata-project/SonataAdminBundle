@@ -32,7 +32,7 @@ final class TestExtension implements FormExtensionInterface
     private array $extensions = [];
 
     public function __construct(
-        private ?FormTypeGuesserInterface $guesser
+        private ?FormTypeGuesserInterface $guesser,
     ) {
     }
 

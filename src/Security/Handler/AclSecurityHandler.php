@@ -59,7 +59,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         private AuthorizationCheckerInterface $authorizationChecker,
         private MutableAclProviderInterface $aclProvider,
         private string $maskBuilderClass,
-        $superAdminRoles
+        $superAdminRoles,
     ) {
         // NEXT_MAJOR: Keep only the elseif part and add typehint.
         if (\is_array($superAdminRoles)) {

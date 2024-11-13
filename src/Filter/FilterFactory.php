@@ -21,7 +21,7 @@ use Psr\Container\ContainerInterface;
 final class FilterFactory implements FilterFactoryInterface
 {
     public function __construct(
-        private ContainerInterface $container
+        private ContainerInterface $container,
     ) {
     }
 

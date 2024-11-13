@@ -72,7 +72,7 @@ final class DatagridMapperTest extends TestCase
             ->willReturnCallback(function (
                 Datagrid $datagrid,
                 ?string $type,
-                FieldDescriptionInterface $fieldDescription
+                FieldDescriptionInterface $fieldDescription,
             ): void {
                 $fieldDescription->setType($type);
 

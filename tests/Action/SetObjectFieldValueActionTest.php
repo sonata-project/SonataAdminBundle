@@ -151,7 +151,7 @@ final class SetObjectFieldValueActionTest extends TestCase
      */
     public function testSetObjectFieldValueActionWithDate(
         \DateTimeZone|string|false|null $timezone,
-        \DateTimeZone $expectedTimezone
+        \DateTimeZone $expectedTimezone,
     ): void {
         $object = new Bafoo();
         $request = new Request([

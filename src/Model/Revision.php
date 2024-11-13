@@ -18,7 +18,7 @@ final class Revision
     public function __construct(
         private int|string $id,
         private \DateTimeInterface $dateTime,
-        private ?string $username
+        private ?string $username,
     ) {
     }
 

@@ -38,7 +38,7 @@ final class SetObjectFieldValueAction
         private ValidatorInterface $validator,
         private DataTransformerResolverInterface $resolver,
         private PropertyAccessorInterface $propertyAccessor,
-        ?RenderElementRuntime $renderElementRuntime = null
+        ?RenderElementRuntime $renderElementRuntime = null,
     ) {
         // NEXT_MAJOR: Remove the deprecation and restrict param constructor to RenderElementRuntime.
         if (null === $renderElementRuntime) {

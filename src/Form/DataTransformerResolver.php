@@ -48,7 +48,7 @@ final class DataTransformerResolver implements DataTransformerResolverInterface
 
     public function resolve(
         FieldDescriptionInterface $fieldDescription,
-        ModelManagerInterface $modelManager
+        ModelManagerInterface $modelManager,
     ): ?DataTransformerInterface {
         $dataTransformer = $fieldDescription->getOption('data_transformer');
 

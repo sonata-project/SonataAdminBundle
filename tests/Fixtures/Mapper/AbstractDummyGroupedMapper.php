@@ -25,7 +25,7 @@ abstract class AbstractDummyGroupedMapper extends BaseGroupedMapper
      * @param AdminInterface<object> $admin
      */
     public function __construct(
-        private AdminInterface $admin
+        private AdminInterface $admin,
     ) {
     }
 

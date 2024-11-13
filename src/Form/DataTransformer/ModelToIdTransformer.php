@@ -30,7 +30,7 @@ final class ModelToIdTransformer implements DataTransformerInterface
      */
     public function __construct(
         private ModelManagerInterface $modelManager,
-        private string $className
+        private string $className,
     ) {
     }
 

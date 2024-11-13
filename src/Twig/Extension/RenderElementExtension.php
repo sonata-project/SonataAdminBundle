@@ -27,7 +27,7 @@ final class RenderElementExtension extends AbstractExtension
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        private RenderElementRuntime $renderElementRuntime
+        private RenderElementRuntime $renderElementRuntime,
     ) {
     }
 
@@ -82,7 +82,7 @@ final class RenderElementExtension extends AbstractExtension
         Environment $environment,
         $listElement,
         FieldDescriptionInterface $fieldDescription,
-        array $params = []
+        array $params = [],
     ): string {
         @trigger_error(\sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
@@ -103,7 +103,7 @@ final class RenderElementExtension extends AbstractExtension
     public function renderViewElement(
         Environment $environment,
         FieldDescriptionInterface $fieldDescription,
-        object $object
+        object $object,
     ): string {
         @trigger_error(\sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
@@ -127,7 +127,7 @@ final class RenderElementExtension extends AbstractExtension
         Environment $environment,
         FieldDescriptionInterface $fieldDescription,
         mixed $baseObject,
-        mixed $compareObject
+        mixed $compareObject,
     ): string {
         @trigger_error(\sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
