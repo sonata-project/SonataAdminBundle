@@ -103,7 +103,7 @@ final class RetrieveFormFieldElementActionTest extends TestCase
         $response = ($this->action)($request);
 
         static::assertInstanceOf(Response::class, $response);
-        static::assertSame($response->getContent(), 'block');
+        static::assertSame('block', $response->getContent());
     }
 
     /**

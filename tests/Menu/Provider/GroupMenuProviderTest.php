@@ -112,7 +112,7 @@ final class GroupMenuProviderTest extends TestCase
 
         $extras = $item->getExtras();
         static::assertArrayHasKey('translation_domain', $extras);
-        static::assertSame($extras['translation_domain'], 'SonataAdminBundle');
+        static::assertSame('SonataAdminBundle', $extras['translation_domain']);
     }
 
     public function unanimousGrantCheckerMock(string $role): bool

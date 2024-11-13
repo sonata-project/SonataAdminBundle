@@ -94,7 +94,7 @@ final class AclSecurityHandlerTest extends TestCase
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $authorizationChecker
             ->method('isGranted')
-            ->will(static::throwException(new AuthenticationCredentialsNotFoundException('FAIL')));
+            ->willThrowException(new AuthenticationCredentialsNotFoundException('FAIL'));
 
         $aclProvider = $this->createMock(MutableAclProviderInterface::class);
 
@@ -112,7 +112,7 @@ final class AclSecurityHandlerTest extends TestCase
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $authorizationChecker
             ->method('isGranted')
-            ->will(static::throwException(new \RuntimeException('FAIL')));
+            ->willThrowException(new \RuntimeException('FAIL'));
 
         $aclProvider = $this->createMock(MutableAclProviderInterface::class);
 
