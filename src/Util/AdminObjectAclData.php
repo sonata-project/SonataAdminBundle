@@ -59,7 +59,7 @@ final class AdminObjectAclData
         private object $object,
         private \Traversable $aclUsers,
         private string $maskBuilderClass,
-        ?\Traversable $aclRoles = null
+        ?\Traversable $aclRoles = null,
     ) {
         $this->aclRoles = $aclRoles ?? new \ArrayIterator();
         if (!$admin->isAclEnabled()) {

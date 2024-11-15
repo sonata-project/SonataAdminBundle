@@ -41,6 +41,6 @@ interface AdminAclManipulatorInterface
         OutputInterface $output,
         MutableAclInterface $acl,
         AclSecurityHandlerInterface $securityHandler,
-        AdminInterface $admin
+        AdminInterface $admin,
     ): bool;
 }

@@ -38,7 +38,7 @@ interface RouteCollectionInterface
         string $host = '',
         array $schemes = [],
         array $methods = [],
-        string $condition = ''
+        string $condition = '',
     ): self;
 
     public function getCode(string $name): string;

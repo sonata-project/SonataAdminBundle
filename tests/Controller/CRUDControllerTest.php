@@ -312,7 +312,7 @@ final class CRUDControllerTest extends TestCase
         $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data, 200, [], $this->request);
 
         static::assertInstanceOf(JsonResponse::class, $response);
-        static::assertSame($response->headers->get('Content-Type'), 'application/json');
+        static::assertSame('application/json', $response->headers->get('Content-Type'));
         static::assertSame(json_encode($data), $response->getContent());
     }
 
@@ -324,7 +324,7 @@ final class CRUDControllerTest extends TestCase
         $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data, 200, [], $this->request);
 
         static::assertInstanceOf(JsonResponse::class, $response);
-        static::assertSame($response->headers->get('Content-Type'), 'application/json');
+        static::assertSame('application/json', $response->headers->get('Content-Type'));
         static::assertSame(json_encode($data), $response->getContent());
     }
 
@@ -337,7 +337,7 @@ final class CRUDControllerTest extends TestCase
         $response = $this->protectedTestedMethods['renderJson']->invoke($this->controller, $data, 200, [], $this->request);
 
         static::assertInstanceOf(JsonResponse::class, $response);
-        static::assertSame($response->headers->get('Content-Type'), 'application/json');
+        static::assertSame('application/json', $response->headers->get('Content-Type'));
         static::assertSame(json_encode($data), $response->getContent());
     }
 
@@ -535,7 +535,7 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::once())
             ->method('checkAccess')
             ->with(static::equalTo('list'))
-            ->will(static::throwException(new AccessDeniedException()));
+            ->willThrowException(new AccessDeniedException());
 
         $this->controller->listAction($this->request);
     }
@@ -613,7 +613,7 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::once())
             ->method('checkAccess')
             ->with(static::equalTo('batchDelete'))
-            ->will(static::throwException(new AccessDeniedException()));
+            ->willThrowException(new AccessDeniedException());
 
         $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
     }
@@ -787,7 +787,7 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::once())
             ->method('checkAccess')
             ->with(static::equalTo('show'))
-            ->will(static::throwException(new AccessDeniedException()));
+            ->willThrowException(new AccessDeniedException());
 
         $this->expectException(AccessDeniedException::class);
 
@@ -912,7 +912,7 @@ final class CRUDControllerTest extends TestCase
         string $route,
         array $queryParams,
         array $requestParams,
-        bool $hasActiveSubclass
+        bool $hasActiveSubclass,
     ): void {
         $this->admin
             ->method('hasActiveSubclass')
@@ -1003,7 +1003,7 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::once())
             ->method('checkAccess')
             ->with(static::equalTo('delete'))
-            ->will(static::throwException(new AccessDeniedException()));
+            ->willThrowException(new AccessDeniedException());
 
         $this->expectException(AccessDeniedException::class);
 
@@ -1591,7 +1591,7 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::once())
             ->method('checkAccess')
             ->with(static::equalTo('edit'))
-            ->will(static::throwException(new AccessDeniedException()));
+            ->willThrowException(new AccessDeniedException());
 
         $this->expectException(AccessDeniedException::class);
 
@@ -2328,7 +2328,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->admin
             ->method('update')
-            ->will(static::throwException(new LockException()));
+            ->willThrowException(new LockException());
 
         $this->admin
             ->method('toString')
@@ -2355,7 +2355,7 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::once())
             ->method('checkAccess')
             ->with(static::equalTo('create'))
-            ->will(static::throwException(new AccessDeniedException()));
+            ->willThrowException(new AccessDeniedException());
 
         $this->expectException(AccessDeniedException::class);
 
@@ -3052,7 +3052,7 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::once())
             ->method('checkAccess')
             ->with(static::equalTo('export'))
-            ->will(static::throwException(new AccessDeniedException()));
+            ->willThrowException(new AccessDeniedException());
 
         $this->expectException(AccessDeniedException::class);
 
@@ -3122,7 +3122,7 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::once())
             ->method('checkAccess')
             ->with(static::equalTo('history'))
-            ->will(static::throwException(new AccessDeniedException()));
+            ->willThrowException(new AccessDeniedException());
 
         $this->expectException(AccessDeniedException::class);
         $this->controller->historyAction($this->request);
@@ -3273,7 +3273,7 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::once())
             ->method('checkAccess')
             ->with(static::equalTo('acl'), static::equalTo($object))
-            ->will(static::throwException(new AccessDeniedException()));
+            ->willThrowException(new AccessDeniedException());
 
         $this->expectException(AccessDeniedException::class);
 
@@ -3542,7 +3542,7 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::once())
             ->method('checkAccess')
             ->with(static::equalTo('historyViewRevision'))
-            ->will(static::throwException(new AccessDeniedException()));
+            ->willThrowException(new AccessDeniedException());
 
         $this->expectException(AccessDeniedException::class);
 
@@ -3723,7 +3723,7 @@ final class CRUDControllerTest extends TestCase
         $this->admin->expects(static::once())
             ->method('checkAccess')
             ->with(static::equalTo('historyCompareRevisions'))
-            ->will(static::throwException(new AccessDeniedException()));
+            ->willThrowException(new AccessDeniedException());
 
         $this->expectException(AccessDeniedException::class);
 
@@ -4654,7 +4654,7 @@ final class CRUDControllerTest extends TestCase
         string $id,
         array $parameters = [],
         ?string $domain = null,
-        ?string $locale = null
+        ?string $locale = null,
     ): void {
         $this->translator->expects(static::once())
             ->method('trans')

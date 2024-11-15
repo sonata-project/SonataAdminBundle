@@ -34,7 +34,7 @@ final class ModelsToArrayTransformer implements DataTransformerInterface
      */
     public function __construct(
         private ModelManagerInterface $modelManager,
-        private string $class
+        private string $class,
     ) {
     }
 

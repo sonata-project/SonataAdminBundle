@@ -32,7 +32,7 @@ final class MenuBuilder
         private Pool $pool,
         private FactoryInterface $factory,
         private MenuProviderInterface $provider,
-        private EventDispatcherInterface $eventDispatcher
+        private EventDispatcherInterface $eventDispatcher,
     ) {
     }
 

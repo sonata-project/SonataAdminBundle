@@ -26,7 +26,7 @@ final class DashboardAction
     public function __construct(
         private array $dashboardBlocks,
         private TemplateRegistryInterface $templateRegistry,
-        private Environment $twig
+        private Environment $twig,
     ) {
     }
 

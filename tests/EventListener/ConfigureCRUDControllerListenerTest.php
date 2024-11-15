@@ -74,8 +74,8 @@ final class ConfigureCRUDControllerListenerTest extends TestCase
             ->method('addGlobal')
             ->willReturnCallback(static function (string $name) use ($matcher) {
                 match ($matcher->getInvocationCount()) {
-                    1 => static::assertSame($name, 'admin'),
-                    2 => static::assertSame($name, 'base_template'),
+                    1 => static::assertSame('admin', $name),
+                    2 => static::assertSame('base_template', $name),
                     default => throw new \LogicException('Exactly 2 calls'),
                 };
             });

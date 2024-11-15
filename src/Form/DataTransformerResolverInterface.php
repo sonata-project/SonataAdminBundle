@@ -36,6 +36,6 @@ interface DataTransformerResolverInterface
      */
     public function resolve(
         FieldDescriptionInterface $fieldDescription,
-        ModelManagerInterface $modelManager
+        ModelManagerInterface $modelManager,
     ): ?DataTransformerInterface;
 }

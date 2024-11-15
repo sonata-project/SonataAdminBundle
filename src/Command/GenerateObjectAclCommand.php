@@ -37,7 +37,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
      */
     public function __construct(
         private Pool $pool,
-        private array $aclObjectManipulators
+        private array $aclObjectManipulators,
     ) {
         parent::__construct();
     }

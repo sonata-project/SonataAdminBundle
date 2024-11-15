@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Request;
 final class AdminFetcher implements AdminFetcherInterface
 {
     public function __construct(
-        private Pool $pool
+        private Pool $pool,
     ) {
     }
 

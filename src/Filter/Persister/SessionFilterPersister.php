@@ -24,7 +24,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class SessionFilterPersister implements FilterPersisterInterface
 {
     public function __construct(
-        private RequestStack $requestStack
+        private RequestStack $requestStack,
     ) {
     }
 

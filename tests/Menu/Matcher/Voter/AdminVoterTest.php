@@ -99,7 +99,7 @@ final class AdminVoterTest extends TestCase
         string $parentCode,
         string $childCode,
         bool $list = false,
-        bool $granted = false
+        bool $granted = false,
     ): AdminInterface {
         $parentAdmin = $this->createMock(AdminInterface::class);
         $parentAdmin
@@ -134,7 +134,7 @@ final class AdminVoterTest extends TestCase
         string $parentCode,
         string $childCode,
         bool $list = false,
-        bool $granted = false
+        bool $granted = false,
     ): AdminInterface {
         $grandParentAdmin = $this->createMock(AdminInterface::class);
         $grandParentAdmin

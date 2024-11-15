@@ -36,7 +36,7 @@ final class ConfigureQueryEvent extends Event
     public function __construct(
         private AdminInterface $admin,
         private ProxyQueryInterface $proxyQuery,
-        private string $context
+        private string $context,
     ) {
     }
 

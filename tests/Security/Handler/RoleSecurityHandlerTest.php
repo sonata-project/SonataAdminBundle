@@ -130,7 +130,7 @@ final class RoleSecurityHandlerTest extends TestCase
         string|array $superAdminRoles,
         string $adminCode,
         string|Expression|array $operation,
-        ?object $object = null
+        ?object $object = null,
     ): void {
         $handler = $this->getRoleSecurityHandler($superAdminRoles);
 

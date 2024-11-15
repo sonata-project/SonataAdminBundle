@@ -31,7 +31,7 @@ final class FilterData
     private function __construct(
         private ?int $type,
         private bool $hasValue,
-        mixed $value = null
+        mixed $value = null,
     ) {
         if ($hasValue) {
             $this->value = $value;

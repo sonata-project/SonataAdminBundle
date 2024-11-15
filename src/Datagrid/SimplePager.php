@@ -46,7 +46,7 @@ final class SimplePager extends Pager
      */
     public function __construct(
         int $maxPerPage = 10,
-        private int $threshold = 1
+        private int $threshold = 1,
     ) {
         parent::__construct($maxPerPage);
     }

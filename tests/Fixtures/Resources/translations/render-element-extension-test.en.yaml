@@ -1,0 +1,8 @@
+D: '[trans]D[/trans]'
+Diamonds: '[trans]Diamonds[/trans]'
+enum:
+    suit:
+        hearts: '[trans]enum.suit.hearts[/trans]'
+        diamonds: '[trans]enum.suit.diamonds[/trans]'
+        clubs: '[trans]enum.suit.clubs[/trans]'
+        spades: '[trans]enum.suit.spades[/trans]'

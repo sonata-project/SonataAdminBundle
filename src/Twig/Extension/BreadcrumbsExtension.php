@@ -27,7 +27,7 @@ final class BreadcrumbsExtension extends AbstractExtension
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        private BreadcrumbsRuntime $breadcrumbsRuntime
+        private BreadcrumbsRuntime $breadcrumbsRuntime,
     ) {
     }
 
@@ -61,7 +61,7 @@ final class BreadcrumbsExtension extends AbstractExtension
     public function renderBreadcrumbs(
         Environment $environment,
         AdminInterface $admin,
-        string $action
+        string $action,
     ): string {
         @trigger_error(\sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
@@ -87,7 +87,7 @@ final class BreadcrumbsExtension extends AbstractExtension
     public function renderBreadcrumbsForTitle(
         Environment $environment,
         AdminInterface $admin,
-        string $action
+        string $action,
     ): string {
         @trigger_error(\sprintf(
             'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'

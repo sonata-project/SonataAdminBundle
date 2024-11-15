@@ -27,7 +27,7 @@ final class TemplateRegistryExtension extends AbstractExtension
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        private TemplateRegistryRuntime $templateRegistryRuntime
+        private TemplateRegistryRuntime $templateRegistryRuntime,
     ) {
     }
 

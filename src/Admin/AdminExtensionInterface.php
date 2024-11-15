@@ -64,7 +64,7 @@ interface AdminExtensionInterface
         AdminInterface $admin,
         MenuItemInterface $menu,
         string $action,
-        ?AdminInterface $childAdmin = null
+        ?AdminInterface $childAdmin = null,
     ): void;
 
     /**
@@ -200,7 +200,7 @@ interface AdminExtensionInterface
         AdminInterface $admin,
         array $list,
         string $action,
-        ?object $object = null
+        ?object $object = null,
     ): array;
 
     /**

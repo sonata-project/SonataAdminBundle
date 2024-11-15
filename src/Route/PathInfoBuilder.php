@@ -23,7 +23,7 @@ use Sonata\AdminBundle\Model\AuditManagerInterface;
 final class PathInfoBuilder implements RouteBuilderInterface
 {
     public function __construct(
-        private AuditManagerInterface $manager
+        private AuditManagerInterface $manager,
     ) {
     }
 

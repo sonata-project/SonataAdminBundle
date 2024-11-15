@@ -25,7 +25,7 @@ final class IconExtension extends AbstractExtension
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        private IconRuntime $iconRuntime
+        private IconRuntime $iconRuntime,
     ) {
     }
 

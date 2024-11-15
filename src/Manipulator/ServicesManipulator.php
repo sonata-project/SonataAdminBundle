@@ -28,7 +28,7 @@ final class ServicesManipulator
 ';
 
     public function __construct(
-        private string $file
+        private string $file,
     ) {
     }
 

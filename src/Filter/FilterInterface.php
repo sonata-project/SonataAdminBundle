@@ -23,6 +23,9 @@ use Sonata\AdminBundle\Filter\Model\FilterData;
  * @method bool|null showFilter();
  * @method array getLabelTranslationParameters();
  * @method bool withAdvancedFilter();
+ *
+ * @phpstan-method array<string, mixed> getFormOptions();
+ * @phpstan-method array<string, mixed> getLabelTranslationParameters();
  */
 interface FilterInterface
 {

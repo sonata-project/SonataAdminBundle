@@ -52,7 +52,7 @@ final class SonataConfiguration
     public function __construct(
         private string $title,
         private string $logo,
-        private array $options
+        private array $options,
     ) {
     }
 

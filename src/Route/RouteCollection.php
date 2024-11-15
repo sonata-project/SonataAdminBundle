@@ -34,7 +34,7 @@ final class RouteCollection implements RouteCollectionInterface
         private string $baseCodeRoute,
         private string $baseRouteName,
         private string $baseRoutePattern,
-        private string $baseControllerName
+        private string $baseControllerName,
     ) {
     }
 
@@ -52,7 +52,7 @@ final class RouteCollection implements RouteCollectionInterface
         string $host = '',
         array $schemes = [],
         array $methods = [],
-        string $condition = ''
+        string $condition = '',
     ): self {
         $pattern = \sprintf('%s/%s', $this->baseRoutePattern, $pattern ?? $name);
         $code = $this->getCode($name);

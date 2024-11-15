@@ -34,7 +34,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
 
     public function __construct(
         private RouterInterface $router,
-        private RoutesCache $cache
+        private RoutesCache $cache,
     ) {
     }
 
@@ -47,7 +47,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         AdminInterface $admin,
         string $name,
         array $parameters = [],
-        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH,
     ): string {
         $arrayRoute = $this->generateMenuUrl($admin, $name, $parameters, $referenceType);
 
@@ -62,7 +62,7 @@ final class DefaultRouteGenerator implements RouteGeneratorInterface
         AdminInterface $admin,
         string $name,
         array $parameters = [],
-        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+        int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH,
     ): array {
         // if the admin is a child we automatically append the parent's id
         if ($admin->isChild() && $admin->hasRequest()) {

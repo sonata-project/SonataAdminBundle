@@ -25,7 +25,7 @@ final class CanonicalizeExtension extends AbstractExtension
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        private CanonicalizeRuntime $canonicalizeRuntime
+        private CanonicalizeRuntime $canonicalizeRuntime,
     ) {
     }
 

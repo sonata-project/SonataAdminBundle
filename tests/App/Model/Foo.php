@@ -23,7 +23,7 @@ final class Foo implements EntityInterface
     public function __construct(
         private string $id,
         private string $name,
-        private array $elements = []
+        private array $elements = [],
     ) {
         $this->referenced = null;
     }
@@ -36,6 +36,11 @@ final class Foo implements EntityInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function setReferenced(?Bar $bar): void
+    {
+        $this->referenced = $bar;
     }
 
     public function getReferenced(): ?Bar

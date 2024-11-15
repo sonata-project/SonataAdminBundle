@@ -28,7 +28,7 @@ final class ConfigureMenuEvent extends Event
 
     public function __construct(
         private FactoryInterface $factory,
-        private ItemInterface $menu
+        private ItemInterface $menu,
     ) {
     }
 

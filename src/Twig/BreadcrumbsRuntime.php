@@ -24,7 +24,7 @@ final class BreadcrumbsRuntime implements RuntimeExtensionInterface
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        private BreadcrumbsBuilderInterface $breadcrumbsBuilder
+        private BreadcrumbsBuilderInterface $breadcrumbsBuilder,
     ) {
     }
 
@@ -37,7 +37,7 @@ final class BreadcrumbsRuntime implements RuntimeExtensionInterface
     public function renderBreadcrumbs(
         Environment $environment,
         AdminInterface $admin,
-        string $action
+        string $action,
     ): string {
         return $environment->render('@SonataAdmin/Breadcrumb/breadcrumb.html.twig', [
             'items' => $this->breadcrumbsBuilder->getBreadcrumbs($admin, $action),
@@ -53,7 +53,7 @@ final class BreadcrumbsRuntime implements RuntimeExtensionInterface
     public function renderBreadcrumbsForTitle(
         Environment $environment,
         AdminInterface $admin,
-        string $action
+        string $action,
     ): string {
         return $environment->render('@SonataAdmin/Breadcrumb/breadcrumb_title.html.twig', [
             'items' => $this->breadcrumbsBuilder->getBreadcrumbs($admin, $action),

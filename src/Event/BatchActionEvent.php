@@ -50,7 +50,7 @@ final class BatchActionEvent extends Event
         private string $actionName,
         private ProxyQueryInterface $proxyQuery,
         array &$idx,
-        private bool $allElements
+        private bool $allElements,
     ) {
         $this->idx = &$idx;
     }

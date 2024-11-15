@@ -25,7 +25,7 @@ final class BarRepository implements RepositoryInterface
 
     public function __construct(
         FooRepository $fooRepository,
-        BazRepository $bazRepository
+        BazRepository $bazRepository,
     ) {
         $this->elements = [
             'test_id' => new Bar('test_id', $fooRepository->byId('test_id'), $bazRepository->byId('test_id')),

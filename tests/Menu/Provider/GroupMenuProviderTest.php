@@ -56,7 +56,7 @@ final class GroupMenuProviderTest extends TestCase
         $urlGenerator->method('generate')->willReturnCallback(static fn (
             string $name,
             array $parameters = [],
-            int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH
+            int $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH,
         ): string => match ($referenceType) {
             UrlGeneratorInterface::ABSOLUTE_URL => \sprintf('http://sonata-project/%s%s', $name, [] !== $parameters ? '?'.http_build_query($parameters) : ''),
             UrlGeneratorInterface::ABSOLUTE_PATH => \sprintf('/%s%s', $name, [] !== $parameters ? '?'.http_build_query($parameters) : ''),
@@ -112,7 +112,7 @@ final class GroupMenuProviderTest extends TestCase
 
         $extras = $item->getExtras();
         static::assertArrayHasKey('translation_domain', $extras);
-        static::assertSame($extras['translation_domain'], 'SonataAdminBundle');
+        static::assertSame('SonataAdminBundle', $extras['translation_domain']);
     }
 
     public function unanimousGrantCheckerMock(string $role): bool
@@ -131,7 +131,7 @@ final class GroupMenuProviderTest extends TestCase
      * @dataProvider getAdminGroupsMultipleRoles
      */
     public function testGetMenuProviderWithCheckerGrantedMultipleGroupRoles(
-        array $adminGroups
+        array $adminGroups,
     ): void {
         $this->checker
             ->method('isGranted')
@@ -158,7 +158,7 @@ final class GroupMenuProviderTest extends TestCase
      * @dataProvider getAdminGroupsMultipleRoles
      */
     public function testGetMenuProviderWithCheckerGrantedGroupAndItemRoles(
-        array $adminGroups
+        array $adminGroups,
     ): void {
         $this->checker
             ->method('isGranted')
@@ -186,7 +186,7 @@ final class GroupMenuProviderTest extends TestCase
      * @dataProvider provideGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTopCases
      */
     public function testGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTop(
-        array $adminGroups
+        array $adminGroups,
     ): void {
         $this->checker
             ->method('isGranted')

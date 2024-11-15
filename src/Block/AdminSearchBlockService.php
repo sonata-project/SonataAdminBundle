@@ -40,7 +40,7 @@ final class AdminSearchBlockService extends AbstractBlockService
         private SearchHandlerInterface $searchHandler,
         private TemplateRegistryInterface $templateRegistry,
         private string $emptyBoxesOption,
-        private string $adminRoute
+        private string $adminRoute,
     ) {
         parent::__construct($twig);
     }

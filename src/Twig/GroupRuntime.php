@@ -26,7 +26,7 @@ final class GroupRuntime implements RuntimeExtensionInterface
      * @internal This class should only be used through Twig
      */
     public function __construct(
-        private Pool $pool
+        private Pool $pool,
     ) {
     }
 

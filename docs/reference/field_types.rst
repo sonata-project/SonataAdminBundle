@@ -16,7 +16,7 @@ Fieldtype                                           Description
 ``FieldDescriptionInterface::TYPE_DATETIME``        display a formatted date and time. Accepts the options ``format`` and ``timezone``
 ``FieldDescriptionInterface::TYPE_STRING``          display a text
 ``FieldDescriptionInterface::TYPE_EMAIL``           display a mailto link. Accepts the options ``as_string``, ``subject`` and ``body``
-``FieldDescriptionInterface::TYPE_ENUM``            display the name of a backed enum
+``FieldDescriptionInterface::TYPE_ENUM``            display an enum
 ``FieldDescriptionInterface::TYPE_TEXTAREA``        display a textarea
 ``FieldDescriptionInterface::TYPE_TRANS``           translate the value with a provided ``value_translation_domain`` and ``format`` (sprintf format) option
 ``FieldDescriptionInterface::TYPE_FLOAT``           display a number
@@ -199,13 +199,61 @@ The ``FieldDescriptionInterface::TYPE_CHOICE`` field type also supports multiple
 
 You can use the following options:
 
-======================================  ==============================================================
+======================================  ========================================================================
 Option                                  Description
-======================================  ==============================================================
+======================================  ========================================================================
 **use_value**                           Determines if the field must show the value or the case' name.
                                         ``false`` by default.
-**enum_translation_domain**             Translation domain.
-======================================  ==============================================================
+
+                                        *Ignored if the enum implements Symfony's* ``TranslatableInterface`` *.*
+**enum_translation_domain**             | Translation domain. If set, the enum value or case' name will be send
+                                          to the translator.
+                                        | ``{{ value|trans({}, translation_domain) }}``
+
+                                        *Ignored if the enum implements Symfony's* ``TranslatableInterface`` *.*
+======================================  ========================================================================
+
+.. note::
+
+    If the enum implements Symfony's ``TranslatableInterface`` the options above will be ignored and the enum's
+    ``trans()`` method will be used instead to display the enum.
+
+    This provides full compatibility with symfony's
+    `EnumType <https://symfony.com/doc/current/reference/forms/types/enum.html>`_ form type:
+
+    ::
+
+        protected function configureListFields(ListMapper $list): void
+        {
+            $list
+                // Sonata Admin will select the `FieldDescriptionInterface::TYPE_ENUM`
+                // field type automatically. If the enum implements `TranslatableInterface`,
+                // the `trans()` method will be used to render its value.
+                ->add('saluation')
+            ;
+        }
+
+        protected function configureFormFields(FormMapper $form): void
+        {
+            $form
+                // Symfony's EnumType form field will automatically detect the usage of
+                // the `TranslatableInterface` and use the enum's `trans()` method to
+                // render the choice labels.
+                ->add('salutation', EnumType::class, [
+                    'class' => Salutation::class,
+                ])
+            ;
+        }
+
+        protected function configureShowFields(ShowMapper $show): void
+        {
+            $show
+                // Again, Sonata Admin will select the `FieldDescriptionInterface::TYPE_ENUM`
+                // field type automatically. If the enum implements `TranslatableInterface`,
+                // the `trans()` method will be used to render its value.
+                ->add('salutation')
+            ;
+        }
 
 ``FieldDescriptionInterface::TYPE_URL``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

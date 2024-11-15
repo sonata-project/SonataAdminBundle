@@ -24,7 +24,7 @@ final class RoutesCache
 {
     public function __construct(
         private string $cacheFolder,
-        private bool $debug
+        private bool $debug,
     ) {
     }
 

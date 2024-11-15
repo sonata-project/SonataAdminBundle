@@ -30,7 +30,7 @@ final class Metadata implements MetadataInterface
         private ?string $description = null,
         ?string $image = null,
         private ?string $domain = null,
-        private array $options = []
+        private array $options = [],
     ) {
         $this->image = $image ?? self::DEFAULT_MOSAIC_BACKGROUND;
     }

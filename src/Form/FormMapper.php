@@ -43,7 +43,7 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
     public function __construct(
         private FormContractorInterface $builder,
         private FormBuilderInterface $formBuilder,
-        private AdminInterface $admin
+        private AdminInterface $admin,
     ) {
     }
 

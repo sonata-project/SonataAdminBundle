@@ -28,7 +28,7 @@ final class ModelManager implements ModelManagerInterface, LockInterface
      * @param RepositoryInterface<T> $repository
      */
     public function __construct(
-        private RepositoryInterface $repository
+        private RepositoryInterface $repository,
     ) {
     }
 

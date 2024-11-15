@@ -62,7 +62,7 @@ final class Datagrid implements DatagridInterface
         private FieldDescriptionCollection $columns,
         private PagerInterface $pager,
         private FormBuilderInterface $formBuilder,
-        private array $values = []
+        private array $values = [],
     ) {
     }
 

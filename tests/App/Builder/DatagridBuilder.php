@@ -38,7 +38,7 @@ final class DatagridBuilder implements DatagridBuilderInterface
     public function __construct(
         private FormFactoryInterface $formFactory,
         private PagerInterface $pager,
-        private ProxyQueryInterface $proxyQuery
+        private ProxyQueryInterface $proxyQuery,
     ) {
     }
 

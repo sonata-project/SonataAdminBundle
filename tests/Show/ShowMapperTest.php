@@ -128,7 +128,7 @@ final class ShowMapperTest extends TestCase
             ->willReturnCallback(static function (
                 FieldDescriptionCollection $list,
                 ?string $type,
-                FieldDescriptionInterface $fieldDescription
+                FieldDescriptionInterface $fieldDescription,
             ): void {
                 $list->add($fieldDescription);
             });

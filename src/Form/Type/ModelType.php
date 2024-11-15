@@ -40,7 +40,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 final class ModelType extends AbstractType
 {
     public function __construct(
-        private PropertyAccessorInterface $propertyAccessor
+        private PropertyAccessorInterface $propertyAccessor,
     ) {
     }
 

@@ -27,7 +27,7 @@ final class CanonicalizeRuntime implements RuntimeExtensionInterface
      */
     public function __construct(
         private RequestStack $requestStack,
-        private ?SonataFormCanonicalizeRuntime $canonicalizeRuntime = null // @phpstan-ignore-line
+        private ?SonataFormCanonicalizeRuntime $canonicalizeRuntime = null, // @phpstan-ignore-line
     ) {
     }
 

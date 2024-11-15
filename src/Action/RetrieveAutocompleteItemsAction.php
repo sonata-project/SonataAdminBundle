@@ -31,7 +31,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 final class RetrieveAutocompleteItemsAction
 {
     public function __construct(
-        private AdminFetcherInterface $adminFetcher
+        private AdminFetcherInterface $adminFetcher,
     ) {
     }
 
@@ -232,7 +232,7 @@ final class RetrieveAutocompleteItemsAction
      */
     private function retrieveFilterFieldDescription(
         AdminInterface $admin,
-        string $field
+        string $field,
     ): FieldDescriptionInterface {
         if (!$admin->hasFilterFieldDescription($field)) {
             throw new \RuntimeException(\sprintf('The field "%s" does not exist.', $field));
@@ -256,7 +256,7 @@ final class RetrieveAutocompleteItemsAction
      */
     private function retrieveFormFieldDescription(
         AdminInterface $admin,
-        string $field
+        string $field,
     ): FieldDescriptionInterface {
         if (!$admin->hasFormFieldDescription($field)) {
             throw new \RuntimeException(\sprintf('The field "%s" does not exist.', $field));

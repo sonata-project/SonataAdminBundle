@@ -33,6 +33,6 @@ interface ObjectAclManipulatorInterface
     public function batchConfigureAcls(
         OutputInterface $output,
         AdminInterface $admin,
-        ?UserSecurityIdentity $securityIdentity = null
+        ?UserSecurityIdentity $securityIdentity = null,
     ): void;
 }

@@ -12,6 +12,9 @@ file that was distributed with this source code.
 {%- apply spaceless %}
     {% if value is null %}
         &nbsp;
+    {% elseif value.trans is defined %}
+        {# Enum implements TranslatableInterface and therefore has direct control over how it should be displayed. #}
+        {{ value|trans }}
     {% else %}
         {% set value = use_value|default(false) ? value.value : value.name %}
 

@@ -552,7 +552,7 @@ final class FormMapperTest extends TestCase
     private function getFieldDescriptionMock(
         string $name,
         ?string $label = null,
-        ?string $translationDomain = null
+        ?string $translationDomain = null,
     ): BaseFieldDescription {
         $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
 

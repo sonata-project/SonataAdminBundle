@@ -51,7 +51,7 @@ interface UrlGeneratorInterface
         string $name,
         object $object,
         array $parameters = [],
-        int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH
+        int $referenceType = RoutingUrlGeneratorInterface::ABSOLUTE_PATH,
     ): string;
 
     /**

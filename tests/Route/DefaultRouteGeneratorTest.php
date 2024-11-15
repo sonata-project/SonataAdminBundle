@@ -59,7 +59,7 @@ final class DefaultRouteGeneratorTest extends TestCase
         string $expected,
         string $name,
         array $parameters,
-        int $referenceType = RouterInterface::ABSOLUTE_PATH
+        int $referenceType = RouterInterface::ABSOLUTE_PATH,
     ): void {
         $childCollection = new RouteCollection('base.Code.Foo|base.Code.Bar', 'admin_acme_child', '/foo/', 'BundleName:ControllerName');
         $childCollection->add('bar');

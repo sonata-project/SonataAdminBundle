@@ -33,7 +33,7 @@ final class GroupMenuProvider implements MenuProviderInterface
     public function __construct(
         private FactoryInterface $menuFactory,
         private Pool $pool,
-        private AuthorizationCheckerInterface $checker
+        private AuthorizationCheckerInterface $checker,
     ) {
     }
 

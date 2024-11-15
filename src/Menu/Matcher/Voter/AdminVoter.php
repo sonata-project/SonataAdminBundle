@@ -26,7 +26,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class AdminVoter implements VoterInterface
 {
     public function __construct(
-        private RequestStack $requestStack
+        private RequestStack $requestStack,
     ) {
     }
 

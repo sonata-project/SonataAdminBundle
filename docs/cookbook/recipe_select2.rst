@@ -71,6 +71,29 @@ to enable ``allowClear`` or ``data-sonata-select2-allow-clear = "false"`` to dis
 
     You have to use false as string! ``"false"``!
 
+AllowTags
+----------
+
+Select2 parameter ``allowTags`` can be set using the data attribute ``data-sonata-select2-allow-tags="true"``
+to enable ``allowTags``::
+
+    use Sonata\AdminBundle\Form\Type\ModelType;
+
+    protected function configureFormFields(FormMapper $form): void
+    {
+        $form
+            ->add('category', ModelType::class, [
+                'attr' => [
+                    'data-sonata-select2-allow-tags' => 'true'
+                ]
+            ])
+        ;
+    }
+
+.. note::
+
+    You have to use true as string! ``"true"``!
+
 Minimum results for search
 --------------------------
 

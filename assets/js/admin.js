@@ -88,6 +88,7 @@ const Admin = {
         const popover = select.data('popover');
         let maximumSelectionLength = null;
         let minimumResultsForSearch = 10;
+        let allowTags = false;
 
         select.removeClass('form-control');
 
@@ -99,6 +100,10 @@ const Admin = {
           allowClearEnabled = true;
         } else if (select.attr('data-sonata-select2-allow-clear') === 'false') {
           allowClearEnabled = false;
+        }
+
+        if (select.attr('data-sonata-select2-allow-tags') === 'true') {
+          allowTags = true;
         }
 
         if (select.attr('data-sonata-select2-maximumSelectionLength')) {
@@ -117,6 +122,7 @@ const Admin = {
           placeholder: allowClearEnabled ? ' ' : '', // allowClear needs placeholder to work properly
           allowClear: allowClearEnabled,
           maximumSelectionLength,
+          tags: allowTags,
         });
 
         if (undefined !== popover) {

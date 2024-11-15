@@ -34,7 +34,7 @@ abstract class QuestionableCommand extends Command
         OutputInterface $output,
         string $questionText,
         string $default,
-        callable $validator
+        callable $validator,
     ) {
         $questionHelper = $this->getQuestionHelper();
 
@@ -49,7 +49,7 @@ abstract class QuestionableCommand extends Command
         InputInterface $input,
         OutputInterface $output,
         string $questionText,
-        string $default
+        string $default,
     ): bool {
         $questionHelper = $this->getQuestionHelper();
         $question = new ConfirmationQuestion(
