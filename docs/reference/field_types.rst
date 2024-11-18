@@ -204,12 +204,10 @@ Option                                  Description
 ======================================  ========================================================================
 **use_value**                           Determines if the field must show the value or the case' name.
                                         ``false`` by default.
-
                                         *Ignored if the enum implements Symfony's* ``TranslatableInterface`` *.*
-**enum_translation_domain**             | Translation domain. If set, the enum value or case' name will be send
-                                          to the translator.
-                                        | ``{{ value|trans({}, translation_domain) }}``
-
+**enum_translation_domain**             Translation domain. If set, the enum value or case' name will be send
+                                        to the translator.
+                                        ``{{ value|trans({}, translation_domain) }}``
                                         *Ignored if the enum implements Symfony's* ``TranslatableInterface`` *.*
 ======================================  ========================================================================
 
