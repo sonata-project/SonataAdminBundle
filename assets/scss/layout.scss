@@ -265,10 +265,10 @@ input[type='file'] {
   &.history-audit-compare {
     th {
       width: 10%;
+    }
 
-      .diff {
-        background: pink;
-      }
+    th.diff {
+      background: pink;
     }
 
     td {

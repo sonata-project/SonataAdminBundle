@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use Sonata\AdminBundle\Tests\Fixtures\Enum\Suit;
 use Sonata\AdminBundle\Twig\XEditableRuntime;
 use Symfony\Component\Translation\Translator;
 
@@ -91,5 +92,20 @@ final class XEditableRuntimeTest extends TestCase
                 ['value' => 'Status2', 'text' => 'Alias2'],
             ],
         ];
+
+        // TODO: Remove the "if" check when dropping support of PHP < 8.1 and add the case to the list
+        if (\PHP_VERSION_ID >= 80100) {
+            yield 'enum cases' => [
+                [
+                    'required' => false,
+                    'multiple' => false,
+                    'choices' => [Suit::Hearts, Suit::Clubs],
+                ],
+                [
+                    ['value' => 'H', 'text' => 'Hearts'],
+                    ['value' => 'C', 'text' => 'Clubs'],
+                ],
+            ];
+        }
     }
 }

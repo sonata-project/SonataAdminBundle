@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.33.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.32.0...4.33.0) - 2024-12-04
+### Added
+- [[#8219](https://github.com/sonata-project/SonataAdminBundle/pull/8219)] Support editable mode on `FieldDescriptionInterface::TYPE_ENUM` ([@onEXHovia](https://github.com/onEXHovia))
+
+### Fixed
+- [[#8218](https://github.com/sonata-project/SonataAdminBundle/pull/8218)] Style fix for the version comparison page ([@vityachis](https://github.com/vityachis))
+- [[#8200](https://github.com/sonata-project/SonataAdminBundle/pull/8200)] Allow delete permission to be voted on a specific subject. ([@DenuxPlays](https://github.com/DenuxPlays))
+
 ## [4.32.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.31.0...4.32.0) - 2024-11-14
 ### Added
 - [[#8213](https://github.com/sonata-project/SonataAdminBundle/pull/8213)] Support for select2 tags option ([@micbis](https://github.com/micbis))

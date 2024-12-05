@@ -61,6 +61,8 @@ file that was distributed with this source code.
                 {% set data_value = value|date('Y-m-d', options.timezone|default(null)) %}
             {% elseif field_description.type == constant('Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface::TYPE_BOOLEAN') and value is empty %}
                 {% set data_value = 0 %}
+            {% elseif field_description.type == constant('Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface::TYPE_ENUM') and value is not empty %}
+                {% set data_value = value.value %}
             {% elseif value is iterable %}
                 {% set data_value = value|json_encode %}
             {% else %}

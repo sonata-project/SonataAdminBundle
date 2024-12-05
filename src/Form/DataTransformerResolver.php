@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Form;
 
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use Sonata\AdminBundle\Form\DataTransformer\BackedEnumTransformer;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -73,6 +74,18 @@ final class DataTransformerResolver implements DataTransformerResolverInterface
             );
 
             return $this->globalCustomTransformers[$fieldType];
+        }
+
+        if (FieldDescriptionInterface::TYPE_ENUM === $fieldType) {
+            $className = $fieldDescription->getOption('class');
+
+            if (
+                null !== $className
+                && \is_string($className)
+                && is_a($className, \BackedEnum::class, true)
+            ) {
+                return new BackedEnumTransformer($className);
+            }
         }
 
         // Handle entity choice association type, transforming the value into entity
