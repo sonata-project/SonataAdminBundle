@@ -135,7 +135,7 @@ final class GroupMenuProviderTest extends TestCase
     ): void {
         $this->checker
             ->method('isGranted')
-            ->willReturnCallback([$this, 'unanimousGrantCheckerMock']);
+            ->willReturnCallback($this->unanimousGrantCheckerMock(...));
 
         $menu = $this->provider->get(
             'providerFoo',
@@ -162,7 +162,7 @@ final class GroupMenuProviderTest extends TestCase
     ): void {
         $this->checker
             ->method('isGranted')
-            ->willReturnCallback([$this, 'unanimousGrantCheckerNoBazMock']);
+            ->willReturnCallback($this->unanimousGrantCheckerNoBazMock(...));
 
         $menu = $this->provider->get(
             'providerFoo',
@@ -190,7 +190,7 @@ final class GroupMenuProviderTest extends TestCase
     ): void {
         $this->checker
             ->method('isGranted')
-            ->willReturnCallback([$this, 'unanimousGrantCheckerMock']);
+            ->willReturnCallback($this->unanimousGrantCheckerMock(...));
 
         $menu = $this->provider->get(
             'providerFoo',

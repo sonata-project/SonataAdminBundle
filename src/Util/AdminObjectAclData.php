@@ -32,11 +32,6 @@ final class AdminObjectAclData
     private static array $ownerPermissions = ['MASTER', 'OWNER'];
 
     /**
-     * @var \Traversable<string> Roles to set ACL for
-     */
-    private \Traversable $aclRoles;
-
-    /**
      * @var array<string, mixed> Cache of masks
      */
     private array $masks = [];
@@ -59,9 +54,8 @@ final class AdminObjectAclData
         private object $object,
         private \Traversable $aclUsers,
         private string $maskBuilderClass,
-        ?\Traversable $aclRoles = null,
+        private \Traversable $aclRoles = new \ArrayIterator(),
     ) {
-        $this->aclRoles = $aclRoles ?? new \ArrayIterator();
         if (!$admin->isAclEnabled()) {
             throw new \InvalidArgumentException('The admin must have ACL enabled.');
         }
