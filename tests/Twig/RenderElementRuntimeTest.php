@@ -1473,11 +1473,6 @@ final class RenderElementRuntimeTest extends TestCase
             ],
         ];
 
-        // TODO: Remove the "if" check when dropping support of PHP < 8.1 and add the case to the list
-        if (\PHP_VERSION_ID < 80100) {
-            return $elements;
-        }
-
         $elements[] = [
             '<td class="sonata-ba-list-field sonata-ba-list-field-enum" objectId="12345"> Hearts </td>',
             FieldDescriptionInterface::TYPE_ENUM,
