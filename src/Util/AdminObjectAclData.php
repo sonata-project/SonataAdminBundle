@@ -50,7 +50,7 @@ final class AdminObjectAclData
     /**
      * @param AdminInterface<object>             $admin
      * @param \Traversable<UserInterface|string> $aclUsers
-     * @param \Traversable<string>|null          $aclRoles
+     * @param \Traversable<string>               $aclRoles
      *
      * @phpstan-param class-string $maskBuilderClass
      */

@@ -29,6 +29,13 @@ final class ConfigureCRUDControllerListener implements EventSubscriberInterface
 
         if (\is_array($controller)) {
             $controller = $controller[0];
+        } else {
+            try {
+                $reflection = new \ReflectionFunction($controller(...));
+                $controller = $reflection->getClosureThis();
+            } catch (\ReflectionException) {
+                return;
+            }
         }
 
         if (!$controller instanceof CRUDController) {

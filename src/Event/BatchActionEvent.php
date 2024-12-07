@@ -52,7 +52,6 @@ final class BatchActionEvent extends Event
         array &$idx,
         private bool $allElements,
     ) {
-        $this->idx = &$idx;
     }
 
     /**
