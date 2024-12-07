@@ -19,7 +19,7 @@ Encore.setOutputPath('./src/Resources/public')
   .enablePostCssLoader()
   .enableVersioning(false)
   .enableSourceMaps(false)
-  .enableEslintPlugin()
+  //.enableEslintPlugin()
   .autoProvidejQuery()
   .disableSingleRuntimeChunk()
 

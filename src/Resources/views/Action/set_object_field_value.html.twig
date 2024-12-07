@@ -1,0 +1,25 @@
+{% set route = app.request.attributes.get('_route') %}
+{% set params = app.request.attributes.get('_route_params')|merge(app.request.query.all) %}
+
+<form action="{{ path(route, params) }}" method="POST" class="form-inline"
+        {{ stimulus_controller('editable-form', {}, {}, { 'editable': '#editable_' ~ field_description.name }) }}
+        {{ stimulus_action('editable-form', 'submit', 'submit') }}
+        {{ stimulus_target('editable-form', 'form') }}>
+    {{ form_errors(form) }}
+    <div class="control-group form-group">
+        <div>
+            <div class="editable-input">
+                {{ form_widget(form[field_description.fieldName], { 'label': false }) }}
+                {{ form_errors(form[field_description.fieldName]) }}
+            </div>
+            <div class="editable-buttons">
+                <button type="submit" class="btn btn-primary btn-sm" {{ stimulus_target('editable-form', 'submitter') }}>
+                    <i class="glyphicon glyphicon-ok"></i>
+                </button>
+                <button type="button" class="btn btn-default btn-sm" {{ stimulus_action('editable-form', 'cancel', 'click') }}>
+                    <i class="glyphicon glyphicon-remove"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

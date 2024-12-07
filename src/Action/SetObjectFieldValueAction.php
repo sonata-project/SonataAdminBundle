@@ -14,18 +14,16 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformerResolverInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Twig\RenderElementRuntime;
-use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
-use Symfony\Component\PropertyAccess\PropertyPath;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Form\FormRenderer;
 use Twig\Environment;
 
 final class SetObjectFieldValueAction
@@ -55,25 +53,12 @@ final class SetObjectFieldValueAction
     /**
      * @throws NotFoundHttpException
      */
-    public function __invoke(Request $request): JsonResponse
+    public function __invoke(Request $request): Response
     {
         try {
             $admin = $this->adminFetcher->get($request);
         } catch (\InvalidArgumentException $e) {
             throw new NotFoundHttpException($e->getMessage());
-        }
-
-        // alter should be done by using a post method
-        if (!$request->isXmlHttpRequest()) {
-            return new JsonResponse('Expected an XmlHttpRequest request header', Response::HTTP_METHOD_NOT_ALLOWED);
-        }
-
-        if (Request::METHOD_POST !== $request->getMethod()) {
-            return new JsonResponse(\sprintf(
-                'Invalid request method given "%s", %s expected',
-                $request->getMethod(),
-                Request::METHOD_POST
-            ), Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
         $objectId = $request->get('objectId');
@@ -106,66 +91,40 @@ final class SetObjectFieldValueAction
         }
 
         $fieldDescription = $admin->getListFieldDescription($field);
-
         if (true !== $fieldDescription->getOption('editable')) {
             return new JsonResponse('The field cannot be edited, editable option must be set to true', Response::HTTP_BAD_REQUEST);
         }
 
-        $propertyPath = new PropertyPath($field);
-        $rootObject = $object;
+        $admin->setSubject($object);
+        $formBuilder = $admin->getFormContractor()->getFormBuilder('editable', ['data_class' => $admin->getClass()]);
+        $formBuilder->add($fieldDescription->getFieldName());
 
-        // If property path has more than 1 element, take the last object in order to validate it
-        $parent = $propertyPath->getParent();
-        if (null !== $parent) {
-            $object = $this->propertyAccessor->getValue($object, $parent);
+        $form = $formBuilder->getForm();
+        $form->setData($object);
+        $form->handleRequest($admin->getRequest());
 
-            $elements = $propertyPath->getElements();
-            $field = end($elements);
-            \assert(\is_string($field));
+        if ($form->isSubmitted() && $form->isValid()) {
+            $admin->update($object);
 
-            $propertyPath = new PropertyPath($field);
+            return new Response(
+                $this->renderElementRuntime->renderListElement($this->twig, $object, $fieldDescription),
+                Response::HTTP_OK
+            );
         }
 
-        $value = $request->get('value');
+        $status = $form->isSubmitted() && !$form->isValid()
+            ? Response::HTTP_BAD_REQUEST
+            : Response::HTTP_OK;
 
-        if ('' === $value) {
-            $this->propertyAccessor->setValue($object, $propertyPath, null);
-        } else {
-            $dataTransformer = $this->resolver->resolve($fieldDescription, $admin->getModelManager());
+        $view = $form->createView();
+        $renderer = $this->twig->getRuntime(FormRenderer::class);
+        $renderer->setTheme($view, $admin->getFormTheme());
 
-            if ($dataTransformer instanceof DataTransformerInterface) {
-                $value = $dataTransformer->reverseTransform($value);
-            }
-
-            if (null === $value && \in_array($fieldDescription->getType(), [FieldDescriptionInterface::TYPE_CHOICE, FieldDescriptionInterface::TYPE_ENUM], true)) {
-                return new JsonResponse(\sprintf(
-                    'Edit failed, object with id "%s" not found in association "%s".',
-                    $objectId,
-                    $field
-                ), Response::HTTP_NOT_FOUND);
-            }
-
-            $this->propertyAccessor->setValue($object, $propertyPath, $value);
-        }
-
-        $violations = $this->validator->validate($object);
-
-        if (\count($violations) > 0) {
-            $messages = [];
-
-            foreach ($violations as $violation) {
-                $messages[] = $violation->getMessage();
-            }
-
-            return new JsonResponse(implode("\n", $messages), Response::HTTP_BAD_REQUEST);
-        }
-
-        \assert(\is_object($object));
-        $admin->update($object);
-
-        // render the widget
-        $content = $this->renderElementRuntime->renderListElement($this->twig, $rootObject, $fieldDescription);
-
-        return new JsonResponse($content, Response::HTTP_OK);
+        return new Response($this->twig->render('@SonataAdmin/Action/set_object_field_value.html.twig', [
+            'admin' => $admin,
+            'field_description' => $fieldDescription,
+            'object' => $object,
+            'form' => $view,
+        ]), $status);
     }
 }
