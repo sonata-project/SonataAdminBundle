@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.34.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.33.0...4.34.0) - 2024-12-07
+### Changed
+- [[#8225](https://github.com/sonata-project/SonataAdminBundle/pull/8225)] Drop Symfony < 6.4 ([@VincentLanglet](https://github.com/VincentLanglet))
+- [[#8225](https://github.com/sonata-project/SonataAdminBundle/pull/8225)] Drop PHP 8 ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.33.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.32.0...4.33.0) - 2024-12-04
 ### Added
 - [[#8219](https://github.com/sonata-project/SonataAdminBundle/pull/8219)] Support editable mode on `FieldDescriptionInterface::TYPE_ENUM` ([@onEXHovia](https://github.com/onEXHovia))

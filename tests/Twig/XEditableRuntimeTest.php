@@ -93,19 +93,16 @@ final class XEditableRuntimeTest extends TestCase
             ],
         ];
 
-        // TODO: Remove the "if" check when dropping support of PHP < 8.1 and add the case to the list
-        if (\PHP_VERSION_ID >= 80100) {
-            yield 'enum cases' => [
-                [
-                    'required' => false,
-                    'multiple' => false,
-                    'choices' => [Suit::Hearts, Suit::Clubs],
-                ],
-                [
-                    ['value' => 'H', 'text' => 'Hearts'],
-                    ['value' => 'C', 'text' => 'Clubs'],
-                ],
-            ];
-        }
+        yield 'enum cases' => [
+            [
+                'required' => false,
+                'multiple' => false,
+                'choices' => [Suit::Hearts, Suit::Clubs],
+            ],
+            [
+                ['value' => 'H', 'text' => 'Hearts'],
+                ['value' => 'C', 'text' => 'Clubs'],
+            ],
+        ];
     }
 }

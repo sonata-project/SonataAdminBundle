@@ -54,7 +54,7 @@ final class ConfigureCRUDControllerListenerTest extends TestCase
 
         $controllerEvent = new ControllerEvent(
             $this->createStub(HttpKernelInterface::class),
-            [$controller, 'listAction'],
+            $controller->listAction(...),
             $request,
             HttpKernelInterface::MAIN_REQUEST
         );

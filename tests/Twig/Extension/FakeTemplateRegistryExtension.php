@@ -21,7 +21,7 @@ final class FakeTemplateRegistryExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('get_admin_template', [$this, 'getAdminTemplate']),
+            new TwigFunction('get_admin_template', $this->getAdminTemplate(...)),
         ];
     }
 

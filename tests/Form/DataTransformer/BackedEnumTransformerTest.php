@@ -19,9 +19,6 @@ use Sonata\AdminBundle\Tests\Fixtures\Enum\Suit;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
-/**
- * @requires PHP 8.1
- */
 final class BackedEnumTransformerTest extends TestCase
 {
     public function testReverseTransform(): void

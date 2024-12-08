@@ -122,14 +122,14 @@ final class AdminMaker extends AbstractMaker
         $this->modelClass = $io->ask(
             'The fully qualified model class',
             $input->getArgument('model'),
-            [Validators::class, 'validateClass']
+            Validators::validateClass(...)
         );
-        $this->modelClassBasename = \array_slice(explode('\\', $this->modelClass), -1)[0];
+        $this->modelClassBasename = \array_slice(explode('\\', (string) $this->modelClass), -1)[0];
 
         $this->adminClassBasename = $io->ask(
             'The admin class basename',
             $input->getOption('admin') ?? \sprintf('%sAdmin', $this->modelClassBasename),
-            [Validators::class, 'validateAdminClassBasename']
+            Validators::validateAdminClassBasename(...)
         );
         if (\count($this->availableModelManagers) > 1) {
             $managerTypes = array_keys($this->availableModelManagers);
@@ -141,7 +141,7 @@ final class AdminMaker extends AbstractMaker
             $this->controllerClassBasename = $io->ask(
                 'The controller class basename',
                 $input->getOption('controller') ?? \sprintf('%sAdminController', $this->modelClassBasename),
-                [Validators::class, 'validateControllerClassBasename']
+                Validators::validateControllerClassBasename(...)
             );
             $input->setOption('controller', $this->controllerClassBasename);
         }
@@ -150,12 +150,12 @@ final class AdminMaker extends AbstractMaker
             $servicesFile = $io->ask(
                 'The services YAML configuration file',
                 $input->getOption('services') ?? (is_file($path.'admin.yaml') ? 'admin.yaml' : 'services.yaml'),
-                [Validators::class, 'validateServicesFile']
+                Validators::validateServicesFile(...)
             );
             $id = $io->ask(
                 'The admin service ID',
                 $this->getAdminServiceId($this->adminClassBasename),
-                [Validators::class, 'validateServiceId']
+                Validators::validateServiceId(...)
             );
             $input->setOption('services', $servicesFile);
             $input->setOption('id', $id);

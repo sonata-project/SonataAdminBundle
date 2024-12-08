@@ -32,7 +32,7 @@ final class FieldDescription extends BaseFieldDescription
         throw new \BadMethodCallException(\sprintf('Implement %s() method.', __METHOD__));
     }
 
-    public function getValue(object $object): void
+    public function getValue(object $object): never
     {
         throw new \BadMethodCallException(\sprintf('Implement %s() method.', __METHOD__));
     }
