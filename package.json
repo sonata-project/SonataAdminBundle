@@ -13,6 +13,7 @@
     "jquery-ui": "^1.13",
     "jquery.scrollto": "^2.1",
     "masonry-layout": "^4.2",
+    "qs": "^6.13.1",
     "readmore-js": "^2.2",
     "select2": "^4.0",
     "select2-bootstrap-theme": "^0.1.0-beta.10",

@@ -21,7 +21,6 @@ const Admin = {
   shared_setup(subject) {
     Admin.read_config();
     Admin.log('[core|shared_setup] Register services on', subject);
-    Admin.add_filters(subject);
     Admin.setup_select2(subject);
     Admin.setup_icheck(subject);
     Admin.setup_checkbox_range_selection(subject);
@@ -254,115 +253,6 @@ const Admin = {
     event.preventDefault();
 
     return event.target;
-  },
-
-  add_filters(subject) {
-    Admin.log('[core|add_filters] configure filters on', subject);
-
-    function updateCounter() {
-      const count = jQuery('a.sonata-toggle-filter .fa-check-square', subject).length;
-
-      jQuery('.sonata-filter-count', subject).text(count);
-    }
-
-    jQuery('a.sonata-toggle-filter', subject).on('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      if (jQuery(event.target).attr('sonata-filter') === 'false') {
-        return;
-      }
-
-      Admin.log(
-        '[core|add_filters] handle filter container: ',
-        jQuery(event.target).attr('filter-container')
-      );
-
-      const filtersContainer = jQuery(`#${jQuery(event.currentTarget).attr('filter-container')}`);
-
-      if (jQuery('div[sonata-filter="true"]:visible', filtersContainer).length === 0) {
-        jQuery(filtersContainer).slideDown();
-      }
-
-      const targetSelector = jQuery(event.currentTarget).attr('filter-target');
-      const target = jQuery(`div[id="${targetSelector}"]`, filtersContainer);
-      const filterToggler = jQuery('i', `.sonata-toggle-filter[filter-target="${targetSelector}"]`);
-      if (jQuery(target).is(':visible')) {
-        filterToggler
-          .filter(':not(.fa-minus-circle)')
-          .removeClass('fa-check-square')
-          .addClass('fa-square');
-        target.hide();
-      } else {
-        filterToggler
-          .filter(':not(.fa-minus-circle)')
-          .removeClass('fa-square')
-          .addClass('fa-check-square');
-        target.show();
-      }
-
-      if (jQuery('div[sonata-filter="true"]:visible', filtersContainer).length > 0) {
-        jQuery(filtersContainer).slideDown();
-      } else {
-        jQuery(filtersContainer).slideUp();
-      }
-
-      updateCounter();
-    });
-
-    jQuery('.sonata-filter-form', subject).on('submit', (event) => {
-      const $form = jQuery(event.target);
-      $form.find('[sonata-filter="true"]:hidden :input').val('');
-
-      if (!event.target.dataset.defaultValues) {
-        return;
-      }
-
-      const defaults = Admin.convert_query_string_to_object(
-        jQuery.param({ filter: JSON.parse(event.target.dataset.defaultValues) })
-      );
-
-      // Keep only changed values
-      $form.find('[name*=filter]').each((index, element) => {
-        const defaultValue = element.multiple ? [] : '';
-        const defaultElementValue = defaults[element.name] || defaultValue;
-        const elementValue = jQuery(element).val() || defaultValue;
-
-        if (JSON.stringify(defaultElementValue) === JSON.stringify(elementValue)) {
-          element.removeAttribute('name');
-        } else if (element.multiple && JSON.stringify(elementValue) === '[]') {
-          // Empty array values will not be submitted, but we need to override
-          // the default value provided by `AdminInterface::getDefaultFilterParameters()`.
-          // So we change the empty select to an empty input in order to have a submitted value.
-          // @see https://github.com/sonata-project/SonataAdminBundle/issues/7547
-
-          // We remove the `[]` from the select name in order to generate the input name
-          const name = element.name.substring(0, element.name.length - 2);
-          $form.append(`<input name="${name}" type="hidden" value="">`);
-          element.removeAttribute('name');
-        }
-      });
-
-      // Simulate a reset if no value is different from the default ones.
-      if ($form.find('[name*=filter]').length === 0) {
-        $form.append('<input name="filters" type="hidden" value="reset">');
-      }
-    });
-
-    /* Advanced filters */
-    if (
-      jQuery('.advanced-filter :input:visible', subject).filter(function filterWithoutValue() {
-        return jQuery(this).val();
-      }).length === 0
-    ) {
-      jQuery('.advanced-filter').hide();
-    }
-
-    jQuery('[data-toggle="advanced-filter"]', subject).on('click', () => {
-      jQuery('.advanced-filter').toggle();
-    });
-
-    updateCounter();
   },
 
   setup_collection_counter(subject) {
@@ -805,24 +695,6 @@ const Admin = {
           form.find('input[name="_tab"]').val(tabSelected.attr('aria-controls'));
         }
       });
-  },
-
-  convert_query_string_to_object(str) {
-    return str.split('&').reduce((accumulator, keyValue) => {
-      const key = decodeURIComponent(keyValue.split('=')[0]);
-      const val = keyValue.split('=')[1];
-
-      if (key.endsWith('[]')) {
-        if (!Object.prototype.hasOwnProperty.call(accumulator, key)) {
-          accumulator[key] = [];
-        }
-        accumulator[key].push(val);
-      } else {
-        accumulator[key] = val;
-      }
-
-      return accumulator;
-    }, {});
   },
 
   /**
