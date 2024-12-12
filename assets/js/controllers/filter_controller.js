@@ -19,7 +19,7 @@ export default class extends Controller {
   };
 
   connect() {
-    const withAdvanced = this.advancedTargets.find((advanced) => !advanced.hidden) !== null;
+    const withAdvanced = this.advancedTargets.find((advanced) => !advanced.hidden) !== undefined;
     this.advancedTargets.forEach((advanced) => {
       advanced.hidden = !withAdvanced;
     });
