@@ -21,7 +21,6 @@ const Admin = {
   shared_setup(subject) {
     Admin.read_config();
     Admin.log('[core|shared_setup] Register services on', subject);
-    Admin.set_object_field_value(subject);
     Admin.add_filters(subject);
     Admin.setup_select2(subject);
     Admin.setup_icheck(subject);
@@ -364,35 +363,6 @@ const Admin = {
     });
 
     updateCounter();
-  },
-
-  /**
-   * Change object field value
-   * @param subject
-   */
-  set_object_field_value(subject) {
-    Admin.log('[core|set_object_field_value] set value field on', subject);
-
-    this.log(jQuery('a.sonata-ba-edit-inline', subject));
-    jQuery('a.sonata-ba-edit-inline', subject).on('click', (event) => {
-      Admin.stopEvent(event);
-      const element = jQuery(event.target);
-      jQuery.ajax({
-        url: element.attr('href'),
-        type: 'POST',
-        success: (response) => {
-          const elm = element.parent();
-          elm.children().remove();
-          // fix issue with html comment ...
-          elm.html(jQuery(response.replace(/<!--[\s\S]*?-->/g, '')).html());
-          elm.effect('highlight', { color: '#57A957' }, 2000);
-          Admin.set_object_field_value(elm);
-        },
-        error: () => {
-          element.parent().effect('highlight', { color: '#C43C35' }, 2000);
-        },
-      });
-    });
   },
 
   setup_collection_counter(subject) {
