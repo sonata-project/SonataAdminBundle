@@ -14,11 +14,13 @@ import { startStimulusApp } from '@symfony/stimulus-bridge';
 // eslint-disable-next-line import/prefer-default-export
 export const sonataApplication = startStimulusApp();
 
-const definitions = definitionsFromContext(require.context(
-  '@symfony/stimulus-bridge/lazy-controller-loader!./controllers',
-  true,
-  /\.[jt]sx?$/
-));
+const definitions = definitionsFromContext(
+  require.context(
+    '@symfony/stimulus-bridge/lazy-controller-loader!./controllers',
+    true,
+    /\.[jt]sx?$/
+  )
+);
 
 definitions.forEach((definition) => {
   definition.identifier = `sonata-${definition.identifier}`;
