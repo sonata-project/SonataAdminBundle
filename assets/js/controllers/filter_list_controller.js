@@ -11,7 +11,7 @@ import { Controller } from '@hotwired/stimulus';
 
 export default class extends Controller {
   static targets = ['counter', 'field'];
-  static outlets = ['filter'];
+  static outlets = ['sonata-filter'];
   static classes = ['active'];
 
   connect() {
@@ -35,7 +35,7 @@ export default class extends Controller {
     const state = field.classList.contains(this.activeClass);
     field.classList.toggle(this.activeClass, !state);
 
-    this.filterOutlet.toggleFilter(field.dataset.filter, !state);
+    this.sonataFilterOutlet.toggleFilter(field.dataset.filter, !state);
     this.updateCounter();
   }
 
