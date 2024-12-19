@@ -563,3 +563,13 @@ div.sonata-filters-box div.form-group {
 .sonata-search-result-show {
   display: block;
 }
+
+.sonata-toggle-filter {
+  i::before {
+    content: '\f0c8'; // fa-square
+  }
+
+  &.active i::before {
+    content: '\f14a'; // fa-check-square
+  }
+}

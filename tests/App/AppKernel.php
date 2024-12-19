@@ -29,6 +29,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\UX\StimulusBundle\StimulusBundle;
 
 final class AppKernel extends Kernel
 {
@@ -41,6 +42,7 @@ final class AppKernel extends Kernel
             new TwigBundle(),
             new SecurityBundle(),
             new KnpMenuBundle(),
+            new StimulusBundle(),
             new SonataBlockBundle(),
             new SonataDoctrineBundle(),
             new SonataAdminBundle(),

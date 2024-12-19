@@ -259,13 +259,13 @@ file that was distributed with this source code.
     {# NEXT_MAJOR: Remove |default(filter.option('show_filter')) #}
     {% set displayableFilters = admin.datagrid.filters|filter(filter => filter.showFilter|default(filter.option('show_filter')) is not same as (false)) %}
     {%- if displayableFilters|length %}
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right" id="filter-list-{{ admin.uniqid() }}" {{ stimulus_controller('sonata-filter-list', {}, { 'active': 'active' }, { 'sonata-filter': '#filter-container-' ~ admin.uniqid() }) }}>
 
             <li class="dropdown sonata-actions">
                 <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">
                     <i class="fas fa-filter" aria-hidden="true"></i>
                     {{ 'link_filters'|trans({}, 'SonataAdminBundle') }}
-                    <span class="badge sonata-filter-count"></span>
+                    <span class="badge" {{ stimulus_target('sonata-filter-list', 'counter') }}></span>
                     <b class="caret"></b>
                 </a>
 
@@ -274,8 +274,8 @@ file that was distributed with this source code.
                         {# NEXT_MAJOR: Remove |default(filter.option('show_filter')) #}
                         {% set filterDisplayed = filter.isActive() or filter.showFilter|default(filter.option('show_filter')) is same as (true) %}
                         <li>
-                            <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
-                                <i class="far {{ filterDisplayed ? 'fa-check-square' : 'fa-square' }}"></i>
+                            <a href="#" class="sonata-toggle-filter sonata-ba-action{% if filterDisplayed %} active{% endif %}" data-filter="filter-{{ admin.uniqid }}-{{ filter.name }}" {{ stimulus_target('sonata-filter-list', 'field') }} {{ stimulus_action('sonata-filter-list', 'toggle', 'click') }}>
+                                <i class="far"></i>
                                 {% if filter.label is not same as(false) %}
                                     {% if filter.translationDomain is same as(false) %}
                                         {{ filter.label }}
@@ -298,7 +298,8 @@ file that was distributed with this source code.
     {% if admin.datagrid.filters %}
         {% form_theme form get_admin_template('filter', admin.code) %}
 
-        <div class="col-xs-12 col-md-12 sonata-filters-box" style="display: {{ admin.datagrid.hasDisplayableFilters ? 'block' : 'none' }}" id="filter-container-{{ admin.uniqid() }}">
+        <div class="col-xs-12 col-md-12 sonata-filters-box"
+             id="filter-container-{{ admin.uniqid() }}" {{ stimulus_controller('sonata-filter', { 'defaultValues': admin.defaultFilterParameters|json_encode }, {}, { 'sonata-filter-list': '#filter-list-' ~ admin.uniqid() }) }} {% if not admin.datagrid.hasDisplayableFilters %}hidden{% endif %}>
             <div class="box box-primary" >
                 <div class="box-body">
                     <form
@@ -306,8 +307,8 @@ file that was distributed with this source code.
                         action="{{ admin.generateUrl(action|default('list')) }}"
                         method="GET"
                         role="form"
-                        data-default-values="{{ admin.defaultFilterParameters|json_encode }}"
-                    >
+                        {{ stimulus_target('sonata-filter', 'form') }}
+                        {{ stimulus_action('sonata-filter', 'prepareSubmit', 'submit') }}>
                         {{ form_errors(form) }}
 
                         <div class="row">
@@ -317,7 +318,7 @@ file that was distributed with this source code.
                                     {# NEXT_MAJOR: Remove |default(filter.option('show_filter')) #}
                                     {% set filterDisplayed = filter.isActive() or filter.showFilter|default(filter.option('show_filter')) is same as (true) %}
                                     {% set filterCanBeDisplayed = filter.option('show_filter') is not same as(false) %}
-                                    <div class="form-group {% block sonata_list_filter_group_class %}{% endblock %}" id="filter-{{ admin.uniqid }}-{{ filter.name }}" sonata-filter="{{ filterCanBeDisplayed ? 'true' : 'false' }}" style="display: {% if filterDisplayed %}block{% else %}none{% endif %}">
+                                    <div class="form-group {% block sonata_list_filter_group_class %}{% endblock %}" id="filter-{{ admin.uniqid }}-{{ filter.name }}" {{ stimulus_target('sonata-filter', 'group') }} {% if not filterDisplayed %}hidden{% endif %}>
                                         {% if filter.label is not same as(false) %}
                                             <label for="{{ form[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">
                                                 {% if filter.translationDomain is same as(false) %}
@@ -328,8 +329,7 @@ file that was distributed with this source code.
                                             </label>
                                         {% endif %}
                                         {% set attr = form[filter.formName].children['type'].vars.attr|default({}) %}
-
-                                        <div class="col-sm-4 advanced-filter">
+                                        <div class="col-sm-4 advanced-filter" {{ stimulus_target('sonata-filter', 'advanced') }} {% if not field_value(form[filter.formName].children['type']) %}hidden{% endif %}>
                                             {{ form_widget(form[filter.formName].children['type'], {'attr':  attr}) }}
                                         </div>
 
@@ -340,7 +340,7 @@ file that was distributed with this source code.
                                         {% if filterCanBeDisplayed %}
                                             <div class="col-sm-1">
                                                 <label class="control-label">
-                                                    <a href="#" class="sonata-toggle-filter sonata-ba-action" filter-target="filter-{{ admin.uniqid }}-{{ filter.name }}" filter-container="filter-container-{{ admin.uniqid() }}">
+                                                    <a href="#" class="sonata-ba-action" {{ stimulus_action('sonata-filter', 'hideFilter', 'click', { 'id': 'filter-' ~ admin.uniqid ~ '-' ~ filter.name }) }}>
                                                         <i class="fas fa-minus-circle" aria-hidden="true"></i>
                                                     </a>
                                                 </label>
@@ -361,7 +361,7 @@ file that was distributed with this source code.
                                 {{ form_rest(form) }}
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-primary">
+                                    <button type="submit" class="btn btn-primary" {{ stimulus_target('sonata-filter', 'submitter') }}>
                                         <i class="fas fa-filter" aria-hidden="true"></i> {{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}
                                     </button>
 
@@ -372,7 +372,7 @@ file that was distributed with this source code.
 
                                 {% if withAdvancedFilter %}
                                     <div class="form-group">
-                                        <a href="#" data-toggle="advanced-filter">
+                                        <a href="#" {{ stimulus_action('sonata-filter', 'toggleAdvanced', 'click') }}>
                                             <i class="fas fa-cogs" aria-hidden="true"></i>
                                             {{ 'btn_advanced_filters'|trans({}, 'SonataAdminBundle') }}
                                         </a>
