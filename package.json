@@ -8,7 +8,6 @@
     "bootstrap": "^3.3",
     "icheck": "^1.0",
     "jquery": "^3.7.0",
-    "jquery-form": "^4.3",
     "jquery-slimscroll": "^1.3",
     "jquery-ui": "^1.13",
     "jquery.scrollto": "^2.1",
