@@ -22,6 +22,8 @@ import 'jquery-ui/ui/widget';
 import 'jquery-ui/ui/widgets/sortable';
 import 'bootstrap';
 
+import 'jquery-form';
+
 // Boostrap 3 JavaScript for the X-editable library
 import 'x-editable/dist/bootstrap3-editable/js/bootstrap-editable';
 
