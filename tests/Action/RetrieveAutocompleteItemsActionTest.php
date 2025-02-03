@@ -48,7 +48,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     protected function setUp(): void
     {
         $this->admin = $this->createMock(AdminInterface::class);
-        $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
+        $this->adminFetcher = static::createStub(AdminFetcherInterface::class);
         $this->adminFetcher->method('get')->willReturn($this->admin);
         $this->action = new RetrieveAutocompleteItemsAction($this->adminFetcher);
     }
@@ -77,7 +77,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             'field' => 'barField',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->configureFormConfig('barField', true);
 
@@ -106,8 +106,8 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             'q' => 'so',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $targetAdmin = $this->createStub(AdminInterface::class);
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $targetAdmin = static::createStub(AdminInterface::class);
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->configureFormConfig('barField');
 
@@ -228,9 +228,9 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
         $targetAdmin = $this->createMock(AdminInterface::class);
         $datagrid = $this->createMock(DatagridInterface::class);
-        $metadata = $this->createStub(MetadataInterface::class);
-        $pager = $this->createStub(PagerInterface::class);
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $metadata = static::createStub(MetadataInterface::class);
+        $pager = static::createStub(PagerInterface::class);
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getNewInstance')->willReturn($model);
         $this->admin->expects(static::once())->method('setSubject')->with($model);
@@ -257,8 +257,8 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     private function configureFormConfig(string $field, bool $disabled = false): void
     {
         $form = $this->createMock(Form::class);
-        $formType = $this->createStub(Form::class);
-        $formConfig = $this->createStub(FormConfigInterface::class);
+        $formType = static::createStub(Form::class);
+        $formConfig = static::createStub(FormConfigInterface::class);
 
         $this->admin->method('getForm')->willReturn($form);
         $form->method('get')->with($field)->willReturn($formType);
@@ -279,8 +279,8 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     private function configureFormConfigComplexProperty(string $field): void
     {
         $form = $this->createMock(Form::class);
-        $formType = $this->createStub(Form::class);
-        $formConfig = $this->createStub(FormConfigInterface::class);
+        $formType = static::createStub(Form::class);
+        $formConfig = static::createStub(FormConfigInterface::class);
 
         $this->admin->method('getForm')->willReturn($form);
         $form->method('get')->with($field)->willReturn($formType);
@@ -300,8 +300,8 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     private function configureFormConfigComplexPropertyArray(string $field): void
     {
         $form = $this->createMock(Form::class);
-        $formType = $this->createStub(Form::class);
-        $formConfig = $this->createStub(FormConfigInterface::class);
+        $formType = static::createStub(Form::class);
+        $formConfig = static::createStub(FormConfigInterface::class);
 
         $this->admin->method('getForm')->willReturn($form);
         $form->method('get')->with($field)->willReturn($formType);

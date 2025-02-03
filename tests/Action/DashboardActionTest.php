@@ -32,7 +32,7 @@ final class DashboardActionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->templateRegistry = $this->createStub(MutableTemplateRegistryInterface::class);
+        $this->templateRegistry = static::createStub(MutableTemplateRegistryInterface::class);
 
         $twig = $this->createMock(Environment::class);
 

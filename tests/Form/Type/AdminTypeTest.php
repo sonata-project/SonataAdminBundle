@@ -63,7 +63,7 @@ final class AdminTypeTest extends TypeTestCase
         $parentField->expects(static::once())->method('setAssociationAdmin')->with(static::isInstanceOf(AdminInterface::class));
         $parentField->expects(static::once())->method('getAdmin')->willReturn($parentAdmin);
 
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
 
         $foo = new Foo();
 
@@ -116,7 +116,7 @@ final class AdminTypeTest extends TypeTestCase
         $parentField->expects(static::once())->method('setAssociationAdmin')->with(static::isInstanceOf(AdminInterface::class));
         $parentField->expects(static::once())->method('getAdmin')->willReturn($parentAdmin);
 
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
 
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects(static::exactly(2))->method('hasParentFieldDescription')->willReturn(true);
@@ -158,7 +158,7 @@ final class AdminTypeTest extends TypeTestCase
         $parentField->expects(static::once())->method('setAssociationAdmin')->with(static::isInstanceOf(AdminInterface::class));
         $parentField->expects(static::once())->method('getAdmin')->willReturn($parentAdmin);
 
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
 
         $admin = $this->createMock(AdminInterface::class);
         $admin->expects(static::exactly(2))->method('hasParentFieldDescription')->willReturn(true);
@@ -202,7 +202,7 @@ final class AdminTypeTest extends TypeTestCase
         $parentField->expects(static::once())->method('getParentAssociationMappings')->willReturn([]);
         $parentField->expects(static::once())->method('getAssociationMapping')->willReturn(['fieldName' => 'foo', 'mappedBy' => 'bar']);
 
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
 
         $newInstance = new class {
             private ?object $bar = null;
@@ -268,7 +268,7 @@ final class AdminTypeTest extends TypeTestCase
         $parentField->expects(static::atLeastOnce())->method('getParentAssociationMappings')->willReturn([]);
         $parentField->expects(static::atLeastOnce())->method('getAssociationMapping')->willReturn(['fieldName' => 'foo', 'mappedBy' => 'bar']);
 
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
 
         $newInstance = new class {
             private ?object $bar = null;
@@ -321,7 +321,7 @@ final class AdminTypeTest extends TypeTestCase
     {
         $extensions = parent::getExtensions();
 
-        $guesser = $this->createStub(FormTypeGuesserInterface::class);
+        $guesser = static::createStub(FormTypeGuesserInterface::class);
         $extension = new TestExtension($guesser);
 
         $extension->addTypeExtension(new FormTypeFieldExtension([], []));

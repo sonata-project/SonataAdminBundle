@@ -61,7 +61,7 @@ final class DatagridTest extends TestCase
     protected function setUp(): void
     {
         /** @var ProxyQueryInterface<object>&Stub $query */
-        $query = $this->createStub(ProxyQueryInterface::class);
+        $query = static::createStub(ProxyQueryInterface::class);
         $this->query = $query;
         $this->columns = new FieldDescriptionCollection();
         $this->formBuilder = Forms::createFormFactoryBuilder()->getFormFactory()->createBuilder();

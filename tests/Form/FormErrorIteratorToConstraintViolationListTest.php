@@ -45,7 +45,7 @@ final class FormErrorIteratorToConstraintViolationListTest extends TestCase
      */
     public function provideTransformCases(): iterable
     {
-        $form = $this->createStub(FormInterface::class);
+        $form = static::createStub(FormInterface::class);
         $form->method('getName')->willReturn('name');
 
         yield [0, new FormErrorIterator($form, [])];

@@ -159,14 +159,14 @@ final class CRUDControllerTest extends TestCase
         $this->container = new Container();
         $this->request = new Request();
         $this->pool = new Pool($this->container, ['foo.admin']);
-        $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
+        $this->adminFetcher = static::createStub(AdminFetcherInterface::class);
         $this->admin = $this->createMock(AdminInterface::class);
         $this->adminFetcher
             ->method('get')
             ->willReturn($this->admin);
         $this->translator = $this->createMock(TranslatorInterface::class);
 
-        $this->templateRegistry = $this->createStub(MutableTemplateRegistryInterface::class);
+        $this->templateRegistry = static::createStub(MutableTemplateRegistryInterface::class);
 
         $this->session = new Session(new MockArraySessionStorage());
 
@@ -182,7 +182,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->auditManager = $this->createMock(AuditManagerInterface::class);
 
-        $this->formFactory = $this->createStub(FormFactoryInterface::class);
+        $this->formFactory = static::createStub(FormFactoryInterface::class);
 
         $this->controllerResolver = $this->createMock(ControllerResolverInterface::class);
 
@@ -359,7 +359,7 @@ final class CRUDControllerTest extends TestCase
     public function testConfigureAdminWithoutTemplateRegistryThrowsException(): void
     {
         $controller = new CRUDController();
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = static::createStub(AdminInterface::class);
         $admin
             ->method('hasTemplateRegistry')
             ->willReturn(false);
@@ -368,7 +368,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getCode')
             ->willReturn('admin_code');
 
-        $adminFetcher = $this->createStub(AdminFetcherInterface::class);
+        $adminFetcher = static::createStub(AdminFetcherInterface::class);
         $adminFetcher
             ->method('get')
             ->willReturn($admin);
@@ -575,7 +575,7 @@ final class CRUDControllerTest extends TestCase
 
         $form = $this->createMock(Form::class);
 
-        $formView = $this->createStub(FormView::class);
+        $formView = static::createStub(FormView::class);
 
         $form->expects(static::once())
             ->method('createView')
@@ -1646,7 +1646,7 @@ final class CRUDControllerTest extends TestCase
             ->with(static::equalTo($object))
             ->willReturn('foo_normalized');
 
-        $formView = $this->createStub(FormView::class);
+        $formView = static::createStub(FormView::class);
 
         $form
             ->method('createView')
@@ -3304,7 +3304,7 @@ final class CRUDControllerTest extends TestCase
 
         $aclUsersForm = $this->createMock(Form::class);
 
-        $aclUsersFormView = $this->createStub(FormView::class);
+        $aclUsersFormView = static::createStub(FormView::class);
 
         $aclUsersForm->expects(static::once())
             ->method('createView')
@@ -3312,13 +3312,13 @@ final class CRUDControllerTest extends TestCase
 
         $aclRolesForm = $this->createMock(Form::class);
 
-        $aclRolesFormView = $this->createStub(FormView::class);
+        $aclRolesFormView = static::createStub(FormView::class);
 
         $aclRolesForm->expects(static::once())
             ->method('createView')
             ->willReturn($aclRolesFormView);
 
-        $formBuilder = $this->createStub(FormBuilderInterface::class);
+        $formBuilder = static::createStub(FormBuilderInterface::class);
         $formBuilder
             ->method('getForm')
             ->willReturnOnConsecutiveCalls(
@@ -3330,14 +3330,14 @@ final class CRUDControllerTest extends TestCase
             ->method('createNamedBuilder')
             ->willReturn($formBuilder);
 
-        $aclSecurityHandler = $this->createStub(AclSecurityHandlerInterface::class);
+        $aclSecurityHandler = static::createStub(AclSecurityHandlerInterface::class);
         $aclSecurityHandler
             ->method('getObjectPermissions')
             ->willReturn([]);
 
         $aclSecurityHandler
             ->method('createAcl')
-            ->willReturn($this->createStub(MutableAclInterface::class));
+            ->willReturn(static::createStub(MutableAclInterface::class));
 
         $this->admin
             ->method('getSecurityHandler')
@@ -3391,7 +3391,7 @@ final class CRUDControllerTest extends TestCase
             ->method('isValid')
             ->willReturn(false);
 
-        $aclUsersFormView = $this->createStub(FormView::class);
+        $aclUsersFormView = static::createStub(FormView::class);
 
         $aclUsersForm->expects(static::once())
             ->method('createView')
@@ -3399,13 +3399,13 @@ final class CRUDControllerTest extends TestCase
 
         $aclRolesForm = $this->createMock(Form::class);
 
-        $aclRolesFormView = $this->createStub(FormView::class);
+        $aclRolesFormView = static::createStub(FormView::class);
 
         $aclRolesForm->expects(static::once())
             ->method('createView')
             ->willReturn($aclRolesFormView);
 
-        $formBuilder = $this->createStub(FormBuilderInterface::class);
+        $formBuilder = static::createStub(FormBuilderInterface::class);
         $formBuilder
             ->method('getForm')
             ->willReturnOnConsecutiveCalls(
@@ -3417,14 +3417,14 @@ final class CRUDControllerTest extends TestCase
             ->method('createNamedBuilder')
             ->willReturn($formBuilder);
 
-        $aclSecurityHandler = $this->createStub(AclSecurityHandlerInterface::class);
+        $aclSecurityHandler = static::createStub(AclSecurityHandlerInterface::class);
         $aclSecurityHandler
             ->method('getObjectPermissions')
             ->willReturn([]);
 
         $aclSecurityHandler
             ->method('createAcl')
-            ->willReturn($this->createStub(MutableAclInterface::class));
+            ->willReturn(static::createStub(MutableAclInterface::class));
 
         $this->admin
             ->method('getSecurityHandler')
@@ -3494,7 +3494,7 @@ final class CRUDControllerTest extends TestCase
             ->method('isValid')
             ->willReturn(true);
 
-        $formBuilder = $this->createStub(FormBuilderInterface::class);
+        $formBuilder = static::createStub(FormBuilderInterface::class);
         $formBuilder
             ->method('getForm')
             ->willReturnOnConsecutiveCalls(
@@ -3506,14 +3506,14 @@ final class CRUDControllerTest extends TestCase
             ->method('createNamedBuilder')
             ->willReturn($formBuilder);
 
-        $aclSecurityHandler = $this->createStub(AclSecurityHandlerInterface::class);
+        $aclSecurityHandler = static::createStub(AclSecurityHandlerInterface::class);
         $aclSecurityHandler
             ->method('getObjectPermissions')
             ->willReturn([]);
 
         $aclSecurityHandler
             ->method('createAcl')
-            ->willReturn($this->createStub(MutableAclInterface::class));
+            ->willReturn(static::createStub(MutableAclInterface::class));
 
         $this->admin
             ->method('getSecurityHandler')
@@ -4211,7 +4211,7 @@ final class CRUDControllerTest extends TestCase
 
         $form = $this->createMock(Form::class);
 
-        $formView = $this->createStub(FormView::class);
+        $formView = static::createStub(FormView::class);
 
         $form->expects(static::once())
             ->method('createView')

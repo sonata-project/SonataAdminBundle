@@ -28,7 +28,7 @@ final class ModelsToArrayTransformerTest extends TestCase
     public function testConstructor(): void
     {
         $transformer = new ModelsToArrayTransformer(
-            $this->createStub(ModelManagerInterface::class),
+            static::createStub(ModelManagerInterface::class),
             Foo::class
         );
 
@@ -77,7 +77,7 @@ final class ModelsToArrayTransformerTest extends TestCase
         $object2 = new Entity(2);
         $object3 = new Entity(3);
 
-        $proxyQuery = $this->createStub(ProxyQueryInterface::class);
+        $proxyQuery = static::createStub(ProxyQueryInterface::class);
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
             ->method('createQuery')
@@ -110,7 +110,7 @@ final class ModelsToArrayTransformerTest extends TestCase
     public function testReverseTransformUnexpectedType(): void
     {
         $value = 'unexpected';
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
 
         $transformer = new ModelsToArrayTransformer(
             $modelManager,
@@ -130,7 +130,7 @@ final class ModelsToArrayTransformerTest extends TestCase
         $object2 = new Entity(2);
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
-        $proxyQuery = $this->createStub(ProxyQueryInterface::class);
+        $proxyQuery = static::createStub(ProxyQueryInterface::class);
         $modelManager
             ->method('createQuery')
             ->with(static::equalTo(Foo::class))

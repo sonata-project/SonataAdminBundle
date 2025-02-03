@@ -81,11 +81,11 @@ final class ChoiceFieldMaskTypeTest extends TypeTestCase
     {
         $choiceFieldMaskType = new ChoiceFieldMaskType();
 
-        $view = $this->createStub(FormView::class);
+        $view = static::createStub(FormView::class);
 
         $choiceFieldMaskType->buildView(
             $view,
-            $this->createStub(FormInterface::class),
+            static::createStub(FormInterface::class),
             [
                 'map' => [
                     'choice_1' => ['field1', 'field2'],
@@ -126,11 +126,11 @@ final class ChoiceFieldMaskTypeTest extends TypeTestCase
     {
         $choiceFieldMaskType = new ChoiceFieldMaskType();
 
-        $view = $this->createStub(FormView::class);
+        $view = static::createStub(FormView::class);
 
         $choiceFieldMaskType->buildView(
             $view,
-            $this->createStub(FormInterface::class),
+            static::createStub(FormInterface::class),
             ['map' => [
                 'int' => 1,
                 'string' => 'string',

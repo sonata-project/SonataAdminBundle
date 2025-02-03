@@ -61,7 +61,7 @@ final class AdminObjectAclManipulatorTest extends TestCase
 
     public function testUpdateAclRoles(): void
     {
-        $form = $this->createStub(Form::class);
+        $form = static::createStub(Form::class);
         $acl = $this->createMock(Acl::class);
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
 
@@ -83,7 +83,7 @@ final class AdminObjectAclManipulatorTest extends TestCase
             ->method('getObjectPermissions')
             ->willReturn(['MASTER', 'OWNER']);
 
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = static::createStub(AdminInterface::class);
         $admin
             ->method('isAclEnabled')
             ->willReturn(true);
@@ -107,16 +107,16 @@ final class AdminObjectAclManipulatorTest extends TestCase
 
     public function testCreateAclUsersForm(): void
     {
-        $form = $this->createStub(Form::class);
-        $formBuilder = $this->createStub(FormBuilder::class);
+        $form = static::createStub(Form::class);
+        $formBuilder = static::createStub(FormBuilder::class);
         $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
-        $acl = $this->createStub(Acl::class);
+        $acl = static::createStub(Acl::class);
 
         $securityHandler
             ->method('getObjectPermissions')
             ->willReturn(['MASTER', 'OWNER']);
 
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = static::createStub(AdminInterface::class);
         $admin
             ->method('isAclEnabled')
             ->willReturn(true);
@@ -149,16 +149,16 @@ final class AdminObjectAclManipulatorTest extends TestCase
 
     public function testCreateAclRolesForm(): void
     {
-        $form = $this->createStub(Form::class);
-        $formBuilder = $this->createStub(FormBuilder::class);
-        $securityHandler = $this->createStub(AclSecurityHandlerInterface::class);
-        $acl = $this->createStub(Acl::class);
+        $form = static::createStub(Form::class);
+        $formBuilder = static::createStub(FormBuilder::class);
+        $securityHandler = static::createStub(AclSecurityHandlerInterface::class);
+        $acl = static::createStub(Acl::class);
 
         $securityHandler
             ->method('getObjectPermissions')
             ->willReturn(['MASTER', 'OWNER']);
 
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = static::createStub(AdminInterface::class);
         $admin
             ->method('isAclEnabled')
             ->willReturn(true);

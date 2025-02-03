@@ -39,7 +39,7 @@ final class BreadcrumbsBuilderTest extends TestCase
         $admin->method('isChild')->willReturn(false);
 
         $admin->method('getMenuFactory')->willReturn(new MenuFactory());
-        $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
+        $labelTranslatorStrategy = static::createStub(LabelTranslatorStrategyInterface::class);
 
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
         $routeGenerator->method('generate')->with('sonata_admin_dashboard')->willReturn('/dashboard');
@@ -158,7 +158,7 @@ final class BreadcrumbsBuilderTest extends TestCase
         $menuFactory->method('createItem')->with('root')->willReturn($menu);
         $admin = $this->createMock(AdminInterface::class);
         $admin->method('getMenuFactory')->willReturn($menuFactory);
-        $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
+        $labelTranslatorStrategy = static::createStub(LabelTranslatorStrategyInterface::class);
 
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
         $routeGenerator->method('generate')->with('sonata_admin_dashboard')->willReturn('/dashboard');

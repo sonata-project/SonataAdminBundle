@@ -99,7 +99,7 @@ final class DatagridMapperTest extends TestCase
             ->method('isGranted')
             ->willReturnCallback(static fn (string $name, ?object $object = null): bool => self::DEFAULT_GRANTED_ROLE === $name);
 
-        $labelTranslatorStrategy = $this->createStub(LabelTranslatorStrategyInterface::class);
+        $labelTranslatorStrategy = static::createStub(LabelTranslatorStrategyInterface::class);
         $labelTranslatorStrategy->method('getLabel')->willReturnCallback(
             static fn (string $label, string $context = '', string $type = ''): string => \sprintf('%s.%s_%s', $context, $type, $label)
         );

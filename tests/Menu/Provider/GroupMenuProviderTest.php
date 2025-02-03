@@ -48,11 +48,11 @@ final class GroupMenuProviderTest extends TestCase
     {
         $this->container = new Container();
         $this->pool = new Pool($this->container, ['sonata_admin_foo_service', 'sonata_admin_absolute_url']);
-        $this->checker = $this->createStub(AuthorizationCheckerInterface::class);
+        $this->checker = static::createStub(AuthorizationCheckerInterface::class);
 
         $this->factory = new MenuFactory();
 
-        $urlGenerator = $this->createStub(UrlGeneratorInterface::class);
+        $urlGenerator = static::createStub(UrlGeneratorInterface::class);
         $urlGenerator->method('generate')->willReturnCallback(static fn (
             string $name,
             array $parameters = [],

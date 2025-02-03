@@ -87,9 +87,9 @@ final class AdminEventExtensionTest extends TestCase
                 static::equalTo('sonata.admin.event.configure.form'),
             ])
             ->configureFormFields(new FormMapper(
-                $this->createStub(FormContractorInterface::class),
-                $this->createStub(FormBuilderInterface::class),
-                $this->createStub(AdminInterface::class)
+                static::createStub(FormContractorInterface::class),
+                static::createStub(FormBuilderInterface::class),
+                static::createStub(AdminInterface::class)
             ));
     }
 
@@ -101,9 +101,9 @@ final class AdminEventExtensionTest extends TestCase
                 static::equalTo('sonata.admin.event.configure.list'),
             ])
             ->configureListFields(new ListMapper(
-                $this->createStub(ListBuilderInterface::class),
+                static::createStub(ListBuilderInterface::class),
                 new FieldDescriptionCollection(),
-                $this->createStub(AdminInterface::class)
+                static::createStub(AdminInterface::class)
             ));
     }
 
@@ -115,9 +115,9 @@ final class AdminEventExtensionTest extends TestCase
                 static::equalTo('sonata.admin.event.configure.datagrid'),
             ])
             ->configureDatagridFilters(new DatagridMapper(
-                $this->createStub(DatagridBuilderInterface::class),
-                $this->createStub(DatagridInterface::class),
-                $this->createStub(AdminInterface::class)
+                static::createStub(DatagridBuilderInterface::class),
+                static::createStub(DatagridInterface::class),
+                static::createStub(AdminInterface::class)
             ));
     }
 
@@ -129,9 +129,9 @@ final class AdminEventExtensionTest extends TestCase
                 static::equalTo('sonata.admin.event.configure.show'),
             ])
             ->configureShowFields(new ShowMapper(
-                $this->createStub(ShowBuilderInterface::class),
+                static::createStub(ShowBuilderInterface::class),
                 new FieldDescriptionCollection(),
-                $this->createStub(AdminInterface::class)
+                static::createStub(AdminInterface::class)
             ));
     }
 

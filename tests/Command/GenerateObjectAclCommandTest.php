@@ -73,7 +73,7 @@ final class GenerateObjectAclCommandTest extends TestCase
 
     public function testExecuteWithManipulatorNotFound(): void
     {
-        $admin = $this->createStub(AbstractAdmin::class);
+        $admin = static::createStub(AbstractAdmin::class);
         $container = new Container();
         $container->set('acme.admin.foo', $admin);
         $pool = new Pool($container, ['acme.admin.foo']);
@@ -98,7 +98,7 @@ final class GenerateObjectAclCommandTest extends TestCase
 
     public function testExecuteWithManipulator(): void
     {
-        $admin = $this->createStub(AbstractAdmin::class);
+        $admin = static::createStub(AbstractAdmin::class);
         $container = new Container();
         $container->set('acme.admin.foo', $admin);
         $pool = new Pool($container, ['acme.admin.foo']);
@@ -125,7 +125,7 @@ final class GenerateObjectAclCommandTest extends TestCase
 
     public function testExecuteWithUserModel(): void
     {
-        $admin = $this->createStub(AbstractAdmin::class);
+        $admin = static::createStub(AbstractAdmin::class);
         $container = new Container();
         $container->set('acme.admin.foo', $admin);
         $pool = new Pool($container, ['acme.admin.foo']);

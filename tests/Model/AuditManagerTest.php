@@ -27,8 +27,8 @@ final class AuditManagerTest extends TestCase
     {
         $container = new Container();
 
-        $fooReader = $this->createStub(AuditReaderInterface::class);
-        $barReader = $this->createStub(AuditReaderInterface::class);
+        $fooReader = static::createStub(AuditReaderInterface::class);
+        $barReader = static::createStub(AuditReaderInterface::class);
 
         $container->set('foo_reader', $fooReader);
         $container->set('bar_reader', $barReader);

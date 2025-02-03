@@ -46,7 +46,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
     {
         $this->twig = new Environment(new ArrayLoader(['short_object_description' => 'renderedTemplate']));
         $this->admin = $this->createMock(AdminInterface::class);
-        $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
+        $this->adminFetcher = static::createStub(AdminFetcherInterface::class);
 
         $this->action = new GetShortObjectDescriptionAction(
             $this->twig,

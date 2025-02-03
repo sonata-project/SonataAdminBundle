@@ -39,7 +39,7 @@ final class AdminPreviewBlockServiceTest extends BlockServiceTestCase
 
     public function testDefaultSettings(): void
     {
-        $blockService = new AdminPreviewBlockService($this->createStub(Environment::class), $this->pool);
+        $blockService = new AdminPreviewBlockService(static::createStub(Environment::class), $this->pool);
         $blockContext = $this->getBlockContext($blockService);
 
         self::assertSettings([
@@ -66,7 +66,7 @@ final class AdminPreviewBlockServiceTest extends BlockServiceTestCase
         $container = new Container();
         $container->set($adminCode, $admin);
         $pool = new Pool($container, [$adminCode]);
-        $datagrid = $this->createStub(DatagridInterface::class);
+        $datagrid = static::createStub(DatagridInterface::class);
         $twig = $this->createMock(Environment::class);
 
         $blockService = new AdminPreviewBlockService($twig, $pool);

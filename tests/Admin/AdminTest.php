@@ -164,7 +164,7 @@ final class AdminTest extends TestCase
     public function testCheckAccessThrowsAccessDeniedException(): void
     {
         $admin = new PostAdmin();
-        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
+        $securityHandler = static::createStub(SecurityHandlerInterface::class);
         $securityHandler->method('isGranted')->willReturnMap([
             [$admin, 'CUSTOM_ROLE', $admin, true],
             [$admin, 'EXTRA_CUSTOM_ROLE', $admin, false],
@@ -194,7 +194,7 @@ final class AdminTest extends TestCase
     public function testHasAccess(): void
     {
         $admin = new PostAdmin();
-        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
+        $securityHandler = static::createStub(SecurityHandlerInterface::class);
         $securityHandler->method('isGranted')->willReturnMap([
             [$admin, 'CUSTOM_ROLE', $admin, true],
             [$admin, 'EXTRA_CUSTOM_ROLE', $admin, false],
@@ -212,7 +212,7 @@ final class AdminTest extends TestCase
     public function testHasAccessAllowsAccess(): void
     {
         $admin = new PostAdmin();
-        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
+        $securityHandler = static::createStub(SecurityHandlerInterface::class);
         $securityHandler->method('isGranted')->willReturnMap([
             [$admin, 'CUSTOM_ROLE', $admin, true],
             [$admin, 'EXTRA_CUSTOM_ROLE', $admin, true],
@@ -658,7 +658,7 @@ final class AdminTest extends TestCase
     public function testToString(): void
     {
         $admin = new PostAdmin();
-        $admin->setModelManager($this->createStub(ModelManagerInterface::class));
+        $admin->setModelManager(static::createStub(ModelManagerInterface::class));
 
         $s = new \stdClass();
 
@@ -694,7 +694,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
         $admin->setModelClass(Post::class);
-        $admin->setModelManager($this->createStub(ModelManagerInterface::class));
+        $admin->setModelManager(static::createStub(ModelManagerInterface::class));
 
         static::assertFalse($admin->hasSubClass('test'));
         static::assertFalse($admin->hasActiveSubClass());
@@ -1118,7 +1118,7 @@ final class AdminTest extends TestCase
 
     public function testGetMaxPerPage(): void
     {
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
 
         $admin = new PostAdmin();
         $admin->setModelManager($modelManager);
@@ -1189,7 +1189,7 @@ final class AdminTest extends TestCase
 
     public function testDeterminedPerPageValue(): void
     {
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
 
         $admin = new PostAdmin();
         $admin->setModelManager($modelManager);
@@ -1201,7 +1201,7 @@ final class AdminTest extends TestCase
     public function testIsGranted(): void
     {
         $admin = new PostAdmin();
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
         $modelManager
             ->method('getNormalizedIdentifier')
             // @phpstan-ignore-next-line
@@ -1402,7 +1402,7 @@ final class AdminTest extends TestCase
         $postAdmin = $this->createMock(PostAdmin::class);
         $postAdmin->setModelClass(Post::class);
 
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
         $modelManager->method('find')->willReturn($post);
         $postAdmin->setModelManager($modelManager);
 
@@ -1477,7 +1477,7 @@ final class AdminTest extends TestCase
 
         $postAdmin->method('getIdParameter')->willReturn('parent_id');
 
-        $parentField = $this->createStub(FieldDescriptionInterface::class);
+        $parentField = static::createStub(FieldDescriptionInterface::class);
         $parentField->method('getAdmin')->willReturn($postAdmin);
         $parentField->method('getParentAssociationMappings')->willReturn([]);
         $parentField->method('getAssociationMapping')->willReturn(['fieldName' => 'tag', 'mappedBy' => 'post']);
@@ -1589,7 +1589,7 @@ final class AdminTest extends TestCase
 
         $modelAdmin->setFieldDescriptionFactory($fieldDescriptionFactory);
 
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
         $modelAdmin->setModelManager($modelManager);
 
         $pager = $this->createMock(PagerInterface::class);
@@ -1846,7 +1846,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
 
-        $securityHandler = $this->createStub(AclSecurityHandlerInterface::class);
+        $securityHandler = static::createStub(AclSecurityHandlerInterface::class);
         $admin->setSecurityHandler($securityHandler);
 
         $routerGenerator = $this->createMock(RouteGeneratorInterface::class);
@@ -1929,7 +1929,7 @@ final class AdminTest extends TestCase
         $admin->setRouteGenerator($routeGenerator);
         $admin->initialize();
 
-        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
+        $securityHandler = static::createStub(SecurityHandlerInterface::class);
         $admin->setSecurityHandler($securityHandler);
 
         static::assertSame($expected, $admin->getBatchActions());
@@ -2056,7 +2056,7 @@ final class AdminTest extends TestCase
 
         $admin->setTemplateRegistry($templateRegistry);
 
-        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
+        $securityHandler = static::createStub(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
             ->willReturnCallback(static fn (AdminInterface $adminIn, string $attributes, ?object $object = null): bool => $admin === $adminIn && ('CREATE' === $attributes || 'LIST' === $attributes));
@@ -2257,18 +2257,18 @@ final class AdminTest extends TestCase
         $admin->setModelClass(\stdClass::class);
         $admin->setSubject(new \stdClass());
 
-        $admin->setModelManager($this->createStub(ModelManagerInterface::class));
+        $admin->setModelManager(static::createStub(ModelManagerInterface::class));
         $admin->setFormContractor(new FormContractor($formFactory, $registry));
 
         $admin->setShowBuilder(new ShowBuilder());
 
         $admin->setListBuilder(new ListBuilder());
 
-        $pager = $this->createStub(PagerInterface::class);
-        $proxyQuery = $this->createStub(ProxyQueryInterface::class);
+        $pager = static::createStub(PagerInterface::class);
+        $proxyQuery = static::createStub(ProxyQueryInterface::class);
         $admin->setDatagridBuilder(new DatagridBuilder($formFactory, $pager, $proxyQuery));
 
-        $routeGenerator = $this->createStub(RouteGeneratorInterface::class);
+        $routeGenerator = static::createStub(RouteGeneratorInterface::class);
         $routeGenerator->method('hasAdminRoute')->willReturn(false);
         $admin->setRouteGenerator($routeGenerator);
 
@@ -2280,12 +2280,12 @@ final class AdminTest extends TestCase
 
     public function testGetDataSourceIterator(): void
     {
-        $pager = $this->createStub(PagerInterface::class);
-        $translator = $this->createStub(TranslatorInterface::class);
+        $pager = static::createStub(PagerInterface::class);
+        $translator = static::createStub(TranslatorInterface::class);
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $dataSource = $this->createMock(DataSourceInterface::class);
-        $proxyQuery = $this->createStub(ProxyQueryInterface::class);
-        $sourceIterator = $this->createStub(\Iterator::class);
+        $proxyQuery = static::createStub(ProxyQueryInterface::class);
+        $sourceIterator = static::createStub(\Iterator::class);
 
         $admin = new PostAdmin();
         $admin->setModelClass(Post::class);
