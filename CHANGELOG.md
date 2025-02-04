@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.35.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.34.0...4.35.0) - 2025-02-03
+### Changed
+- [[#8230](https://github.com/sonata-project/SonataAdminBundle/pull/8230)] Migrate filter to vanilla js ([@onEXHovia](https://github.com/onEXHovia))
+
+### Removed
+- [[#8232](https://github.com/sonata-project/SonataAdminBundle/pull/8232)] Remove jquery-form plugin ([@onEXHovia](https://github.com/onEXHovia))
+- [[#8231](https://github.com/sonata-project/SonataAdminBundle/pull/8231)] Remove Admin.set_object_field_value ([@onEXHovia](https://github.com/onEXHovia))
+
 ## [4.34.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.33.0...4.34.0) - 2024-12-07
 ### Changed
 - [[#8225](https://github.com/sonata-project/SonataAdminBundle/pull/8225)] Drop Symfony < 6.4 ([@VincentLanglet](https://github.com/VincentLanglet))
