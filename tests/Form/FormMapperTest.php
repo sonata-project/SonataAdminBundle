@@ -70,7 +70,7 @@ final class FormMapperTest extends TestCase
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $this->admin->setModelManager($modelManager);
 
-        $securityHandler = $this->createStub(SecurityHandlerInterface::class);
+        $securityHandler = static::createStub(SecurityHandlerInterface::class);
         $securityHandler
             ->method('isGranted')
             ->willReturnCallback(static fn (AdminInterface $admin, string $attributes, ?object $object = null): bool => self::DEFAULT_GRANTED_ROLE === $attributes);
@@ -78,7 +78,7 @@ final class FormMapperTest extends TestCase
         $this->admin->setSecurityHandler($securityHandler);
         $this->admin->setFormContractor($this->contractor);
 
-        $fieldDescriptionFactory = $this->createStub(FieldDescriptionFactoryInterface::class);
+        $fieldDescriptionFactory = static::createStub(FieldDescriptionFactoryInterface::class);
         $fieldDescriptionFactory
             ->method('create')
             ->willReturnCallback(function (string $class, string $name, array $options = []): FieldDescriptionInterface {

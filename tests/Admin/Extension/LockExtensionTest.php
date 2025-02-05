@@ -54,7 +54,7 @@ final class LockExtensionTest extends TestCase
     protected function setUp(): void
     {
         $this->modelManager = $this->createMock(LockInterface::class);
-        $this->admin = $this->createStub(AdminInterface::class);
+        $this->admin = static::createStub(AdminInterface::class);
 
         $this->eventDispatcher = new EventDispatcher();
         $this->request = new Request();
@@ -89,7 +89,7 @@ final class LockExtensionTest extends TestCase
 
     public function testConfigureFormFieldsWhenModelManagerIsNotImplementingLockerInterface(): void
     {
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
         $formMapper = $this->configureFormMapper();
         $form = $this->configureForm();
         $this->configureAdmin($modelManager);
@@ -120,7 +120,7 @@ final class LockExtensionTest extends TestCase
         $this->configureAdmin($this->modelManager);
         $event = new FormEvent($form, $this->object);
 
-        $form->method('getParent')->willReturn($this->createStub(FormInterface::class));
+        $form->method('getParent')->willReturn(static::createStub(FormInterface::class));
         $form->expects(static::never())->method('add');
 
         $this->lockExtension->configureFormFields($formMapper);
@@ -172,7 +172,7 @@ final class LockExtensionTest extends TestCase
     {
         $uniqId = 'admin123';
         $this->configureAdmin(
-            $this->createStub(ModelManagerInterface::class),
+            static::createStub(ModelManagerInterface::class),
             $uniqId,
             $this->request
         );
@@ -215,11 +215,11 @@ final class LockExtensionTest extends TestCase
             'form',
             null,
             $this->eventDispatcher,
-            $this->createStub(FormFactoryInterface::class)
+            static::createStub(FormFactoryInterface::class)
         );
 
         return new FormMapper(
-            $this->createStub(FormContractorInterface::class),
+            static::createStub(FormContractorInterface::class),
             $formBuilder,
             $this->admin
         );

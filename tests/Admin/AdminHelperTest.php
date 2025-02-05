@@ -42,8 +42,8 @@ final class AdminHelperTest extends TestCase
 
     public function testGetChildFormBuilder(): void
     {
-        $formFactory = $this->createStub(FormFactoryInterface::class);
-        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+        $formFactory = static::createStub(FormFactoryInterface::class);
+        $eventDispatcher = static::createStub(EventDispatcherInterface::class);
 
         $formBuilder = new FormBuilder('test', \stdClass::class, $eventDispatcher, $formFactory);
 
@@ -56,8 +56,8 @@ final class AdminHelperTest extends TestCase
 
     public function testGetGrandChildFormBuilder(): void
     {
-        $formFactory = $this->createStub(FormFactoryInterface::class);
-        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+        $formFactory = static::createStub(FormFactoryInterface::class);
+        $eventDispatcher = static::createStub(EventDispatcherInterface::class);
 
         $formBuilder = new FormBuilder('parent', \stdClass::class, $eventDispatcher, $formFactory);
         $childFormBuilder = new FormBuilder('child', \stdClass::class, $eventDispatcher, $formFactory);
@@ -201,9 +201,9 @@ final class AdminHelperTest extends TestCase
             ->method('getNewInstance')
             ->willReturn($bar);
 
-        $dataMapper = $this->createStub(DataMapperInterface::class);
-        $formFactory = $this->createStub(FormFactoryInterface::class);
-        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+        $dataMapper = static::createStub(DataMapperInterface::class);
+        $formFactory = static::createStub(FormFactoryInterface::class);
+        $eventDispatcher = static::createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', $foo::class, $eventDispatcher, $formFactory);
         $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory, [
             'sonata_field_description' => $fieldDescription,
@@ -261,7 +261,7 @@ final class AdminHelperTest extends TestCase
             'isOwningSide' => false,
         ];
 
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
         $fieldDescription->method('getAssociationAdmin')->willReturn($associationAdmin);
         $fieldDescription->method('getAssociationMapping')->willReturn($associationMapping);
         $fieldDescription->method('getParentAssociationMappings')->willReturn([]);
@@ -306,9 +306,9 @@ final class AdminHelperTest extends TestCase
             ->method('getSubject')
             ->willReturn($foo);
 
-        $dataMapper = $this->createStub(DataMapperInterface::class);
-        $formFactory = $this->createStub(FormFactoryInterface::class);
-        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+        $dataMapper = static::createStub(DataMapperInterface::class);
+        $formFactory = static::createStub(FormFactoryInterface::class);
+        $eventDispatcher = static::createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', $foo::class, $eventDispatcher, $formFactory);
         $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory);
@@ -349,7 +349,7 @@ final class AdminHelperTest extends TestCase
             'isOwningSide' => false,
         ];
 
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
         $fieldDescription->method('getAssociationAdmin')->willReturn($associationAdmin);
         $fieldDescription->method('getAssociationMapping')->willReturn($associationMapping);
         $fieldDescription->method('getParentAssociationMappings')->willReturn([]);
@@ -415,9 +415,9 @@ final class AdminHelperTest extends TestCase
             ->method('getSubject')
             ->willReturn($foo);
 
-        $dataMapper = $this->createStub(DataMapperInterface::class);
-        $formFactory = $this->createStub(FormFactoryInterface::class);
-        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+        $dataMapper = static::createStub(DataMapperInterface::class);
+        $formFactory = static::createStub(FormFactoryInterface::class);
+        $eventDispatcher = static::createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', $foo::class, $eventDispatcher, $formFactory);
         $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory);
@@ -460,7 +460,7 @@ final class AdminHelperTest extends TestCase
             'isOwningSide' => false,
         ];
 
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
         $fieldDescription->method('getAssociationAdmin')->willReturn($associationAdmin);
         $fieldDescription->method('getAssociationMapping')->willReturn($associationMapping);
         $fieldDescription->method('getParentAssociationMappings')->willReturn([]);
@@ -526,9 +526,9 @@ final class AdminHelperTest extends TestCase
             ->method('getSubject')
             ->willReturn($foo);
 
-        $dataMapper = $this->createStub(DataMapperInterface::class);
-        $formFactory = $this->createStub(FormFactoryInterface::class);
-        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+        $dataMapper = static::createStub(DataMapperInterface::class);
+        $formFactory = static::createStub(FormFactoryInterface::class);
+        $eventDispatcher = static::createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', $foo::class, $eventDispatcher, $formFactory);
         $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory);
@@ -585,9 +585,9 @@ final class AdminHelperTest extends TestCase
         $sub3Object = $this->getMockBuilder(\stdClass::class)
             ->addMethods(['getFinalData'])
             ->getMock();
-        $dataMapper = $this->createStub(DataMapperInterface::class);
-        $formFactory = $this->createStub(FormFactoryInterface::class);
-        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+        $dataMapper = static::createStub(DataMapperInterface::class);
+        $formFactory = static::createStub(FormFactoryInterface::class);
+        $eventDispatcher = static::createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', $object::class, $eventDispatcher, $formFactory);
         $childFormBuilder = new FormBuilder('subObject', $subObject::class, $eventDispatcher, $formFactory);
 
@@ -714,9 +714,9 @@ final class AdminHelperTest extends TestCase
 
         $admin->expects(static::atLeastOnce())->method('getRequest')->willReturn($request);
 
-        $dataMapper = $this->createStub(DataMapperInterface::class);
-        $formFactory = $this->createStub(FormFactoryInterface::class);
-        $eventDispatcher = $this->createStub(EventDispatcherInterface::class);
+        $dataMapper = static::createStub(DataMapperInterface::class);
+        $formFactory = static::createStub(FormFactoryInterface::class);
+        $eventDispatcher = static::createStub(EventDispatcherInterface::class);
 
         $collectionFormBuilder = new FormBuilder('collection', null, $eventDispatcher, $formFactory, [
             'sonata_field_description' => $collectionFieldDescription,

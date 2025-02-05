@@ -225,9 +225,9 @@ final class AdminLayoutTest extends AbstractLayoutTestCase
      */
     private function createFieldDescriptionWithTranslationDomain(string $translationDomain): Stub
     {
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = static::createStub(AdminInterface::class);
         $admin
             ->method('getCode')
             ->willReturn('sonata_code');

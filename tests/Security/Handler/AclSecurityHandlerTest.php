@@ -123,7 +123,7 @@ final class AclSecurityHandlerTest extends TestCase
 
     public function testSuccessfulUpdateAcl(): void
     {
-        $acl = $this->createStub(MutableAclInterface::class);
+        $acl = static::createStub(MutableAclInterface::class);
         $aclProvider = $this->createMock(MutableAclProviderInterface::class);
 
         $aclProvider

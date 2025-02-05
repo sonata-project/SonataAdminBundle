@@ -73,9 +73,9 @@ final class FormTypeFieldExtensionTest extends TestCase
 
     public function testBuildFormWithFieldDescription(): void
     {
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = static::createStub(AdminInterface::class);
 
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
         $fieldDescription
             ->method('getAdmin')
             ->willReturn($admin);
@@ -86,9 +86,9 @@ final class FormTypeFieldExtensionTest extends TestCase
             ->method('getOption')
             ->willReturnCallback(static fn (string $option, mixed $default = null): mixed => $default);
 
-        $resolvedFormType = new ResolvedFormType($this->createStub(FormTypeInterface::class));
+        $resolvedFormType = new ResolvedFormType(static::createStub(FormTypeInterface::class));
         $formBuilder = $resolvedFormType->createBuilder(
-            $this->createStub(FormFactoryInterface::class),
+            static::createStub(FormFactoryInterface::class),
             'test'
         );
 

@@ -82,7 +82,7 @@ final class ObjectAclManipulatorTest extends TestCase
         $acls = $this->createMock(\SplObjectStorage::class);
         $acls->expects(static::atLeastOnce())->method('contains')->with(static::isInstanceOf(ObjectIdentityInterface::class))
             ->willReturn(false, true);
-        $acl = $this->createStub(MutableAclInterface::class);
+        $acl = static::createStub(MutableAclInterface::class);
         $acls->expects(static::once())->method('offsetGet')->with(static::isInstanceOf(ObjectIdentityInterface::class))
             ->willReturn($acl);
         $securityHandler->expects(static::once())->method('findObjectAcls')->with($this->oids)->willReturn($acls);

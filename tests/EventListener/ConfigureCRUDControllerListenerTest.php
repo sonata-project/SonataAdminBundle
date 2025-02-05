@@ -37,7 +37,7 @@ final class ConfigureCRUDControllerListenerTest extends TestCase
     {
         $container = new Container();
 
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = static::createStub(AdminInterface::class);
         $admin
             ->method('hasTemplateRegistry')
             ->willReturn(true);
@@ -53,7 +53,7 @@ final class ConfigureCRUDControllerListenerTest extends TestCase
         $controller->setContainer($container);
 
         $controllerEvent = new ControllerEvent(
-            $this->createStub(HttpKernelInterface::class),
+            static::createStub(HttpKernelInterface::class),
             $controller->listAction(...),
             $request,
             HttpKernelInterface::MAIN_REQUEST

@@ -57,7 +57,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
     {
         $environment = parent::getEnvironment();
         $environment->addGlobal('sonata_admin', $this->getSonataAdmin());
-        $environment->addExtension(new RoutingExtension($this->createStub(UrlGeneratorInterface::class)));
+        $environment->addExtension(new RoutingExtension(static::createStub(UrlGeneratorInterface::class)));
         $environment->addExtension(new HttpKernelExtension());
         if (!$environment->hasExtension(TranslationExtension::class)) {
             $environment->addExtension(new TranslationExtension(new StubTranslator()));

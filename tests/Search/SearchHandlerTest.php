@@ -85,7 +85,7 @@ final class SearchHandlerTest extends TestCase
 
         $adminCode = 'my.admin';
 
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = static::createStub(AdminInterface::class);
         $admin->method('getDatagrid')->willReturn($datagrid);
         $admin->method('getCode')->willReturn($adminCode);
 

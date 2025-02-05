@@ -68,7 +68,7 @@ final class ShowMapperTest extends TestCase
     {
         $this->showBuilder = $this->createMock(ShowBuilderInterface::class);
         $this->fieldDescriptionCollection = new FieldDescriptionCollection();
-        $this->admin = $this->createStub(AdminInterface::class);
+        $this->admin = static::createStub(AdminInterface::class);
 
         $this->admin
             ->method('getLabel')
@@ -538,7 +538,7 @@ final class ShowMapperTest extends TestCase
 
         $this->showMapper = new ShowMapper($this->showBuilder, $this->fieldDescriptionCollection, $this->admin);
 
-        $fieldDescriptionFactory = $this->createStub(FieldDescriptionFactoryInterface::class);
+        $fieldDescriptionFactory = static::createStub(FieldDescriptionFactoryInterface::class);
         $fieldDescriptionFactory
             ->method('create')
             ->willReturnCallback(function (string $class, string $name, array $options = []): FieldDescriptionInterface {

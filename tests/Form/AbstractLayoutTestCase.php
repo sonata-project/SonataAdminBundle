@@ -53,14 +53,14 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
         $environment = new Environment($loader, ['strict_variables' => true]);
         $environment->addExtension(new TranslationExtension(new StubTranslator()));
         $environment->addExtension(new FormExtension());
-        $environment->addExtension(new RoutingExtension($this->createStub(UrlGeneratorInterface::class)));
+        $environment->addExtension(new RoutingExtension(static::createStub(UrlGeneratorInterface::class)));
         $environment->addExtension(new HttpKernelExtension());
 
         $rendererEngine = new TwigRendererEngine([
             'form_admin_fields.html.twig',
         ], $environment);
 
-        $csrfTokenManager = $this->createStub(CsrfTokenManagerInterface::class);
+        $csrfTokenManager = static::createStub(CsrfTokenManagerInterface::class);
 
         $environment->addRuntimeLoader(new FactoryRuntimeLoader([
             FormRenderer::class => static fn (): FormRendererInterface => new FormRenderer($rendererEngine, $csrfTokenManager),

@@ -57,7 +57,7 @@ final class AppendFormFieldElementActionTest extends TestCase
     {
         $this->twig = $this->createMock(Environment::class);
         $this->admin = $this->createMock(AdminInterface::class);
-        $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
+        $this->adminFetcher = static::createStub(AdminFetcherInterface::class);
         $this->adminFetcher->method('get')->willReturn($this->admin);
         $this->helper = $this->createMock(AdminHelper::class);
         $this->action = new AppendFormFieldElementAction(
@@ -81,7 +81,7 @@ final class AppendFormFieldElementActionTest extends TestCase
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $formView = new FormView();
-        $form = $this->createStub(Form::class);
+        $form = static::createStub(Form::class);
         $renderer = $this->configureFormRenderer();
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
@@ -89,7 +89,7 @@ final class AppendFormFieldElementActionTest extends TestCase
         $this->admin->expects(static::once())->method('setSubject')->with($object);
         $this->admin->method('getFormTheme')->willReturn([]);
         $this->helper->method('appendFormFieldElement')->with($this->admin, $object, 'element_42')->willReturn([
-            $this->createStub(FieldDescriptionInterface::class),
+            static::createStub(FieldDescriptionInterface::class),
             $form,
         ]);
         $this->helper->method('getChildFormView')->with($formView, 'element_42')->willReturn($formView);

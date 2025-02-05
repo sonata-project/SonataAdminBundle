@@ -74,7 +74,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             'field_template' => 'renderedTemplate',
         ]));
         $this->admin = $this->createMock(AdminInterface::class);
-        $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
+        $this->adminFetcher = static::createStub(AdminFetcherInterface::class);
         $this->adminFetcher->method('get')->willReturn($this->admin);
         $this->validator = $this->createMock(ValidatorInterface::class);
         $this->modelManager = $this->createMock(ModelManagerInterface::class);
@@ -107,7 +107,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
@@ -162,7 +162,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
@@ -209,7 +209,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
@@ -252,7 +252,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
@@ -285,7 +285,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
@@ -328,7 +328,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             static fn (mixed $value): bool => filter_var($value, \FILTER_VALIDATE_BOOLEAN)
         );
 
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
@@ -375,7 +375,7 @@ final class SetObjectFieldValueActionTest extends TestCase
             }
         );
 
-        $fieldDescription = $this->createStub(FieldDescriptionInterface::class);
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getCode')->willReturn('sonata.post.admin');

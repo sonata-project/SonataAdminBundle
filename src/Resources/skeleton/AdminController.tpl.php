@@ -1,12 +1,12 @@
-<?= "<?php\n" ?>
+<?php echo "<?php\n"; ?>
 
 declare(strict_types=1);
 
-namespace <?= $namespace ?>;
+namespace <?php echo $namespace; ?>;
 
-use <?= $default_controller ?>;
+use <?php echo $default_controller; ?>;
 
-final class <?= $class_name ?> extends <?= $default_controller_short_name ?>
+final class <?php echo $class_name; ?> extends <?php echo $default_controller_short_name; ?>
 {
 
 }

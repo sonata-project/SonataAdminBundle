@@ -54,7 +54,7 @@ final class AbstractFormContractorTest extends TestCase
         $this->fieldDescription = $this->createMock(FieldDescriptionInterface::class);
 
         $this->formFactory = $this->createMock(FormFactoryInterface::class);
-        $formRegistry = $this->createStub(FormRegistryInterface::class);
+        $formRegistry = static::createStub(FormRegistryInterface::class);
         $formRegistry->method('getType')->willReturnCallback(function (string $type) {
             $resolvedType = $this->createStub(ResolvedFormTypeInterface::class);
             if (MyCustomType::class === $type) {
@@ -98,7 +98,7 @@ final class AbstractFormContractorTest extends TestCase
         $admin = $this->createMock(AdminInterface::class);
         $modelClass = 'FooModel';
 
-        $modelManager = $this->createStub(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
         $admin->method('getModelManager')->willReturn($modelManager);
         $admin->method('getClass')->willReturn($modelClass);
 
@@ -211,7 +211,7 @@ final class AbstractFormContractorTest extends TestCase
      */
     public function testThrowsExceptionWithInvalidFieldDescriptionInGetDefaultOptions(string $formType): void
     {
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = static::createStub(AdminInterface::class);
         $admin->method('getClass')->willReturn('Foo');
 
         $this->fieldDescription->method('getAdmin')->willReturn($admin);

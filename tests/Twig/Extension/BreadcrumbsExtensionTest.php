@@ -56,7 +56,7 @@ final class BreadcrumbsExtensionTest extends TestCase
         $this->environment->addExtension(new TranslationExtension(new StubTranslator()));
         $this->environment->addExtension(new StringExtension());
 
-        $this->breadcrumbBuilder = $this->createStub(BreadcrumbsBuilderInterface::class);
+        $this->breadcrumbBuilder = static::createStub(BreadcrumbsBuilderInterface::class);
 
         $this->breadcrumbsExtension = new BreadcrumbsExtension(new BreadcrumbsRuntime($this->breadcrumbBuilder));
     }
@@ -97,7 +97,7 @@ final class BreadcrumbsExtensionTest extends TestCase
             'Label for item 2 &gt; [trans domain=custom_translation_domain]Label for item 3 with custom_parameter[/trans]',
             $this->removeExtraWhitespace($this->breadcrumbsExtension->renderBreadcrumbsForTitle(
                 $this->environment,
-                $this->createStub(AdminInterface::class),
+                static::createStub(AdminInterface::class),
                 'not_important',
             ))
         );
@@ -161,7 +161,7 @@ final class BreadcrumbsExtensionTest extends TestCase
             $expected,
             $this->removeExtraWhitespace($this->breadcrumbsExtension->renderBreadcrumbs(
                 $this->environment,
-                $this->createStub(AdminInterface::class),
+                static::createStub(AdminInterface::class),
                 'not_important',
             ))
         );

@@ -73,7 +73,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
 
     public function testGlobalSearchReturnsResponse(): void
     {
-        $datagrid = $this->createStub(DatagridInterface::class);
+        $datagrid = static::createStub(DatagridInterface::class);
 
         $admin = $this->createMock(AdminInterface::class);
         $admin
@@ -91,7 +91,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
 
         $datagrid
             ->method('getPager')
-            ->willReturn($this->createStub(PagerInterface::class));
+            ->willReturn(static::createStub(PagerInterface::class));
 
         $adminCode = 'code';
         $container = new Container();

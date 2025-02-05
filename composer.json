@@ -68,6 +68,7 @@
         "twig/twig": "^3.0"
     },
     "require-dev": {
+        "doctrine/persistence": "^3.0",
         "friendsofphp/php-cs-fixer": "^3.4",
         "matthiasnoback/symfony-config-test": "^4.2 || ^5.0",
         "matthiasnoback/symfony-dependency-injection-test": "^4.2 || ^5.0",

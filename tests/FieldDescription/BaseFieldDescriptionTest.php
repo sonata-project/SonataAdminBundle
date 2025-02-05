@@ -126,7 +126,7 @@ final class BaseFieldDescriptionTest extends TestCase
 
     public function testGetFieldValueNoValueException(): void
     {
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = static::createStub(AdminInterface::class);
         $description = new FieldDescription('name');
         $description->setAdmin($admin);
         $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();

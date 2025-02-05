@@ -34,7 +34,7 @@ final class TemplateRegistryRuntimeTest extends TestCase
         $adminTemplateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
         $adminTemplateRegistry->method('getTemplate')->with('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
 
-        $admin = $this->createStub(AdminInterface::class);
+        $admin = static::createStub(AdminInterface::class);
         $admin
             ->method('getTemplateRegistry')
             ->willReturn($adminTemplateRegistry);

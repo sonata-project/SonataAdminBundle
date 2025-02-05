@@ -57,7 +57,7 @@ final class RetrieveFormFieldElementActionTest extends TestCase
     {
         $this->twig = $this->createMock(Environment::class);
         $this->admin = $this->createMock(AdminInterface::class);
-        $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
+        $this->adminFetcher = static::createStub(AdminFetcherInterface::class);
         $this->adminFetcher->method('get')->willReturn($this->admin);
         $this->helper = $this->createMock(AdminHelper::class);
         $this->action = new RetrieveFormFieldElementAction(
@@ -82,7 +82,7 @@ final class RetrieveFormFieldElementActionTest extends TestCase
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $formView = new FormView();
         $form = $this->createMock(Form::class);
-        $formBuilder = $this->createStub(FormBuilder::class);
+        $formBuilder = static::createStub(FormBuilder::class);
 
         $renderer = $this->configureFormRenderer();
 
