@@ -43,20 +43,18 @@ file that was distributed with this source code.
                                     {% if field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_SELECT') %}
                                         <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
                                     {% else %}
-                                        {% apply spaceless %}
-                                            <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if field_description.option('header_class') is not null %} {{ field_description.option('header_class') }}{% endif %}"{% if field_description.option('header_style') is not null %} style="{{ field_description.option('header_style') }}"{% endif %}>
-                                                {% if field_description.option('label_icon') %}
-                                                    <span class="sonata-ba-list-field-header-label-icon">
+                                        <th class="sonata-ba-list-field-header-{{ field_description.type}} {% if field_description.option('header_class') is not null %} {{ field_description.option('header_class') }}{% endif %}"{% if field_description.option('header_style') is not null %} style="{{ field_description.option('header_style') }}"{% endif %}>
+                                            {% if field_description.option('label_icon') %}
+                                                <span class="sonata-ba-list-field-header-label-icon">
                                                         {{ field_description.option('label_icon')|parse_icon }}
                                                     </span>
-                                                {% endif %}
-                                                {% if field_description.translationDomain is same as(false) %}
-                                                    {{ field_description.label }}
-                                                {% else %}
-                                                    {{ field_description.label|trans({}, field_description.translationDomain) }}
-                                                {% endif %}
-                                            </th>
-                                        {% endapply %}
+                                            {% endif %}
+                                            {% if field_description.translationDomain is same as(false) %}
+                                                {{ field_description.label }}
+                                            {% else %}
+                                                {{ field_description.label|trans({}, field_description.translationDomain) }}
+                                            {% endif %}
+                                        </th>
                                     {% endif %}
                                 {% endfor %}
                             </tr>

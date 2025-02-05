@@ -21,47 +21,41 @@
 {% endblock %}
 
 {% block linkElement %}
-    {% apply spaceless %}
-        {# NEXT_MAJOR: Remove the label_catalogue fallback #}
-        {%- set translation_domain = item.extra('translation_domain', item.extra('label_catalogue', 'messages')) -%}
-        {%- if item.extra('on_top') is defined and not item.extra('on_top') -%}
-            {%- set icon = item.extra('icon')|default(item.level > 1 ? 'fa fa-angle-double-right' : '')|parse_icon -%}
-        {%- else -%}
-            {%- set icon = item.extra('icon')|parse_icon -%}
-        {%- endif -%}
-        {%- set is_link = true -%}
-        {{ parent() }}
-    {% endapply %}
+    {# NEXT_MAJOR: Remove the label_catalogue fallback #}
+    {%- set translation_domain = item.extra('translation_domain', item.extra('label_catalogue', 'messages')) -%}
+    {%- if item.extra('on_top') is defined and not item.extra('on_top') -%}
+        {%- set icon = item.extra('icon')|default(item.level > 1 ? 'fa fa-angle-double-right' : '')|parse_icon -%}
+    {%- else -%}
+        {%- set icon = item.extra('icon')|parse_icon -%}
+    {%- endif -%}
+    {%- set is_link = true -%}
+    {{ parent() }}
 {% endblock %}
 
 {% block spanElement %}
-    {% apply spaceless %}
-        <a href="#">
-            {# NEXT_MAJOR: Remove the label_catalogue fallback #}
-            {%- set translation_domain = item.extra('translation_domain', item.extra('label_catalogue', 'messages')) -%}
-            {%- set icon = item.extra('icon')|default('')|parse_icon -%}
-            {{ icon|raw }}
-            {{ parent() }}
-            {%- if item.extra('keep_open') is not defined or not item.extra('keep_open') -%}
-                <span class="pull-right-container"><i class="fas pull-right fa-angle-left"></i></span>
-            {%- endif -%}
-        </a>
-    {% endapply %}
+    <a href="#">
+        {# NEXT_MAJOR: Remove the label_catalogue fallback #}
+        {%- set translation_domain = item.extra('translation_domain', item.extra('label_catalogue', 'messages')) -%}
+        {%- set icon = item.extra('icon')|default('')|parse_icon -%}
+        {{ icon|raw }}
+        {{ parent() }}
+        {%- if item.extra('keep_open') is not defined or not item.extra('keep_open') -%}
+            <span class="pull-right-container"><i class="fas pull-right fa-angle-left"></i></span>
+        {%- endif -%}
+    </a>
 {% endblock %}
 
 {% block label %}
-    {% apply spaceless %}
-        {%- if is_link|default(false) -%}
-            {{ icon|default('')|parse_icon }}
-        {%- endif -%}
-        {# We use method accessor instead of ".label" since `item` implements `ArrayAccess` and could have a property called "label". #}
-        {%- set item_label = item.getLabel() -%}
-        {%- if options.allow_safe_labels and item.extra('safe_label', false) -%}
-            {{ item_label|raw }}
-        {%- else -%}
-            {# NEXT_MAJOR: Remove the label_catalogue fallback #}
-            {%- set translation_domain = item.extra('translation_domain', item.extra('label_catalogue', 'messages')) -%}
-            {{ item_label|trans(item.extra('label_translation_parameters', {}), translation_domain) }}
-        {%- endif -%}
-    {% endapply %}
+    {%- if is_link|default(false) -%}
+        {{ icon|default('')|parse_icon }}
+    {%- endif -%}
+    {# We use method accessor instead of ".label" since `item` implements `ArrayAccess` and could have a property called "label". #}
+    {%- set item_label = item.getLabel() -%}
+    {%- if options.allow_safe_labels and item.extra('safe_label', false) -%}
+        {{ item_label|raw }}
+    {%- else -%}
+        {# NEXT_MAJOR: Remove the label_catalogue fallback #}
+        {%- set translation_domain = item.extra('translation_domain', item.extra('label_catalogue', 'messages')) -%}
+        {{ item_label|trans(item.extra('label_translation_parameters', {}), translation_domain) }}
+    {%- endif -%}
 {% endblock %}

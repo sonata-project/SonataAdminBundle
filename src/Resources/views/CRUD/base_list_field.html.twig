@@ -20,17 +20,15 @@ file that was distributed with this source code.
     %}
         <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(route_name, object, route_parameters) }}">
             {%- block field %}
-                {% apply spaceless %}
-                    {% if field_description.option('collapse') is not null %}
-                        {% set collapse = field_description.option('collapse') %}
-                        <div class="sonata-readmore"
-                              data-readmore-height="{{ collapse.height|default(40) }}"
-                              data-readmore-more="{{ collapse.more|default('read_more')|trans({}, 'SonataAdminBundle') }}"
-                              data-readmore-less="{{ collapse.less|default('read_less')|trans({}, 'SonataAdminBundle') }}">{{ value }}</div>
-                    {% else %}
-                        {{ value }}
-                    {% endif %}
-                {% endapply %}
+                {% if field_description.option('collapse') is not null %}
+                    {% set collapse = field_description.option('collapse') %}
+                    <div class="sonata-readmore"
+                          data-readmore-height="{{ collapse.height|default(40) }}"
+                          data-readmore-more="{{ collapse.more|default('read_more')|trans({}, 'SonataAdminBundle') }}"
+                          data-readmore-less="{{ collapse.less|default('read_less')|trans({}, 'SonataAdminBundle') }}">{{ value }}</div>
+                {% else %}
+                    {{ value }}
+                {% endif %}
             {% endblock -%}
         </a>
     {% else %}

@@ -2041,7 +2041,7 @@ final class RenderElementRuntimeTest extends TestCase
 
     private function removeExtraWhitespace(string $string): string
     {
-        return trim(preg_replace('/\s+/', ' ', $string) ?? '');
+        return trim(preg_replace('/\s+/', ' ', preg_replace('/>\s+</', '><', $string) ?? '') ?? '');
     }
 
     private function registerRequiredTwigExtensions(): void

@@ -66,13 +66,11 @@ file that was distributed with this source code.
 {%- endblock money_widget %}
 
 {% block percent_widget %}
-    {% apply spaceless %}
-        {% set type = type|default('text') %}
-        <div class="input-group">
-            {{ block('form_widget_simple') }}
-            <span class="input-group-addon">%</span>
-        </div>
-    {% endapply %}
+    {% set type = type|default('text') %}
+    <div class="input-group">
+        {{ block('form_widget_simple') }}
+        <span class="input-group-addon">%</span>
+    </div>
 {% endblock percent_widget %}
 
 {% block checkbox_widget -%}
@@ -99,7 +97,6 @@ file that was distributed with this source code.
 
 {# Labels #}
 {% block form_label %}
-{% apply spaceless %}
     {% if label is not same as(false) and sonata_admin.options['form_type'] == 'horizontal' %}
         {% set label_class = 'col-sm-3' %}
     {% endif %}
@@ -137,7 +134,6 @@ file that was distributed with this source code.
             {%- endif -%}
         </label>
     {% endif %}
-{% endapply %}
 {% endblock form_label %}
 
 {% block checkbox_label -%}
@@ -179,7 +175,6 @@ file that was distributed with this source code.
 {% endblock checkbox_radio_label %}
 
 {% block choice_widget_expanded %}
-{% apply spaceless %}
     {% set attr = attr|merge({'class': attr.class|default('') ~ ' list-unstyled'}) %}
     <ul {{ block('widget_container_attributes') }}>
     {% for child in form %}
@@ -192,11 +187,9 @@ file that was distributed with this source code.
         </li>
     {% endfor %}
     </ul>
-{% endapply %}
 {% endblock choice_widget_expanded %}
 
 {% block choice_widget_collapsed %}
-{% apply spaceless %}
     {% if required and placeholder is defined and placeholder is none %}
         {% set required = false %}
     {% elseif required and empty_value is defined and empty_value_in_choices is defined and empty_value is none and not empty_value_in_choices and not multiple %}
@@ -243,11 +236,9 @@ file that was distributed with this source code.
             {{ block('choice_widget_options') }}
         </select>
     {% endif %}
-{% endapply %}
 {% endblock choice_widget_collapsed %}
 
 {% block date_widget %}
-{% apply spaceless %}
     {% if widget == 'single_text' %}
         {{ block('form_widget_simple') }}
     {% else %}
@@ -263,11 +254,9 @@ file that was distributed with this source code.
             })|raw }}
         </div>
     {% endif %}
-{% endapply %}
 {% endblock date_widget %}
 
 {% block time_widget %}
-{% apply spaceless %}
     {% if widget == 'single_text' %}
         {{ block('form_widget_simple') }}
     {% else %}
@@ -291,11 +280,9 @@ file that was distributed with this source code.
             {% endif %}
         </div>
     {% endif %}
-{% endapply %}
 {% endblock time_widget %}
 
 {% block datetime_widget %}
-{% apply spaceless %}
     {% if widget == 'single_text' %}
         {{ block('form_widget_simple') }}
     {% else %}
@@ -321,7 +308,6 @@ file that was distributed with this source code.
             {% endif %}
         </div>
     {% endif %}
-{% endapply %}
 {% endblock datetime_widget %}
 
 {% block form_row %}
@@ -385,7 +371,6 @@ file that was distributed with this source code.
 {%- endblock radio_row %}
 
 {% block sonata_type_native_collection_widget_row %}
-{% apply spaceless %}
     <div class="sonata-collection-row">
         {% if allow_delete %}
             <div class="row">
@@ -402,11 +387,9 @@ file that was distributed with this source code.
             </div>
         {% endif %}
     </div>
-{% endapply %}
 {% endblock sonata_type_native_collection_widget_row %}
 
 {% block sonata_type_native_collection_widget %}
-{% apply spaceless %}
     {% if prototype is defined %}
         {% set child = prototype %}
         {% set allow_delete_backup = allow_delete %}
@@ -424,45 +407,40 @@ file that was distributed with this source code.
             <div><a href="#" class="btn btn-link sonata-collection-add"><i class="fas fa-plus-circle" aria-hidden="true"></i></a></div>
         {% endif %}
     </div>
-{% endapply %}
 {% endblock sonata_type_native_collection_widget %}
 
 {% block sonata_type_immutable_array_widget %}
-    {% apply spaceless %}
-        <div {{ block('widget_container_attributes') }}>
-            {{ form_errors(form) }}
+    <div {{ block('widget_container_attributes') }}>
+        {{ form_errors(form) }}
 
-            {% for key, child in form %}
-                {{ block('sonata_type_immutable_array_widget_row') }}
-            {% endfor %}
+        {% for key, child in form %}
+            {{ block('sonata_type_immutable_array_widget_row') }}
+        {% endfor %}
 
-            {{ form_rest(form) }}
-        </div>
-    {% endapply %}
+        {{ form_rest(form) }}
+    </div>
 {% endblock sonata_type_immutable_array_widget %}
 
 {% block sonata_type_immutable_array_widget_row %}
-    {% apply spaceless %}
-        <div class="form-group{% if child.vars.errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
+    <div class="form-group{% if child.vars.errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
 
-            {{ form_label(child) }}
+        {{ form_label(child) }}
 
-            {% set div_class = "" %}
-            {% if sonata_admin.options['form_type'] == 'horizontal' %}
-                {% set div_class = 'col-sm-9' %}
-            {% endif %}
+        {% set div_class = "" %}
+        {% if sonata_admin.options['form_type'] == 'horizontal' %}
+            {% set div_class = 'col-sm-9' %}
+        {% endif %}
 
-            <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }}{% if child.vars.errors|length > 0 %} sonata-ba-field-error{% endif %}">
-                {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
-            </div>
-
-            {% if child.vars.errors|length > 0 %}
-                <div class="help-block sonata-ba-field-error-messages">
-                    {{ form_errors(child) }}
-                </div>
-            {% endif %}
+        <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }}{% if child.vars.errors|length > 0 %} sonata-ba-field-error{% endif %}">
+            {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
         </div>
-    {% endapply %}
+
+        {% if child.vars.errors|length > 0 %}
+            <div class="help-block sonata-ba-field-error-messages">
+                {{ form_errors(child) }}
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}
 
 {% block sonata_type_model_autocomplete_widget %}

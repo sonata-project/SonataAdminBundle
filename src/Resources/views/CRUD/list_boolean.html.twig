@@ -16,10 +16,8 @@ file that was distributed with this source code.
 
 {% block field_span_attributes %}
     {% if is_editable and x_editable_type %}
-        {% apply spaceless %}
-            {{ parent() }}
-            data-source="[{value: 0, text: '{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}'},{value: 1, text: '{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}'}]"
-        {% endapply %}
+        {{ parent() }}
+        data-source="[{value: 0, text: '{%- trans from 'SonataAdminBundle' %}label_type_no{% endtrans -%}'},{value: 1, text: '{%- trans from 'SonataAdminBundle' %}label_type_yes{% endtrans -%}'}]"
     {% endif %}
 {% endblock %}
 

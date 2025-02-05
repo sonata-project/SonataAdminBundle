@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-{%- apply spaceless %}
+{%- apply trim|raw %}
     {% if value %}
         {% set text = 'label_type_yes'|trans({}, 'SonataAdminBundle') %}
     {% else %}

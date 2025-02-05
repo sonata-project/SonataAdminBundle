@@ -8,10 +8,8 @@ For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 
 #}
-{% apply spaceless %}
-    {% for item in admin.getActionButtons(action, (object is defined) ? object : null ) %}
-        {% if item.template is defined %}
-            {% include item.template %}
-        {% endif %}
-    {% endfor %}
-{% endapply %}
+{% for item in admin.getActionButtons(action, (object is defined) ? object : null ) %}
+    {% if item.template is defined %}
+        {%- include item.template -%}
+    {% endif %}
+{% endfor %}
