@@ -1,4 +1,3 @@
-{% apply spaceless %}
 {% for menu in items %}
     {%- set translation_domain = menu.extra('translation_domain', 'messages') -%}
     {# We use method accessor instead of ".label" since `menu` implements `ArrayAccess` and could have a property called "label". #}
@@ -25,4 +24,3 @@
         <li class="active"><span>{{ label|u.truncate(100, '...') }}</span></li>
     {% endif %}
 {% endfor %}
-{% endapply %}

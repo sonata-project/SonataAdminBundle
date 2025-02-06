@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-{%- apply spaceless %}
+{%- apply trim|raw %}
     {% set choices = choices|default([]) %}
     {% if multiple|default(false) and value is iterable %}
 

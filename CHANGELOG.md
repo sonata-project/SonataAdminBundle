@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.35.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.35.1...4.35.2) - 2025-02-05
+### Fixed
+- [[#8239](https://github.com/sonata-project/SonataAdminBundle/pull/8239)] Deprecated usages of `spaceless` twig filter ([@dmaicher](https://github.com/dmaicher))
+
 ## [4.35.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.35.0...4.35.1) - 2025-02-04
 ### Added
 - [[#8237](https://github.com/sonata-project/SonataAdminBundle/pull/8237)] Add back previously removed jquery-form plugin ([@dmaicher](https://github.com/dmaicher))

@@ -19,10 +19,8 @@ file that was distributed with this source code.
 
 {% block field_span_attributes %}
     {% if is_editable and x_editable_type %}
-        {% apply spaceless %}
-            {{ parent() }}
-            data-source="{{ field_description|sonata_xeditable_choices|json_encode }}"
-        {% endapply %}
+        {{ parent() }}
+        data-source="{{ field_description|sonata_xeditable_choices|json_encode }}"
     {% endif %}
 {% endblock %}
 

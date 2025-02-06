@@ -9,7 +9,7 @@ file that was distributed with this source code.
 
 #}
 
-{%- apply spaceless %}
+{%- apply trim|raw %}
     {% set value = value_format|default('%s')|format(value)|trans({}, translation_domain|default('messages')) %}
 
     {% if safe|default(false) %}

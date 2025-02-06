@@ -12,11 +12,9 @@ file that was distributed with this source code.
 {% extends '@SonataAdmin/CRUD/base_show.html.twig' %}
 
 {%- block show_field -%}
-    {% apply spaceless %}
-        <tr class="sonata-ba-view-container history-audit-compare">
-            {% if elements[show_field_name] is defined %}
-                {{ elements[show_field_name]|render_view_element_compare(object, object_compare) }}
-            {% endif %}
-        </tr>
-    {% endapply %}
+    <tr class="sonata-ba-view-container history-audit-compare">
+        {% if elements[show_field_name] is defined %}
+            {{ elements[show_field_name]|render_view_element_compare(object, object_compare) }}
+        {% endif %}
+    </tr>
 {%- endblock -%}

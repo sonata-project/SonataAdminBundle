@@ -65,7 +65,7 @@
         "symfony/twig-bundle": "^6.4 || ^7.1",
         "symfony/validator": "^6.4 || ^7.1",
         "twig/string-extra": "^3.0",
-        "twig/twig": "^3.0"
+        "twig/twig": "^3.15"
     },
     "require-dev": {
         "doctrine/persistence": "^3.0",
