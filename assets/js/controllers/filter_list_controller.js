@@ -31,7 +31,7 @@ export default class extends Controller {
   }
 
   toggle(event) {
-    const field = event.target;
+    const field = event.currentTarget;
     const state = field.classList.contains(this.activeClass);
     field.classList.toggle(this.activeClass, !state);
 

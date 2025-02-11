@@ -272,7 +272,7 @@ file that was distributed with this source code.
                         {# NEXT_MAJOR: Remove |default(filter.option('show_filter')) #}
                         {% set filterDisplayed = filter.isActive() or filter.showFilter|default(filter.option('show_filter')) is same as (true) %}
                         <li>
-                            <a href="#" class="sonata-toggle-filter sonata-ba-action{% if filterDisplayed %} active{% endif %}" data-filter="filter-{{ admin.uniqid }}-{{ filter.name }}" {{ stimulus_target('sonata-filter-list', 'field') }} {{ stimulus_action('sonata-filter-list', 'toggle', 'click') }}>
+                            <a href="#" class="sonata-toggle-filter sonata-ba-action{% if filterDisplayed %} active{% endif %}" data-filter="filter-{{ admin.uniqid }}-{{ filter.name }}" {{ stimulus_target('sonata-filter-list', 'field') }} {{ stimulus_action('sonata-filter-list', 'toggle:prevent:stop', 'click') }}>
                                 <i class="far"></i>
                                 {% if filter.label is not same as(false) %}
                                     {% if filter.translationDomain is same as(false) %}
