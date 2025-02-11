@@ -7,6 +7,28 @@
  * file that was distributed with this source code.
  */
 
+export function controlReset(el) {
+  switch (el.tagName.toLowerCase()) {
+    case 'select':
+      el.selectedIndex = -1;
+      break;
+
+    case 'textarea':
+    case 'input':
+      if (['radio', 'checkbox'].includes(el.type.toLowerCase())) {
+        if (el.checked) {
+          el.checked = false;
+        }
+      } else {
+        el.value = '';
+      }
+      break;
+
+    default:
+      break;
+  }
+}
+
 export function controlValue(el) {
   if (el.options && el.multiple) {
     // prettier-ignore
