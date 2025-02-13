@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.35.3](https://github.com/sonata-project/SonataAdminBundle/compare/4.35.2...4.35.3) - 2025-02-13
+### Fixed
+- [[#8242](https://github.com/sonata-project/SonataAdminBundle/pull/8242)] Fix filter behaviors after migrate to stimulus ([@onEXHovia](https://github.com/onEXHovia))
+
 ## [4.35.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.35.1...4.35.2) - 2025-02-05
 ### Fixed
 - [[#8239](https://github.com/sonata-project/SonataAdminBundle/pull/8239)] Deprecated usages of `spaceless` twig filter ([@dmaicher](https://github.com/dmaicher))
