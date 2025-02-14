@@ -86,7 +86,6 @@ Admin Bundle
    cookbook/recipe_overwrite_admin_configuration
    cookbook/recipe_improve_performance_large_datasets
    cookbook/recipe_virtual_field
-   cookbook/recipe_bootlint
    cookbook/recipe_lock_protection
    cookbook/recipe_sortable_sonata_type_model
    cookbook/recipe_delete_field_group

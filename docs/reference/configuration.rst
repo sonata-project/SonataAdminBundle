@@ -78,7 +78,6 @@ Full Configuration Options
             skin: 'skin-black'
             use_select2: true
             use_icheck: true
-            use_bootlint: false
             use_stickyforms: true
             pager_links: null
             form_type: 'standard' # One of "standard"; "horizontal"

@@ -125,7 +125,6 @@ final class RenderElementRuntimeTest extends TestCase
             'skin' => 'skin-black',
             'sort_admins' => true,
             'stylesheets' => [],
-            'use_bootlint' => false,
             'use_icheck' => true,
             'use_select2' => true,
             'use_stickyforms' => false,

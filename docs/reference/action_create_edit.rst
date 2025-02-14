@@ -20,7 +20,6 @@ SonataAdmin Options that may affect the create or edit view:
             js_debug:        false    # enable or disable to show javascript debug messages
             use_select2:     true     # enable or disable usage of the Select2 jQuery library
             use_icheck:      true     # enable or disable usage of the iCheck library
-            use_bootlint:    false    # enable or disable usage of Bootlint
             use_stickyforms: true     # enable or disable the floating buttons
             form_type:       standard # can also be 'horizontal'
 
@@ -32,7 +31,6 @@ For more information about optional libraries:
 
 - Select2: https://github.com/select2/select2
 - iCheck: http://icheck.fronteed.com/
-- Bootlint: https://github.com/twbs/bootlint#in-the-browser
 
 Routes
 ------

@@ -50,7 +50,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *     pager_links: int|null,
  *     skin: 'skin-black'|'skin-black-light'|'skin-blue'|'skin-blue-light'|'skin-green'|'skin-green-light'|'skin-purple'|'skin-purple-light'|'skin-red'|'skin-red-light'|'skin-yellow'|'skin-yellow-light',
  *     sort_admins: bool,
- *     use_bootlint: bool,
  *     use_icheck: bool,
  *     use_select2: bool,
  *     use_stickyforms: bool,
@@ -307,7 +306,6 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                         ->booleanNode('use_select2')->defaultTrue()->end()
                         ->booleanNode('use_icheck')->defaultTrue()->end()
-                        ->booleanNode('use_bootlint')->defaultFalse()->end()
                         ->booleanNode('use_stickyforms')->defaultTrue()->end()
                         ->integerNode('pager_links')->defaultNull()->end()
                         // NEXT_MAJOR: Remove this line and uncomment the following line instead.

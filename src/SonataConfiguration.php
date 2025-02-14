@@ -36,7 +36,6 @@ namespace Sonata\AdminBundle;
  *     skin: 'skin-black'|'skin-black-light'|'skin-blue'|'skin-blue-light'|'skin-green'|'skin-green-light'|'skin-purple'|'skin-purple-light'|'skin-red'|'skin-red-light'|'skin-yellow'|'skin-yellow-light',
  *     sort_admins: bool,
  *     stylesheets: list<string>,
- *     use_bootlint: bool,
  *     use_icheck: bool,
  *     use_select2: bool,
  *     use_stickyforms: bool
