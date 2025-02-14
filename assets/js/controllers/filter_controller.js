@@ -9,7 +9,7 @@
 
 import qs from 'qs';
 import { Controller } from '@hotwired/stimulus';
-import { controlValue, convertQueryStringToObject } from '../utils';
+import { controlReset, controlValue, convertQueryStringToObject } from '../utils';
 
 export default class extends Controller {
   static targets = ['form', 'group', 'advanced', 'submitter'];
@@ -26,6 +26,10 @@ export default class extends Controller {
   }
 
   prepareSubmit() {
+    this.formElements
+      .filter((element) => element.closest('[hidden]'))
+      .forEach((element) => controlReset(element));
+
     const defaults = convertQueryStringToObject(
       qs.stringify({
         filter: this.defaultValuesValue,
@@ -38,9 +42,7 @@ export default class extends Controller {
       const defaultElementValue = defaults[element.name] || defaultValue;
       const elementValue = controlValue(element) || defaultValue;
 
-      if (element.closest('[hidden]')) {
-        element.removeAttribute('name');
-      } else if (JSON.stringify(defaultElementValue) === JSON.stringify(elementValue)) {
+      if (JSON.stringify(defaultElementValue) === JSON.stringify(elementValue)) {
         element.removeAttribute('name');
       } else if (element.multiple && JSON.stringify(elementValue) === '[]') {
         // Empty array values will not be submitted, but we need to override
