@@ -33,7 +33,7 @@
     "eslint-plugin-import": "^2.27",
     "eslint-webpack-plugin": "^4.0",
     "file-loader": "^6.2",
-    "postcss": "^8.4",
+    "postcss": "^8.5",
     "postcss-loader": "^7.2",
     "postcss-scss": "^4.0",
     "prettier": "^2.8",
@@ -43,7 +43,7 @@
     "stylelint-config-standard-scss": "^9.0",
     "stylelint-order": "^6.0",
     "stylelint-webpack-plugin": "^4.1",
-    "webpack": "^5.80",
+    "webpack": "^5.98",
     "webpack-cli": "^5.0"
   },
   "engines": {
