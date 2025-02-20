@@ -31,8 +31,7 @@ export function controlReset(el) {
 
 export function controlValue(el) {
   if (el.options && el.multiple) {
-    // prettier-ignore
-    return el.options
+    return Array.from(el.options)
       .filter((option) => option.selected)
       .map((option) => option.value);
   }
