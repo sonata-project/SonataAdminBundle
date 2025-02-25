@@ -9,7 +9,7 @@
 
 import qs from 'qs';
 import { Controller } from '@hotwired/stimulus';
-import { controlReset, controlValue, convertQueryStringToObject } from '../utils';
+import { controlReset, controlValue, convertQueryStringToObject } from '../core/utils';
 
 export default class extends Controller {
   static targets = ['form', 'group', 'advanced', 'submitter'];

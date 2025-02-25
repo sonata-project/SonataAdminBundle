@@ -34,18 +34,17 @@ file that was distributed with this source code.
             <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         {% endblock %}
 
-        <meta data-sonata-admin='{{ {
-            config: {
-                SKIN: _skin,
-                CONFIRM_EXIT: sonata_config.getOption('confirm_exit'),
-                USE_SELECT2: _use_select2,
-                USE_ICHECK: _use_icheck,
-                USE_STICKYFORMS: sonata_config.getOption('use_stickyforms'),
-                DEBUG: sonata_config.getOption('js_debug'),
-            },
-            translations: {
-                CONFIRM_EXIT: 'confirm_exit'|trans({}, 'SonataAdminBundle'),
-            },
+        <meta name="sonata-config" content='{{ {
+            SKIN: _skin,
+            CONFIRM_EXIT: sonata_config.getOption('confirm_exit'),
+            USE_SELECT2: _use_select2,
+            USE_ICHECK: _use_icheck,
+            USE_STICKYFORMS: sonata_config.getOption('use_stickyforms'),
+            DEBUG: sonata_config.getOption('js_debug'),
+        }|json_encode()|raw }}'
+        >
+        <meta name="sonata-translations" content='{{ {
+            CONFIRM_EXIT: 'confirm_exit'|trans({}, 'SonataAdminBundle'),
         }|json_encode()|raw }}'
         >
 

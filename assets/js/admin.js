@@ -7,10 +7,11 @@
  * file that was distributed with this source code.
  */
 
+import Config from './core/config';
+import Translation from './core/translation';
+
 const Admin = {
   collectionCounters: [],
-  config: null,
-  translations: null,
 
   /**
    * This function must be called when an ajax call is done, to ensure
@@ -19,7 +20,6 @@ const Admin = {
    * @param subject
    */
   shared_setup(subject) {
-    Admin.read_config();
     Admin.log('[core|shared_setup] Register services on', subject);
     Admin.setup_select2(subject);
     Admin.setup_icheck(subject);
@@ -33,25 +33,11 @@ const Admin = {
     Admin.setup_readmore_elements(subject);
     Admin.setup_form_submit(subject);
   },
-  read_config() {
-    const data = jQuery('[data-sonata-admin]').data('sonata-admin');
-
-    this.config = data.config;
-    this.translations = data.translations;
-  },
   get_config(key) {
-    if (this.config == null) {
-      this.read_config();
-    }
-
-    return this.config[key];
+    return Config.param(key);
   },
   get_translations(key) {
-    if (this.translations == null) {
-      this.read_config();
-    }
-
-    return this.translations[key];
+    return Translation.trans(key);
   },
   setup_list_modal(modal) {
     Admin.log('[core|setup_list_modal] configure modal on', modal);
@@ -760,12 +746,4 @@ jQuery(document).on('sonata-admin-append-form-element', (event) => {
   Admin.setup_select2(event.target);
   Admin.setup_icheck(event.target);
   Admin.setup_collection_counter(event.target);
-});
-
-jQuery(window).on('load', () => {
-  if (Admin.get_config('CONFIRM_EXIT')) {
-    jQuery('.sonata-ba-form form').each((index, element) => {
-      jQuery(element).confirmExit();
-    });
-  }
 });
