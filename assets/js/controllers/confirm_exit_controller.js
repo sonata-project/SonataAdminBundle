@@ -12,27 +12,20 @@ import Config from '../core/config';
 import Translation from '../core/translation';
 
 export default class extends Controller {
-  static values = { snapshot: String };
+  static values = {
+    snapshot: String,
+  };
 
   static get shouldLoad() {
     return Config.param('CONFIRM_EXIT');
   }
 
-  initialize() {
-    this.snapshotValue = this.snapshot;
-    this.onBeforeUnload = this.beforeUnload.bind(this);
-  }
-
   connect() {
-    window.addEventListener('beforeunload', this.onBeforeUnload);
-  }
-
-  disconnect() {
-    window.removeEventListener('beforeunload', this.onBeforeUnload);
+    this.snapshotValue = this.snapshot;
   }
 
   // eslint-disable-next-line consistent-return
-  beforeUnload(event) {
+  confirm(event) {
     if (this.snapshotValue !== this.snapshot) {
       const message = Translation.trans('CONFIRM_EXIT');
       event.returnValue = message;
