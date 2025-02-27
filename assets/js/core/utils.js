@@ -7,6 +7,11 @@
  * file that was distributed with this source code.
  */
 
+export function getMetaContent(name) {
+  const element = document.querySelector(`meta[name="${name}"]`);
+  return element?.content;
+}
+
 export function controlReset(el) {
   switch (el.tagName.toLowerCase()) {
     case 'select':

@@ -44,7 +44,6 @@ import 'masonry-layout';
 
 // SonataAdmin custom scripts
 import './admin';
-import './jquery.confirmExit';
 import './treeview';
 import './sidebar';
 import './base';
