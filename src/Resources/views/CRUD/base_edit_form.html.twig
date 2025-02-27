@@ -16,7 +16,10 @@
               method="POST"
               {% if not sonata_config.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
               {{ stimulus_controller('sonata-confirm-exit') }}
-              {{ stimulus_action('sonata-confirm-exit', 'confirm', 'beforeunload@window') }}
+              {{
+                stimulus_action('sonata-confirm-exit', 'confirm', 'beforeunload@window')|
+                stimulus_action('sonata-confirm-exit', 'skip', 'submit')
+              }}
               {% block sonata_form_attributes %}{% endblock %}
               >
 

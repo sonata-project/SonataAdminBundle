@@ -14,6 +14,7 @@ import Translation from '../core/translation';
 export default class extends Controller {
   static values = {
     snapshot: String,
+    skip: Boolean,
   };
 
   static get shouldLoad() {
@@ -24,13 +25,25 @@ export default class extends Controller {
     this.snapshotValue = this.snapshot;
   }
 
+  skip() {
+    this.skipValue = true;
+  }
+
   // eslint-disable-next-line consistent-return
   confirm(event) {
-    if (this.snapshotValue !== this.snapshot) {
+    if (this.shouldConfirm) {
       const message = Translation.trans('CONFIRM_EXIT');
       event.returnValue = message;
       return message;
     }
+  }
+
+  get shouldConfirm() {
+    if (this.skipValue) {
+      return false;
+    }
+
+    return this.snapshotValue !== this.snapshot;
   }
 
   get snapshot() {
