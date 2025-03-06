@@ -25,13 +25,11 @@ const Admin = {
     Admin.setup_icheck(subject);
     Admin.setup_checkbox_range_selection(subject);
     Admin.setup_xeditable(subject);
-    Admin.setup_form_tabs_for_errors(subject);
     Admin.setup_inline_form_errors(subject);
     Admin.setup_tree_view(subject);
     Admin.setup_collection_counter(subject);
     Admin.setup_sticky_elements(subject);
     Admin.setup_readmore_elements(subject);
-    Admin.setup_form_submit(subject);
   },
   get_config(key) {
     return Config.param(key);
@@ -306,51 +304,6 @@ const Admin = {
       jQuery('input[type=submit]').hide();
 
       window.top.location.href = event.target.options[event.target.selectedIndex].value;
-    });
-  },
-
-  setup_form_tabs_for_errors(subject) {
-    Admin.log("[core|setup_form_tabs_for_errors] setup form tab's errors", subject);
-
-    // Switch to first tab with server side validation errors on page load
-    jQuery('form', subject).each((index, element) => {
-      Admin.show_form_first_tab_with_errors(jQuery(element), '.sonata-ba-field-error');
-    });
-
-    // Switch to first tab with HTML5 errors on form submit
-    jQuery(subject)
-      .on('click', 'form [type="submit"]', (event) => {
-        Admin.show_form_first_tab_with_errors(jQuery(event.target).closest('form'), ':invalid');
-      })
-      .on('keypress', 'form [type="text"]', (event) => {
-        if (event.which === 13) {
-          Admin.show_form_first_tab_with_errors(jQuery(event.target), ':invalid');
-        }
-      });
-  },
-
-  show_form_first_tab_with_errors(form, errorSelector) {
-    Admin.log('[core|show_form_first_tab_with_errors] show first tab with errors', form);
-
-    const tabs = form.find('.nav-tabs a');
-    let firstTabWithErrors;
-
-    tabs.each((index, element) => {
-      const id = jQuery(element).attr('href');
-      const tab = jQuery(element);
-      const icon = tab.find('.has-errors');
-
-      if (jQuery(id).find(errorSelector).length > 0) {
-        // Only show first tab with errors
-        if (!firstTabWithErrors) {
-          tab.tab('show');
-          firstTabWithErrors = tab;
-        }
-
-        icon.removeClass('hide');
-      } else {
-        icon.addClass('hide');
-      }
     });
   },
 
@@ -661,68 +614,6 @@ const Admin = {
       jQuery('.navbar-static-top').outerHeight()
     );
   },
-
-  setup_form_submit(subject) {
-    Admin.log('[core|setup_form_submit] setup form submit on', subject);
-
-    jQuery(subject)
-      .find('form')
-      .on('submit', (event) => {
-        const form = jQuery(event.target);
-
-        // this allows to submit forms and know which button was clicked
-        setTimeout(() => {
-          form.find('button').prop('disabled', true);
-        }, 1);
-
-        const tabSelected = form.find('.nav-tabs li.active .changer-tab');
-
-        if (tabSelected.length > 0) {
-          form.find('input[name="_tab"]').val(tabSelected.attr('aria-controls'));
-        }
-      });
-  },
-
-  /**
-   * Remember open tab after refreshing page.
-   */
-  setup_view_tabs_changer() {
-    jQuery('.changer-tab').on('click', (event) => {
-      const tab = jQuery(event.target).attr('aria-controls');
-      const search = window.location.search.substring(1);
-
-      /* Get query string parameters from URL */
-      const parameters = decodeURIComponent(search)
-        .replace(/"/g, '\\"')
-        .replace(/&/g, '","')
-        .replace(/=/g, '":"');
-      let jsonURL = '{}';
-
-      /* If the parameters exist and their length is greater than 0, we put them in json */
-      if (parameters.length) {
-        jsonURL = `{"${parameters}"}`;
-      }
-
-      const hashes = JSON.parse(jsonURL);
-
-      /* Replace tab parameter */
-      // eslint-disable-next-line no-underscore-dangle
-      hashes._tab = tab;
-
-      /* Setting new URL */
-      const newurl = `${window.location.origin + window.location.pathname}?${jQuery.param(
-        hashes,
-        true
-      )}`;
-      window.history.pushState(
-        {
-          path: newurl,
-        },
-        '',
-        newurl
-      );
-    });
-  },
 };
 
 window.Admin = Admin;
@@ -734,7 +625,6 @@ jQuery(() => {
 
   Admin.setup_per_page_switcher(document);
   Admin.setup_collection_buttons(document);
-  Admin.setup_view_tabs_changer();
   Admin.shared_setup(document);
 });
 
