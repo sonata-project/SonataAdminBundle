@@ -23,6 +23,7 @@ module.exports = {
   plugins: ['header'],
   rules: {
     'arrow-body-style': 'off',
+    'class-methods-use-this': 'off',
     'header/header': [
       2,
       'block',
