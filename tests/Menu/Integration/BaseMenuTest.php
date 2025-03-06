@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Menu\Integration;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Renderer\TwigRenderer;
+use Knp\Menu\Twig\MenuExtension;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
 use Sonata\AdminBundle\Twig\Extension\IconExtension;
@@ -59,6 +60,8 @@ abstract class BaseMenuTest extends TestCase
     {
         $this->environment->addExtension(new TranslationExtension($this->getTranslator()));
         $this->environment->addExtension(new IconExtension(new IconRuntime()));
+        $this->environment->addExtension(new MenuExtension());
+
         $renderer = new TwigRenderer(
             $this->environment,
             $this->getTemplate(),
