@@ -20,6 +20,8 @@ use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
+use Symfony\UX\StimulusBundle\Twig\StimulusTwigExtension;
 use Twig\Environment;
 
 /**
@@ -58,6 +60,7 @@ abstract class BaseWidgetTest extends AbstractWidgetTestCase
         $environment = parent::getEnvironment();
         $environment->addGlobal('sonata_admin', $this->getSonataAdmin());
         $environment->addExtension(new RoutingExtension(static::createStub(UrlGeneratorInterface::class)));
+        $environment->addExtension(new StimulusTwigExtension(new StimulusHelper(null)));
         $environment->addExtension(new HttpKernelExtension());
         if (!$environment->hasExtension(TranslationExtension::class)) {
             $environment->addExtension(new TranslationExtension(new StubTranslator()));

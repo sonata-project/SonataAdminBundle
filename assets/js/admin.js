@@ -11,8 +11,6 @@ import Config from './core/config';
 import Translation from './core/translation';
 
 const Admin = {
-  collectionCounters: [],
-
   /**
    * This function must be called when an ajax call is done, to ensure
    * the retrieved html is properly setup
@@ -27,7 +25,6 @@ const Admin = {
     Admin.setup_xeditable(subject);
     Admin.setup_inline_form_errors(subject);
     Admin.setup_tree_view(subject);
-    Admin.setup_collection_counter(subject);
     Admin.setup_sticky_elements(subject);
     Admin.setup_readmore_elements(subject);
   },
@@ -231,70 +228,6 @@ const Admin = {
     } else if (window.opera && window.opera.postError) {
       window.opera.postError(msg);
     }
-  },
-
-  stopEvent(event) {
-    event.preventDefault();
-
-    return event.target;
-  },
-
-  setup_collection_counter(subject) {
-    Admin.log('[core|setup_collection_counter] setup collection counter', subject);
-
-    // Count and save element of each collection
-    const highestCounterRegexp = /_([0-9]+)[^0-9]*$/;
-    jQuery(subject)
-      .find('[data-prototype]')
-      .each((index, element) => {
-        const collection = jQuery(element);
-        let counter = -1;
-        collection.children().each((collectionIndex, collectionElement) => {
-          const matches = highestCounterRegexp.exec(
-            jQuery('[id^="sonata-ba-field-container"]', collectionElement).attr('id')
-          );
-          if (matches && matches[1] && matches[1] > counter) {
-            counter = parseInt(matches[1], 10);
-          }
-        });
-        Admin.collectionCounters[collection.attr('id')] = counter;
-      });
-  },
-
-  setup_collection_buttons(subject) {
-    jQuery(subject).on('click', '.sonata-collection-add', (event) => {
-      Admin.stopEvent(event);
-
-      const container = jQuery(event.target).closest('[data-prototype]');
-
-      Admin.collectionCounters[container.attr('id')] += 1;
-
-      const counter = Admin.collectionCounters[container.attr('id')];
-      let proto = container.attr('data-prototype');
-      const protoName = container.attr('data-prototype-name') || '__name__';
-      // Set field id
-      const idRegexp = new RegExp(`${container.attr('id')}_${protoName}`, 'g');
-      proto = proto.replace(idRegexp, `${container.attr('id')}_${counter}`);
-
-      // Set field name
-      const parts = container.attr('id').split('_');
-      const nameRegexp = new RegExp(`${parts[parts.length - 1]}\\]\\[${protoName}`, 'g');
-      proto = proto.replace(nameRegexp, `${parts[parts.length - 1]}][${counter}`);
-      jQuery(proto)
-        .insertBefore(jQuery(event.target).parent())
-        .trigger('sonata-admin-append-form-element');
-      jQuery(event.target).trigger('sonata-collection-item-added');
-    });
-
-    jQuery(subject).on('click', '.sonata-collection-delete', (event) => {
-      Admin.stopEvent(event);
-
-      jQuery(event.target).trigger('sonata-collection-item-deleted');
-
-      jQuery(event.target).closest('.sonata-collection-row').remove();
-
-      jQuery(document).trigger('sonata-collection-item-deleted-successful');
-    });
   },
 
   setup_per_page_switcher(subject) {
@@ -624,7 +557,6 @@ jQuery(() => {
   jQuery('html').removeClass('no-js');
 
   Admin.setup_per_page_switcher(document);
-  Admin.setup_collection_buttons(document);
   Admin.shared_setup(document);
 });
 
@@ -635,5 +567,4 @@ jQuery(window).on('resize', () => {
 jQuery(document).on('sonata-admin-append-form-element', (event) => {
   Admin.setup_select2(event.target);
   Admin.setup_icheck(event.target);
-  Admin.setup_collection_counter(event.target);
 });

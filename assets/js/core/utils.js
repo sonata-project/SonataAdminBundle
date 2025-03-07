@@ -7,6 +7,12 @@
  * file that was distributed with this source code.
  */
 
+export function createDocumentFragment(html) {
+  const template = document.createElement('template');
+  template.innerHTML = html;
+  return template.content;
+}
+
 export function getMetaContent(name) {
   const element = document.querySelector(`meta[name="${name}"]`);
   return element?.content;

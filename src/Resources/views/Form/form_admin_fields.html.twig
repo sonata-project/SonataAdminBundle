@@ -371,13 +371,13 @@ file that was distributed with this source code.
 {%- endblock radio_row %}
 
 {% block sonata_type_native_collection_widget_row %}
-    <div class="sonata-collection-row">
+    <div class="sonata-collection-row" {{ stimulus_target('sonata-collection', 'item') }}>
         {% if allow_delete %}
             <div class="row">
                 <div class="col-xs-1">
-                    <a href="#" class="btn btn-link sonata-collection-delete">
+                    <button type="button" class="btn btn-link sonata-collection-delete" {{ stimulus_action('sonata-collection', 'delete', 'click') }}>
                         <i class="fas fa-minus-circle" aria-hidden="true"></i>
-                    </a>
+                    </button>
                 </div>
                 <div class="col-xs-11">
         {% endif %}
@@ -394,7 +394,11 @@ file that was distributed with this source code.
         {% set child = prototype %}
         {% set allow_delete_backup = allow_delete %}
         {% set allow_delete = true %}
-        {% set attr = attr|merge({'data-prototype': block('sonata_type_native_collection_widget_row'), 'data-prototype-name': prototype.vars.name, 'class': attr.class|default('') }) %}
+        {% set attr = attr|merge({
+            'data-prototype': block('sonata_type_native_collection_widget_row'),
+            'data-prototype-name': prototype.vars.name,
+            'class': attr.class|default(''),
+        })|merge(stimulus_controller('sonata-collection').toArray()) %}
         {% set allow_delete = allow_delete_backup %}
     {% endif %}
     <div {{ block('widget_container_attributes') }}>
@@ -404,7 +408,9 @@ file that was distributed with this source code.
         {% endfor %}
         {{ form_rest(form) }}
         {% if allow_add %}
-            <div><a href="#" class="btn btn-link sonata-collection-add"><i class="fas fa-plus-circle" aria-hidden="true"></i></a></div>
+            <button type="button" class="btn btn-link sonata-collection-add" {{ stimulus_action('sonata-collection', 'add', 'click') }}>
+                <i class="fas fa-plus-circle" aria-hidden="true"></i>
+            </button>
         {% endif %}
     </div>
 {% endblock sonata_type_native_collection_widget %}
