@@ -15,10 +15,15 @@
               {% if form.vars.multipart %} enctype="multipart/form-data"{% endif %}
               method="POST"
               {% if not sonata_config.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
-              {{ stimulus_controller('sonata-confirm-exit') }}
+              {{
+                stimulus_controller('sonata-confirm-exit')|
+                stimulus_controller('sonata-edit')
+              }}
               {{
                 stimulus_action('sonata-confirm-exit', 'confirm', 'beforeunload@window')|
-                stimulus_action('sonata-confirm-exit', 'skip', 'submit')
+                stimulus_action('sonata-confirm-exit', 'skip', 'submit')|
+                stimulus_action('sonata-edit', 'prepareSubmit', 'submit')|
+                stimulus_action('sonata-edit', 'checkValidity:capture', 'invalid')
               }}
               {% block sonata_form_attributes %}{% endblock %}
               >
@@ -43,8 +48,8 @@
                                 {% for name, form_tab in formtabs %}
                                     {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
                                     <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %} class="active"{% endif %}>
-                                        <a href="#{{ _tab_name }}" class="changer-tab" aria-controls="{{ _tab_name }}" data-toggle="tab">
-                                            <i class="fas fa-exclamation-circle has-errors hide" aria-hidden="true"></i>
+                                        <a href="#{{ _tab_name }}" class="changer-tab" aria-controls="{{ _tab_name }}" data-toggle="tab" {{ stimulus_target('sonata-edit', 'tab') }} {{ stimulus_action('sonata-edit', 'changeTab', 'click') }}>
+                                            <i class="fas fa-exclamation-circle has-errors" aria-hidden="true" hidden></i>
                                             {% if form_tab.translation_domain is defined and form_tab.translation_domain is same as(false) %}
                                                 {{ form_tab.label }}
                                             {% else %}
@@ -77,7 +82,7 @@
                                     </div>
                                 {% endfor %}
                             </div>
-                            <input type="hidden" name="_tab" value="{{ app.request.query.get('_tab') }}">
+                            <input type="hidden" name="_tab" value="{{ app.request.query.get('_tab') }}" {{ stimulus_target('sonata-edit', 'tabStore') }}>
                         </div>
                     {% elseif formtabs['default'] is defined %}
                         {{ form_helper.render_groups(admin, form, formtabs['default'].groups, has_tab) }}
