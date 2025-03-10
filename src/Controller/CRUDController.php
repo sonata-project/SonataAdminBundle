@@ -1319,7 +1319,7 @@ class CRUDController extends AbstractController
         \assert($tokenManager instanceof CsrfTokenManagerInterface);
 
         if (!$tokenManager->isTokenValid(new CsrfToken($intention, $token))) {
-            throw new HttpException(Response::HTTP_BAD_REQUEST, 'The csrf token is not valid, CSRF attack?');
+            throw new BadRequestHttpException('The csrf token is not valid, CSRF attack?');
         }
     }
 
