@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.36.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.35.4...4.36.0) - 2025-03-11
+### Changed
+- [[#8265](https://github.com/sonata-project/SonataAdminBundle/pull/8265)] Migrate edit form behaviors to vanilla js ([@onEXHovia](https://github.com/onEXHovia))
+- [[#8270](https://github.com/sonata-project/SonataAdminBundle/pull/8270)] Migrate field collection to vanilla js ([@onEXHovia](https://github.com/onEXHovia))
+- [[#8271](https://github.com/sonata-project/SonataAdminBundle/pull/8271)] Migrate per page switcher to vanilla js ([@onEXHovia](https://github.com/onEXHovia))
+- [[#8272](https://github.com/sonata-project/SonataAdminBundle/pull/8272)] Replaced the commented-out `HttpException` with `BadRequestHttpException` in the `validateCsrfToken` method to properly reflect an HTTP 400 error for invalid CSRF tokens ([@desarrolla2](https://github.com/desarrolla2))
+- [[#8264](https://github.com/sonata-project/SonataAdminBundle/pull/8264)] Replace jquery.confirmExit to vanilla js ([@onEXHovia](https://github.com/onEXHovia))
+- [[#8263](https://github.com/sonata-project/SonataAdminBundle/pull/8263)] Migrate revision inline js to stimulus ([@onEXHovia](https://github.com/onEXHovia))
+
+### Fixed
+- [[#8266](https://github.com/sonata-project/SonataAdminBundle/pull/8266)] Skip confirm exit if form submitted ([@onEXHovia](https://github.com/onEXHovia))
+
 ## [4.35.4](https://github.com/sonata-project/SonataAdminBundle/compare/4.35.3...4.35.4) - 2025-02-20
 ### Fixed
 - [[#8261](https://github.com/sonata-project/SonataAdminBundle/pull/8261)] Convert HTMLOptionsCollection to array before apply filter ([@onEXHovia](https://github.com/onEXHovia))
