@@ -230,16 +230,6 @@ const Admin = {
     }
   },
 
-  setup_per_page_switcher(subject) {
-    Admin.log('[core|setup_per_page_switcher] setup page switcher', subject);
-
-    jQuery('select.per-page').on('change', (event) => {
-      jQuery('input[type=submit]').hide();
-
-      window.top.location.href = event.target.options[event.target.selectedIndex].value;
-    });
-  },
-
   setup_inline_form_errors(subject) {
     Admin.log('[core|setup_inline_form_errors] show first tab with errors', subject);
 
@@ -556,7 +546,6 @@ jQuery(() => {
 
   jQuery('html').removeClass('no-js');
 
-  Admin.setup_per_page_switcher(document);
   Admin.shared_setup(document);
 });
 
@@ -567,4 +556,10 @@ jQuery(window).on('resize', () => {
 jQuery(document).on('sonata-admin-append-form-element', (event) => {
   Admin.setup_select2(event.target);
   Admin.setup_icheck(event.target);
+});
+
+jQuery(() => {
+  jQuery('select.per-page').one('change.select2', (event) => {
+    event.target.dispatchEvent(new Event('change'));
+  });
 });
