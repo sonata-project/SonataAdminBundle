@@ -26,6 +26,8 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
+use Symfony\UX\StimulusBundle\Twig\StimulusTwigExtension;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\RuntimeLoader\FactoryRuntimeLoader;
@@ -55,6 +57,7 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
         $environment->addExtension(new FormExtension());
         $environment->addExtension(new RoutingExtension(static::createStub(UrlGeneratorInterface::class)));
         $environment->addExtension(new HttpKernelExtension());
+        $environment->addExtension(new StimulusTwigExtension(new StimulusHelper(null)));
 
         $rendererEngine = new TwigRendererEngine([
             'form_admin_fields.html.twig',
