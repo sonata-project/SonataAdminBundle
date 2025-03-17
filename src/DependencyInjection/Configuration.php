@@ -616,7 +616,7 @@ final class Configuration implements ConfigurationInterface
                     ->children()
                         ->arrayNode('stylesheets')
                             ->defaultValue([
-                                'bundles/sonataadmin/app.css',
+                                'bundles/sonataadmin/app.css?v=4.36',
                                 'bundles/sonataform/app.css',
                             ])
                             ->prototype('scalar')->end()
@@ -633,7 +633,7 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                         ->arrayNode('javascripts')
                             ->defaultValue([
-                                'bundles/sonataadmin/app.js',
+                                'bundles/sonataadmin/app.js?v=4.36',
                                 'bundles/sonataform/app.js',
                             ])
                             ->prototype('scalar')->end()

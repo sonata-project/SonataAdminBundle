@@ -90,7 +90,7 @@ final class SonataAdminExtension extends Extension
         $javascript = $this->buildJavascripts($config);
 
         $config['assets']['stylesheets'][] = \sprintf(
-            'bundles/sonataadmin/admin-lte-skins/%s.min.css',
+            'bundles/sonataadmin/admin-lte-skins/%s.min.css?v=4.36',
             $config['options']['skin']
         );
         $stylesheet = $this->buildStylesheets($config);
