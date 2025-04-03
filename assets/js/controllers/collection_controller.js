@@ -8,7 +8,7 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import { createDocumentFragment } from '../core/utils';
+import { activateScriptElement, createDocumentFragment } from '../core/utils';
 
 export default class extends Controller {
   static targets = ['item'];
@@ -23,6 +23,11 @@ export default class extends Controller {
   add(event) {
     const button = event.currentTarget;
     const item = this.createItem();
+    const scripts = item.querySelectorAll('script');
+
+    scripts.forEach((script) => {
+      script.replaceWith(activateScriptElement(script));
+    });
 
     this.element.insertBefore(item, button);
     this.numItemsValue += 1;
@@ -70,7 +75,8 @@ export default class extends Controller {
       .replace(idRegexp, `${id}_${this.numItemsValue}`)
       .replace(nameRegexp, `${parts[parts.length - 1]}][${this.numItemsValue}`);
 
-    return createDocumentFragment(prototype);
+    const fragment = createDocumentFragment(prototype);
+    return fragment.firstElementChild;
   }
 
   get prototype() {
