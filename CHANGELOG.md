@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.36.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.36.0...4.36.1) - 2025-04-03
+### Fixed
+- [[#8278](https://github.com/sonata-project/SonataAdminBundle/pull/8278)] Execute JS scripts embedded in prototype ([@onEXHovia](https://github.com/onEXHovia))
+
 ## [4.36.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.35.4...4.36.0) - 2025-03-11
 ### Changed
 - [[#8265](https://github.com/sonata-project/SonataAdminBundle/pull/8265)] Migrate edit form behaviors to vanilla js ([@onEXHovia](https://github.com/onEXHovia))
