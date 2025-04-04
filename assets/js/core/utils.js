@@ -7,6 +7,18 @@
  * file that was distributed with this source code.
  */
 
+export function activateScriptElement(el) {
+  const script = document.createElement('script');
+  script.textContent = el.textContent;
+  script.async = false;
+
+  [...el.attributes].forEach(({ name, value }) => {
+    script.setAttribute(name, value);
+  });
+
+  return script;
+}
+
 export function createDocumentFragment(html) {
   const template = document.createElement('template');
   template.innerHTML = html;
