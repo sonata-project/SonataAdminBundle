@@ -270,6 +270,10 @@ final class Datagrid implements DatagridInterface
             $this->values[DatagridInterface::SORT_BY]->getSortFieldMapping()
         );
 
+        if (($this->values[DatagridInterface::SORT_ORDER] ?? null) === '') {
+            unset($this->values[DatagridInterface::SORT_ORDER]);
+        }
+
         $this->values[DatagridInterface::SORT_ORDER] ??= 'ASC';
         $this->query->setSortOrder($this->values[DatagridInterface::SORT_ORDER]);
     }
