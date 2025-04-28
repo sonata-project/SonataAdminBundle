@@ -691,4 +691,22 @@ final class DatagridTest extends TestCase
         static::assertSame($page, $result['filter'][DatagridInterface::PAGE]);
         static::assertSame($name, $result['filter'][DatagridInterface::SORT_BY]);
     }
+
+    public function testSortOrderDefaultsAscending(): void
+    {
+        $field = $this->createMock(FieldDescriptionInterface::class);
+        $field->method('isSortable')->willReturn(true);
+
+        $this->datagrid = new Datagrid(
+            $this->query,
+            $this->columns,
+            $this->pager,
+            $this->formBuilder,
+            [DatagridInterface::SORT_BY => $field, DatagridInterface::SORT_ORDER => '']
+        );
+
+        $this->datagrid->buildPager();
+        $values = $this->datagrid->getValues();
+        static::assertSame('ASC', $values[DatagridInterface::SORT_ORDER]);
+    }
 }

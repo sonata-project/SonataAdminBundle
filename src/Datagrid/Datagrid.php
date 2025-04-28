@@ -271,8 +271,9 @@ final class Datagrid implements DatagridInterface
         );
 
         if (!isset($this->values[DatagridInterface::SORT_ORDER]) || '' === $this->values[DatagridInterface::SORT_ORDER]) {
-             $this->values[DatagridInterface::SORT_ORDER] = 'ASC';
+            $this->values[DatagridInterface::SORT_ORDER] = 'ASC';
         }
+
         $this->query->setSortOrder($this->values[DatagridInterface::SORT_ORDER]);
     }
 
