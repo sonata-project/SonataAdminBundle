@@ -411,7 +411,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->container
             ->register('sonata_report_one_admin')
             ->setClass(CustomAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => ReportOne::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => ReportOne::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true]);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('You can\'t use "on_top" option with multiple same name groups.');
@@ -431,7 +431,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->container
             ->register('sonata_report_two_admin')
             ->setClass(CustomAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => ReportOne::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => false]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => ReportOne::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => false]);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('You can\'t use "on_top" option with multiple same name groups.');
@@ -454,11 +454,11 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->container
             ->register('sonata_document_one_admin')
             ->setClass(CustomAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => ReportOne::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_document_group', 'manager_type' => 'orm', 'on_top' => false]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => ReportOne::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_document_group', 'manager_type' => 'orm', 'on_top' => false]);
         $this->container
             ->register('sonata_document_two_admin')
             ->setClass(CustomAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => ReportOne::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_document_group', 'manager_type' => 'orm', 'on_top' => false]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => ReportOne::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_document_group', 'manager_type' => 'orm', 'on_top' => false]);
 
         try {
             $this->compile();
@@ -491,14 +491,14 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             ->setPublic(true)
             ->setClass(CustomAdmin::class)
             ->setArguments([0 => 'extra_argument_1'])
-            ->addTag('sonata.admin', ['group' => 'sonata_post_one_group', 'manager_type' => 'orm']);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['group' => 'sonata_post_one_group', 'manager_type' => 'orm']);
 
         $adminTwoDefinition = new ChildDefinition('sonata_abstract_post_admin');
         $adminTwoDefinition
             ->setPublic(true)
             ->setClass(CustomAdmin::class)
             ->setArguments([0 => 'extra_argument_2', 'index_0' => 'should_not_override'])
-            ->addTag('sonata.admin', ['group' => 'sonata_post_two_group', 'manager_type' => 'orm']);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['group' => 'sonata_post_two_group', 'manager_type' => 'orm']);
 
         $this->container->addDefinitions([
             'sonata_post_one_admin' => $adminDefinition,
@@ -542,7 +542,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->container
             ->register('sonata_without_controller')
             ->setClass(CustomAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => ReportTwo::class, 'group' => 'sonata_report_two_group', 'manager_type' => 'orm']);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => ReportTwo::class, 'group' => 'sonata_report_two_group', 'manager_type' => 'orm']);
 
         $this->extension->load([$config], $this->container);
 
@@ -562,7 +562,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             ->register('sonata_post_admin_2')
             ->setClass(CustomAdmin::class)
             ->setPublic(true)
-            ->addTag('sonata.admin', ['model_class' => PostEntity::class, 'controller' => 'sonata.admin.controller.crud', 'default' => true, 'group' => 'sonata_group_one', 'manager_type' => 'orm']);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => PostEntity::class, 'controller' => 'sonata.admin.controller.crud', 'default' => true, 'group' => 'sonata_group_one', 'manager_type' => 'orm']);
 
         $config = $this->getConfig();
 
@@ -578,7 +578,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     {
         $this->setUpContainer();
 
-        foreach ($this->container->findTaggedServiceIds('sonata.admin') as $id => $_) {
+        foreach ($this->container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $_) {
             $this->container->removeDefinition($id);
         }
 
@@ -593,7 +593,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
                 ->register('sonata_admin_'.$priority)
                 ->setPublic(true)
                 ->setClass(CustomAdmin::class)
-                ->addTag('sonata.admin', ['model_class' => NewsEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_priority_1', 'label' => 'Entry', 'manager_type' => 'orm', 'priority' => $priority]);
+                ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => NewsEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_priority_1', 'label' => 'Entry', 'manager_type' => 'orm', 'priority' => $priority]);
         }
 
         $this->compile();
@@ -611,7 +611,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     {
         $this->setUpContainer();
 
-        foreach ($this->container->findTaggedServiceIds('sonata.admin') as $id => $_) {
+        foreach ($this->container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $_) {
             $this->container->removeDefinition($id);
         }
 
@@ -624,19 +624,19 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             ->register('sonata_admin_1')
             ->setPublic(true)
             ->setClass(CustomAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => NewsEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_priority_1', 'label' => 'Entry', 'manager_type' => 'orm', 'priority' => 1000]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => NewsEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_priority_1', 'label' => 'Entry', 'manager_type' => 'orm', 'priority' => 1000]);
 
         $this->container
             ->register('sonata_admin_2')
             ->setPublic(true)
             ->setClass(CustomAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => NewsEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_priority_3', 'label' => 'Entry', 'manager_type' => 'orm', 'priority' => 3000]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => NewsEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_priority_3', 'label' => 'Entry', 'manager_type' => 'orm', 'priority' => 3000]);
 
         $this->container
             ->register('sonata_admin_3')
             ->setPublic(true)
             ->setClass(CustomAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => NewsEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_priority_2', 'label' => 'Entry', 'manager_type' => 'orm', 'priority' => 4000]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => NewsEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_priority_2', 'label' => 'Entry', 'manager_type' => 'orm', 'priority' => 4000]);
 
         $this->compile();
 
@@ -653,13 +653,13 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             ->register('sonata_foo_admin')
             ->setClass(CustomAdmin::class)
             ->setPublic(true)
-            ->addTag('sonata.admin', ['model_class' => FooEntity::class, 'code' => 'sonata_bar_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'manager_type' => 'test']);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => FooEntity::class, 'code' => 'sonata_bar_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'manager_type' => 'test']);
 
         $this->container
             ->register('sonata_baz_admin')
             ->setClass(CustomAdmin::class)
             ->setPublic(true)
-            ->addTag('sonata.admin', ['model_class' => BazEntity::class, 'default' => true, 'code' => 'sonata_qux_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'manager_type' => 'test']);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => BazEntity::class, 'default' => true, 'code' => 'sonata_qux_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'manager_type' => 'test']);
 
         $config = $this->getConfig();
         $config['options']['sort_admins'] = true;
@@ -707,8 +707,8 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     //        ->register('sonata_foo_admin')
     //        ->setClass(CustomAdmin::class)
     //        ->setPublic(true)
-    //        ->addTag('sonata.admin', ['model_class' => PostEntity::class, 'code' => 'sonata_post_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'manager_type' => 'test'])
-    //        ->addTag('sonata.admin', ['model_class' => ArticleEntity::class, 'code' => 'sonata_article_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_two', 'manager_type' => 'test']);
+    //        ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => PostEntity::class, 'code' => 'sonata_post_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'manager_type' => 'test'])
+    //        ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => ArticleEntity::class, 'code' => 'sonata_article_admin', 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_two', 'manager_type' => 'test']);
     //
     //    $this->extension->load([$this->getConfig()], $this->container);
     //
@@ -800,33 +800,33 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             ->register('sonata_news_admin')
             ->setPublic(true)
             ->setClass(CustomAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => NewsEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_two', 'label' => '5 Entry', 'manager_type' => 'orm'])
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => NewsEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_two', 'label' => '5 Entry', 'manager_type' => 'orm'])
             ->addMethodCall('setModelManager', [new Reference('my.model.manager')]);
         $this->container
             ->register('sonata_post_admin')
             ->setClass(CustomAdmin::class)
             ->setPublic(true)
-            ->addTag('sonata.admin', ['model_class' => PostEntity::class, 'controller' => 'sonata.admin.controller.crud', 'default' => true, 'group' => 'sonata_group_one', 'manager_type' => 'orm']);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => PostEntity::class, 'controller' => 'sonata.admin.controller.crud', 'default' => true, 'group' => 'sonata_group_one', 'manager_type' => 'orm']);
         $this->container
             ->register('sonata_article_admin')
             ->setPublic(true)
             ->setClass(CustomAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => ArticleEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'label' => '1 Entry', 'manager_type' => 'doctrine_mongodb'])
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => ArticleEntity::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_group_one', 'label' => '1 Entry', 'manager_type' => 'doctrine_mongodb'])
             ->addMethodCall('setFormTheme', [['custom_form_theme.twig']])
             ->addMethodCall('setFilterTheme', [['custom_filter_theme.twig']]);
         $this->container
             ->register('sonata_report_admin')
             ->setPublic(true)
             ->setClass(CustomAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => Report::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => Report::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_report_group', 'manager_type' => 'orm', 'on_top' => true]);
         $this->container
             ->register('sonata_report_one_admin')
             ->setClass(CustomAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => ReportOne::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_report_one_group', 'manager_type' => 'orm', 'show_mosaic_button' => false]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => ReportOne::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_report_one_group', 'manager_type' => 'orm', 'show_mosaic_button' => false]);
         $this->container
             ->register('sonata_report_two_admin')
             ->setClass(CustomAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => ReportTwo::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_report_two_group', 'manager_type' => 'orm', 'show_mosaic_button' => true]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => ReportTwo::class, 'controller' => 'sonata.admin.controller.crud', 'group' => 'sonata_report_two_group', 'manager_type' => 'orm', 'show_mosaic_button' => true]);
 
         // translator
         $this->container

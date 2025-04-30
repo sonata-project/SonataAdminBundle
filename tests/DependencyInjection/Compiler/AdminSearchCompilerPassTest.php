@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
+use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminSearchCompilerPass;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
@@ -28,7 +29,7 @@ final class AdminSearchCompilerPassTest extends AbstractCompilerPassTestCase
     public function testProcess(): void
     {
         $adminFooDefinition = new Definition(PostAdmin::class);
-        $adminFooDefinition->addTag('sonata.admin', [
+        $adminFooDefinition->addTag(TaggedAdminInterface::ADMIN_TAG, [
             'code' => 'admin_foo_code',
             'model_class' => Post::class,
             'global_search' => true,
@@ -36,7 +37,7 @@ final class AdminSearchCompilerPassTest extends AbstractCompilerPassTestCase
         $this->setDefinition('admin.foo', $adminFooDefinition);
 
         $adminBarDefinition = new Definition(PostAdmin::class);
-        $adminBarDefinition->addTag('sonata.admin', [
+        $adminBarDefinition->addTag(TaggedAdminInterface::ADMIN_TAG, [
             'code' => 'admin_bar_code',
             'model_class' => Post::class,
             'global_search' => false,
@@ -44,7 +45,7 @@ final class AdminSearchCompilerPassTest extends AbstractCompilerPassTestCase
         $this->setDefinition('admin.bar', $adminBarDefinition);
 
         $adminBazDefinition = new Definition(PostAdmin::class);
-        $adminBazDefinition->addTag('sonata.admin', [
+        $adminBazDefinition->addTag(TaggedAdminInterface::ADMIN_TAG, [
             'code' => 'admin_baz_code',
             'model_class' => Post::class,
             'some_attribute' => 42,

@@ -20,6 +20,7 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminExtensionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
 use Sonata\BlockBundle\Cache\HttpCacheHandler;
@@ -60,7 +61,7 @@ final class ExtensionCompilerPassTest extends TestCase
     {
         $this->extension = new SonataAdminExtension();
         $this->config = $this->getConfig();
-        $this->root = 'sonata.admin';
+        $this->root = TaggedAdminInterface::ADMIN_TAG;
     }
 
     /**
@@ -468,32 +469,32 @@ final class ExtensionCompilerPassTest extends TestCase
             ->register('sonata_post_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => Post::class]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => Post::class]);
         $container
             ->register('sonata_news_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => News::class]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => News::class]);
         $container
             ->register('sonata_article_admin')
             ->setPublic(true)
             ->setClass(MockAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => Article::class]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => Article::class]);
         $container
             ->register('sonata_super_admin')
             ->setPublic(true)
             ->setClass(SuperMockAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => \stdClass::class]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => \stdClass::class]);
         $container
             ->register('sonata_timestampable_admin')
             ->setPublic(true)
             ->setClass(TimestampableAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => \stdClass::class]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => \stdClass::class]);
         $container
             ->register('sonata_publishable_admin')
             ->setPublic(true)
             ->setClass(PublishableAdmin::class)
-            ->addTag('sonata.admin', ['model_class' => \stdClass::class]);
+            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => \stdClass::class]);
         $container
             ->register('event_dispatcher')
             ->setClass(EventDispatcher::class);

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminAddInitializeCallCompilerPass;
 use Sonata\AdminBundle\Tests\App\Admin\FooAdmin;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -24,7 +25,7 @@ final class AdminAddInitializeCallCompilerPassTest extends TestCase
     {
         $builder = new ContainerBuilder();
         $builder->register('foo', FooAdmin::class)
-            ->addTag('sonata.admin');
+            ->addTag(TaggedAdminInterface::ADMIN_TAG);
 
         (new AdminAddInitializeCallCompilerPass())->process($builder);
 
