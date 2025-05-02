@@ -184,13 +184,10 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
     public function findObjectAcls(\Traversable $oids, array $sids = []): \SplObjectStorage
     {
         try {
-            /** @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls */
             $acls = $this->aclProvider->findAcls(iterator_to_array($oids), $sids);
         } catch (NotAllAclsFoundException $e) {
-            /**
-             * @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls
-             */
-            $acls = $e->getPartialResult();
+            /** @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls */
+            $acls = $e->getPartialResult(); // @phpstan-ignore varTag.type
         } catch (AclNotFoundException) { // if only one oid, this error is thrown
             /** @var \SplObjectStorage<ObjectIdentityInterface, MutableAclInterface> $acls */
             $acls = new \SplObjectStorage();
