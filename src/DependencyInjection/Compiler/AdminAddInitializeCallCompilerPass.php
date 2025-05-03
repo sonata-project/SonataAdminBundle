@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\DependencyInjection\Compiler;
 
+use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -26,7 +27,7 @@ final class AdminAddInitializeCallCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        $admins = $container->findTaggedServiceIds('sonata.admin');
+        $admins = $container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG);
         foreach (array_keys($admins) as $id) {
             $container->getDefinition($id)->addMethodCall('initialize');
         }
