@@ -602,7 +602,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $adminGroups = $this->container->findDefinition('sonata.admin.pool')->getArgument(2);
         static::assertCount(\count($priorities), $adminGroups['sonata_group_priority_1']['items']);
         foreach ($adminGroups['sonata_group_priority_1']['items'] as $item) {
-            $priority = array_shift($priorities);
+            $priority = (string) array_shift($priorities);
             static::assertSame('sonata_admin_'.$priority, $item['admin']);
         }
     }

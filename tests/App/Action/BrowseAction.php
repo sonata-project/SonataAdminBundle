@@ -15,7 +15,7 @@ namespace Sonata\AdminBundle\Tests\App\Action;
 
 use Symfony\Component\HttpFoundation\Response;
 
-class BrowseAction
+final class BrowseAction
 {
     public function __invoke(): Response
     {

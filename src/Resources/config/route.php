@@ -34,7 +34,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         ->set('sonata.admin.route.cache', RoutesCache::class)
             ->args([
-                param('kernel.cache_dir').'/sonata/admin',
+                param('kernel.cache_dir')->__toString().'/sonata/admin',
                 param('kernel.debug'),
             ])
 

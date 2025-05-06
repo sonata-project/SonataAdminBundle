@@ -242,7 +242,7 @@ final class AdminMaker extends AbstractMaker
                 '%sThe service "<info>%s</info>" has been appended to the file <info>"%s</info>".',
                 \PHP_EOL,
                 $id,
-                realpath($file)
+                $file
             ));
         }
     }

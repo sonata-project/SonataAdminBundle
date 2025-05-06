@@ -44,7 +44,10 @@ final class FormViewIterator implements \RecursiveIterator
 
     public function current(): FormView
     {
-        return $this->iterator->current();
+        $current = $this->iterator->current();
+        \assert($current instanceof FormView);
+
+        return $current;
     }
 
     public function next(): void
