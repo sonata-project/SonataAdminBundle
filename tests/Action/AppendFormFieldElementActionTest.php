@@ -22,7 +22,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
-use stdClass;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormRenderer;
@@ -51,9 +50,6 @@ final class AppendFormFieldElementActionTest extends TestCase
      */
     private AdminInterface $admin;
 
-    /**
-     * @var AdminHelper
-     */
     private AdminHelper $helper;
 
     protected function setUp(): void
@@ -104,7 +100,7 @@ final class AppendFormFieldElementActionTest extends TestCase
         $this->admin->method('getFormBuilder')->willReturn($formBuilder);
 
         $associationAdmin = $this->createMock(AdminInterface::class);
-        $associationAdmin->method('getClass')->willReturn(stdClass::class);
+        $associationAdmin->method('getClass')->willReturn(\stdClass::class);
 
         $fieldDescription = static::createMock(FieldDescriptionInterface::class);
         $fieldDescription->method('getAssociationAdmin')->willReturn($associationAdmin);
