@@ -22,7 +22,7 @@ use Sonata\AdminBundle\Tests\App\Model\Bar;
 /**
  * @phpstan-extends AbstractAdmin<Bar>
  */
-class BarAdmin extends AbstractAdmin
+final class BarAdmin extends AbstractAdmin
 {
     protected function createNewInstance(): object
     {

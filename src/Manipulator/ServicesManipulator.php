@@ -45,7 +45,7 @@ final class ServicesManipulator
         if (is_file($this->file)) {
             $content = file_get_contents($this->file);
             if (false === $content) {
-                throw new \RuntimeException(\sprintf('Cannot read the file "%s".', realpath($this->file)));
+                throw new \RuntimeException(\sprintf('Cannot read the file "%s".', $this->getRealPath($this->file)));
             }
 
             $code = rtrim($content);
@@ -60,7 +60,7 @@ final class ServicesManipulator
                     throw new \RuntimeException(\sprintf(
                         'The service "%s" is already defined in the file "%s".',
                         $serviceId,
-                        realpath($this->file)
+                        $this->getRealPath($this->file)
                     ));
                 }
 
@@ -80,7 +80,7 @@ final class ServicesManipulator
             $modelClass,
             $controllerName,
             $managerType,
-            current(\array_slice(explode('\\', $modelClass), -1))
+            \array_slice(explode('\\', $modelClass), -1)[0]
         );
         @mkdir(\dirname($this->file), 0777, true);
 
@@ -91,5 +91,15 @@ final class ServicesManipulator
                 $this->file
             ));
         }
+    }
+
+    private function getRealPath(string $file): string
+    {
+        $path = realpath($file);
+        if (false !== $path) {
+            return $path;
+        }
+
+        return $file;
     }
 }

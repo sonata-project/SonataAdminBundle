@@ -859,31 +859,31 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 }
 
 /** @phpstan-extends AbstractAdmin<object> */
-class CustomAdmin extends AbstractAdmin
+final class CustomAdmin extends AbstractAdmin
 {
 }
 
-class Report
+final class Report
 {
 }
-class ReportOne
+final class ReportOne
 {
 }
-class ReportTwo
+final class ReportTwo
 {
 }
-class NewsEntity
+final class NewsEntity
 {
 }
-class PostEntity
+final class PostEntity
 {
 }
-class ArticleEntity
+final class ArticleEntity
 {
 }
-class FooEntity
+final class FooEntity
 {
 }
-class BazEntity
+final class BazEntity
 {
 }

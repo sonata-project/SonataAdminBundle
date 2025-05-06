@@ -590,25 +590,25 @@ class Post
 interface Publishable
 {
 }
-class News extends Post
+final class News extends Post
 {
 }
-class Article implements Publishable
+final class Article implements Publishable
 {
 }
 /** @phpstan-extends AbstractAdmin<object> */
 class MockAdmin extends AbstractAdmin
 {
 }
-class SuperMockAdmin extends MockAdmin
+final class SuperMockAdmin extends MockAdmin
 {
 }
 /** @phpstan-extends AbstractAdmin<object> */
-class TimestampableAdmin extends AbstractAdmin
+final class TimestampableAdmin extends AbstractAdmin
 {
     use TimestampableTrait;
 }
 /** @phpstan-extends AbstractAdmin<object> */
-class PublishableAdmin extends AbstractAdmin implements Publishable
+final class PublishableAdmin extends AbstractAdmin implements Publishable
 {
 }

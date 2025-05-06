@@ -73,7 +73,7 @@ abstract class Pager implements PagerInterface
             $nbLinks = $this->getMaxPageLinks();
         }
         $links = [];
-        $tmp = $this->page - floor($nbLinks / 2);
+        $tmp = $this->page - (int) floor($nbLinks / 2);
         $check = $this->lastPage - $nbLinks + 1;
         $limit = $check > 0 ? $check : 1;
         $begin = $tmp > 0 ? ($tmp > $limit ? $limit : $tmp) : 1;
