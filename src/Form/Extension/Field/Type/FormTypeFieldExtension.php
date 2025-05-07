@@ -105,6 +105,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
             \assert(\is_string($lastBlockPrefix));
 
             $blockSuffix = preg_replace('#^_([a-z0-9]{14})_(.++)$#', '$2', $lastBlockPrefix);
+            \assert(\is_string($blockSuffix));
 
             $blockPrefixes[] = \sprintf('%s_%s', $baseName, $baseType);
             $blockPrefixes[] = \sprintf('%s_%s_%s_%s', $baseName, $baseType, $view->parent->vars['name'], $view->vars['name']);
@@ -144,6 +145,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
             \assert(\is_string($lastBlockPrefix));
 
             $blockSuffix = preg_replace('#^_([a-z0-9]{14})_(.++)$#', '$2', $lastBlockPrefix);
+            \assert(\is_string($blockSuffix));
 
             $blockPrefixes[] = \sprintf('%s_%s', $baseName, $baseType);
             $blockPrefixes[] = \sprintf('%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType);

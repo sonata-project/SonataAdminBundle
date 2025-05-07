@@ -21,7 +21,7 @@ use Sonata\AdminBundle\Tests\App\Action\BrowseAction;
 /**
  * @phpstan-extends AbstractAdminExtension<object>
  */
-class CustomAdminExtension extends AbstractAdminExtension
+final class CustomAdminExtension extends AbstractAdminExtension
 {
     public function configureRoutes(AdminInterface $admin, RouteCollectionInterface $collection): void
     {

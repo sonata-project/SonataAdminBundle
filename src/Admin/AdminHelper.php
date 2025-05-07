@@ -28,7 +28,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-class AdminHelper
+final class AdminHelper
 {
     /**
      * @var string

@@ -19,7 +19,7 @@ use Sonata\AdminBundle\Model\ProxyResolverInterface;
 /**
  * @internal
  */
-class BCHelper
+final class BCHelper
 {
     /**
      * @return class-string

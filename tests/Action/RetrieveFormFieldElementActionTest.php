@@ -19,14 +19,16 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\RetrieveFormFieldElementAction;
 use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\Form\Form;
-use Symfony\Component\Form\FormBuilder;
+use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Twig\Environment;
 
 final class RetrieveFormFieldElementActionTest extends TestCase
@@ -48,9 +50,6 @@ final class RetrieveFormFieldElementActionTest extends TestCase
      */
     private Environment $twig;
 
-    /**
-     * @var AdminHelper&MockObject
-     */
     private AdminHelper $helper;
 
     protected function setUp(): void
@@ -59,7 +58,7 @@ final class RetrieveFormFieldElementActionTest extends TestCase
         $this->admin = $this->createMock(AdminInterface::class);
         $this->adminFetcher = static::createStub(AdminFetcherInterface::class);
         $this->adminFetcher->method('get')->willReturn($this->admin);
-        $this->helper = $this->createMock(AdminHelper::class);
+        $this->helper = new AdminHelper(new PropertyAccessor());
         $this->action = new RetrieveFormFieldElementAction(
             $this->twig,
             $this->adminFetcher,
@@ -73,32 +72,41 @@ final class RetrieveFormFieldElementActionTest extends TestCase
         $request = new Request([
             '_sonata_admin' => 'sonata.post.admin',
             'objectId' => 42,
-            'elementId' => 'element_42',
+            'elementId' => 'element_collection',
             'field' => 'enabled',
             'value' => 1,
             'context' => 'list',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST]);
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
-        $formView = new FormView();
-        $form = $this->createMock(Form::class);
-        $formBuilder = static::createStub(FormBuilder::class);
 
+        $formView = new FormView();
+        $formViewChild = new FormView();
+        $formViewChild->vars['id'] = 'element_collection';
+        $formView->children['element_collection'] = $formViewChild;
+
+        $form = static::createStub(Form::class);
+        $form->method('createView')->willReturn($formView);
         $renderer = $this->configureFormRenderer();
+
+        $formBuilder = $this->createMock(FormBuilderInterface::class);
+        $formBuilder->method('getForm')->willReturn($form);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getClass')->willReturn($object::class);
         $this->admin->expects(static::once())->method('setSubject')->with($object);
         $this->admin->method('getFormTheme')->willReturn([]);
         $this->admin->method('getFormBuilder')->willReturn($formBuilder);
-        $this->helper->method('getChildFormView')->with($formView, 'element_42')->willReturn($formView);
+
+        $associationAdmin = $this->createMock(AdminInterface::class);
+        $associationAdmin->method('getClass')->willReturn(\stdClass::class);
+
+        $fieldDescription = static::createMock(FieldDescriptionInterface::class);
+        $fieldDescription->method('getAssociationAdmin')->willReturn($associationAdmin);
+        $this->admin->method('getFormFieldDescription')->willReturn($fieldDescription);
         $modelManager->method('find')->with($object::class, 42)->willReturn($object);
-        $form->expects(static::once())->method('setData')->with($object);
-        $form->expects(static::once())->method('handleRequest')->with($request);
-        $form->method('createView')->willReturn($formView);
-        $formBuilder->method('getForm')->willReturn($form);
-        $renderer->expects(static::once())->method('setTheme')->with($formView, []);
-        $renderer->method('searchAndRenderBlock')->with($formView, 'widget')->willReturn('block');
+        $renderer->expects(static::once())->method('setTheme')->with($formViewChild);
+        $renderer->method('searchAndRenderBlock')->with($formViewChild, 'widget')->willReturn('block');
 
         $response = ($this->action)($request);
 

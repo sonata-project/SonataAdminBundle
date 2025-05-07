@@ -602,7 +602,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $adminGroups = $this->container->findDefinition('sonata.admin.pool')->getArgument(2);
         static::assertCount(\count($priorities), $adminGroups['sonata_group_priority_1']['items']);
         foreach ($adminGroups['sonata_group_priority_1']['items'] as $item) {
-            $priority = array_shift($priorities);
+            $priority = (string) array_shift($priorities);
             static::assertSame('sonata_admin_'.$priority, $item['admin']);
         }
     }
@@ -859,31 +859,31 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 }
 
 /** @phpstan-extends AbstractAdmin<object> */
-class CustomAdmin extends AbstractAdmin
+final class CustomAdmin extends AbstractAdmin
 {
 }
 
-class Report
+final class Report
 {
 }
-class ReportOne
+final class ReportOne
 {
 }
-class ReportTwo
+final class ReportTwo
 {
 }
-class NewsEntity
+final class NewsEntity
 {
 }
-class PostEntity
+final class PostEntity
 {
 }
-class ArticleEntity
+final class ArticleEntity
 {
 }
-class FooEntity
+final class FooEntity
 {
 }
-class BazEntity
+final class BazEntity
 {
 }
