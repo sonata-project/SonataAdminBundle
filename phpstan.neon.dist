@@ -19,9 +19,7 @@ parameters:
         analyseAndScan:
             - src/Resources/skeleton/**
     treatPhpDocTypesAsCertain: false
-    checkGenericClassInNonGenericObjectType: true
     checkInternalClassCaseSensitivity: true
-    checkMissingIterableValueType: true
     checkMissingVarTagTypehint: true
     checkMissingTypehints: true
     checkUninitializedProperties: true
