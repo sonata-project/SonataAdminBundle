@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Config;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Psr\Container\ContainerInterface;
 use Sonata\AdminBundle\Admin\AdminHelper;
@@ -43,11 +43,6 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
-use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     /**
@@ -78,6 +73,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 service('sonata.admin.pool'),
             ])
 
+        // @phpstan-ignore-next-line classConstant.internalClass
         ->set('sonata.admin.helper', AdminHelper::class)
             ->args([
                 service('property_accessor'),
@@ -112,6 +108,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         ->set('sonata.admin.label.strategy.form_component', FormLabelTranslatorStrategy::class)
 
+        // @phpstan-ignore-next-line classConstant.internalClass
         ->set('sonata.admin.translation_extractor', AdminExtractor::class)
             ->tag('translation.extractor', [
                 'alias' => 'sonata_admin',

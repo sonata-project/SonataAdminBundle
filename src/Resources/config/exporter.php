@@ -11,12 +11,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Config;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
-
-use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()

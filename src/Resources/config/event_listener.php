@@ -11,14 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Config;
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Sonata\AdminBundle\EventListener\ConfigureCRUDControllerListener;
-use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
+        // @phpstan-ignore-next-line classConstant.internalClass
         ->set('sonata.admin.event_listener.configure_crud_controller', ConfigureCRUDControllerListener::class)
             ->tag('kernel.event_subscriber');
 };
