@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+namespace Sonata\AdminBundle\Config;
 
 use Sonata\AdminBundle\Form\DataTransformer\BooleanToStringTransformer;
 use Sonata\AdminBundle\Form\DataTransformerResolver;
@@ -33,8 +33,12 @@ use Sonata\AdminBundle\Form\Type\ModelHiddenType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Form\Type\ModelReferenceType;
 use Sonata\AdminBundle\Form\Type\ModelType;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
+
+use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     /**

@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+namespace Sonata\AdminBundle\Config;
 
 use Sonata\AdminBundle\Twig\BreadcrumbsRuntime;
 use Sonata\AdminBundle\Twig\CanonicalizeRuntime;
@@ -31,6 +31,9 @@ use Sonata\AdminBundle\Twig\SecurityRuntime;
 use Sonata\AdminBundle\Twig\SonataAdminRuntime;
 use Sonata\AdminBundle\Twig\TemplateRegistryRuntime;
 use Sonata\AdminBundle\Twig\XEditableRuntime;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->parameters()

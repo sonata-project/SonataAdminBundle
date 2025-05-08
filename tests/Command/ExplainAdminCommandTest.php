@@ -120,7 +120,7 @@ final class ExplainAdminCommandTest extends TestCase
 
         $this->admin
             ->method('getParent')
-            ->willReturnCallback(function () {
+            ->willReturnCallback(function (): AdminInterface {
                 $adminParent = $this->createMock(AdminInterface::class);
 
                 $adminParent

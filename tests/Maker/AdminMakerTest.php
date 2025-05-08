@@ -26,7 +26,6 @@ use Symfony\Bundle\MakerBundle\Util\MakerFileLinkFormatter;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputDefinition;
-use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Filesystem\Filesystem;
@@ -42,8 +41,6 @@ final class AdminMakerTest extends TestCase
      * @var array<string, ModelManagerInterface<object>>
      */
     private array $modelManagers = [];
-
-    private ?InputInterface $input = null;
 
     private ?ConsoleStyle $io = null;
 
@@ -91,29 +88,32 @@ final class AdminMakerTest extends TestCase
             new InputOption('id', 'i', InputOption::VALUE_REQUIRED),
         ]);
 
-        $this->input = new ArrayInput($in, $definition);
-
         $stream = fopen('php://memory', 'w', false);
         static::assertIsResource($stream);
 
-        $this->io = new ConsoleStyle($this->input, new StreamOutput($stream));
+        $input = new ArrayInput($in, $definition);
+        $this->io = new ConsoleStyle($input, new StreamOutput($stream));
+        // @phpstan-ignore-next-line classConstant.internalClass
         $autoloaderUtil = $this->createMock(AutoloaderUtil::class);
         $autoloaderUtil
             ->method('getPathForFutureClass')
             ->willReturnCallback(fn (string $className): string => \sprintf('%s/%s.php', $this->projectDirectory, str_replace('\\', '/', $className)));
 
+        // @phpstan-ignore-next-line new.internalClass
         $fileManager = new FileManager(
             $this->filesystem,
             $autoloaderUtil,
+            // @phpstan-ignore-next-line new.internalClass
             new MakerFileLinkFormatter(null),
             $this->projectDirectory
         );
+        // @phpstan-ignore-next-line method.internalClass
         $fileManager->setIO($this->io);
 
         $this->generator = new Generator(
             $fileManager,
             'Sonata\AdminBundle\Tests'
         );
-        $maker->generate($this->input, $this->io, $this->generator);
+        $maker->generate($input, $this->io, $this->generator);
     }
 }

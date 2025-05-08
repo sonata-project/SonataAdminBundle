@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+namespace Sonata\AdminBundle\Config;
 
 use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
@@ -19,6 +19,10 @@ use Sonata\AdminBundle\Security\Handler\NoopSecurityHandler;
 use Sonata\AdminBundle\Security\Handler\RoleSecurityHandler;
 use Sonata\AdminBundle\Util\AdminAclManipulator;
 use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
+use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->parameters()

@@ -11,12 +11,16 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+namespace Sonata\AdminBundle\Config;
 
 use Sonata\AdminBundle\Command\ExplainAdminCommand;
 use Sonata\AdminBundle\Command\GenerateObjectAclCommand;
 use Sonata\AdminBundle\Command\ListAdminCommand;
 use Sonata\AdminBundle\Command\SetupAclCommand;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
+use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()

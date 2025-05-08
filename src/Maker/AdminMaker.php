@@ -124,7 +124,7 @@ final class AdminMaker extends AbstractMaker
             $input->getArgument('model'),
             Validators::validateClass(...)
         );
-        $this->modelClassBasename = \array_slice(explode('\\', (string) $this->modelClass), -1)[0];
+        $this->modelClassBasename = \array_slice(explode('\\', $this->modelClass), -1)[0];
 
         $this->adminClassBasename = $io->ask(
             'The admin class basename',

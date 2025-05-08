@@ -11,9 +11,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+namespace Sonata\AdminBundle\Config;
 
 use Sonata\AdminBundle\EventListener\ConfigureCRUDControllerListener;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()

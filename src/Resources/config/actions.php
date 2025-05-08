@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+namespace Sonata\AdminBundle\Config;
 
 use Sonata\AdminBundle\Action\AppendFormFieldElementAction;
 use Sonata\AdminBundle\Action\DashboardAction;
@@ -20,6 +20,10 @@ use Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction;
 use Sonata\AdminBundle\Action\RetrieveFormFieldElementAction;
 use Sonata\AdminBundle\Action\SearchAction;
 use Sonata\AdminBundle\Action\SetObjectFieldValueAction;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
+use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()

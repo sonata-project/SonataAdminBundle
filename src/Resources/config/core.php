@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+namespace Sonata\AdminBundle\Config;
 
 use Psr\Container\ContainerInterface;
 use Sonata\AdminBundle\Admin\AdminHelper;
@@ -43,6 +43,11 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
+use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
+
+use function Symfony\Component\DependencyInjection\Loader\Configurator\abstract_arg;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\param;
+use function Symfony\Component\DependencyInjection\Loader\Configurator\service;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     /**
