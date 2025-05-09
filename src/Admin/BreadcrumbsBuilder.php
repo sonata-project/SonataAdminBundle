@@ -57,7 +57,8 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
 
         do {
             $breadcrumbs[] = $menu;
-        } while ($menu = $menu->getParent());
+            $menu = $menu->getParent();
+        } while (null !== $menu);
 
         $breadcrumbs = array_reverse($breadcrumbs);
         array_shift($breadcrumbs);

@@ -68,12 +68,13 @@ final class ConfigureCRUDControllerListenerTest extends TestCase
         $twig = $this->createMock(Environment::class);
         $container->set('twig', $twig);
 
-        $matcher = static::exactly(2);
+        $callNumber = 0;
         $twig
-            ->expects($matcher)
+            ->expects(static::exactly(2))
             ->method('addGlobal')
-            ->willReturnCallback(static function (string $name) use ($matcher) {
-                match ($matcher->getInvocationCount()) {
+            ->willReturnCallback(static function (string $name) use (&$callNumber) {
+                ++$callNumber;
+                match ($callNumber) {
                     1 => static::assertSame('admin', $name),
                     2 => static::assertSame('base_template', $name),
                     default => throw new \LogicException('Exactly 2 calls'),

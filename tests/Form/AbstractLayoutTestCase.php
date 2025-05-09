@@ -107,8 +107,6 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
                 // strip away <root> and </root>
                 substr(false !== $savedHtml ? $savedHtml : '', 6, -8)
             ));
-        } else {
-            $this->addToAssertionCount(1);
         }
     }
 

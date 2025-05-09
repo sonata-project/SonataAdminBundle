@@ -38,7 +38,7 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 final class AdminEventExtensionTest extends TestCase
 {
     /**
-     * @param mixed[] $args
+     * @param list<mixed> $args
      */
     public function getExtension(array $args): AdminEventExtension
     {

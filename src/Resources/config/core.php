@@ -73,6 +73,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 service('sonata.admin.pool'),
             ])
 
+        // @phpstan-ignore-next-line classConstant.internalClass
         ->set('sonata.admin.helper', AdminHelper::class)
             ->args([
                 service('property_accessor'),
@@ -107,6 +108,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         ->set('sonata.admin.label.strategy.form_component', FormLabelTranslatorStrategy::class)
 
+        // @phpstan-ignore-next-line classConstant.internalClass
         ->set('sonata.admin.translation_extractor', AdminExtractor::class)
             ->tag('translation.extractor', [
                 'alias' => 'sonata_admin',
