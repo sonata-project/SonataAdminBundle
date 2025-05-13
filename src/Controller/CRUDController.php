@@ -117,7 +117,7 @@ class CRUDController extends AbstractController
         }
 
         $listMode = $request->get('_list_mode');
-        if (\is_string($listMode)) {
+        if (\is_string($listMode) && \array_key_exists($listMode, $this->admin->getListModes())) {
             $this->admin->setListMode($listMode);
         }
 
