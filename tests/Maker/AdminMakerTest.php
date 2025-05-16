@@ -57,7 +57,7 @@ final class AdminMakerTest extends TestCase
             ->willReturn(['bar', 'baz']);
 
         $this->modelManagers = ['sonata.admin.manager.orm' => $managerOrmProxy];
-        $this->servicesFile = \sprintf('%s.yml', lcg_value());
+        $this->servicesFile = \sprintf('%s.yml', random_bytes(10));
         $this->projectDirectory = \sprintf('%s/sonata-admin-bundle/', sys_get_temp_dir());
         $this->filesystem = new Filesystem();
     }
