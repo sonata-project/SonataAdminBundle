@@ -2,6 +2,19 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.36.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.36.1...4.36.2) - 2025-05-16
+### Changed
+- [[#8283](https://github.com/sonata-project/SonataAdminBundle/pull/8283)] Replaced hardcoded `sonata.admin` strings with class constant TaggedAdminInterface::ADMIN_TAG ([@symfonyaml](https://github.com/symfonyaml))
+
+### Fixed
+- [[#8282](https://github.com/sonata-project/SonataAdminBundle/pull/8282)] Sending empty `_sort_order` defaults to 'ASC' ([@mvhirsch](https://github.com/mvhirsch))
+
+### Removed
+- [[#8291](https://github.com/sonata-project/SonataAdminBundle/pull/8291)] Ext-json requirement ([@VincentLanglet](https://github.com/VincentLanglet))
+
+### Security
+- [[#8289](https://github.com/sonata-project/SonataAdminBundle/pull/8289)] Validate admin list mode exists before setting it ([@virtualize](https://github.com/virtualize))
+
 ## [4.36.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.36.0...4.36.1) - 2025-04-03
 ### Fixed
 - [[#8278](https://github.com/sonata-project/SonataAdminBundle/pull/8278)] Execute JS scripts embedded in prototype ([@onEXHovia](https://github.com/onEXHovia))
