@@ -44,7 +44,7 @@ lint-xliff:
 .PHONY: lint-xliff
 
 lint-php:
-	vendor/bin/php-cs-fixer fix --ansi --verbose --diff --dry-run
+	PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --ansi --verbose --diff --dry-run
 .PHONY: lint-php
 
 lint-symfony: lint-symfony-container lint-symfony-twig lint-symfony-xliff lint-symfony-yaml
@@ -70,7 +70,7 @@ cs-fix: cs-fix-php cs-fix-xml cs-fix-xliff cs-fix-composer
 .PHONY: cs-fix
 
 cs-fix-php:
-	vendor/bin/php-cs-fixer fix --verbose
+	PHP_CS_FIXER_IGNORE_ENV=1 vendor/bin/php-cs-fixer fix --verbose
 .PHONY: cs-fix-php
 
 cs-fix-xml:
@@ -117,7 +117,7 @@ phpstan:
 .PHONY: phpstan
 
 psalm:
-	vendor/bin/psalm --php-version=8.3
+	vendor/bin/psalm --php-version=8.4
 .PHONY: psalm
 
 rector:
