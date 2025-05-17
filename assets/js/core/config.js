@@ -14,7 +14,13 @@ class Config {
 
   param(key) {
     if (this.params === null) {
-      this.params = JSON.parse(getMetaContent('sonata-config'));
+      try {
+        this.params = JSON.parse(getMetaContent('sonata-config'));
+      } catch (e) {
+        throw new Error(
+          `An error has occurred resolving the "sonata-config" meta tag: ${e.message}.`
+        );
+      }
     }
 
     if (key in this.params) {
