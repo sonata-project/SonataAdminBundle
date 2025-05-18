@@ -14,7 +14,13 @@ class Translation {
 
   trans(key) {
     if (this.messages === null) {
-      this.messages = JSON.parse(getMetaContent('sonata-translations'));
+      try {
+        this.messages = JSON.parse(getMetaContent('sonata-translations'));
+      } catch (e) {
+        throw new Error(
+          `An error has occurred resolving the "sonata-translations" meta tag: ${e.message}.`
+        );
+      }
     }
 
     if (key in this.messages) {
