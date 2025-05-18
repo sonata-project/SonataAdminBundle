@@ -39,6 +39,8 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\Translator;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
+use Symfony\UX\StimulusBundle\Twig\StimulusTwigExtension;
 use Twig\Environment;
 use Twig\Extra\String\StringExtension;
 use Twig\RuntimeLoader\FactoryRuntimeLoader;
@@ -103,6 +105,7 @@ final class RenderElementRuntimeTest extends TestCase
             'autoescape' => 'html',
             'optimizations' => 0,
         ]);
+        $this->environment->addExtension(new StimulusTwigExtension(new StimulusHelper(null)));
         $this->environment->addGlobal('sonata_config', new SonataConfiguration('title', '/path/to/logo.png', [
             'confirm_exit' => true,
             'default_admin_route' => 'show',
@@ -1404,11 +1407,17 @@ final class RenderElementRuntimeTest extends TestCase
             [
                 <<<'EOT'
                     <td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345">
-                    <div
-                        class="sonata-readmore"
-                        data-readmore-height="40"
-                        data-readmore-more="Read more"
-                        data-readmore-less="Close">A very long string</div>
+                        <div class="sonata-readmore"
+                             data-controller="sonata-readmore"
+                             data-sonata-readmore-collapsed-height-value="40"
+                             data-sonata-readmore-more-text-value="Read more"
+                             data-sonata-readmore-less-text-value="Close">
+                            <div class="sonata-readmore-content" data-sonata-readmore-target="content">A very long string</div>
+                            <button type="button"
+                                    class="sonata-readmore-btn btn-link"
+                                    data-sonata-readmore-target="button"
+                                    data-action="click->sonata-readmore#toggle"></button>
+                        </div>
                     </td>
                     EOT
                 ,
@@ -1421,11 +1430,17 @@ final class RenderElementRuntimeTest extends TestCase
             [
                 <<<'EOT'
                     <td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345">
-                    <div
-                        class="sonata-readmore"
-                        data-readmore-height="10"
-                        data-readmore-more="More"
-                        data-readmore-less="Less">A very long string</div>
+                        <div class="sonata-readmore"
+                             data-controller="sonata-readmore"
+                             data-sonata-readmore-collapsed-height-value="10"
+                             data-sonata-readmore-more-text-value="More"
+                             data-sonata-readmore-less-text-value="Less">
+                            <div class="sonata-readmore-content" data-sonata-readmore-target="content">A very long string</div>
+                            <button type="button"
+                                    class="sonata-readmore-btn btn-link"
+                                    data-sonata-readmore-target="button"
+                                    data-action="click->sonata-readmore#toggle"></button>
+                        </div>
                     </td>
                     EOT
                 ,
@@ -1945,13 +1960,19 @@ final class RenderElementRuntimeTest extends TestCase
         ];
         yield [
             <<<'EOT'
-                <th>Data</th> <td><div
-                        class="sonata-readmore"
-                        data-readmore-height="40"
-                        data-readmore-more="Read more"
-                        data-readmore-less="Close">
-                            A very long string
-                </div></td>
+                <th>Data</th> <td>
+                    <div class="sonata-readmore"
+                         data-controller="sonata-readmore"
+                         data-sonata-readmore-collapsed-height-value="40"
+                         data-sonata-readmore-more-text-value="Read more"
+                         data-sonata-readmore-less-text-value="Close">
+                        <div class="sonata-readmore-content" data-sonata-readmore-target="content"> A very long string </div>
+                        <button type="button"
+                                class="sonata-readmore-btn btn-link"
+                                data-sonata-readmore-target="button"
+                                data-action="click->sonata-readmore#toggle"></button>
+                    </div>
+                </td>
                 EOT
             ,
             FieldDescriptionInterface::TYPE_STRING,
@@ -1963,13 +1984,19 @@ final class RenderElementRuntimeTest extends TestCase
         ];
         yield [
             <<<'EOT'
-                <th>Data</th> <td><div
-                        class="sonata-readmore"
-                        data-readmore-height="10"
-                        data-readmore-more="More"
-                        data-readmore-less="Less">
-                            A very long string
-                </div></td>
+                <th>Data</th> <td>
+                    <div class="sonata-readmore"
+                         data-controller="sonata-readmore"
+                         data-sonata-readmore-collapsed-height-value="10"
+                         data-sonata-readmore-more-text-value="More"
+                         data-sonata-readmore-less-text-value="Less">
+                        <div class="sonata-readmore-content" data-sonata-readmore-target="content"> A very long string </div>
+                        <button type="button"
+                                class="sonata-readmore-btn btn-link"
+                                data-sonata-readmore-target="button"
+                                data-action="click->sonata-readmore#toggle"></button>
+                    </div>
+                </td>
                 EOT
             ,
             FieldDescriptionInterface::TYPE_STRING,
