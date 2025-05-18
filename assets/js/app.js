@@ -39,7 +39,6 @@ import 'jquery-slimscroll';
 // No Framework Waypoints version and sticky shortcut
 import 'waypoints/lib/noframework.waypoints';
 import 'waypoints/lib/shortcuts/sticky';
-import 'readmore-js';
 import 'masonry-layout';
 
 // SonataAdmin custom scripts
