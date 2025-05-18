@@ -22,10 +22,17 @@ file that was distributed with this source code.
             {%- block field %}
                 {% if field_description.option('collapse') is not null %}
                     {% set collapse = field_description.option('collapse') %}
-                    <div class="sonata-readmore"
-                          data-readmore-height="{{ collapse.height|default(40) }}"
-                          data-readmore-more="{{ collapse.more|default('read_more')|trans({}, 'SonataAdminBundle') }}"
-                          data-readmore-less="{{ collapse.less|default('read_less')|trans({}, 'SonataAdminBundle') }}">{{ value }}</div>
+                    <div class="sonata-readmore" {{ stimulus_controller('sonata-readmore', {
+                        'collapsedHeight': collapse.height|default(40),
+                        'moreText': collapse.more|default('read_more')|trans({}, 'SonataAdminBundle'),
+                        'lessText': collapse.less|default('read_less')|trans({}, 'SonataAdminBundle'),
+                    }) }}>
+                        <div class="sonata-readmore-content" {{ stimulus_target('sonata-readmore', 'content') }}>{{ value }}</div>
+                        <button type="button"
+                                class="sonata-readmore-btn btn-link"
+                                {{ stimulus_target('sonata-readmore', 'button') }}
+                                {{ stimulus_action('sonata-readmore', 'toggle', 'click') }}></button>
+                    </div>
                 {% else %}
                     {{ value }}
                 {% endif %}

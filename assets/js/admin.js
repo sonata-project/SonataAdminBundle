@@ -26,7 +26,6 @@ const Admin = {
     Admin.setup_inline_form_errors(subject);
     Admin.setup_tree_view(subject);
     Admin.setup_sticky_elements(subject);
-    Admin.setup_readmore_elements(subject);
   },
   get_config(key) {
     return Config.param(key);
@@ -513,22 +512,6 @@ const Admin = {
         func.apply(context, args);
       }
     };
-  },
-
-  setup_readmore_elements(subject) {
-    Admin.log('[core|setup_readmore_elements] setup readmore elements on', subject);
-
-    jQuery(subject)
-      .find('.sonata-readmore')
-      .each((index, element) => {
-        const $element = jQuery(element);
-
-        $element.readmore({
-          collapsedHeight: parseInt($element.data('readmore-height'), 10),
-          moreLink: `<a href="#">${$element.data('readmore-more')}</a>`,
-          lessLink: `<a href="#">${$element.data('readmore-less')}</a>`,
-        });
-      });
   },
 
   handle_top_navbar_height() {

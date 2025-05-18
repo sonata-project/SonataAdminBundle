@@ -1,0 +1,26 @@
+.sonata-readmore {
+  display: block;
+}
+
+.sonata-readmore-content {
+  overflow: hidden;
+
+  &.expanded {
+    max-height: none !important;
+  }
+
+  :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.sonata-readmore-btn {
+  padding: 0;
+}
+
+.sonata-readmore-content:not(.truncated, .expanded) {
+  + .sonata-readmore-btn,
+  > .sonata-readmore-btn {
+    display: none;
+  }
+}
