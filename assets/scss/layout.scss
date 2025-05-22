@@ -387,8 +387,13 @@ body.fixed .content-header .navbar.stuck {
   margin-left: -15px;
   position: fixed;
   top: 50px;
-  width: 100%;
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  width: calc(100% - 230px);
   z-index: 5;
+
+  .sidebar-collapse & {
+    width: 100%;
+  }
 }
 
 .form-actions.stuck {
@@ -397,8 +402,13 @@ body.fixed .content-header .navbar.stuck {
   margin-bottom: 0;
   margin-left: -15px;
   position: fixed;
-  width: 100%;
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  width: calc(100% - 230px);
   z-index: 5;
+
+  .sidebar-collapse & {
+    width: 100%;
+  }
 }
 
 @media (width <= 768px) {

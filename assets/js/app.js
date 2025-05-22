@@ -35,10 +35,6 @@ import 'icheck';
 
 // jQuery SlimScroll is used in AdminLTE v2
 import 'jquery-slimscroll';
-
-// No Framework Waypoints version and sticky shortcut
-import 'waypoints/lib/noframework.waypoints';
-import 'waypoints/lib/shortcuts/sticky';
 import 'masonry-layout';
 
 // SonataAdmin custom scripts
