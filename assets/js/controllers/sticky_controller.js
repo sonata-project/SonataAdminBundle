@@ -8,6 +8,7 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
+import { wrap } from '../core/utils';
 import Config from '../core/config';
 
 export default class extends Controller {
@@ -17,12 +18,38 @@ export default class extends Controller {
     return Config.param('USE_STICKYFORMS');
   }
 
-  actionTargetConnected() {
-    this.actionWrapper = this.wrap(this.actionTarget, 'action-sentinel');
-    this.actionWrapper.style.height = `${this.actionTarget.offsetHeight}px`;
+  connect() {
+    this.resizeObserver = new ResizeObserver(this.resize.bind(this));
+    if (this.actionTarget) {
+      this.resizeObserver.observe(this.actionTarget);
+    }
+
+    if (this.navbarTarget) {
+      this.resizeObserver.observe(this.navbarTarget);
+    }
+  }
+
+  disconnect() {
+    this.resizeObserver.disconnect();
+  }
+
+  resize(entries) {
+    entries.forEach((entry) => {
+      if (entry.target === this.actionTarget) {
+        this.actionIntersect();
+      } else if (entry.target === this.navbarTarget) {
+        this.navbarIntersect();
+      }
+    });
+  }
+
+  actionIntersect() {
+    const wrapper = this.actionTarget.closest('.action-sentinel') || wrap(this.actionTarget);
+    wrapper.classList.add('action-sentinel');
+    wrapper.style.height = `${this.actionTarget.offsetHeight}px`;
 
     let hasIntersected = false;
-    this.actionObserver = new IntersectionObserver(([entry]) => {
+    const callback = ([entry]) => {
       if (!hasIntersected) {
         hasIntersected = true;
         return;
@@ -33,53 +60,34 @@ export default class extends Controller {
       } else {
         this.actionTarget.classList.add('stuck');
       }
-    }, {
-      rootMargin: `0px 0px -${this.actionWrapper.offsetHeight}px 0px`,
+    };
+
+    const observer = new IntersectionObserver(callback, {
+      rootMargin: `0px 0px -${wrapper.offsetHeight}px 0px`,
       threshold: [0, 1],
     });
 
-    this.actionObserver.observe(this.actionWrapper);
+    observer.observe(wrapper);
   }
 
-  actionTargetDisconnected() {
-    this.actionObserver.disconnect();
-    this.unwrap(this.actionWrapper);
-  }
+  navbarIntersect() {
+    const wrapper = this.navbarTarget.closest('.navbar-sentinel') || wrap(this.navbarTarget);
+    wrapper.classList.add('navbar-sentinel');
+    wrapper.style.height = `${this.navbarTarget.offsetHeight}px`;
 
-  navbarTargetConnected() {
-    this.navbarWrapper = this.wrap(this.navbarTarget, 'navbar-sentinel');
-    this.navbarWrapper.style.height = `${this.navbarTarget.offsetHeight}px`;
-
-    this.navbarObserver = new IntersectionObserver(([entry]) => {
+    const callback = ([entry]) => {
       if (!entry.isIntersecting) {
         this.navbarTarget.classList.add('stuck');
       } else {
         this.navbarTarget.classList.remove('stuck');
       }
-    }, {
-      rootMargin: `-${this.topNavbarTarget.offsetHeight + this.navbarWrapper.offsetHeight}px 0px 0px 0px`,
+    };
+
+    const observer = new IntersectionObserver(callback, {
+      rootMargin: `-${this.topNavbarTarget.offsetHeight + wrapper.offsetHeight}px 0px 0px 0px`,
       threshold: [0, 1],
     });
 
-    this.navbarObserver.observe(this.navbarWrapper);
-  }
-
-  navbarTargetDisconnected() {
-    this.navbarObserver.disconnect();
-    this.unwrap(this.navbarWrapper);
-  }
-
-  wrap(el, className) {
-    const wrapper = document.createElement('div');
-    wrapper.classList.add(className);
-
-    el.parentNode.insertBefore(wrapper, el);
-    wrapper.appendChild(el);
-
-    return wrapper;
-  }
-
-  unwrap(el) {
-    return el.replaceWith(...el.childNodes);
+    observer.observe(wrapper);
   }
 }

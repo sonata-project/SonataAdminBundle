@@ -7,6 +7,13 @@
  * file that was distributed with this source code.
  */
 
+export function wrap(el, wrapper = document.createElement('div')) {
+  el.parentNode.insertBefore(wrapper, el);
+  wrapper.appendChild(el);
+
+  return wrapper;
+}
+
 export function activateScriptElement(el) {
   const script = document.createElement('script');
   script.textContent = el.textContent;
