@@ -103,6 +103,7 @@ file that was distributed with this source code.
                 {% if app.request.cookies.get('sonata_sidebar_hide') -%}
                     sidebar-collapse
                 {%- endif -%}"
+                {{ stimulus_controller('sonata-sticky') }}
             {%- endblock -%}
     >
 
@@ -128,7 +129,7 @@ file that was distributed with this source code.
                     </a>
                 {% endblock %}
                 {% block sonata_nav %}
-                    <nav class="navbar navbar-static-top">
+                    <nav class="navbar navbar-static-top" {{ stimulus_target('sonata-sticky', 'topNavbar') }}>
                         <a href="#" class="sidebar-toggle fa5" data-toggle="push-menu"
                            role="button" title="{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}">
                             <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
@@ -235,7 +236,7 @@ file that was distributed with this source code.
                                   or _actions is not empty
                                   or _list_filters_actions is not empty
                                  %}
-                                    <nav class="navbar navbar-default" role="navigation">
+                                    <nav class="navbar navbar-default" role="navigation" {{ stimulus_target('sonata-sticky', 'navbar') }}>
                                         <div class="container-fluid">
                                             {% block tab_menu_navbar_header %}
                                                 {% if _navbar_title is not empty %}

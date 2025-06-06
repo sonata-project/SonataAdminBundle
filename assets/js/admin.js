@@ -25,7 +25,6 @@ const Admin = {
     Admin.setup_xeditable(subject);
     Admin.setup_inline_form_errors(subject);
     Admin.setup_tree_view(subject);
-    Admin.setup_sticky_elements(subject);
   },
   get_config(key) {
     return Config.param(key);
@@ -361,179 +360,14 @@ const Admin = {
       subject.remove();
     });
   },
-
-  setup_sticky_elements(subject) {
-    if (Admin.get_config('USE_STICKYFORMS')) {
-      Admin.log('[core|setup_sticky_elements] setup sticky elements on', subject);
-
-      const topNavbar = jQuery(subject).find('.navbar-static-top');
-      const wrapper = jQuery(subject).find('.content-wrapper');
-      const navbar = jQuery(wrapper).find('nav.navbar');
-      const footer = jQuery(wrapper).find('.sonata-ba-form-actions');
-
-      if (navbar.length) {
-        // eslint-disable-next-line no-new
-        new window.Waypoint.Sticky({
-          element: navbar[0],
-          offset: () => {
-            Admin.refreshNavbarStuckClass(topNavbar);
-
-            return jQuery(topNavbar).outerHeight();
-          },
-          handler: (direction) => {
-            if (direction === 'up') {
-              jQuery(navbar).width('auto');
-            } else {
-              jQuery(navbar).width(jQuery(wrapper).outerWidth());
-            }
-
-            Admin.refreshNavbarStuckClass(topNavbar);
-          },
-        });
-      }
-
-      if (footer.length) {
-        // eslint-disable-next-line no-new
-        new window.Waypoint({
-          element: wrapper[0],
-          offset: 'bottom-in-view',
-          handler: (direction) => {
-            const position =
-              jQuery('.sonata-ba-form form > .row').outerHeight() +
-              jQuery(footer).outerHeight() -
-              2;
-
-            if (position < jQuery(footer).offset().top) {
-              jQuery(footer).removeClass('stuck');
-            }
-
-            if (direction === 'up') {
-              jQuery(footer).addClass('stuck');
-            }
-          },
-        });
-      }
-
-      Admin.handleScroll(footer, navbar, wrapper);
-    }
-  },
-
-  handleScroll(footer, navbar, wrapper) {
-    if (
-      footer.length &&
-      jQuery(window).scrollTop() + jQuery(window).height() !== jQuery(document).height()
-    ) {
-      jQuery(footer).addClass('stuck');
-    }
-
-    jQuery(window).on(
-      'scroll',
-      Admin.debounce(() => {
-        if (
-          footer.length &&
-          Math.round(jQuery(window).scrollTop() + jQuery(window).height()) >=
-            jQuery(document).height()
-        ) {
-          jQuery(footer).removeClass('stuck');
-        }
-
-        if (navbar.length && jQuery(window).scrollTop() === 0) {
-          jQuery(navbar).removeClass('stuck');
-        }
-      }, 250)
-    );
-
-    jQuery('body').on('expanded.pushMenu collapsed.pushMenu', () => {
-      // the animation takes 0.3s to execute, so we have to take the width,
-      // just after the animation ended
-      setTimeout(() => {
-        Admin.handleResize(footer, navbar, wrapper);
-      }, 350);
-    });
-
-    jQuery(window).on(
-      'resize',
-      Admin.debounce(() => {
-        Admin.handleResize(footer, navbar, wrapper);
-      }, 250)
-    );
-  },
-
-  handleResize(footer, navbar, wrapper) {
-    if (navbar.length && jQuery(navbar).hasClass('stuck')) {
-      jQuery(navbar).width(jQuery(wrapper).outerWidth());
-    }
-
-    if (footer.length && jQuery(footer).hasClass('stuck')) {
-      jQuery(footer).width(jQuery(wrapper).outerWidth());
-    }
-  },
-
-  refreshNavbarStuckClass(topNavbar) {
-    const topNavbarHeight = topNavbar.outerHeight();
-
-    let stuck = document.getElementById('navbar-stuck');
-    if (stuck === null) {
-      stuck = document.createElement('style');
-      stuck.id = 'navbar-stuck';
-      stuck.type = 'text/css';
-      stuck.dataset.lastOffset = topNavbarHeight;
-      stuck.innerHTML = `body.fixed .content-header .navbar.stuck { top: ${topNavbarHeight}px; }`;
-      document.head.appendChild(stuck);
-    }
-
-    if (stuck.dataset.lastOffset !== topNavbarHeight) {
-      stuck.dataset.lastOffset = topNavbarHeight;
-      stuck.innerHTML = `body.fixed .content-header .navbar.stuck { top: ${topNavbarHeight}px; }`;
-    }
-  },
-
-  // http://davidwalsh.name/javascript-debounce-function
-  debounce(func, wait, immediate) {
-    let timeout;
-
-    return function debounceFunction(...args) {
-      const context = this;
-
-      const later = () => {
-        timeout = null;
-
-        if (!immediate) {
-          func.apply(context, args);
-        }
-      };
-
-      const callNow = immediate && !timeout;
-
-      clearTimeout(timeout);
-      timeout = setTimeout(later, wait);
-
-      if (callNow) {
-        func.apply(context, args);
-      }
-    };
-  },
-
-  handle_top_navbar_height() {
-    jQuery('body.fixed .content-wrapper').css(
-      'padding-top',
-      jQuery('.navbar-static-top').outerHeight()
-    );
-  },
 };
 
 window.Admin = Admin;
 
 jQuery(() => {
-  Admin.handle_top_navbar_height();
-
   jQuery('html').removeClass('no-js');
 
   Admin.shared_setup(document);
-});
-
-jQuery(window).on('resize', () => {
-  Admin.handle_top_navbar_height();
 });
 
 jQuery(document).on('sonata-admin-append-form-element', (event) => {

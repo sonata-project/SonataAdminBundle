@@ -382,12 +382,13 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
   width: 100%;
 }
 
-body.fixed .content-header .navbar.stuck {
+.navbar.stuck {
   border-radius: 0;
   margin-left: -15px;
   position: fixed;
   top: 50px;
-  width: 100%;
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  width: calc(100% - 230px);
   z-index: 5;
 }
 
@@ -397,8 +398,16 @@ body.fixed .content-header .navbar.stuck {
   margin-bottom: 0;
   margin-left: -15px;
   position: fixed;
-  width: 100%;
+  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  width: calc(100% - 230px);
   z-index: 5;
+}
+
+.sidebar-collapse {
+  .navbar.stuck,
+  .form-actions.stuck {
+    width: 100%;
+  }
 }
 
 @media (width <= 768px) {
@@ -409,13 +418,17 @@ body.fixed .content-header .navbar.stuck {
 
     .content-wrapper,
     .right-side {
-      padding-top: 0;
+      padding-top: 50px;
     }
 
-    .content-header nav.navbar.stuck {
+    .navbar.stuck {
       margin: 0;
       position: relative;
       top: 0;
+      width: 100%;
+    }
+
+    .form-actions.stuck {
       width: 100%;
     }
 
