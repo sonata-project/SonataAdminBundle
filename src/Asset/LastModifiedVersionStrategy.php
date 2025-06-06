@@ -26,8 +26,11 @@ final class LastModifiedVersionStrategy implements VersionStrategyInterface
     public function getVersion(string $path): string
     {
         $localPath = \sprintf('%s%s/%s', $this->projectDir, $this->publicDir, $path);
+
         if (file_exists($localPath)) {
-            return (string) filemtime($localPath);
+            if (false !== $mtime = @filemtime($localPath)) {
+                return (string) $mtime;
+            }
         }
 
         return '';

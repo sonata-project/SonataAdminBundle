@@ -49,7 +49,8 @@ use Symfony\Component\Asset\PathPackage;
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->parameters()
 
-        ->set('sonata.admin.assets.public_dir', '/public');
+        ->set('sonata.admin.assets.public_dir', '/public')
+        ->set('sonata.admin.assets.base_path', '/');
 
     /**
      * @psalm-suppress DeprecatedClass
@@ -65,7 +66,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.assets.package', PathPackage::class)
             ->tag('assets.package', ['package' => 'sonata_admin'])
             ->args([
-                '/',
+                param('sonata.admin.assets.base_path'),
                 service('sonata.admin.assets.version_strategy'),
                 service('assets.context'),
             ])
