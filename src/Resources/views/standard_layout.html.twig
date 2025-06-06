@@ -50,7 +50,7 @@ file that was distributed with this source code.
 
         {% block stylesheets %}
             {% for stylesheet in sonata_config.getOption('stylesheets', []) %}
-                <link rel="stylesheet" href="{{ asset(stylesheet) }}">
+                <link rel="stylesheet" href="{{ asset(stylesheet, 'sonata_admin') }}">
             {% endfor %}
         {% endblock %}
 
@@ -60,7 +60,7 @@ file that was distributed with this source code.
 
             {% block sonata_javascript_pool %}
                 {% for javascript in sonata_config.getOption('javascripts', []) %}
-                    <script src="{{ asset(javascript) }}"></script>
+                    <script src="{{ asset(javascript, 'sonata_admin') }}"></script>
                 {% endfor %}
             {% endblock %}
 
@@ -68,14 +68,14 @@ file that was distributed with this source code.
             {# localize moment #}
             {% set localeForMoment = canonicalize_locale_for_moment() %}
             {% if localeForMoment %}
-                <script src="{{ asset('bundles/sonataform/moment-locale/' ~ localeForMoment ~ '.js') }}"></script>
+                <script src="{{ asset('bundles/sonataform/moment-locale/' ~ localeForMoment ~ '.js', 'sonata_admin') }}"></script>
             {% endif %}
 
             {# localize select2 #}
             {% if sonata_config.getOption('use_select2') %}
                 {% set localeForSelect2 = canonicalize_locale_for_select2() %}
                 {% if localeForSelect2 %}
-                    <script src="{{ asset('bundles/sonataadmin/select2-locale/' ~ localeForSelect2 ~ '.js') }}"></script>
+                    <script src="{{ asset('bundles/sonataadmin/select2-locale/' ~ localeForSelect2 ~ '.js', 'sonata_admin') }}"></script>
                 {% endif %}
             {% endif %}
         {% endblock %}
