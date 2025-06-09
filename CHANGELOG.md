@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.37.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.37.0...4.37.1) - 2025-06-09
+### Fixed
+- [[#8302](https://github.com/sonata-project/SonataAdminBundle/pull/8302)] Check optional targets in sticky controller ([@onEXHovia](https://github.com/onEXHovia))
+
 ## [4.37.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.36.2...4.37.0) - 2025-06-09
 ### Added
 - [[#8300](https://github.com/sonata-project/SonataAdminBundle/pull/8300)] Add `LastModifiedVersionStrategy` version strategy ([@onEXHovia](https://github.com/onEXHovia))
