@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.37.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.36.2...4.37.0) - 2025-06-09
+### Added
+- [[#8300](https://github.com/sonata-project/SonataAdminBundle/pull/8300)] Add `LastModifiedVersionStrategy` version strategy ([@onEXHovia](https://github.com/onEXHovia))
+
+### Changed
+- [[#8297](https://github.com/sonata-project/SonataAdminBundle/pull/8297)] Rework behavior sticky elements ([@onEXHovia](https://github.com/onEXHovia))
+- [[#8299](https://github.com/sonata-project/SonataAdminBundle/pull/8299)] Update installation docs ([@onEXHovia](https://github.com/onEXHovia))
+- [[#8296](https://github.com/sonata-project/SonataAdminBundle/pull/8296)] Replace readmore-js jquery plugin to the stimulus controller ([@onEXHovia](https://github.com/onEXHovia))
+
+### Fixed
+- [[#8295](https://github.com/sonata-project/SonataAdminBundle/pull/8295)] Handle JSON.parse exception ([@onEXHovia](https://github.com/onEXHovia))
+
 ## [4.36.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.36.1...4.36.2) - 2025-05-16
 ### Changed
 - [[#8283](https://github.com/sonata-project/SonataAdminBundle/pull/8283)] Replaced hardcoded `sonata.admin` strings with class constant TaggedAdminInterface::ADMIN_TAG ([@symfonyaml](https://github.com/symfonyaml))
