@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Admin\Extension\LockExtension;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\ArgumentResolver\AdminValueResolver;
 use Sonata\AdminBundle\ArgumentResolver\ProxyQueryResolver;
+use Sonata\AdminBundle\Asset\LastModifiedVersionStrategy;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Event\AdminEventExtension;
 use Sonata\AdminBundle\Filter\FilterFactory;
@@ -43,12 +44,32 @@ use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
+use Symfony\Component\Asset\PathPackage;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
+    $containerConfigurator->parameters()
+
+        ->set('sonata.admin.assets.public_dir', '/public')
+        ->set('sonata.admin.assets.base_path', '/');
+
     /**
      * @psalm-suppress DeprecatedClass
      */
     $containerConfigurator->services()
+
+        ->set('sonata.admin.assets.version_strategy', LastModifiedVersionStrategy::class)
+            ->args([
+                param('kernel.project_dir'),
+                param('sonata.admin.assets.public_dir'),
+            ])
+
+        ->set('sonata.admin.assets.package', PathPackage::class)
+            ->tag('assets.package', ['package' => 'sonata_admin'])
+            ->args([
+                param('sonata.admin.assets.base_path'),
+                service('sonata.admin.assets.version_strategy'),
+                service('assets.context'),
+            ])
 
         ->set('sonata.admin.pool', Pool::class)
             ->args([

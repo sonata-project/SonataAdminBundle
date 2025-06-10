@@ -20,11 +20,11 @@ export default class extends Controller {
 
   connect() {
     this.resizeObserver = new ResizeObserver(this.resize.bind(this));
-    if (this.actionTarget) {
+    if (this.hasActionTarget) {
       this.resizeObserver.observe(this.actionTarget);
     }
 
-    if (this.navbarTarget) {
+    if (this.hasNavbarTarget) {
       this.resizeObserver.observe(this.navbarTarget);
     }
   }
@@ -35,9 +35,9 @@ export default class extends Controller {
 
   resize(entries) {
     entries.forEach((entry) => {
-      if (entry.target === this.actionTarget) {
+      if (this.hasActionTarget && entry.target === this.actionTarget) {
         this.actionIntersect();
-      } else if (entry.target === this.navbarTarget) {
+      } else if (this.hasNavbarTarget && entry.target === this.navbarTarget) {
         this.navbarIntersect();
       }
     });
