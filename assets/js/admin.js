@@ -361,9 +361,11 @@ const Admin = {
     });
   },
   setup_sticky_elements() {
+    // eslint-disable-next-line no-console
     console.warn('The "Admin.setup_sticky_elements()" method is deprecated and will be removed.');
   },
   setup_readmore_elements() {
+    // eslint-disable-next-line no-console
     console.warn('The "Admin.setup_readmore_elements()" method is deprecated and will be removed.');
   },
 };
