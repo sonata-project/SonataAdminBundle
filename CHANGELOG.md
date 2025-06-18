@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.37.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.37.1...4.37.2) - 2025-06-17
+### Fixed
+- [[#8304](https://github.com/sonata-project/SonataAdminBundle/pull/8304)] Revert and deprecated methods `Admin.setup_sticky_elements` and `Admin.setup_readmore_elements` ([@onEXHovia](https://github.com/onEXHovia))
+
 ## [4.37.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.37.0...4.37.1) - 2025-06-09
 ### Fixed
 - [[#8302](https://github.com/sonata-project/SonataAdminBundle/pull/8302)] Check optional targets in sticky controller ([@onEXHovia](https://github.com/onEXHovia))
