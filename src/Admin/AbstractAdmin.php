@@ -2267,6 +2267,10 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      */
     final protected function appendParentObject(object $object): void
     {
+        if (!$this->hasRequest()) {
+            return;
+        }
+
         if ($this->isChild()) {
             $parentAssociationMapping = $this->getParentAssociationMapping();
 
