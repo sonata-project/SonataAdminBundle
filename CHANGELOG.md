@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.37.3](https://github.com/sonata-project/SonataAdminBundle/compare/4.37.2...4.37.3) - 2025-06-23
+### Fixed
+- [[#8305](https://github.com/sonata-project/SonataAdminBundle/pull/8305)] "The Request object has not been set" exception when using translation:extract command ([@dramenev](https://github.com/dramenev))
+
 ## [4.37.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.37.1...4.37.2) - 2025-06-17
 ### Fixed
 - [[#8304](https://github.com/sonata-project/SonataAdminBundle/pull/8304)] Revert and deprecated methods `Admin.setup_sticky_elements` and `Admin.setup_readmore_elements` ([@onEXHovia](https://github.com/onEXHovia))
