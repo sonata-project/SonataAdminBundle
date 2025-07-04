@@ -32,7 +32,7 @@ export default class extends Controller {
     observer.observe(this.contentTarget);
 
     this.contentTarget.style.maxHeight = `${this.collapsedHeightValue}px`;
-    this.buttonTarget.innerText = this.moreTextValue;
+    this.buttonTarget.innerHTML = this.moreTextValue;
   }
 
   disconnect() {
@@ -51,9 +51,9 @@ export default class extends Controller {
   toggle() {
     this.contentTarget.classList.toggle('expanded');
     if (this.contentTarget.classList.contains('expanded')) {
-      this.buttonTarget.innerText = this.lessTextValue;
+      this.buttonTarget.innerHTML = this.lessTextValue;
     } else {
-      this.buttonTarget.innerText = this.moreTextValue;
+      this.buttonTarget.innerHTML = this.moreTextValue;
     }
   }
 }
