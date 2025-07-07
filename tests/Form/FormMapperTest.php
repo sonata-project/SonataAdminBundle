@@ -180,7 +180,7 @@ final class FormMapperTest extends TestCase
                 'translation_domain' => 'Foobar',
             ])
             ->add('foo', TextType::class)
-        ->end();
+            ->end();
 
         $fieldDescription = $this->admin->getFormFieldDescription('foo');
         static::assertSame('foo', $fieldDescription->getName());
@@ -363,9 +363,9 @@ final class FormMapperTest extends TestCase
     {
         $this->formMapper
             ->ifTrue(true)
-                ->ifTrue(true)
-                    ->add('fooName')
-                ->ifEnd()
+            ->ifTrue(true)
+            ->add('fooName')
+            ->ifEnd()
             ->ifEnd();
 
         static::assertTrue($this->formMapper->has('fooName'));
@@ -375,9 +375,9 @@ final class FormMapperTest extends TestCase
     {
         $this->formMapper
             ->ifFalse(false)
-                ->ifFalse(false)
-                    ->add('fooName')
-                ->ifEnd()
+            ->ifFalse(false)
+            ->add('fooName')
+            ->ifEnd()
             ->ifEnd();
 
         static::assertTrue($this->formMapper->has('fooName'));
@@ -387,9 +387,9 @@ final class FormMapperTest extends TestCase
     {
         $this->formMapper
             ->ifTrue(true)
-                ->ifFalse(false)
-                    ->add('fooName')
-                ->ifEnd()
+            ->ifFalse(false)
+            ->add('fooName')
+            ->ifEnd()
             ->ifEnd();
 
         static::assertTrue($this->formMapper->has('fooName'));
@@ -399,9 +399,9 @@ final class FormMapperTest extends TestCase
     {
         $this->formMapper
             ->ifFalse(false)
-                ->ifTrue(true)
-                    ->add('fooName')
-                ->ifEnd()
+            ->ifTrue(true)
+            ->add('fooName')
+            ->ifEnd()
             ->ifEnd();
 
         static::assertTrue($this->formMapper->has('fooName'));
@@ -411,9 +411,9 @@ final class FormMapperTest extends TestCase
     {
         $this->formMapper
             ->ifFalse(true)
-                ->ifTrue(false)
-                    ->add('fooName')
-                ->ifEnd()
+            ->ifTrue(false)
+            ->add('fooName')
+            ->ifEnd()
             ->ifEnd();
 
         static::assertFalse($this->formMapper->has('fooName'));
@@ -423,9 +423,9 @@ final class FormMapperTest extends TestCase
     {
         $this->formMapper
             ->ifTrue(false)
-                ->ifFalse(true)
-                    ->add('fooName')
-                ->ifEnd()
+            ->ifFalse(true)
+            ->add('fooName')
+            ->ifEnd()
             ->ifEnd();
 
         static::assertFalse($this->formMapper->has('fooName'));
@@ -516,6 +516,29 @@ final class FormMapperTest extends TestCase
         static::assertSame(['fo.o' => 'fo__o', 'ba__z' => 'ba____z'], $formGroups['default']['fields']);
     }
 
+    public function testAddOptionDisplayIf(): void
+    {
+        $this->formMapper->add('bar', 'bar');
+
+        $this->formMapper->add('quux', 'bar',[], ['display_if' => static fn (): bool => false]);
+
+        static::assertTrue($this->formMapper->has('bar'));
+        static::assertFalse($this->formMapper->has('quux'));
+
+        $this->formMapper->end(); // Close default
+
+        $this->formMapper
+            ->with('qux')
+            ->add('foobar', 'bar',[], ['display_if' => static fn (): bool => true])
+            ->add('foo', 'bar',[], ['display_if' => static fn (): bool => false])
+            ->add('baz', 'bar')
+            ->end();
+
+        static::assertTrue($this->formMapper->has('foobar'));
+        static::assertFalse($this->formMapper->has('foo'));
+        static::assertTrue($this->formMapper->has('baz'));
+    }
+
     public function testAddOptionRole(): void
     {
         $this->formMapper->add('bar', TextType::class);
@@ -532,9 +555,9 @@ final class FormMapperTest extends TestCase
 
         $this->formMapper
             ->with('qux')
-                ->add('foobar', TextType::class, [], ['role' => self::DEFAULT_GRANTED_ROLE])
-                ->add('foo', TextType::class, [], ['role' => 'ROLE_QUX'])
-                ->add('baz', TextType::class)
+            ->add('foobar', TextType::class, [], ['role' => self::DEFAULT_GRANTED_ROLE])
+            ->add('foo', TextType::class, [], ['role' => 'ROLE_QUX'])
+            ->add('baz', TextType::class)
             ->end();
 
         static::assertArrayHasKey('qux', $this->admin->getFormGroups());

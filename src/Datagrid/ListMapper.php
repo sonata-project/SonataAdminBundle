@@ -83,6 +83,14 @@ final class ListMapper implements MapperInterface
     public function add(string $name, ?string $type = null, array $fieldDescriptionOptions = []): self
     {
         if (
+            isset($fieldDescriptionOptions['display_if'])
+            && \is_callable($fieldDescriptionOptions['display_if'])
+            && !($fieldDescriptionOptions['display_if'])($this->getAdmin())
+        ) {
+            return $this;
+        }
+
+        if (
             isset($fieldDescriptionOptions['role'])
             && \is_string($fieldDescriptionOptions['role'])
             && !$this->getAdmin()->isGranted($fieldDescriptionOptions['role'])
@@ -114,6 +122,10 @@ final class ListMapper implements MapperInterface
 
         if (\array_key_exists('identifier', $fieldDescriptionOptions) && !\is_bool($fieldDescriptionOptions['identifier'])) {
             throw new \InvalidArgumentException(\sprintf('Value for "identifier" option must be boolean, %s given.', \gettype($fieldDescriptionOptions['identifier'])));
+        }
+
+        if (isset($fieldDescriptionOptions['display_if']) && !\is_callable($fieldDescriptionOptions['display_if'])) {
+            throw new \InvalidArgumentException('The "display_if" option must be callable.');
         }
 
         if ($this->getAdmin()->hasListFieldDescription($name)) {

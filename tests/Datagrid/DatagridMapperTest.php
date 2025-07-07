@@ -266,6 +266,27 @@ final class DatagridMapperTest extends TestCase
         ], array_keys($this->datagrid->getFilters()));
     }
 
+    public function testAddOptionDisplayIf(): void
+    {
+        $this->datagridMapper->add('bar', 'bar');
+
+        static::assertTrue($this->datagridMapper->has('bar'));
+
+        $this->datagridMapper->add('quux', 'bar',['display_if' => static fn (): bool => false]);
+
+        static::assertTrue($this->datagridMapper->has('bar'));
+        static::assertFalse($this->datagridMapper->has('quux'));
+
+        $this->datagridMapper
+            ->add('foobar', 'bar', ['display_if' => static fn (): bool => true])
+            ->add('foo', 'bar', ['display_if' => static fn (): bool => false])
+            ->add('baz', 'bar');
+
+        static::assertTrue($this->datagridMapper->has('foobar'));
+        static::assertFalse($this->datagridMapper->has('foo'));
+        static::assertTrue($this->datagridMapper->has('baz'));
+    }
+
     public function testAddOptionRole(): void
     {
         $this->datagridMapper->add('bar', \stdClass::class);

@@ -307,6 +307,27 @@ final class ListMapperTest extends TestCase
         ], array_keys($this->fieldDescriptionCollection->getElements()));
     }
 
+    public function testAddOptionDisplayIf(): void
+    {
+        $this->listMapper->add('bar', 'bar');
+
+        static::assertTrue($this->listMapper->has('bar'));
+
+        $this->listMapper->add('quux', 'bar',['display_if' => static fn (): bool => false]);
+
+        static::assertTrue($this->listMapper->has('bar'));
+        static::assertFalse($this->listMapper->has('quux'));
+
+        $this->listMapper
+            ->add('foobar', 'bar', ['display_if' => static fn (): bool => true])
+            ->add('foo', 'bar', ['display_if' => static fn (): bool => false])
+            ->add('baz', 'bar');
+
+        static::assertTrue($this->listMapper->has('foobar'));
+        static::assertFalse($this->listMapper->has('foo'));
+        static::assertTrue($this->listMapper->has('baz'));
+    }
+
     public function testAddOptionRole(): void
     {
         $this->listMapper->add('bar', 'bar');
@@ -339,4 +360,6 @@ final class ListMapperTest extends TestCase
             'Failed asserting that FieldDescription with name "'.$field->getName().'" is tagged with virtual flag.'
         );
     }
+
+
 }

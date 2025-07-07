@@ -285,9 +285,9 @@ final class ShowMapperTest extends TestCase
     {
         $this->showMapper
             ->ifTrue(true)
-                ->ifTrue(true)
-                    ->add('fooName')
-                ->ifEnd()
+            ->ifTrue(true)
+            ->add('fooName')
+            ->ifEnd()
             ->ifEnd();
 
         static::assertTrue($this->showMapper->has('fooName'));
@@ -297,9 +297,9 @@ final class ShowMapperTest extends TestCase
     {
         $this->showMapper
             ->ifFalse(false)
-                ->ifFalse(false)
-                    ->add('fooName')
-                ->ifEnd()
+            ->ifFalse(false)
+            ->add('fooName')
+            ->ifEnd()
             ->ifEnd();
 
         static::assertTrue($this->showMapper->has('fooName'));
@@ -309,9 +309,9 @@ final class ShowMapperTest extends TestCase
     {
         $this->showMapper
             ->ifTrue(true)
-                ->ifFalse(false)
-                    ->add('fooName')
-                ->ifEnd()
+            ->ifFalse(false)
+            ->add('fooName')
+            ->ifEnd()
             ->ifEnd();
 
         static::assertTrue($this->showMapper->has('fooName'));
@@ -321,9 +321,9 @@ final class ShowMapperTest extends TestCase
     {
         $this->showMapper
             ->ifFalse(false)
-                ->ifTrue(true)
-                    ->add('fooName')
-                ->ifEnd()
+            ->ifTrue(true)
+            ->add('fooName')
+            ->ifEnd()
             ->ifEnd();
 
         static::assertTrue($this->showMapper->has('fooName'));
@@ -333,9 +333,9 @@ final class ShowMapperTest extends TestCase
     {
         $this->showMapper
             ->ifFalse(true)
-                ->ifTrue(false)
-                    ->add('fooName')
-                ->ifEnd()
+            ->ifTrue(false)
+            ->add('fooName')
+            ->ifEnd()
             ->ifEnd();
 
         static::assertFalse($this->showMapper->has('fooName'));
@@ -345,9 +345,9 @@ final class ShowMapperTest extends TestCase
     {
         $this->showMapper
             ->ifTrue(false)
-                ->ifFalse(true)
-                    ->add('fooName')
-                ->ifEnd()
+            ->ifFalse(true)
+            ->add('fooName')
+            ->ifEnd()
             ->ifEnd();
 
         static::assertFalse($this->showMapper->has('fooName'));
@@ -490,6 +490,33 @@ final class ShowMapperTest extends TestCase
         static::assertSame('bar', $this->showMapper->get('bar')->getOption('label'));
     }
 
+    public function testAddOptionDisplayIf(): void
+    {
+        $this->cleanShowMapper();
+
+        $this->showMapper->add('bar', 'bar');
+
+        static::assertTrue($this->showMapper->has('bar'));
+
+        $this->showMapper->add('quux', 'bar',['display_if' => static fn (): bool => false]);
+
+        static::assertTrue($this->showMapper->has('bar'));
+        static::assertFalse($this->showMapper->has('quux'));
+
+        $this->showMapper->end(); // Close default
+
+        $this->showMapper
+            ->with('qux')
+            ->add('foobar', 'bar', ['display_if' => static fn (): bool => true])
+            ->add('foo', 'bar', ['display_if' => static fn (): bool => false])
+            ->add('baz', 'bar')
+            ->end();
+
+        static::assertTrue($this->showMapper->has('foobar'));
+        static::assertFalse($this->showMapper->has('foo'));
+        static::assertTrue($this->showMapper->has('baz'));
+    }
+
     public function testAddOptionRole(): void
     {
         $this->cleanShowMapper();
@@ -507,9 +534,9 @@ final class ShowMapperTest extends TestCase
 
         $this->showMapper
             ->with('qux')
-                ->add('foobar', 'bar', ['role' => self::DEFAULT_GRANTED_ROLE])
-                ->add('foo', 'bar', ['role' => 'ROLE_QUX'])
-                ->add('baz', 'bar')
+            ->add('foobar', 'bar', ['role' => self::DEFAULT_GRANTED_ROLE])
+            ->add('foo', 'bar', ['role' => 'ROLE_QUX'])
+            ->add('baz', 'bar')
             ->end();
 
         static::assertArrayHasKey('qux', $this->admin->getShowGroups());

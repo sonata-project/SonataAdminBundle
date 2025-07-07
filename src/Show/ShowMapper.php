@@ -70,6 +70,14 @@ final class ShowMapper extends BaseGroupedMapper
             return $this;
         }
 
+        if (
+            isset($fieldDescriptionOptions['display_if'])
+            && \is_callable($fieldDescriptionOptions['display_if'])
+            && !($fieldDescriptionOptions['display_if'])($this->getAdmin())
+        ) {
+            return $this;
+        }
+
         if (!$this->getAdmin()->hasShowFieldDescription($name)) {
             $fieldDescription = $this->getAdmin()->createFieldDescription(
                 $name,

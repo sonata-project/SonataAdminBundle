@@ -66,6 +66,14 @@ final class DatagridMapper implements MapperInterface
         array $fieldDescriptionOptions = [],
     ): self {
         if (
+            isset($filterOptions['display_if'])
+            && \is_callable($filterOptions['display_if'])
+            && !($filterOptions['display_if'])($this->getAdmin())
+        ) {
+            return $this;
+        }
+
+        if (
             isset($fieldDescriptionOptions['role'])
             && \is_string($fieldDescriptionOptions['role'])
             && !$this->getAdmin()->isGranted($fieldDescriptionOptions['role'])
