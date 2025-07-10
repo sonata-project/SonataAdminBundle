@@ -12,9 +12,27 @@ declare(strict_types=1);
  */
 
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use Symfony\Component\Routing\Loader\XmlFileLoader;
 use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 
 return function (RoutingConfigurator $routes) {
+    foreach (debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT) as $trace) {
+        if (isset($trace['object']) && $trace['object'] instanceof XmlFileLoader && 'doImport' === $trace['function']) {
+            if (__DIR__ === dirname(realpath($trace['args'][3]))) {
+                @trigger_error(
+                    \sprintf(
+                        'The "sonata_admin.xml" routing configuration is deprecated since sonata-project/admin-bundle 4.37'
+                        .' and will throw an error in 5.0. Import "sonata_admin.php" instead.',
+                        __METHOD__
+                    ),
+                    \E_USER_DEPRECATED
+                );
+
+                break;
+            }
+        }
+    }
+
     $routes->add('sonata_admin_redirect', '/')
         ->controller([RedirectController::class, 'redirectAction'])
         ->defaults([
