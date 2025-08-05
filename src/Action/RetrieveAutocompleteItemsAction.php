@@ -204,7 +204,7 @@ final class RetrieveAutocompleteItemsAction
             }
 
             $item = [
-                'id' => $admin->id($model),
+                'id' => $targetAdmin->id($model),
                 'label' => $label,
             ];
 

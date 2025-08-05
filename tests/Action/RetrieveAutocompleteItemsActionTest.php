@@ -238,8 +238,8 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $this->admin->method('hasFormFieldDescription')->with('barField')->willReturn(true);
         $this->admin->method('getFormFieldDescription')->with('barField')->willReturn($fieldDescription);
         $this->admin->method('getFormFieldDescriptions')->willReturn([]);
-        $this->admin->method('id')->with($model)->willReturn('123');
         $targetAdmin->expects(static::once())->method('checkAccess')->with('list');
+        $targetAdmin->method('id')->with($model)->willReturn('123');
         $targetAdmin->method('getDatagrid')->willReturn($datagrid);
         $targetAdmin->method('getObjectMetadata')->with($model)->willReturn($metadata);
         $metadata->method('getTitle')->willReturn('FOO');
