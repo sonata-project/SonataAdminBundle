@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.37.5](https://github.com/sonata-project/SonataAdminBundle/compare/4.37.4...4.37.5) - 2025-08-08
+### Fixed
+- [[#8313](https://github.com/sonata-project/SonataAdminBundle/pull/8313)] ID retrieving in autocomplete results ([@valkars](https://github.com/valkars))
+
 ## [4.37.4](https://github.com/sonata-project/SonataAdminBundle/compare/4.37.3...4.37.4) - 2025-07-03
 ### Fixed
 - [[#8309](https://github.com/sonata-project/SonataAdminBundle/pull/8309)] Allow HTML values in readmore controller ([@onEXHovia](https://github.com/onEXHovia))
