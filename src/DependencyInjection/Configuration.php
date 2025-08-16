@@ -622,7 +622,7 @@ final class Configuration implements ConfigurationInterface
                     ->children()
                         ->arrayNode('stylesheets')
                             ->beforeNormalization()
-                                ->always(fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
+                                ->always(static fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
                             ->end()
                             ->arrayPrototype()
                                 ->children()
@@ -638,7 +638,7 @@ final class Configuration implements ConfigurationInterface
                         ->arrayNode('extra_stylesheets')
                             ->info('stylesheets to add to the page')
                             ->beforeNormalization()
-                                ->always(fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
+                                ->always(static fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
                             ->end()
                             ->arrayPrototype()
                                 ->children()
@@ -655,7 +655,7 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                         ->arrayNode('javascripts')
                             ->beforeNormalization()
-                                ->always(fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
+                                ->always(static fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
                             ->end()
                             ->defaultValue(self::normalizeDefaultAssets([
                                 'bundles/sonataadmin/app.js',
@@ -671,7 +671,7 @@ final class Configuration implements ConfigurationInterface
                         ->arrayNode('extra_javascripts')
                             ->info('javascripts to add to the page')
                             ->beforeNormalization()
-                                ->always(fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
+                                ->always(static fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
                             ->end()
                             ->defaultValue([])
                             ->arrayPrototype()
@@ -754,11 +754,9 @@ final class Configuration implements ConfigurationInterface
     /**
      * Normalizes an asset list node to an array of items with shape:
      *   [ ['asset' => string, 'package_name' => string], ... ]
-     * Supports input elements as string, positional array [asset] or [asset, package_name],
+     * Supports input elements as string, positional array [asset, package_name],
      * or associative array {asset: ..., package_name: ...}.
      *
-     * @param mixed $value
-     * @param string $nodeName
      * @return list<SonataAdminAsset>
      */
     private static function normalizeAssetList(mixed $value, string $nodeName): array
@@ -768,15 +766,13 @@ final class Configuration implements ConfigurationInterface
         }
 
         if (!\is_array($value)) {
-            throw new \InvalidArgumentException(sprintf('The "%s" node must be an array.', $nodeName));
+            throw new \InvalidArgumentException(\sprintf('The "%s" node must be an array.', $nodeName));
         }
 
-        return \array_map(static fn ($item) => self::normalizeAssetItem($item, $nodeName), $value);
+        return array_map(static fn ($item) => self::normalizeAssetItem($item, $nodeName), $value);
     }
 
     /**
-     * @param mixed $item
-     * @param string $nodeName
      * @return SonataAdminAsset
      */
     private static function normalizeAssetItem(mixed $item, string $nodeName): array
@@ -784,7 +780,7 @@ final class Configuration implements ConfigurationInterface
         // 1) Simple string form
         if (\is_string($item)) {
             return [
-                'asset'        => $item,
+                'asset' => $item,
                 'package_name' => self::DEFAULT_PACKAGE,
             ];
         }
@@ -792,14 +788,14 @@ final class Configuration implements ConfigurationInterface
         // 2) Array forms
         if (\is_array($item)) {
             // Positional short form: [asset] or [asset, package_name]
-            if (\array_is_list($item)) {
+            if (array_is_list($item)) {
                 return match (\count($item)) {
-                    2       => [
-                        'asset'        => (string)$item[0],
-                        'package_name' => $item[1] === null ? null : (string) $item[1],
+                    2 => [
+                        'asset' => (string) $item[0],
+                        'package_name' => null === $item[1] ? null : (string) $item[1],
                     ],
                     default => throw new \InvalidArgumentException(
-                        sprintf(
+                        \sprintf(
                             'Each "%s" item must be string, [asset], [asset, package_name] or {asset: ..., package_name: ...}.',
                             $nodeName
                         )
@@ -809,29 +805,31 @@ final class Configuration implements ConfigurationInterface
 
             // Associative form: {asset: ..., package_name: ...}
             if (!isset($item['asset'])) {
-                throw new \InvalidArgumentException(sprintf('The associative "%s" item must contain the "asset" key.', $nodeName));
+                throw new \InvalidArgumentException(\sprintf('The associative "%s" item must contain the "asset" key.', $nodeName));
             }
 
-            $pkg = array_key_exists('package_name', $item) ? $item['package_name'] : self::DEFAULT_PACKAGE;
+            $pkg = \array_key_exists('package_name', $item) ? $item['package_name'] : self::DEFAULT_PACKAGE;
 
             return [
-                'asset'        => (string)$item['asset'],
-                'package_name' => $pkg === null ? null : (string) $pkg,
+                'asset' => (string) $item['asset'],
+                'package_name' => null === $pkg ? null : (string) $pkg,
             ];
         }
 
-        throw new \InvalidArgumentException(sprintf('Invalid "%s" item type.', $nodeName));
+        throw new \InvalidArgumentException(\sprintf('Invalid "%s" item type.', $nodeName));
     }
 
     /**
      * Helper to build normalized defaults from a list of asset strings.
+     *
      * @param array<int, string> $assets
+     *
      * @return list<SonataAdminAsset>
      */
     private static function normalizeDefaultAssets(array $assets): array
     {
-        return array_map(static fn(string $asset) => [
-            'asset'        => $asset,
+        return array_map(static fn (string $asset) => [
+            'asset' => $asset,
             'package_name' => self::DEFAULT_PACKAGE,
         ], $assets);
     }

@@ -91,7 +91,7 @@ final class SonataAdminExtension extends Extension
         $javascript = $this->buildJavascripts($config);
 
         $config['assets']['stylesheets'][] = [
-            'asset'        => \sprintf(
+            'asset' => \sprintf(
                 'bundles/sonataadmin/admin-lte-skins/%s.min.css',
                 $config['options']['skin']
             ),
@@ -265,7 +265,7 @@ final class SonataAdminExtension extends Extension
     /**
      * @param array<int, SonataAdminAsset> $array
      * @param array<int, SonataAdminAsset> $addArray
-     * @param array<int, string> $removeArray
+     * @param array<int, string>           $removeArray
      *
      * @return array<int, SonataAdminAsset>
      */
@@ -277,7 +277,7 @@ final class SonataAdminExtension extends Extension
         foreach ($removeArray as $toRemove) {
             foreach ($array as $i => $item) {
                 if ($item['asset'] === $toRemove) {
-                    \array_splice($array, $i, 1);
+                    array_splice($array, $i, 1);
                     break;
                 }
             }

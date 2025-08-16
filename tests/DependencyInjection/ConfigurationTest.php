@@ -263,18 +263,18 @@ final class ConfigurationTest extends TestCase
                     ['bar.js', 'pkg'],
                     ['baz.js', null],
                     ['asset' => 'zap.js', 'package_name' => null],
-                ]
-            ]
+                ],
+            ],
         ]]);
 
-        self::assertSame([
+        static::assertSame([
             ['asset' => 'foo.css', 'package_name' => 'sonata_admin'],
             ['asset' => 'bar.css', 'package_name' => 'pkg'],
             ['asset' => 'baz.css', 'package_name' => null],
             ['asset' => 'zap.css', 'package_name' => null],
         ], $config['assets']['extra_stylesheets']);
 
-        self::assertSame([
+        static::assertSame([
             ['asset' => 'foo.js', 'package_name' => 'sonata_admin'],
             ['asset' => 'bar.js', 'package_name' => 'pkg'],
             ['asset' => 'baz.js', 'package_name' => null],
