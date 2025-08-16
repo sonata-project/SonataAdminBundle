@@ -622,7 +622,7 @@ final class Configuration implements ConfigurationInterface
                     ->children()
                         ->arrayNode('stylesheets')
                             ->beforeNormalization()
-                                ->always(static fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
+                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'stylesheets'))
                             ->end()
                             ->arrayPrototype()
                                 ->children()
@@ -638,7 +638,7 @@ final class Configuration implements ConfigurationInterface
                         ->arrayNode('extra_stylesheets')
                             ->info('stylesheets to add to the page')
                             ->beforeNormalization()
-                                ->always(static fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
+                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'stylesheets'))
                             ->end()
                             ->arrayPrototype()
                                 ->children()
@@ -655,7 +655,7 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                         ->arrayNode('javascripts')
                             ->beforeNormalization()
-                                ->always(static fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
+                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'stylesheets'))
                             ->end()
                             ->defaultValue(self::normalizeDefaultAssets([
                                 'bundles/sonataadmin/app.js',
@@ -671,7 +671,7 @@ final class Configuration implements ConfigurationInterface
                         ->arrayNode('extra_javascripts')
                             ->info('javascripts to add to the page')
                             ->beforeNormalization()
-                                ->always(static fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
+                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'stylesheets'))
                             ->end()
                             ->defaultValue([])
                             ->arrayPrototype()
@@ -757,7 +757,7 @@ final class Configuration implements ConfigurationInterface
      * Supports input elements as string, positional array [asset, package_name],
      * or associative array {asset: ..., package_name: ...}.
      *
-     * @param list<mixed> $value
+     * @param array<mixed> $value
      *
      * @return list<SonataAdminAsset>
      */
@@ -771,7 +771,7 @@ final class Configuration implements ConfigurationInterface
             throw new \InvalidArgumentException(\sprintf('The "%s" node must be an array.', $nodeName));
         }
 
-        return array_values(array_map(static fn ($item) => self::normalizeAssetItem($item, $nodeName), $value));
+        return array_values(array_map(static fn (mixed $item) => self::normalizeAssetItem($item, $nodeName), $value));
     }
 
     /**
