@@ -789,7 +789,7 @@ final class Configuration implements ConfigurationInterface
 
         // 2) Array forms
         if (\is_array($item)) {
-            // Positional short form: [asset] or [asset, package_name]
+            // Positional form: [asset, package_name]
             if (array_is_list($item)) {
                 return match (\count($item)) {
                     2 => [
