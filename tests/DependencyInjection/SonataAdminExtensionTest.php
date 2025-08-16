@@ -32,6 +32,7 @@ use Symfony\Component\Config\Definition\Processor;
 
 /**
  * @phpstan-import-type SonataAdminConfiguration from Configuration
+ * @phpstan-import-type SonataAdminAsset from Configuration
  */
 final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 {
@@ -452,7 +453,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
     }
 
     /**
-     * @return string[]
+     * @return list<SonataAdminAsset>
      */
     private function getDefaultStylesheets(?string $skin = 'skin-black'): array
     {

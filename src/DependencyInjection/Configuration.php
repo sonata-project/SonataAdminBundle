@@ -57,7 +57,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * }
  * @phpstan-type SonataAdminAsset = array{
  *     asset: string,
- *     package_name: string,
+ *     package_name: string|null,
  * }
  * @phpstan-type SonataAdminConfiguration = array{
  *     assets: array{
@@ -757,6 +757,8 @@ final class Configuration implements ConfigurationInterface
      * Supports input elements as string, positional array [asset, package_name],
      * or associative array {asset: ..., package_name: ...}.
      *
+     * @param list<mixed> $value
+     *
      * @return list<SonataAdminAsset>
      */
     private static function normalizeAssetList(mixed $value, string $nodeName): array
@@ -769,7 +771,7 @@ final class Configuration implements ConfigurationInterface
             throw new \InvalidArgumentException(\sprintf('The "%s" node must be an array.', $nodeName));
         }
 
-        return array_map(static fn ($item) => self::normalizeAssetItem($item, $nodeName), $value);
+        return array_values(array_map(static fn ($item) => self::normalizeAssetItem($item, $nodeName), $value));
     }
 
     /**
@@ -828,9 +830,11 @@ final class Configuration implements ConfigurationInterface
      */
     private static function normalizeDefaultAssets(array $assets): array
     {
-        return array_map(static fn (string $asset) => [
-            'asset' => $asset,
-            'package_name' => self::DEFAULT_PACKAGE,
-        ], $assets);
+        return array_values(
+            array_map(static fn (string $asset) => [
+                'asset' => $asset,
+                'package_name' => self::DEFAULT_PACKAGE,
+            ], $assets)
+        );
     }
 }
