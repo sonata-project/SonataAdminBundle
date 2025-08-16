@@ -248,6 +248,40 @@ final class ConfigurationTest extends TestCase
         static::assertSame([], $config['assets']['remove_javascripts']);
     }
 
+    public function testNormalizationForAllNodes(): void
+    {
+        $config = $this->process([[
+            'assets' => [
+                'extra_stylesheets' => [
+                    'foo.css',
+                    ['bar.css', 'pkg'],
+                    ['baz.css', null],
+                    ['asset' => 'zap.css', 'package_name' => null],
+                ],
+                'extra_javascripts' => [
+                    'foo.js',
+                    ['bar.js', 'pkg'],
+                    ['baz.js', null],
+                    ['asset' => 'zap.js', 'package_name' => null],
+                ]
+            ]
+        ]]);
+
+        self::assertSame([
+            ['asset' => 'foo.css', 'package_name' => 'sonata_admin'],
+            ['asset' => 'bar.css', 'package_name' => 'pkg'],
+            ['asset' => 'baz.css', 'package_name' => null],
+            ['asset' => 'zap.css', 'package_name' => null],
+        ], $config['assets']['extra_stylesheets']);
+
+        self::assertSame([
+            ['asset' => 'foo.js', 'package_name' => 'sonata_admin'],
+            ['asset' => 'bar.js', 'package_name' => 'pkg'],
+            ['asset' => 'baz.js', 'package_name' => null],
+            ['asset' => 'zap.js', 'package_name' => null],
+        ], $config['assets']['extra_javascripts']);
+    }
+
     public function testDefaultControllerIsCRUDController(): void
     {
         $config = $this->process([]);

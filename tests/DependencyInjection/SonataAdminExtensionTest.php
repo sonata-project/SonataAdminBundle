@@ -113,7 +113,20 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
     {
         $this->container->setParameter('kernel.bundles', []);
 
-        $extraStylesheets = ['foo/bar.css', 'bar/quux.css'];
+        $extraStylesheets = [
+            'foo/bar.css',
+            'bar/quux.css',
+            ['foo/bazz.css', 'another_package'],
+            ['bar/asd.css', null],
+        ];
+
+        $extraStylesheetsNormalized = [
+            ['asset' => 'foo/bar.css', 'package_name' => 'sonata_admin'],
+            ['asset' => 'bar/quux.css', 'package_name' => 'sonata_admin'],
+            ['asset' => 'foo/bazz.css', 'package_name' => 'another_package'],
+            ['asset' => 'bar/asd.css', 'package_name' =>  null],
+        ];
+
         $this->load([
             'assets' => [
                 'extra_stylesheets' => $extraStylesheets,
@@ -125,7 +138,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $stylesheets = $options['stylesheets'];
         static::assertSame(
-            array_merge($this->getDefaultStylesheets(), $extraStylesheets),
+            array_merge($this->getDefaultStylesheets(), $extraStylesheetsNormalized),
             $stylesheets
         );
     }
@@ -147,18 +160,36 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         static::assertIsArray($options);
 
         $stylesheets = $options['stylesheets'];
-        static::assertSame(
-            array_values(
-                array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets)
-            ),
-            $stylesheets
+        static::assertIsArray($stylesheets);
+
+        $expected = array_values(
+            array_filter(
+                $this->defaultConfiguration['assets']['stylesheets'],
+                static fn(array $item) => !in_array($item['asset'], $removeStylesheets, true)
+            )
         );
+
+        static::assertSame($expected, $stylesheets);
     }
 
     public function testExtraJavascriptsGetAdded(): void
     {
         $this->container->setParameter('kernel.bundles', []);
-        $extraJavascripts = ['foo/bar.js', 'bar/quux.js'];
+
+        $extraJavascripts = [
+            'foo/bar.js',
+            'bar/quux.js',
+            ['foo/bazz.js', 'another_package'],
+            ['bar/asd.js', null],
+        ];
+
+        $extraJavascriptsNormalized = [
+            ['asset' => 'foo/bar.js', 'package_name' => 'sonata_admin'],
+            ['asset' => 'bar/quux.js', 'package_name' => 'sonata_admin'],
+            ['asset' => 'foo/bazz.js', 'package_name' => 'another_package'],
+            ['asset' => 'bar/asd.js', 'package_name' =>  null],
+        ];
+
         $this->load([
             'assets' => [
                 'extra_javascripts' => $extraJavascripts,
@@ -170,7 +201,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $javascripts = $options['javascripts'];
         static::assertSame(
-            [...$this->defaultConfiguration['assets']['javascripts'], ...$extraJavascripts],
+            [...$this->defaultConfiguration['assets']['javascripts'], ...$extraJavascriptsNormalized],
             $javascripts
         );
     }
@@ -191,19 +222,45 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         static::assertIsArray($options);
 
         $javascripts = $options['javascripts'];
-        static::assertSame(
-            array_values(
-                array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts)
-            ),
-            $javascripts
+        static::assertIsArray($javascripts);
+
+        $expected = array_values(
+            array_filter(
+                $this->defaultConfiguration['assets']['javascripts'],
+                static fn(array $item) => !in_array($item['asset'], $removeJavascripts, true)
+            )
         );
+
+        static::assertSame($expected, $javascripts);
     }
 
     public function testAssetsCanBeAddedAndRemoved(): void
     {
         $this->container->setParameter('kernel.bundles', []);
-        $extraStylesheets = ['foo/bar.css', 'bar/quux.css'];
-        $extraJavascripts = ['foo/bar.js', 'bar/quux.js'];
+        $extraStylesheets = [
+            'foo/bar.css',
+            'bar/quux.css',
+            ['foo/bazz.css', 'another_package'],
+            ['bar/asd.css', null],
+        ];
+        $extraStylesheetsNormalized = [
+            ['asset' => 'foo/bar.css', 'package_name' => 'sonata_admin'],
+            ['asset' => 'bar/quux.css', 'package_name' => 'sonata_admin'],
+            ['asset' => 'foo/bazz.css', 'package_name' => 'another_package'],
+            ['asset' => 'bar/asd.css', 'package_name' =>  null],
+        ];
+        $extraJavascripts = [
+            'foo/bar.js',
+            'bar/quux.js',
+            ['foo/bazz.js', 'another_package'],
+            ['bar/asd.js', null],
+        ];
+        $extraJavascriptsNormalized = [
+            ['asset' => 'foo/bar.js', 'package_name' => 'sonata_admin'],
+            ['asset' => 'bar/quux.js', 'package_name' => 'sonata_admin'],
+            ['asset' => 'foo/bazz.js', 'package_name' => 'another_package'],
+            ['asset' => 'bar/asd.js', 'package_name' =>  null],
+        ];
         $removeStylesheets = [
             'bundles/sonataadmin/app.css',
             'bundles/sonataadmin/admin-lte-skins/skin-black.min.css',
@@ -224,14 +281,27 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         static::assertIsArray($options);
 
         $stylesheets = $options['stylesheets'];
+
         static::assertSame(
-            [...array_diff($this->defaultConfiguration['assets']['stylesheets'], $removeStylesheets), ...$extraStylesheets],
+            [
+                ...array_filter(
+                    $this->defaultConfiguration['assets']['stylesheets'],
+                    static fn(array $item) => !in_array($item['asset'], $removeStylesheets, true)
+                ),
+                ...$extraStylesheetsNormalized,
+            ],
             $stylesheets
         );
 
         $javascripts = $options['javascripts'];
         static::assertSame(
-            [...array_diff($this->defaultConfiguration['assets']['javascripts'], $removeJavascripts), ...$extraJavascripts],
+            [
+                ...array_filter(
+                    $this->defaultConfiguration['assets']['javascripts'],
+                    static fn(array $item) => !in_array($item['asset'], $removeJavascripts, true)
+                ),
+                ...$extraJavascriptsNormalized,
+            ],
             $javascripts
         );
     }
@@ -398,10 +468,13 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $skin = $options['skin'];
 
         $defaultStylesheets = $this->defaultConfiguration['assets']['stylesheets'];
-        $defaultStylesheets[] = \sprintf(
-            'bundles/sonataadmin/admin-lte-skins/%s.min.css',
-            $skin
-        );
+        $defaultStylesheets[] = [
+            'asset'        => \sprintf(
+                'bundles/sonataadmin/admin-lte-skins/%s.min.css',
+                $skin
+            ),
+            'package_name' => 'sonata_admin',
+        ];
 
         return $defaultStylesheets;
     }

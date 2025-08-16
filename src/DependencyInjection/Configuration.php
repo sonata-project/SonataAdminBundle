@@ -55,14 +55,18 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *     use_select2: bool,
  *     use_stickyforms: bool,
  * }
+ * @phpstan-type SonataAdminAsset = array{
+ *     asset: string,
+ *     package_name: string,
+ * }
  * @phpstan-type SonataAdminConfiguration = array{
  *     assets: array{
- *         extra_javascripts: list<string>,
- *         extra_stylesheets: list<string>,
- *         javascripts: list<string>,
+ *         extra_javascripts: list<SonataAdminAsset>,
+ *         extra_stylesheets: list<SonataAdminAsset>,
+ *         javascripts: list<SonataAdminAsset>,
  *         remove_javascripts: list<string>,
  *         remove_stylesheets: list<string>,
- *         stylesheets: list<string>,
+ *         stylesheets: list<SonataAdminAsset>,
  *     },
  *     breadcrumbs: array{
  *         child_admin_route: string,
@@ -172,6 +176,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 final class Configuration implements ConfigurationInterface
 {
+    private const DEFAULT_PACKAGE = 'sonata_admin';
+
     /**
      * @psalm-suppress UndefinedInterfaceMethod
      *
@@ -615,16 +621,32 @@ final class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('stylesheets')
-                            ->defaultValue([
+                            ->beforeNormalization()
+                                ->always(fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
+                            ->end()
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode('asset')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
+                                ->end()
+                            ->end()
+                            ->defaultValue(self::normalizeDefaultAssets([
                                 'bundles/sonataadmin/app.css',
                                 'bundles/sonataform/app.css',
-                            ])
-                            ->prototype('scalar')->end()
+                            ]))
                         ->end()
                         ->arrayNode('extra_stylesheets')
                             ->info('stylesheets to add to the page')
+                            ->beforeNormalization()
+                                ->always(fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
+                            ->end()
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode('asset')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
+                                ->end()
+                            ->end()
                             ->defaultValue([])
-                            ->prototype('scalar')->end()
                         ->end()
                         ->arrayNode('remove_stylesheets')
                             ->info('stylesheets to remove from the page')
@@ -632,16 +654,32 @@ final class Configuration implements ConfigurationInterface
                             ->prototype('scalar')->end()
                         ->end()
                         ->arrayNode('javascripts')
-                            ->defaultValue([
+                            ->beforeNormalization()
+                                ->always(fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
+                            ->end()
+                            ->defaultValue(self::normalizeDefaultAssets([
                                 'bundles/sonataadmin/app.js',
                                 'bundles/sonataform/app.js',
-                            ])
-                            ->prototype('scalar')->end()
+                            ]))
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode('asset')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
+                                ->end()
+                            ->end()
                         ->end()
                         ->arrayNode('extra_javascripts')
                             ->info('javascripts to add to the page')
+                            ->beforeNormalization()
+                                ->always(fn ($value) => self::normalizeAssetList($value, 'stylesheets'))
+                            ->end()
                             ->defaultValue([])
-                            ->prototype('scalar')->end()
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode('asset')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
+                                ->end()
+                            ->end()
                         ->end()
                         ->arrayNode('remove_javascripts')
                             ->info('javascripts to remove from the page')
@@ -711,5 +749,90 @@ final class Configuration implements ConfigurationInterface
         ->end();
 
         return $treeBuilder;
+    }
+
+    /**
+     * Normalizes an asset list node to an array of items with shape:
+     *   [ ['asset' => string, 'package_name' => string], ... ]
+     * Supports input elements as string, positional array [asset] or [asset, package_name],
+     * or associative array {asset: ..., package_name: ...}.
+     *
+     * @param mixed $value
+     * @param string $nodeName
+     * @return list<SonataAdminAsset>
+     */
+    private static function normalizeAssetList(mixed $value, string $nodeName): array
+    {
+        if (null === $value) {
+            return [];
+        }
+
+        if (!\is_array($value)) {
+            throw new \InvalidArgumentException(sprintf('The "%s" node must be an array.', $nodeName));
+        }
+
+        return \array_map(static fn ($item) => self::normalizeAssetItem($item, $nodeName), $value);
+    }
+
+    /**
+     * @param mixed $item
+     * @param string $nodeName
+     * @return SonataAdminAsset
+     */
+    private static function normalizeAssetItem(mixed $item, string $nodeName): array
+    {
+        // 1) Simple string form
+        if (\is_string($item)) {
+            return [
+                'asset'        => $item,
+                'package_name' => self::DEFAULT_PACKAGE,
+            ];
+        }
+
+        // 2) Array forms
+        if (\is_array($item)) {
+            // Positional short form: [asset] or [asset, package_name]
+            if (\array_is_list($item)) {
+                return match (\count($item)) {
+                    2       => [
+                        'asset'        => (string)$item[0],
+                        'package_name' => $item[1] === null ? null : (string) $item[1],
+                    ],
+                    default => throw new \InvalidArgumentException(
+                        sprintf(
+                            'Each "%s" item must be string, [asset], [asset, package_name] or {asset: ..., package_name: ...}.',
+                            $nodeName
+                        )
+                    ),
+                };
+            }
+
+            // Associative form: {asset: ..., package_name: ...}
+            if (!isset($item['asset'])) {
+                throw new \InvalidArgumentException(sprintf('The associative "%s" item must contain the "asset" key.', $nodeName));
+            }
+
+            $pkg = array_key_exists('package_name', $item) ? $item['package_name'] : self::DEFAULT_PACKAGE;
+
+            return [
+                'asset'        => (string)$item['asset'],
+                'package_name' => $pkg === null ? null : (string) $pkg,
+            ];
+        }
+
+        throw new \InvalidArgumentException(sprintf('Invalid "%s" item type.', $nodeName));
+    }
+
+    /**
+     * Helper to build normalized defaults from a list of asset strings.
+     * @param array<int, string> $assets
+     * @return list<SonataAdminAsset>
+     */
+    private static function normalizeDefaultAssets(array $assets): array
+    {
+        return array_map(static fn(string $asset) => [
+            'asset'        => $asset,
+            'package_name' => self::DEFAULT_PACKAGE,
+        ], $assets);
     }
 }
