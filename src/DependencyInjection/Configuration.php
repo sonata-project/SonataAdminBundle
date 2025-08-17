@@ -754,8 +754,7 @@ final class Configuration implements ConfigurationInterface
     /**
      * Normalizes an asset list node to an array of items with shape:
      *   [ ['path' => string, 'package_name' => string], ... ]
-     * Supports input elements as string, positional array [asset, package_name],
-     * or associative array {asset: ..., package_name: ...}.
+     * Supports input elements as string or associative array {path: ..., package_name: ...}.
      *
      * @param array<mixed> $value
      *
@@ -787,38 +786,23 @@ final class Configuration implements ConfigurationInterface
             ];
         }
 
-        // 2) Array forms
+        // 2) Associative form: {path: ..., package_name: ...}
         if (\is_array($item)) {
-            // Positional form: [path, package_name]
-            if (array_is_list($item)) {
-                return match (\count($item)) {
-                    2 => [
-                        'path' => (string) $item[0],
-                        'package_name' => null === $item[1] ? null : (string) $item[1],
-                    ],
-                    default => throw new \InvalidArgumentException(
-                        \sprintf(
-                            'Each "%s" item must be string, [path], [path, package_name] or {path: ..., package_name: ...}.',
-                            $nodeName
-                        )
-                    ),
-                };
+            if (!\array_key_exists('path', $item) || !\array_key_exists('package_name', $item)) {
+                throw new \InvalidArgumentException(\sprintf('The "%s" item with array form must contain the "path" and "package_name" keys.', $nodeName));
             }
 
-            // Associative form: {path: ..., package_name: ...}
-            if (!isset($item['path'])) {
-                throw new \InvalidArgumentException(\sprintf('The associative "%s" item must contain the "path" key.', $nodeName));
+            if (null === $item['path']) {
+                throw new \InvalidArgumentException(\sprintf('The "path" key of the "%s" item can not be null.', $nodeName));
             }
-
-            $pkg = \array_key_exists('package_name', $item) ? $item['package_name'] : self::DEFAULT_PACKAGE;
 
             return [
                 'path' => (string) $item['path'],
-                'package_name' => null === $pkg ? null : (string) $pkg,
+                'package_name' => null === $item['package_name'] ? null : (string) $item['package_name'],
             ];
         }
 
-        throw new \InvalidArgumentException(\sprintf('Invalid "%s" item type.', $nodeName));
+        throw new \InvalidArgumentException(\sprintf('Invalid "%s" item type. String or associative array are allowed.', $nodeName));
     }
 
     /**

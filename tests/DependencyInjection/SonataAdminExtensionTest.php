@@ -117,8 +117,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $extraStylesheets = [
             'foo/bar.css',
             'bar/quux.css',
-            ['foo/bazz.css', 'another_package'],
-            ['bar/asd.css', null],
+            ['path' => 'foo/bazz.css', 'package_name' => 'another_package'],
+            ['path' => 'bar/asd.css', 'package_name' => null],
         ];
 
         $extraStylesheetsNormalized = [
@@ -180,8 +180,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $extraJavascripts = [
             'foo/bar.js',
             'bar/quux.js',
-            ['foo/bazz.js', 'another_package'],
-            ['bar/asd.js', null],
+            ['path' => 'foo/bazz.js', 'package_name' => 'another_package'],
+            ['path' => 'bar/asd.js', 'package_name' => null],
         ];
 
         $extraJavascriptsNormalized = [
@@ -241,8 +241,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $extraStylesheets = [
             'foo/bar.css',
             'bar/quux.css',
-            ['foo/bazz.css', 'another_package'],
-            ['bar/asd.css', null],
+            ['path' => 'foo/bazz.css', 'package_name' => 'another_package'],
+            ['path' => 'bar/asd.css', 'package_name' => null],
         ];
         $extraStylesheetsNormalized = [
             ['path' => 'foo/bar.css', 'package_name' => 'sonata_admin'],
@@ -253,8 +253,8 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $extraJavascripts = [
             'foo/bar.js',
             'bar/quux.js',
-            ['foo/bazz.js', 'another_package'],
-            ['bar/asd.js', null],
+            ['path' => 'foo/bazz.js', 'package_name' => 'another_package'],
+            ['path' => 'bar/asd.js', 'package_name' => null],
         ];
         $extraJavascriptsNormalized = [
             ['path' => 'foo/bar.js', 'package_name' => 'sonata_admin'],

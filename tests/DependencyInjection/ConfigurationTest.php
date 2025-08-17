@@ -254,15 +254,13 @@ final class ConfigurationTest extends TestCase
             'assets' => [
                 'extra_stylesheets' => [
                     'foo.css',
-                    ['bar.css', 'pkg'],
-                    ['baz.css', null],
-                    ['path' => 'zap.css', 'package_name' => null],
+                    ['path' => 'bar.css', 'package_name' => 'pkg'],
+                    ['path' => 'baz.css', 'package_name' => null],
                 ],
                 'extra_javascripts' => [
                     'foo.js',
-                    ['bar.js', 'pkg'],
-                    ['baz.js', null],
-                    ['path' => 'zap.js', 'package_name' => null],
+                    ['path' => 'bar.js', 'package_name' => 'pkg'],
+                    ['path' => 'baz.js', 'package_name' => null],
                 ],
             ],
         ]]);
@@ -271,14 +269,12 @@ final class ConfigurationTest extends TestCase
             ['path' => 'foo.css', 'package_name' => 'sonata_admin'],
             ['path' => 'bar.css', 'package_name' => 'pkg'],
             ['path' => 'baz.css', 'package_name' => null],
-            ['path' => 'zap.css', 'package_name' => null],
         ], $config['assets']['extra_stylesheets']);
 
         static::assertSame([
             ['path' => 'foo.js', 'package_name' => 'sonata_admin'],
             ['path' => 'bar.js', 'package_name' => 'pkg'],
             ['path' => 'baz.js', 'package_name' => null],
-            ['path' => 'zap.js', 'package_name' => null],
         ], $config['assets']['extra_javascripts']);
     }
 
