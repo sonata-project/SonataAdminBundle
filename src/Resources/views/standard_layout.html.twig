@@ -50,7 +50,7 @@ file that was distributed with this source code.
 
         {% block stylesheets %}
             {% for stylesheet in sonata_config.getOption('stylesheets', []) %}
-                <link rel="stylesheet" href="{{ asset(stylesheet.asset, stylesheet.package_name) }}">
+                <link rel="stylesheet" href="{{ asset(stylesheet.path, stylesheet.package_name) }}">
             {% endfor %}
         {% endblock %}
 
@@ -60,7 +60,7 @@ file that was distributed with this source code.
 
             {% block sonata_javascript_pool %}
                 {% for javascript in sonata_config.getOption('javascripts', []) %}
-                    <script src="{{ asset(javascript.asset, javascript.package_name) }}"></script>
+                    <script src="{{ asset(javascript.path, javascript.package_name) }}"></script>
                 {% endfor %}
             {% endblock %}
 

@@ -56,7 +56,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *     use_stickyforms: bool,
  * }
  * @phpstan-type SonataAdminAsset = array{
- *     asset: string,
+ *     path: string,
  *     package_name: string|null,
  * }
  * @phpstan-type SonataAdminConfiguration = array{
@@ -626,7 +626,7 @@ final class Configuration implements ConfigurationInterface
                             ->end()
                             ->arrayPrototype()
                                 ->children()
-                                    ->scalarNode('asset')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('path')->isRequired()->cannotBeEmpty()->end()
                                     ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
                                 ->end()
                             ->end()
@@ -642,7 +642,7 @@ final class Configuration implements ConfigurationInterface
                             ->end()
                             ->arrayPrototype()
                                 ->children()
-                                    ->scalarNode('asset')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('path')->isRequired()->cannotBeEmpty()->end()
                                     ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
                                 ->end()
                             ->end()
@@ -663,7 +663,7 @@ final class Configuration implements ConfigurationInterface
                             ]))
                             ->arrayPrototype()
                                 ->children()
-                                    ->scalarNode('asset')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('path')->isRequired()->cannotBeEmpty()->end()
                                     ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
                                 ->end()
                             ->end()
@@ -676,7 +676,7 @@ final class Configuration implements ConfigurationInterface
                             ->defaultValue([])
                             ->arrayPrototype()
                                 ->children()
-                                    ->scalarNode('asset')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('path')->isRequired()->cannotBeEmpty()->end()
                                     ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
                                 ->end()
                             ->end()
@@ -753,7 +753,7 @@ final class Configuration implements ConfigurationInterface
 
     /**
      * Normalizes an asset list node to an array of items with shape:
-     *   [ ['asset' => string, 'package_name' => string], ... ]
+     *   [ ['path' => string, 'package_name' => string], ... ]
      * Supports input elements as string, positional array [asset, package_name],
      * or associative array {asset: ..., package_name: ...}.
      *
@@ -782,38 +782,38 @@ final class Configuration implements ConfigurationInterface
         // 1) Simple string form
         if (\is_string($item)) {
             return [
-                'asset' => $item,
+                'path' => $item,
                 'package_name' => self::DEFAULT_PACKAGE,
             ];
         }
 
         // 2) Array forms
         if (\is_array($item)) {
-            // Positional form: [asset, package_name]
+            // Positional form: [path, package_name]
             if (array_is_list($item)) {
                 return match (\count($item)) {
                     2 => [
-                        'asset' => (string) $item[0],
+                        'path' => (string) $item[0],
                         'package_name' => null === $item[1] ? null : (string) $item[1],
                     ],
                     default => throw new \InvalidArgumentException(
                         \sprintf(
-                            'Each "%s" item must be string, [asset], [asset, package_name] or {asset: ..., package_name: ...}.',
+                            'Each "%s" item must be string, [path], [path, package_name] or {path: ..., package_name: ...}.',
                             $nodeName
                         )
                     ),
                 };
             }
 
-            // Associative form: {asset: ..., package_name: ...}
-            if (!isset($item['asset'])) {
-                throw new \InvalidArgumentException(\sprintf('The associative "%s" item must contain the "asset" key.', $nodeName));
+            // Associative form: {path: ..., package_name: ...}
+            if (!isset($item['path'])) {
+                throw new \InvalidArgumentException(\sprintf('The associative "%s" item must contain the "path" key.', $nodeName));
             }
 
             $pkg = \array_key_exists('package_name', $item) ? $item['package_name'] : self::DEFAULT_PACKAGE;
 
             return [
-                'asset' => (string) $item['asset'],
+                'path' => (string) $item['path'],
                 'package_name' => null === $pkg ? null : (string) $pkg,
             ];
         }
@@ -832,7 +832,7 @@ final class Configuration implements ConfigurationInterface
     {
         return array_values(
             array_map(static fn (string $asset) => [
-                'asset' => $asset,
+                'path' => $asset,
                 'package_name' => self::DEFAULT_PACKAGE,
             ], $assets)
         );

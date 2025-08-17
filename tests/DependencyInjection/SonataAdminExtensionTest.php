@@ -122,10 +122,10 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         ];
 
         $extraStylesheetsNormalized = [
-            ['asset' => 'foo/bar.css', 'package_name' => 'sonata_admin'],
-            ['asset' => 'bar/quux.css', 'package_name' => 'sonata_admin'],
-            ['asset' => 'foo/bazz.css', 'package_name' => 'another_package'],
-            ['asset' => 'bar/asd.css', 'package_name' => null],
+            ['path' => 'foo/bar.css', 'package_name' => 'sonata_admin'],
+            ['path' => 'bar/quux.css', 'package_name' => 'sonata_admin'],
+            ['path' => 'foo/bazz.css', 'package_name' => 'another_package'],
+            ['path' => 'bar/asd.css', 'package_name' => null],
         ];
 
         $this->load([
@@ -166,7 +166,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $expected = array_values(
             array_filter(
                 $this->defaultConfiguration['assets']['stylesheets'],
-                static fn (array $item) => !\in_array($item['asset'], $removeStylesheets, true)
+                static fn (array $item) => !\in_array($item['path'], $removeStylesheets, true)
             )
         );
 
@@ -185,10 +185,10 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         ];
 
         $extraJavascriptsNormalized = [
-            ['asset' => 'foo/bar.js', 'package_name' => 'sonata_admin'],
-            ['asset' => 'bar/quux.js', 'package_name' => 'sonata_admin'],
-            ['asset' => 'foo/bazz.js', 'package_name' => 'another_package'],
-            ['asset' => 'bar/asd.js', 'package_name' => null],
+            ['path' => 'foo/bar.js', 'package_name' => 'sonata_admin'],
+            ['path' => 'bar/quux.js', 'package_name' => 'sonata_admin'],
+            ['path' => 'foo/bazz.js', 'package_name' => 'another_package'],
+            ['path' => 'bar/asd.js', 'package_name' => null],
         ];
 
         $this->load([
@@ -228,7 +228,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $expected = array_values(
             array_filter(
                 $this->defaultConfiguration['assets']['javascripts'],
-                static fn (array $item) => !\in_array($item['asset'], $removeJavascripts, true)
+                static fn (array $item) => !\in_array($item['path'], $removeJavascripts, true)
             )
         );
 
@@ -245,10 +245,10 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ['bar/asd.css', null],
         ];
         $extraStylesheetsNormalized = [
-            ['asset' => 'foo/bar.css', 'package_name' => 'sonata_admin'],
-            ['asset' => 'bar/quux.css', 'package_name' => 'sonata_admin'],
-            ['asset' => 'foo/bazz.css', 'package_name' => 'another_package'],
-            ['asset' => 'bar/asd.css', 'package_name' => null],
+            ['path' => 'foo/bar.css', 'package_name' => 'sonata_admin'],
+            ['path' => 'bar/quux.css', 'package_name' => 'sonata_admin'],
+            ['path' => 'foo/bazz.css', 'package_name' => 'another_package'],
+            ['path' => 'bar/asd.css', 'package_name' => null],
         ];
         $extraJavascripts = [
             'foo/bar.js',
@@ -257,10 +257,10 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             ['bar/asd.js', null],
         ];
         $extraJavascriptsNormalized = [
-            ['asset' => 'foo/bar.js', 'package_name' => 'sonata_admin'],
-            ['asset' => 'bar/quux.js', 'package_name' => 'sonata_admin'],
-            ['asset' => 'foo/bazz.js', 'package_name' => 'another_package'],
-            ['asset' => 'bar/asd.js', 'package_name' => null],
+            ['path' => 'foo/bar.js', 'package_name' => 'sonata_admin'],
+            ['path' => 'bar/quux.js', 'package_name' => 'sonata_admin'],
+            ['path' => 'foo/bazz.js', 'package_name' => 'another_package'],
+            ['path' => 'bar/asd.js', 'package_name' => null],
         ];
         $removeStylesheets = [
             'bundles/sonataadmin/app.css',
@@ -287,7 +287,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             [
                 ...array_filter(
                     $this->defaultConfiguration['assets']['stylesheets'],
-                    static fn (array $item) => !\in_array($item['asset'], $removeStylesheets, true)
+                    static fn (array $item) => !\in_array($item['path'], $removeStylesheets, true)
                 ),
                 ...$extraStylesheetsNormalized,
             ],
@@ -299,7 +299,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
             [
                 ...array_filter(
                     $this->defaultConfiguration['assets']['javascripts'],
-                    static fn (array $item) => !\in_array($item['asset'], $removeJavascripts, true)
+                    static fn (array $item) => !\in_array($item['path'], $removeJavascripts, true)
                 ),
                 ...$extraJavascriptsNormalized,
             ],
@@ -470,7 +470,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
         $defaultStylesheets = $this->defaultConfiguration['assets']['stylesheets'];
         $defaultStylesheets[] = [
-            'asset' => \sprintf(
+            'path' => \sprintf(
                 'bundles/sonataadmin/admin-lte-skins/%s.min.css',
                 $skin
             ),
