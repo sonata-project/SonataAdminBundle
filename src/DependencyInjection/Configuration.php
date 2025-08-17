@@ -638,7 +638,7 @@ final class Configuration implements ConfigurationInterface
                         ->arrayNode('extra_stylesheets')
                             ->info('stylesheets to add to the page')
                             ->beforeNormalization()
-                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'stylesheets'))
+                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'extra_stylesheets'))
                             ->end()
                             ->arrayPrototype()
                                 ->children()
@@ -655,7 +655,7 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                         ->arrayNode('javascripts')
                             ->beforeNormalization()
-                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'stylesheets'))
+                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'javascripts'))
                             ->end()
                             ->defaultValue(self::normalizeDefaultAssets([
                                 'bundles/sonataadmin/app.js',
@@ -671,7 +671,7 @@ final class Configuration implements ConfigurationInterface
                         ->arrayNode('extra_javascripts')
                             ->info('javascripts to add to the page')
                             ->beforeNormalization()
-                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'stylesheets'))
+                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'extra_javascripts'))
                             ->end()
                             ->defaultValue([])
                             ->arrayPrototype()
@@ -789,7 +789,7 @@ final class Configuration implements ConfigurationInterface
         // 2) Associative form: {path: ..., package_name: ...}
         if (\is_array($item)) {
             if (!\array_key_exists('path', $item) || !\array_key_exists('package_name', $item)) {
-                throw new \InvalidArgumentException(\sprintf('The "%s" item with array form must contain the "path" and "package_name" keys.', $nodeName));
+                throw new \InvalidArgumentException(\sprintf('The "%s" item with array form must contain the "path" and the "package_name" keys.', $nodeName));
             }
 
             if (null === $item['path']) {

@@ -248,7 +248,7 @@ final class ConfigurationTest extends TestCase
         static::assertSame([], $config['assets']['remove_javascripts']);
     }
 
-    public function testNormalizationForAllNodes(): void
+    public function testNormalizationForAssetNodes(): void
     {
         $config = $this->process([[
             'assets' => [
@@ -276,6 +276,51 @@ final class ConfigurationTest extends TestCase
             ['path' => 'bar.js', 'package_name' => 'pkg'],
             ['path' => 'baz.js', 'package_name' => null],
         ], $config['assets']['extra_javascripts']);
+    }
+
+    public function testAssetWithWrongType(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid "stylesheets" item type. String or associative array are allowed.');
+
+        $this->process([[
+            'assets' => [
+                'stylesheets' => [
+                    'foo.css',
+                    null,
+                ],
+            ],
+        ]]);
+    }
+
+    public function testAssetWithNullPath(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "path" key of the "extra_stylesheets" item can not be null.');
+
+        $this->process([[
+            'assets' => [
+                'extra_stylesheets' => [
+                    'foo.css',
+                    ['path' => null, 'package_name' => 'pkg'],
+                    ['path' => 'bar.css', 'package_name' => null],
+                ],
+            ],
+        ]]);
+    }
+
+    public function testAssetWithNoPackageName(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "javascripts" item with array form must contain the "path" and the "package_name" keys.');
+
+        $this->process([[
+            'assets' => [
+                'javascripts' => [
+                    ['path' => 'bar.js'],
+                ],
+            ],
+        ]]);
     }
 
     public function testDefaultControllerIsCRUDController(): void
