@@ -172,12 +172,15 @@ Full Configuration Options
             filter_theme: []
 
         assets:
+            # all `stylesheets`, `extra_stylesheets`, `javascripts` and `extra_javascripts`
+            # can be simple strings or {path, package_name} pairs in case you have to set specific package name for the asset
             stylesheets:
 
                 # The default stylesheet list:
                 - bundles/sonataadmin/app.css
+                - bundles/sonataform/app.css
 
-            # stylesheet paths to add to the page in addition to the list above
+            # stylesheets to add to the page in addition to the list above
             extra_stylesheets: []
 
             # stylesheet paths to remove from the page
@@ -187,8 +190,9 @@ Full Configuration Options
 
                 # The default javascript list:
                 - bundles/sonataadmin/app.js
+                - bundles/sonataform/app.js
 
-            # javascript paths to add to the page in addition to the list above
+            # javascripts to add to the page in addition to the list above
             extra_javascripts: []
 
             # javascript paths to remove from the page
