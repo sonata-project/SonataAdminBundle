@@ -265,7 +265,7 @@ final class SonataAdminExtension extends Extension
     /**
      * @param array<int, SonataAdminAsset> $array
      * @param array<int, SonataAdminAsset> $addArray
-     * @param array<int, string>           $removeArray
+     * @param array<int, SonataAdminAsset> $removeArray
      *
      * @return array<int, SonataAdminAsset>
      */
@@ -276,7 +276,10 @@ final class SonataAdminExtension extends Extension
         }
         foreach ($removeArray as $toRemove) {
             foreach ($array as $i => $item) {
-                if ($item['path'] === $toRemove) {
+                if (
+                    $item['path'] === $toRemove['path']
+                    && $item['package_name'] === $toRemove['package_name']
+                ) {
                     array_splice($array, $i, 1);
                     break;
                 }

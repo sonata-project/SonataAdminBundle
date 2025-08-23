@@ -64,8 +64,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *         extra_javascripts: list<SonataAdminAsset>,
  *         extra_stylesheets: list<SonataAdminAsset>,
  *         javascripts: list<SonataAdminAsset>,
- *         remove_javascripts: list<string>,
- *         remove_stylesheets: list<string>,
+ *         remove_javascripts: list<SonataAdminAsset>,
+ *         remove_stylesheets: list<SonataAdminAsset>,
  *         stylesheets: list<SonataAdminAsset>,
  *     },
  *     breadcrumbs: array{
@@ -650,8 +650,16 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                         ->arrayNode('remove_stylesheets')
                             ->info('stylesheets to remove from the page')
+                            ->beforeNormalization()
+                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'extra_javascripts'))
+                            ->end()
                             ->defaultValue([])
-                            ->prototype('scalar')->end()
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode('path')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
+                                ->end()
+                            ->end()
                         ->end()
                         ->arrayNode('javascripts')
                             ->beforeNormalization()
@@ -683,8 +691,16 @@ final class Configuration implements ConfigurationInterface
                         ->end()
                         ->arrayNode('remove_javascripts')
                             ->info('javascripts to remove from the page')
+                            ->beforeNormalization()
+                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'extra_javascripts'))
+                            ->end()
                             ->defaultValue([])
-                            ->prototype('scalar')->end()
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode('path')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()
