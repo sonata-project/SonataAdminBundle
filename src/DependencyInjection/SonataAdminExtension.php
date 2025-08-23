@@ -36,6 +36,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType as SymfonyTextType;
  * @author Michael Williams <michael.williams@funsational.com>
  *
  * @phpstan-import-type SonataAdminConfiguration from Configuration
+ * @phpstan-import-type SonataAdminAsset from Configuration
  */
 final class SonataAdminExtension extends Extension
 {
@@ -89,10 +90,14 @@ final class SonataAdminExtension extends Extension
 
         $javascript = $this->buildJavascripts($config);
 
-        $config['assets']['stylesheets'][] = \sprintf(
-            'bundles/sonataadmin/admin-lte-skins/%s.min.css',
-            $config['options']['skin']
-        );
+        $config['assets']['stylesheets'][] = [
+            'path' => \sprintf(
+                'bundles/sonataadmin/admin-lte-skins/%s.min.css',
+                $config['options']['skin']
+            ),
+            'package_name' => 'sonata_admin',
+        ];
+
         $stylesheet = $this->buildStylesheets($config);
 
         $config['options']['javascripts'] = $javascript;
@@ -228,7 +233,7 @@ final class SonataAdminExtension extends Extension
     /**
      * @param array<string, mixed> $config
      *
-     * @return string[]
+     * @return SonataAdminAsset[]
      *
      * @phpstan-param SonataAdminConfiguration $config
      */
@@ -244,7 +249,7 @@ final class SonataAdminExtension extends Extension
     /**
      * @param array<string, mixed> $config
      *
-     * @return string[]
+     * @return SonataAdminAsset[]
      *
      * @phpstan-param SonataAdminConfiguration $config
      */
@@ -258,11 +263,11 @@ final class SonataAdminExtension extends Extension
     }
 
     /**
-     * @param array<int, string> $array
-     * @param array<int, string> $addArray
-     * @param array<int, string> $removeArray
+     * @param array<int, SonataAdminAsset> $array
+     * @param array<int, SonataAdminAsset> $addArray
+     * @param array<int, string>           $removeArray
      *
-     * @return array<int, string>
+     * @return array<int, SonataAdminAsset>
      */
     private function mergeArray(array $array, array $addArray, array $removeArray = []): array
     {
@@ -270,9 +275,11 @@ final class SonataAdminExtension extends Extension
             $array[] = $toAdd;
         }
         foreach ($removeArray as $toRemove) {
-            $key = array_search($toRemove, $array, true);
-            if (false !== $key) {
-                array_splice($array, $key, 1);
+            foreach ($array as $i => $item) {
+                if ($item['path'] === $toRemove) {
+                    array_splice($array, $i, 1);
+                    break;
+                }
             }
         }
 
