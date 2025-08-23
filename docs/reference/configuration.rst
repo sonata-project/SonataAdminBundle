@@ -172,7 +172,8 @@ Full Configuration Options
             filter_theme: []
 
         assets:
-            # all `stylesheets`, `extra_stylesheets`, `javascripts` and `extra_javascripts`
+            # all `stylesheets`, `extra_stylesheets`, `remove_stylesheets`,
+            # `javascripts`, `extra_javascripts` and `remove_javascripts`
             # can be simple strings or {path, package_name} pairs in case you have to set specific package name for the asset
             stylesheets:
 
