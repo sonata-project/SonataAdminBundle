@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.38.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.37.5...4.38.0) - 2025-08-24
+### Added
+- [[#8316](https://github.com/sonata-project/SonataAdminBundle/pull/8316)] Optional package_name for assets ([@andreybotanic](https://github.com/andreybotanic))
+
 ## [4.37.5](https://github.com/sonata-project/SonataAdminBundle/compare/4.37.4...4.37.5) - 2025-08-08
 ### Fixed
 - [[#8313](https://github.com/sonata-project/SonataAdminBundle/pull/8313)] ID retrieving in autocomplete results ([@valkars](https://github.com/valkars))
