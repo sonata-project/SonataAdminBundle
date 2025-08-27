@@ -15,8 +15,8 @@ The recipe
 
 If there is a requirement for the entity to have domain specific methods instead of getters/setters for each
 entity field then it won't work with SonataAdmin out of the box. But Symfony Form component provides ``DataMapper``
-that can be used to make it work. Symfony itself lacks examples of using ``DataMapper`` but there is an article by
-webmozart that covers it - https://webmozart.io/blog/2015/09/09/value-objects-in-symfony-forms/
+that can be used to make it work. Symfony itself lacks examples of using ``DataMapper`` but there is an archived 
+article by webmozart that covers it - https://web.archive.org/web/20230208170900/https://webmozart.io/blog/2015/09/09/value-objects-in-symfony-forms/
 
 Example Entity
 ^^^^^^^^^^^^^^
