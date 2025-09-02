@@ -89,8 +89,6 @@ final class ExtensionCompilerPassTest extends TestCase
             ExtensionCompilerPass::class,
             'flattenExtensionConfiguration'
         );
-
-        $method->setAccessible(true);
         $extensionMap = $method->invokeArgs(new ExtensionCompilerPass(), [$extensionMap]);
 
         static::assertIsArray($extensionMap);
@@ -123,8 +121,6 @@ final class ExtensionCompilerPassTest extends TestCase
             ExtensionCompilerPass::class,
             'flattenExtensionConfiguration'
         );
-
-        $method->setAccessible(true);
         $extensionMap = $method->invokeArgs(new ExtensionCompilerPass(), [$extensionMap]);
 
         static::assertIsArray($extensionMap);
