@@ -299,7 +299,6 @@ final class CRUDControllerTest extends TestCase
         ];
         foreach ($testedMethods as $testedMethod) {
             $method = new \ReflectionMethod(CRUDController::class, $testedMethod);
-            $method->setAccessible(true);
             $this->protectedTestedMethods[$testedMethod] = $method;
         }
     }
