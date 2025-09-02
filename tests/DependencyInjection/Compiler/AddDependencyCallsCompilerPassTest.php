@@ -115,7 +115,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         static::assertArrayHasKey('sonata_group_two', $dashboardGroupsSettings);
         static::assertArrayHasKey('provider', $dashboardGroupsSettings['sonata_group_two']);
-        static::assertStringContainsString('my_menu', $dashboardGroupsSettings['sonata_group_two']['provider']);
+        static::assertStringContainsString('my_menu', (string) $dashboardGroupsSettings['sonata_group_two']['provider']);
 
         static::assertArrayHasKey('sonata_group_five', $dashboardGroupsSettings);
         static::assertTrue($dashboardGroupsSettings['sonata_group_five']['keep_open']);
@@ -160,14 +160,14 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         static::assertFalse($adminGroups['sonata_group_one']['keep_open']);
         static::assertStringContainsString(
             'sonata_post_admin',
-            $adminGroups['sonata_group_one']['items'][0]['admin']
+            (string) $adminGroups['sonata_group_one']['items'][0]['admin']
         );
         static::assertNotContains('sonata_article_admin', $adminGroups['sonata_group_one']['items']);
         static::assertContains('ROLE_ONE', $adminGroups['sonata_group_one']['roles']);
 
         static::assertArrayHasKey('sonata_group_two', $adminGroups);
         static::assertArrayHasKey('provider', $adminGroups['sonata_group_two']);
-        static::assertStringContainsString('my_menu', $adminGroups['sonata_group_two']['provider']);
+        static::assertStringContainsString('my_menu', (string) $adminGroups['sonata_group_two']['provider']);
 
         static::assertArrayHasKey('sonata_group_five', $adminGroups);
         static::assertTrue($adminGroups['sonata_group_five']['keep_open']);

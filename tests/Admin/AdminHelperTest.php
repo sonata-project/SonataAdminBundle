@@ -754,7 +754,6 @@ final class AdminHelperTest extends TestCase
     private function getMethodAsPublic(string $privateMethod): \ReflectionMethod
     {
         $reflectionMethod = new \ReflectionMethod(AdminHelper::class, $privateMethod);
-        $reflectionMethod->setAccessible(true);
 
         return $reflectionMethod;
     }

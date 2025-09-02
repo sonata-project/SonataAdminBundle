@@ -831,8 +831,7 @@ final class RenderElementRuntimeTest extends TestCase
                             <span class="label label-success">yes</span>
                         </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 true,
                 ['editable' => true],
@@ -851,8 +850,7 @@ final class RenderElementRuntimeTest extends TestCase
                         >
                         <span class="label label-danger">no</span> </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 false,
                 ['editable' => true],
@@ -870,8 +868,7 @@ final class RenderElementRuntimeTest extends TestCase
                             data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]" >
                             <span class="label label-danger">no</span> </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 null,
                 ['editable' => true],
@@ -1040,8 +1037,7 @@ final class RenderElementRuntimeTest extends TestCase
                             Status1
                         </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'Status1',
                 ['editable' => true],
@@ -1059,8 +1055,7 @@ final class RenderElementRuntimeTest extends TestCase
                             data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
                             Alias1 </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'Status1',
                 [
@@ -1086,8 +1081,7 @@ final class RenderElementRuntimeTest extends TestCase
 
                         </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 null,
                 [
@@ -1112,8 +1106,7 @@ final class RenderElementRuntimeTest extends TestCase
                             NoValidKeyInChoices
                         </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'NoValidKeyInChoices',
                 [
@@ -1139,8 +1132,7 @@ final class RenderElementRuntimeTest extends TestCase
                              Delete
                         </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'Foo',
                 [
@@ -1419,8 +1411,7 @@ final class RenderElementRuntimeTest extends TestCase
                                     data-action="click->sonata-readmore#toggle"></button>
                         </div>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_STRING,
                 'A very long string',
                 [
@@ -1442,8 +1433,7 @@ final class RenderElementRuntimeTest extends TestCase
                                     data-action="click->sonata-readmore#toggle"></button>
                         </div>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_STRING,
                 'A very long string',
                 [
@@ -1468,8 +1458,7 @@ final class RenderElementRuntimeTest extends TestCase
                              Delete, Alias2
                         </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 [
                     'Status1',
@@ -1973,8 +1962,7 @@ final class RenderElementRuntimeTest extends TestCase
                                 data-action="click->sonata-readmore#toggle"></button>
                     </div>
                 </td>
-                EOT
-            ,
+                EOT,
             FieldDescriptionInterface::TYPE_STRING,
             ' A very long string ',
             [
@@ -1997,8 +1985,7 @@ final class RenderElementRuntimeTest extends TestCase
                                 data-action="click->sonata-readmore#toggle"></button>
                     </div>
                 </td>
-                EOT
-            ,
+                EOT,
             FieldDescriptionInterface::TYPE_STRING,
             ' A very long string ',
             [
