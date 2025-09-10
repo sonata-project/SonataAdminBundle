@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.38.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.38.1...4.38.2) - 2025-09-10
+### Fixed
+- [[#8334](https://github.com/sonata-project/SonataAdminBundle/pull/8334)] * ImmutableArrayType field helper message must not displayed twice ([@sad270](https://github.com/sad270))
+- [[#8335](https://github.com/sonata-project/SonataAdminBundle/pull/8335)] Error messages displayed twice with form type `sonata_type_native_collection` or `sonata_type_immutable_array` when `error_bubbling` sets to `false` #2761 ([@sad270](https://github.com/sad270))
+
 ## [4.38.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.38.0...4.38.1) - 2025-09-05
 ### Fixed
 - [[#8329](https://github.com/sonata-project/SonataAdminBundle/pull/8329)] `ImmutableArrayType` field and it subfields help message are not displayed ([@sad270](https://github.com/sad270))
