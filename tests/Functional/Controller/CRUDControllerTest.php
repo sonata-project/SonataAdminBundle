@@ -77,6 +77,36 @@ final class CRUDControllerTest extends WebTestCase
     }
 
     /**
+     * @see https://github.com/sonata-project/SonataAdminBundle/issues/8328
+     */
+    public function testImmutableArrayHelpAttributeIsDisplayed(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/create');
+
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertCount(
+            1,
+            $crawler->filter('.help-block.sonata-ba-field-help:contains("Elements main field help message")')
+        );
+    }
+
+    /**
+     * @see https://github.com/sonata-project/SonataAdminBundle/issues/8328
+     */
+    public function testImmutableArrayKeysItemHelpAttributeAreDisplayed(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/create');
+
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertCount(
+            1,
+            $crawler->filter('.help-block.sonata-ba-field-help:contains("Elements sub field help message")')
+        );
+    }
+
+    /**
      * https://github.com/sonata-project/SonataAdminBundle/issues/6904.
      */
     public function testCreateModelAutoCompleteNotPassingSubclassParameter(): void

@@ -416,8 +416,6 @@ file that was distributed with this source code.
 
 {% block sonata_type_immutable_array_widget %}
     <div {{ block('widget_container_attributes') }}>
-        {{ form_help(form) }}
-
         {% for key, child in form %}
             {{ block('sonata_type_immutable_array_widget_row') }}
         {% endfor %}
