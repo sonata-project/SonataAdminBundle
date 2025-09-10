@@ -19,13 +19,18 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\FormMapper;
+use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Form\Type\TemplateType;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Tests\App\Model\Bar;
 use Sonata\AdminBundle\Tests\App\Model\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchOtherController;
+use Sonata\Form\Type\ImmutableArrayType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Validator\Constraints\Collection;
+use Symfony\Component\Validator\Constraints\Count;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * @phpstan-extends AbstractAdmin<Foo>
@@ -65,6 +70,45 @@ class FooAdmin extends AbstractAdmin
                 [
                     'admin_code' => 'sonata_bar_admin',
                 ]
+            )
+            ->add(
+                'elements',
+                ImmutableArrayType::class,
+                [
+                    'help' => 'elements help message',
+                    'error_bubbling' => false,
+                    'constraints' => [
+                        new Collection([
+                            'fields' => [
+                                'elements_item' => new NotBlank(),
+                                'missing_field' => new NotBlank(),
+                            ],
+                            'allowMissingFields' => false,
+                        ]),
+                    ],
+                    'keys' => [
+                        [
+                            'elements_item',
+                            TextType::class,
+                            [
+                                'help' => 'elements_item help message',
+                            ],
+                        ],
+                    ],
+                ],
+            )
+            ->add(
+                'collection',
+                CollectionType::class,
+                [
+                    'error_bubbling' => false,
+                    'constraints' => [
+                        new Count([
+                            'min' => 2,
+                        ]),
+                    ],
+                    'entry_type' => TextType::class,
+                ],
             );
     }
 
