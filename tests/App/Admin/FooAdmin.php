@@ -75,7 +75,7 @@ class FooAdmin extends AbstractAdmin
                 'elements',
                 ImmutableArrayType::class,
                 [
-                    'help' => 'elements help message',
+                    'help' => 'Elements main field help message',
                     'error_bubbling' => false,
                     'constraints' => [
                         new Collection([
@@ -91,7 +91,7 @@ class FooAdmin extends AbstractAdmin
                             'elements_item',
                             TextType::class,
                             [
-                                'help' => 'elements_item help message',
+                                'help' => 'Elements sub field help message',
                             ],
                         ],
                     ],
