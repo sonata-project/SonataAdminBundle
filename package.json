@@ -36,7 +36,7 @@
     "postcss-scss": "^4.0",
     "prettier": "^2.8",
     "sass-embedded": "^1.62",
-    "sass-loader": "^13.2",
+    "sass-loader": "^16.0",
     "stylelint": "^15.6",
     "stylelint-config-standard-scss": "^9.0",
     "stylelint-order": "^6.0",
