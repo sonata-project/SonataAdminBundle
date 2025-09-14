@@ -20,6 +20,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class AdminAsParameterControllerTest extends WebTestCase
 {
+    protected function tearDown(): void
+    {
+        restore_error_handler();
+
+        parent::tearDown();
+    }
+
     #[DataProvider('provideUrlIsSuccessfulCases')]
     public function testUrlIsSuccessful(string $url): void
     {
@@ -27,8 +34,6 @@ final class AdminAsParameterControllerTest extends WebTestCase
         $client->request(Request::METHOD_GET, $url);
 
         static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
-
-        restore_error_handler();
     }
 
     /**

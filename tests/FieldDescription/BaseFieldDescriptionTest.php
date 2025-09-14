@@ -189,6 +189,9 @@ final class BaseFieldDescriptionTest extends TestCase
         static::assertSame(['getFake', []], $this->callMethod($description, 'getFieldValue', [$foo, 'fake']));
     }
 
+    /**
+     * @param non-empty-string $method
+     */
     #[DataProvider('provideGetFieldValueWithMethodCases')]
     public function testGetFieldValueWithMethod(string $method): void
     {

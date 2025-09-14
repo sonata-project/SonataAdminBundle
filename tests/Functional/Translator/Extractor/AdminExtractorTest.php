@@ -19,6 +19,13 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 final class AdminExtractorTest extends KernelTestCase
 {
+    protected function tearDown(): void
+    {
+        restore_error_handler();
+
+        parent::tearDown();
+    }
+
     public function testDebugMissingMessages(): void
     {
         $tester = $this->createCommandTester();
