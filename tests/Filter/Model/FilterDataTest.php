@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Filter\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 
 final class FilterDataTest extends TestCase
 {
-    /**
-     * @dataProvider provideTypeMustBeNumericOrNullCases
-     */
+    #[DataProvider('provideTypeMustBeNumericOrNullCases')]
     public function testTypeMustBeNumericOrNull(mixed $type): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -36,7 +35,7 @@ final class FilterDataTest extends TestCase
     /**
      * @return iterable<array<mixed>>
      */
-    public function provideTypeMustBeNumericOrNullCases(): iterable
+    public static function provideTypeMustBeNumericOrNullCases(): iterable
     {
         yield ['string'];
         yield [new \stdClass()];
@@ -59,10 +58,9 @@ final class FilterDataTest extends TestCase
     }
 
     /**
-     * @dataProvider provideGetTypeCases
-     *
      * @phpstan-param int|numeric-string|null $type
      */
+    #[DataProvider('provideGetTypeCases')]
     public function testGetType(?int $expected, int|string|null $type): void
     {
         static::assertSame($expected, FilterData::fromArray(['type' => $type])->getType());
@@ -71,16 +69,14 @@ final class FilterDataTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{int|null, int|numeric-string|null}>
      */
-    public function provideGetTypeCases(): iterable
+    public static function provideGetTypeCases(): iterable
     {
         yield 'nullable' => [null, null];
         yield 'int' => [3, 3];
         yield 'numeric string' => [3, '3'];
     }
 
-    /**
-     * @dataProvider provideGetValueCases
-     */
+    #[DataProvider('provideGetValueCases')]
     public function testGetValue(mixed $value): void
     {
         static::assertSame($value, FilterData::fromArray(['value' => $value])->getValue());
@@ -89,7 +85,7 @@ final class FilterDataTest extends TestCase
     /**
      * @return iterable<array<mixed>>
      */
-    public function provideGetValueCases(): iterable
+    public static function provideGetValueCases(): iterable
     {
         yield [null];
         yield [new \stdClass()];

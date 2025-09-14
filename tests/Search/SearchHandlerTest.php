@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Search;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
@@ -95,9 +96,8 @@ final class SearchHandlerTest extends TestCase
 
     /**
      * @phpstan-param class-string|null $expected
-     *
-     * @dataProvider provideAdminSearchCases
      */
+    #[DataProvider('provideAdminSearchCases')]
     public function testAdminSearch(?string $expected, int $filterCallsCount, ?bool $enabled, string $adminCode): void
     {
         $filter = $this->createMock(SearchableFilterInterface::class);
@@ -133,7 +133,7 @@ final class SearchHandlerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{class-string|null, int, bool|null, string}>
      */
-    public function provideAdminSearchCases(): iterable
+    public static function provideAdminSearchCases(): iterable
     {
         yield 'admin_search_enabled' => [PagerInterface::class, 1, true, 'admin.foo'];
         yield 'admin_search_disabled' => [null, 0, false, 'admin.bar'];

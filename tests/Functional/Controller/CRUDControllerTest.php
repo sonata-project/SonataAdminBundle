@@ -13,12 +13,20 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class CRUDControllerTest extends WebTestCase
 {
+    protected function tearDown(): void
+    {
+        restore_exception_handler();
+
+        parent::tearDown();
+    }
+
     public function testList(): void
     {
         $client = static::createClient();
@@ -148,9 +156,7 @@ final class CRUDControllerTest extends WebTestCase
         );
     }
 
-    /**
-     * @dataProvider provideUrlIsSuccessfulCases
-     */
+    #[DataProvider('provideUrlIsSuccessfulCases')]
     public function testUrlIsSuccessful(string $url): void
     {
         $client = static::createClient();
@@ -185,7 +191,7 @@ final class CRUDControllerTest extends WebTestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function provideUrlIsSuccessfulCases(): iterable
+    public static function provideUrlIsSuccessfulCases(): iterable
     {
         yield ['/admin/tests/app/foo/browse'];
         // CustomAdminExtension route

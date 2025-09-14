@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Util;
 
+use PHPUnit\Framework\Attributes\Depends;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
@@ -61,9 +62,7 @@ final class AdminObjectAclDataTest extends TestCase
         return $adminObjectAclData;
     }
 
-    /**
-     * @depends testSetAcl
-     */
+    #[Depends('testSetAcl')]
     public function testGetAcl(AdminObjectAclData $adminObjectAclData): void
     {
         static::assertInstanceOf(Acl::class, $adminObjectAclData->getAcl());
@@ -90,9 +89,7 @@ final class AdminObjectAclDataTest extends TestCase
         return $adminObjectAclData;
     }
 
-    /**
-     * @depends testSetForm
-     */
+    #[Depends('testSetForm')]
     public function testGetForm(AdminObjectAclData $adminObjectAclData): void
     {
         static::assertInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
@@ -109,9 +106,7 @@ final class AdminObjectAclDataTest extends TestCase
         return $adminObjectAclData;
     }
 
-    /**
-     * @depends testSetAclUsersForm
-     */
+    #[Depends('testSetAclUsersForm')]
     public function testGetAclUsersForm(AdminObjectAclData $adminObjectAclData): void
     {
         static::assertInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
@@ -128,9 +123,7 @@ final class AdminObjectAclDataTest extends TestCase
         return $adminObjectAclData;
     }
 
-    /**
-     * @depends testSetAclRolesForm
-     */
+    #[Depends('testSetAclRolesForm')]
     public function testGetAclRolesForm(AdminObjectAclData $adminObjectAclData): void
     {
         static::assertInstanceOf(Form::class, $adminObjectAclData->getAclRolesForm());

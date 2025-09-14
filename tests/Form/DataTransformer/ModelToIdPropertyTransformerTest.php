@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use Doctrine\Common\Collections\Collection;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -62,11 +63,10 @@ final class ModelToIdPropertyTransformerTest extends TestCase
      * @param Foo[]                                $expected
      * @param array<int|string|array<string>>|null $params
      *
-     * @dataProvider provideReverseTransformMultipleCases
-     *
      * @phpstan-param array<int|string|array<string>>|null $params
      * @psalm-param (array{_labels?: array<string>}&array<int|string>)|null $params
      */
+    #[DataProvider('provideReverseTransformMultipleCases')]
     public function testReverseTransformMultiple(array $expected, ?array $params, Foo $entity1, Foo $entity2, Foo $entity3): void
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
@@ -117,7 +117,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
      * @phpstan-return iterable<array-key, array{array<Foo>, array<int|string|array<string>>|null, Foo, Foo, Foo}>
      * @psalm-return iterable<array-key, array{array<Foo>, (array{_labels?: array<string>}&array<int|string>)|null, Foo, Foo, Foo}>
      */
-    public function provideReverseTransformMultipleCases(): iterable
+    public static function provideReverseTransformMultipleCases(): iterable
     {
         $entity1 = new Foo();
         $entity1->setBaz(123);
@@ -146,9 +146,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         $transformer->reverseTransform([123]);
     }
 
-    /**
-     * @dataProvider provideReverseTransformMultipleInvalidTypeTestsCases
-     */
+    #[DataProvider('provideReverseTransformMultipleInvalidTypeTestsCases')]
     public function testReverseTransformMultipleInvalidTypeTests(mixed $params, string $type): void
     {
         $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', true);
@@ -162,7 +160,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
     /**
      * @phpstan-return iterable<array{mixed, string}>
      */
-    public function provideReverseTransformMultipleInvalidTypeTestsCases(): iterable
+    public static function provideReverseTransformMultipleInvalidTypeTestsCases(): iterable
     {
         yield [true, 'bool'];
         yield [12, 'int'];

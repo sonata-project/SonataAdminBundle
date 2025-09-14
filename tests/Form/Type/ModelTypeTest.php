@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -33,9 +34,8 @@ final class ModelTypeTest extends TypeTestCase
 
     /**
      * @param array<string, mixed> $options
-     *
-     * @dataProvider provideGetOptionsCases
      */
+    #[DataProvider('provideGetOptionsCases')]
     public function testGetOptions(array $options, int $expectedModelManagerFindCalls): void
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
@@ -72,16 +72,14 @@ final class ModelTypeTest extends TypeTestCase
     /**
      * @phpstan-return iterable<array-key, array{array<string, mixed>, int}>
      */
-    public function provideGetOptionsCases(): iterable
+    public static function provideGetOptionsCases(): iterable
     {
         yield [[], 1];
         yield [['choices' => null], 1];
         yield [['choices' => []], 0];
     }
 
-    /**
-     * @dataProvider provideCompoundOptionCases
-     */
+    #[DataProvider('provideCompoundOptionCases')]
     public function testCompoundOption(bool $expectedCompound, bool $multiple, bool $expanded): void
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
@@ -112,7 +110,7 @@ final class ModelTypeTest extends TypeTestCase
     /**
      * @phpstan-return iterable<array{bool, bool, bool}>
      */
-    public function provideCompoundOptionCases(): iterable
+    public static function provideCompoundOptionCases(): iterable
     {
         yield [true, true, true];
         // checkboxes

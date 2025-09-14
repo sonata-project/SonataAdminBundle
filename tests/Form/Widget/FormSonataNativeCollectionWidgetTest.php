@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Widget;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
 use Sonata\AdminBundle\Form\Type\CollectionType;
 use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
@@ -20,7 +21,7 @@ use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\FormTypeInterface;
 
-final class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
+final class FormSonataNativeCollectionWidgetTest extends BaseWidgetTestCase
 {
     protected $type = 'form';
 
@@ -32,7 +33,7 @@ final class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
     /**
      * @phpstan-return iterable<array{array<string, mixed>}>
      */
-    public function providePrototypeIsDeletableNoMatterTheShrinkabilityCases(): iterable
+    public static function providePrototypeIsDeletableNoMatterTheShrinkabilityCases(): iterable
     {
         yield 'shrinkable collection' => [['allow_delete' => true]];
         yield 'unshrinkable collection' => [['allow_delete' => false]];
@@ -40,9 +41,8 @@ final class FormSonataNativeCollectionWidgetTest extends BaseWidgetTest
 
     /**
      * @param array<string, mixed> $options
-     *
-     * @dataProvider providePrototypeIsDeletableNoMatterTheShrinkabilityCases
      */
+    #[DataProvider('providePrototypeIsDeletableNoMatterTheShrinkabilityCases')]
     public function testPrototypeIsDeletableNoMatterTheShrinkability(array $options): void
     {
         $choice = $this->factory->create(

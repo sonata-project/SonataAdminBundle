@@ -14,14 +14,13 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Menu\Matcher\Voter;
 
 use Knp\Menu\ItemInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Menu\Matcher\Voter\ActiveVoter;
 
 final class ActiveVoterTest extends TestCase
 {
-    /**
-     * @dataProvider provideMatchingCases
-     */
+    #[DataProvider('provideMatchingCases')]
     public function testMatching(?bool $itemData, ?bool $expected): void
     {
         $item = $this->createMock(ItemInterface::class);
@@ -47,7 +46,7 @@ final class ActiveVoterTest extends TestCase
     /**
      * @return iterable<array{bool|null, bool|null}>
      */
-    public function provideMatchingCases(): iterable
+    public static function provideMatchingCases(): iterable
     {
         yield 'active' => [true, true];
         yield 'no active' => [false, false];

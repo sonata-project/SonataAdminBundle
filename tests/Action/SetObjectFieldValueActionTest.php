@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
@@ -134,7 +135,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{\DateTimeZone|string|false|null, \DateTimeZone}>
      */
-    public function provideSetObjectFieldValueActionWithDateCases(): iterable
+    public static function provideSetObjectFieldValueActionWithDateCases(): iterable
     {
         $default = new \DateTimeZone(date_default_timezone_get());
         $custom = new \DateTimeZone('Europe/Rome');
@@ -146,9 +147,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         yield 'custom timezone by object' => [$custom, $custom];
     }
 
-    /**
-     * @dataProvider provideSetObjectFieldValueActionWithDateCases
-     */
+    #[DataProvider('provideSetObjectFieldValueActionWithDateCases')]
     public function testSetObjectFieldValueActionWithDate(
         \DateTimeZone|string|false|null $timezone,
         \DateTimeZone $expectedTimezone,

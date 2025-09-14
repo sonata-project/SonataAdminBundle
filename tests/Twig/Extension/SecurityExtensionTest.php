@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Twig\Extension\SecurityExtension;
 use Sonata\AdminBundle\Twig\SecurityRuntime;
@@ -20,9 +21,8 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
  */
+#[IgnoreDeprecations]
 final class SecurityExtensionTest extends TestCase
 {
     /**

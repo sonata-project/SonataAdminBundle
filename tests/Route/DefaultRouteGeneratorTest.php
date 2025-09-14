@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Route;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
@@ -52,9 +53,8 @@ final class DefaultRouteGeneratorTest extends TestCase
 
     /**
      * @param array<string, mixed> $parameters
-     *
-     * @dataProvider provideGenerateUrlCases
      */
+    #[DataProvider('provideGenerateUrlCases')]
     public function testGenerateUrl(
         string $expected,
         string $name,
@@ -106,7 +106,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     /**
      * @phpstan-return iterable<array{0: string, 1: string, 2: array<string, mixed>, 3?: int}>
      */
-    public function provideGenerateUrlCases(): iterable
+    public static function provideGenerateUrlCases(): iterable
     {
         yield ['/foo?abc=a123&efg=e456&default_param=default_val', 'foo', ['default_param' => 'default_val']];
         yield ['/foo/bar?abc=a123&efg=e456&default_param=default_val', 'base.Code.Bar.bar', ['default_param' => 'default_val']];
@@ -144,9 +144,8 @@ final class DefaultRouteGeneratorTest extends TestCase
 
     /**
      * @param array<string, mixed> $parameters
-     *
-     * @dataProvider provideGenerateUrlChildCases
      */
+    #[DataProvider('provideGenerateUrlChildCases')]
     public function testGenerateUrlChild(string $type, string $expected, string $name, array $parameters): void
     {
         $childCollection = new RouteCollection('base.Code.Parent|base.Code.Child', 'admin_acme_child', '/foo/', 'BundleName:ControllerName');
@@ -225,7 +224,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     /**
      * @phpstan-return iterable<array{string, string, string, array<string, mixed>}>
      */
-    public function provideGenerateUrlChildCases(): iterable
+    public static function provideGenerateUrlChildCases(): iterable
     {
         yield ['parent', '/foo?id=123&default_param=default_val', 'foo', ['id' => 123, 'default_param' => 'default_val']];
         yield ['parent', '/foo?id=123&default_param=default_val', 'base.Code.Parent.foo', ['id' => 123, 'default_param' => 'default_val']];
@@ -237,9 +236,8 @@ final class DefaultRouteGeneratorTest extends TestCase
 
     /**
      * @param array<string, mixed> $parameters
-     *
-     * @dataProvider provideGenerateUrlParentFieldDescriptionCases
      */
+    #[DataProvider('provideGenerateUrlParentFieldDescriptionCases')]
     public function testGenerateUrlParentFieldDescription(string $expected, string $name, array $parameters): void
     {
         $childCollection = new RouteCollection('base.Code.Parent|base.Code.Child', 'admin_acme_child', '/foo/', 'BundleName:ControllerName');
@@ -298,7 +296,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     /**
      * @phpstan-return iterable<array{string, string, array<string, mixed>}>
      */
-    public function provideGenerateUrlParentFieldDescriptionCases(): iterable
+    public static function provideGenerateUrlParentFieldDescriptionCases(): iterable
     {
         yield ['/foo?abc=a123&efg=e456&default_param=default_val&uniqid=foo_uniqueid&code=base.Code.Parent&pcode=parent_foo_code&puniqid=parent_foo_uniqueid', 'foo', ['default_param' => 'default_val']];
         // this second test does not make sense as we cannot have embeded admin with nested admin....
@@ -307,9 +305,8 @@ final class DefaultRouteGeneratorTest extends TestCase
 
     /**
      * @param array<string, mixed> $parameters
-     *
-     * @dataProvider provideGenerateUrlLoadCacheCases
      */
+    #[DataProvider('provideGenerateUrlLoadCacheCases')]
     public function testGenerateUrlLoadCache(string $expected, string $name, array $parameters): void
     {
         $childCollection = new RouteCollection('base.Code.Parent|base.Code.Child', 'admin_acme_child', '/foo', 'BundleName:ControllerName');
@@ -398,7 +395,7 @@ final class DefaultRouteGeneratorTest extends TestCase
     /**
      * @phpstan-return iterable<array{string, string, array<string, mixed>}>
      */
-    public function provideGenerateUrlLoadCacheCases(): iterable
+    public static function provideGenerateUrlLoadCacheCases(): iterable
     {
         yield ['/bar?abc=a123&efg=e456&id=123&default_param=default_val', 'bar', ['id' => 123, 'default_param' => 'default_val']];
     }

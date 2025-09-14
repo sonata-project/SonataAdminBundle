@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\ArgumentResolver;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\ArgumentResolver\ProxyQueryResolver;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -28,9 +29,7 @@ final class ProxyQueryResolverTest extends TestCase
         $this->proxyQueryResolver = new ProxyQueryResolver();
     }
 
-    /**
-     * @dataProvider provideWithInvalidDataCases
-     */
+    #[DataProvider('provideWithInvalidDataCases')]
     public function testWithInvalidData(Request $request, ArgumentMetadata $argumentMetadata): void
     {
         static::assertFalse($this->proxyQueryResolver->supports($request, $argumentMetadata));
@@ -43,7 +42,7 @@ final class ProxyQueryResolverTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{Request, ArgumentMetadata}>
      */
-    public function provideWithInvalidDataCases(): iterable
+    public static function provideWithInvalidDataCases(): iterable
     {
         yield 'Object with no type' => [
             static::createRequest(),

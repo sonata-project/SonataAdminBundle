@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Filter\Model\FilterData;
 use Sonata\AdminBundle\Form\DataTransformer\FilterDataTransformer;
@@ -35,9 +36,8 @@ final class FilterDataTransformerTest extends TestCase
 
     /**
      * @param array{type: int, value: mixed} $value
-     *
-     * @dataProvider getDataValues
      */
+    #[DataProvider('getDataValues')]
     public function testReverseTransform(array $value): void
     {
         $transformer = new FilterDataTransformer();
@@ -57,9 +57,8 @@ final class FilterDataTransformerTest extends TestCase
 
     /**
      * @param array{type: int, value: mixed} $value
-     *
-     * @dataProvider getDataValues
      */
+    #[DataProvider('getDataValues')]
     public function testTransform(array $value): void
     {
         $transformer = new FilterDataTransformer();
@@ -70,7 +69,7 @@ final class FilterDataTransformerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array<array{type: int, value: mixed}>>
      */
-    public function getDataValues(): iterable
+    public static function getDataValues(): iterable
     {
         yield [[
             'type' => 1,

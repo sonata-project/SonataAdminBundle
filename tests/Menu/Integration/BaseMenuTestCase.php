@@ -29,7 +29,7 @@ use Twig\Loader\FilesystemLoader;
 /**
  * Base class for tests checking rendering of twig templates.
  */
-abstract class BaseMenuTest extends TestCase
+abstract class BaseMenuTestCase extends TestCase
 {
     private Environment $environment;
 

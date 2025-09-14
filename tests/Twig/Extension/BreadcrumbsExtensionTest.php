@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use Knp\Menu\ItemInterface;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -28,9 +29,8 @@ use Twig\Extra\String\StringExtension;
 
 /**
  * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
  */
+#[IgnoreDeprecations]
 final class BreadcrumbsExtensionTest extends TestCase
 {
     private BreadcrumbsExtension $breadcrumbsExtension;

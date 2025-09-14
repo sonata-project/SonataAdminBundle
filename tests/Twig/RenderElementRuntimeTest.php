@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -185,9 +186,8 @@ final class RenderElementRuntimeTest extends TestCase
 
     /**
      * @param array<string, mixed> $options
-     *
-     * @dataProvider provideRenderListElementCases
      */
+    #[DataProvider('provideRenderListElementCases')]
     public function testRenderListElement(string $expected, string $type, mixed $value, array $options): void
     {
         $this->admin
@@ -222,8 +222,8 @@ final class RenderElementRuntimeTest extends TestCase
             ->willReturnCallback(static fn (): ?string => TemplateRegistryInterface::LIST_TEMPLATES[$type] ?? null);
 
         static::assertSame(
-            $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace($this->renderElementRuntime->renderListElement(
+            static::removeExtraWhitespace($expected),
+            static::removeExtraWhitespace($this->renderElementRuntime->renderListElement(
                 $this->environment,
                 $this->object,
                 $this->fieldDescription,
@@ -241,8 +241,8 @@ final class RenderElementRuntimeTest extends TestCase
             ->willReturn('@SonataAdmin/CRUD/list_string.html.twig');
 
         static::assertSame(
-            $this->removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> Extra value </td>'),
-            $this->removeExtraWhitespace($this->renderElementRuntime->renderListElement(
+            static::removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> Extra value </td>'),
+            static::removeExtraWhitespace($this->renderElementRuntime->renderListElement(
                 $this->environment,
                 [$this->object, 'fd_name' => 'Extra value'],
                 $this->fieldDescription
@@ -274,7 +274,7 @@ final class RenderElementRuntimeTest extends TestCase
         $this->environment->enableDebug();
 
         static::assertSame(
-            $this->removeExtraWhitespace(
+            static::removeExtraWhitespace(
                 <<<'EOT'
                     <!-- START
                         fieldName: fd_name
@@ -285,7 +285,7 @@ final class RenderElementRuntimeTest extends TestCase
                     <!-- END - fieldName: fd_name -->
                     EOT
             ),
-            $this->removeExtraWhitespace(
+            static::removeExtraWhitespace(
                 $this->renderElementRuntime->renderListElement($this->environment, $this->object, $this->fieldDescription, $parameters)
             )
         );
@@ -293,9 +293,8 @@ final class RenderElementRuntimeTest extends TestCase
 
     /**
      * @param array<string, mixed> $options
-     *
-     * @dataProvider provideRenderViewElementCases
      */
+    #[DataProvider('provideRenderViewElementCases')]
     public function testRenderViewElement(string $expected, string $type, mixed $value, array $options): void
     {
         $this->fieldDescription
@@ -319,8 +318,8 @@ final class RenderElementRuntimeTest extends TestCase
             ->willReturnCallback(static fn (): ?string => TemplateRegistryInterface::SHOW_TEMPLATES[$type] ?? null);
 
         static::assertSame(
-            $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace(
+            static::removeExtraWhitespace($expected),
+            static::removeExtraWhitespace(
                 $this->renderElementRuntime->renderViewElement(
                     $this->environment,
                     $this->fieldDescription,
@@ -332,9 +331,8 @@ final class RenderElementRuntimeTest extends TestCase
 
     /**
      * @param array<string, mixed> $options
-     *
-     * @dataProvider provideRenderViewElementCompareCases
      */
+    #[DataProvider('provideRenderViewElementCompareCases')]
     public function testRenderViewElementCompare(
         string $expected,
         string $type,
@@ -377,8 +375,8 @@ final class RenderElementRuntimeTest extends TestCase
         }
 
         static::assertSame(
-            $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace(
+            static::removeExtraWhitespace($expected),
+            static::removeExtraWhitespace(
                 $this->renderElementRuntime->renderViewElementCompare(
                     $this->environment,
                     $this->fieldDescription,
@@ -493,7 +491,7 @@ final class RenderElementRuntimeTest extends TestCase
     /**
      * @phpstan-return iterable<array{string, string, mixed, array<string, mixed>}>
      */
-    public function provideRenderListElementCases(): iterable
+    public static function provideRenderListElementCases(): iterable
     {
         $elements = [
             [
@@ -741,21 +739,21 @@ final class RenderElementRuntimeTest extends TestCase
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
-                    <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme', 'body' => 'Message Body']).'">admin@admin.com</a>  </td>',
+                    <a href="mailto:admin@admin.com?'.static::buildTwigLikeUrl(['subject' => 'Main Theme', 'body' => 'Message Body']).'">admin@admin.com</a>  </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['subject' => 'Main Theme', 'body' => 'Message Body'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
-                    <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme']).'">admin@admin.com</a>  </td>',
+                    <a href="mailto:admin@admin.com?'.static::buildTwigLikeUrl(['subject' => 'Main Theme']).'">admin@admin.com</a>  </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['subject' => 'Main Theme'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
-                    <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['body' => 'Message Body']).'">admin@admin.com</a>  </td>',
+                    <a href="mailto:admin@admin.com?'.static::buildTwigLikeUrl(['body' => 'Message Body']).'">admin@admin.com</a>  </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['body' => 'Message Body'],
@@ -1490,7 +1488,7 @@ final class RenderElementRuntimeTest extends TestCase
     /**
      * @phpstan-return iterable<array{string, string, mixed, array<string, mixed>}>
      */
-    public function provideRenderViewElementCases(): iterable
+    public static function provideRenderViewElementCases(): iterable
     {
         yield ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]];
         yield ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]];
@@ -1852,19 +1850,19 @@ final class RenderElementRuntimeTest extends TestCase
             [],
         ];
         yield [
-            '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme', 'body' => 'Message Body']).'">admin@admin.com</a></td>',
+            '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.static::buildTwigLikeUrl(['subject' => 'Main Theme', 'body' => 'Message Body']).'">admin@admin.com</a></td>',
             FieldDescriptionInterface::TYPE_EMAIL,
             'admin@admin.com',
             ['subject' => 'Main Theme', 'body' => 'Message Body'],
         ];
         yield [
-            '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme']).'">admin@admin.com</a></td>',
+            '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.static::buildTwigLikeUrl(['subject' => 'Main Theme']).'">admin@admin.com</a></td>',
             FieldDescriptionInterface::TYPE_EMAIL,
             'admin@admin.com',
             ['subject' => 'Main Theme'],
         ];
         yield [
-            '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['body' => 'Message Body']).'">admin@admin.com</a></td>',
+            '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.static::buildTwigLikeUrl(['body' => 'Message Body']).'">admin@admin.com</a></td>',
             FieldDescriptionInterface::TYPE_EMAIL,
             'admin@admin.com',
             ['body' => 'Message Body'],
@@ -2002,7 +2000,7 @@ final class RenderElementRuntimeTest extends TestCase
     /**
      * @phpstan-return iterable<array{string, string, mixed, array<string, mixed>, string|null}>
      */
-    public function provideRenderViewElementCompareCases(): iterable
+    public static function provideRenderViewElementCompareCases(): iterable
     {
         yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];
         yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];
@@ -2048,12 +2046,12 @@ final class RenderElementRuntimeTest extends TestCase
      *
      * @param array<string, string> $url
      */
-    private function buildTwigLikeUrl(array $url): string
+    private static function buildTwigLikeUrl(array $url): string
     {
         return htmlspecialchars(http_build_query($url, '', '&', \PHP_QUERY_RFC3986));
     }
 
-    private function removeExtraWhitespace(string $string): string
+    private static function removeExtraWhitespace(string $string): string
     {
         return trim(preg_replace('/\s+/', ' ', preg_replace('/>\s+</', '><', $string) ?? '') ?? '');
     }

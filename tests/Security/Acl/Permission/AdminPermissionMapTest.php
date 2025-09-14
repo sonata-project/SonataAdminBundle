@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Security\Acl\Permission;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
@@ -56,7 +57,7 @@ final class AdminPermissionMapTest extends TestCase
     /**
      * @phpstan-return iterable<array{bool, string}>
      */
-    public function provideContainsReturnsABooleanCases(): iterable
+    public static function provideContainsReturnsABooleanCases(): iterable
     {
         yield [true, AdminPermissionMap::PERMISSION_VIEW];
         yield [true, AdminPermissionMap::PERMISSION_EDIT];
@@ -72,9 +73,7 @@ final class AdminPermissionMapTest extends TestCase
         yield [false, 'unknown permission'];
     }
 
-    /**
-     * @dataProvider provideContainsReturnsABooleanCases
-     */
+    #[DataProvider('provideContainsReturnsABooleanCases')]
     public function testContainsReturnsABoolean(bool $expectedResult, string $permission): void
     {
         static::assertSame($expectedResult, $this->permissionMap->contains($permission));

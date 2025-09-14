@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Util;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Util\ParametersManipulator;
@@ -25,7 +26,7 @@ final class ParametersManipulatorTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{array<mixed>, array<mixed>, array<mixed>}>
      */
-    public function provideMergeParametersCases(): iterable
+    public static function provideMergeParametersCases(): iterable
     {
         yield [
             [
@@ -164,9 +165,8 @@ final class ParametersManipulatorTest extends TestCase
      * @param mixed[] $parameters
      * @param mixed[] $newParameters
      * @param mixed[] $result
-     *
-     * @dataProvider provideMergeParametersCases
      */
+    #[DataProvider('provideMergeParametersCases')]
     public function testMergeParameters(array $parameters, array $newParameters, array $result): void
     {
         static::assertSame($result, ParametersManipulator::merge($parameters, $newParameters));
