@@ -21,7 +21,7 @@ final class DashboardActionTest extends WebTestCase
 {
     protected function tearDown(): void
     {
-        restore_error_handler();
+        restore_exception_handler();
 
         parent::tearDown();
     }
