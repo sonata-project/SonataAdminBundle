@@ -77,7 +77,7 @@
         "phpstan/phpstan-phpunit": "^1.0 || ^2.0",
         "phpstan/phpstan-strict-rules": "^1.0 || ^2.0",
         "phpstan/phpstan-symfony": "^1.0 || ^2.0",
-        "phpunit/phpunit": "^10.5.54 || ^11.5.38 || ^12.3.10",
+        "phpunit/phpunit": "^10.5.54 || ^11.5.38",
         "psalm/plugin-phpunit": "^0.18 || ^0.19",
         "psalm/plugin-symfony": "^5.0",
         "psr/event-dispatcher": "^1.0",
