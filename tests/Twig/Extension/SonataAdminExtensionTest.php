@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -30,9 +31,8 @@ use Twig\Loader\FilesystemLoader;
 
 /**
  * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
  */
+#[Group('legacy')]
 final class SonataAdminExtensionTest extends TestCase
 {
     private SonataAdminExtension $twigExtension;

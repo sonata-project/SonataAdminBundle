@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
@@ -373,9 +375,7 @@ final class DatagridTest extends TestCase
         static::assertInstanceOf(FormBuilder::class, $this->formBuilder->get(DatagridInterface::PER_PAGE));
     }
 
-    /**
-     * @dataProvider applyFilterDataProvider
-     */
+    #[DataProvider('applyFilterDataProvider')]
     public function testApplyFilter(?string $type, ?string $value, int $applyCallNumber): void
     {
         $this->datagrid->setValue('fooFormName', $type, $value);
@@ -397,11 +397,9 @@ final class DatagridTest extends TestCase
 
     /**
      * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     *
-     * @dataProvider applyFilterDataProvider
      */
+    #[DataProvider('applyFilterDataProvider')]
+    #[Group('legacy')]
     public function testLegacyApplyFilter(?string $type, ?string $value, int $applyCallNumber): void
     {
         $this->datagrid->setValue('fooFormName', $type, $value);
@@ -422,7 +420,7 @@ final class DatagridTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string|null, string|null, int}>
      */
-    public function applyFilterDataProvider(): iterable
+    public static function applyFilterDataProvider(): iterable
     {
         yield ['3', 'fakeValue', 1];
         yield [null, 'fakeValue', 1];
@@ -519,9 +517,8 @@ final class DatagridTest extends TestCase
 
     /**
      * @phpstan-param int|array{value: int} $perPage
-     *
-     * @dataProvider provideBuildPagerWithPageCases
      */
+    #[DataProvider('provideBuildPagerWithPageCases')]
     public function testBuildPagerWithPage(int $page, int|array $perPage): void
     {
         $sortBy = $this->createMock(FieldDescriptionInterface::class);
@@ -580,15 +577,13 @@ final class DatagridTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{int, int|array{value: int}}>
      */
-    public function provideBuildPagerWithPageCases(): iterable
+    public static function provideBuildPagerWithPageCases(): iterable
     {
         yield [3, 50];
         yield [3, ['value' => 50]];
     }
 
-    /**
-     * @dataProvider provideBuildPagerWithPage2Cases
-     */
+    #[DataProvider('provideBuildPagerWithPage2Cases')]
     public function testBuildPagerWithPage2(int $page, int $perPage): void
     {
         $this->pager->expects(static::once())
@@ -618,7 +613,7 @@ final class DatagridTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{int, int}>
      */
-    public function provideBuildPagerWithPage2Cases(): iterable
+    public static function provideBuildPagerWithPage2Cases(): iterable
     {
         yield [3, 50];
     }

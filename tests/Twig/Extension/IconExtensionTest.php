@@ -13,22 +13,22 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Twig\Extension\IconExtension;
 use Sonata\AdminBundle\Twig\IconRuntime;
 
 /**
  * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
  */
+#[Group('legacy')]
 final class IconExtensionTest extends TestCase
 {
     /**
-     * @dataProvider provideParseIconCases
-     *
      * @psalm-suppress DeprecatedMethod
      */
+    #[DataProvider('provideParseIconCases')]
     public function testParseIcon(string $icon, string $expected): void
     {
         $twigExtension = new IconExtension(new IconRuntime());
@@ -39,7 +39,7 @@ final class IconExtensionTest extends TestCase
     /**
      * @return iterable<array{string, string}>
      */
-    public function provideParseIconCases(): iterable
+    public static function provideParseIconCases(): iterable
     {
         yield ['', ''];
         yield ['<i class="fa fa-cog" aria-hidden="true"></i>', '<i class="fa fa-cog" aria-hidden="true"></i>'];

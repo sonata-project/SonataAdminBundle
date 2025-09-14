@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -185,9 +186,8 @@ final class RenderElementRuntimeTest extends TestCase
 
     /**
      * @param array<string, mixed> $options
-     *
-     * @dataProvider provideRenderListElementCases
      */
+    #[DataProvider('provideRenderListElementCases')]
     public function testRenderListElement(string $expected, string $type, mixed $value, array $options): void
     {
         $this->admin
@@ -293,9 +293,8 @@ final class RenderElementRuntimeTest extends TestCase
 
     /**
      * @param array<string, mixed> $options
-     *
-     * @dataProvider provideRenderViewElementCases
      */
+    #[DataProvider('provideRenderViewElementCases')]
     public function testRenderViewElement(string $expected, string $type, mixed $value, array $options): void
     {
         $this->fieldDescription
@@ -332,9 +331,8 @@ final class RenderElementRuntimeTest extends TestCase
 
     /**
      * @param array<string, mixed> $options
-     *
-     * @dataProvider provideRenderViewElementCompareCases
      */
+    #[DataProvider('provideRenderViewElementCompareCases')]
     public function testRenderViewElementCompare(
         string $expected,
         string $type,
@@ -2002,7 +2000,7 @@ final class RenderElementRuntimeTest extends TestCase
     /**
      * @phpstan-return iterable<array{string, string, mixed, array<string, mixed>, string|null}>
      */
-    public function provideRenderViewElementCompareCases(): iterable
+    public static function provideRenderViewElementCompareCases(): iterable
     {
         yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];
         yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];

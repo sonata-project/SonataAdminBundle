@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
+use PHPUnit\Framework\Attributes\Group;
 use Sonata\AdminBundle\Form\Type\Filter\DateRangeType;
 
 /**
  * NEXT_MAJOR: Remove this class.
- *
- * @group legacy
  */
+#[Group('legacy')]
 final class DateRangeTypeTest extends BaseTypeTest
 {
     public function testDefaultOptions(): void

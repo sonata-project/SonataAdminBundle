@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
+use PHPUnit\Framework\Attributes\Group;
 use Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType;
 use Sonata\AdminBundle\Form\Type\Operator\DateRangeOperatorType;
 use Sonata\Form\Type\DateTimeRangeType as FormDateTimeRangeType;
@@ -20,9 +21,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * NEXT_MAJOR: Remove this class.
- *
- * @group legacy
  */
+#[Group('legacy')]
 final class DateTimeRangeTypeTest extends BaseTypeTest
 {
     public function testDefaultOptions(): void

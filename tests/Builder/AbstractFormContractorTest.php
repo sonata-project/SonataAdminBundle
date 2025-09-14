@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Builder;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -206,9 +207,8 @@ final class AbstractFormContractorTest extends TestCase
 
     /**
      * @phpstan-param class-string $formType
-     *
-     * @dataProvider provideThrowsExceptionWithInvalidFieldDescriptionInGetDefaultOptionsCases
      */
+    #[DataProvider('provideThrowsExceptionWithInvalidFieldDescriptionInGetDefaultOptionsCases')]
     public function testThrowsExceptionWithInvalidFieldDescriptionInGetDefaultOptions(string $formType): void
     {
         $admin = static::createStub(AdminInterface::class);
@@ -225,7 +225,7 @@ final class AbstractFormContractorTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{0: class-string}>
      */
-    public function provideThrowsExceptionWithInvalidFieldDescriptionInGetDefaultOptionsCases(): iterable
+    public static function provideThrowsExceptionWithInvalidFieldDescriptionInGetDefaultOptionsCases(): iterable
     {
         yield 'ModelAutocompleteType, no target model' => [
             ModelAutocompleteType::class,

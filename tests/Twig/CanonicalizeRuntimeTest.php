@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Twig\CanonicalizeRuntime;
 use Sonata\Form\Twig\CanonicalizeRuntime as SonataFormCanonicalizeRuntime;
@@ -38,11 +40,9 @@ final class CanonicalizeRuntimeTest extends TestCase
 
     /**
      * NEXT_MAJOR: Remove this test.
-     *
-     * @dataProvider provideCanonicalizedLocaleForMomentCases
-     *
-     * @group legacy
      */
+    #[DataProvider('provideCanonicalizedLocaleForMomentCases')]
+    #[Group('legacy')]
     public function testCanonicalizedLocaleForMoment(?string $expected, string $original): void
     {
         $this->changeLocale($original);
@@ -52,9 +52,7 @@ final class CanonicalizeRuntimeTest extends TestCase
         static::assertSame($expected, $this->canonicalizeRuntime->getCanonicalizedLocaleForMoment());
     }
 
-    /**
-     * @dataProvider provideCanonicalizedLocaleForSelect2Cases
-     */
+    #[DataProvider('provideCanonicalizedLocaleForSelect2Cases')]
     public function testCanonicalizedLocaleForSelect2(?string $expected, string $original): void
     {
         $this->changeLocale($original);
@@ -66,7 +64,7 @@ final class CanonicalizeRuntimeTest extends TestCase
      *
      * @return iterable<array{string|null, string}>
      */
-    public function provideCanonicalizedLocaleForMomentCases(): iterable
+    public static function provideCanonicalizedLocaleForMomentCases(): iterable
     {
         yield ['af', 'af'];
         yield ['ar-dz', 'ar-dz'];
@@ -188,7 +186,7 @@ final class CanonicalizeRuntimeTest extends TestCase
     /**
      * @return iterable<array{string|null, string}>
      */
-    public function provideCanonicalizedLocaleForSelect2Cases(): iterable
+    public static function provideCanonicalizedLocaleForSelect2Cases(): iterable
     {
         yield ['ar', 'ar'];
         yield ['az', 'az'];

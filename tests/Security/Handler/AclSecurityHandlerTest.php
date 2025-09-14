@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Security\Handler;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
@@ -27,9 +28,8 @@ final class AclSecurityHandlerTest extends TestCase
 {
     /**
      * NEXT_MAJOR: Remove the group legacy.
-     *
-     * @group legacy
      */
+    #[Group('legacy')]
     public function testAcl(): void
     {
         $admin = $this->createMock(AdminInterface::class);

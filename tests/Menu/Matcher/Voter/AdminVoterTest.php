@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Menu\Matcher\Voter;
 
 use Knp\Menu\ItemInterface;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter;
@@ -22,9 +23,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 final class AdminVoterTest extends TestCase
 {
-    /**
-     * @dataProvider provideMatchingCases
-     */
+    #[DataProvider('provideMatchingCases')]
     public function testMatching(mixed $itemData, ?string $voterData, ?string $route, ?bool $expected): void
     {
         $item = $this->createMock(ItemInterface::class);

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -48,9 +50,8 @@ use Twig\RuntimeLoader\FactoryRuntimeLoader;
 
 /**
  * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
  */
+#[Group('legacy')]
 final class RenderElementExtensionTest extends TestCase
 {
     private RenderElementExtension $twigExtension;
@@ -199,10 +200,9 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider provideRenderListElementCases
-     *
      * @psalm-suppress DeprecatedMethod
      */
+    #[DataProvider('provideRenderListElementCases')]
     public function testRenderListElement(string $expected, string $type, mixed $value, array $options): void
     {
         $this->admin
@@ -315,10 +315,9 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider provideRenderViewElementCases
-     *
      * @psalm-suppress DeprecatedMethod
      */
+    #[DataProvider('provideRenderViewElementCases')]
     public function testRenderViewElement(string $expected, string $type, mixed $value, array $options): void
     {
         $this->fieldDescription
@@ -356,10 +355,9 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider provideRenderViewElementCompareCases
-     *
      * @psalm-suppress DeprecatedMethod
      */
+    #[DataProvider('provideRenderViewElementCompareCases')]
     public function testRenderViewElementCompare(
         string $expected,
         string $type,
@@ -2125,7 +2123,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @phpstan-return iterable<array{string, string, mixed, array<string, mixed>, string|null}>
      */
-    public function provideRenderViewElementCompareCases(): iterable
+    public static function provideRenderViewElementCompareCases(): iterable
     {
         yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];
         yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];

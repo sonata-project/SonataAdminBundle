@@ -16,6 +16,10 @@ namespace Sonata\AdminBundle\Tests\Admin;
 use Doctrine\Common\Collections\Collection;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
@@ -85,6 +89,29 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+#[CoversMethod(AbstractAdmin::class, '__construct')]
+#[CoversMethod(AbstractAdmin::class, 'hasChild')]
+#[CoversMethod(AbstractAdmin::class, 'addChild')]
+#[CoversMethod(AbstractAdmin::class, 'getChild')]
+#[CoversMethod(AbstractAdmin::class, 'isChild')]
+#[CoversMethod(AbstractAdmin::class, 'hasChildren')]
+#[CoversMethod(AbstractAdmin::class, 'getChildren')]
+#[CoversMethod(AbstractAdmin::class, 'getParent')]
+#[CoversMethod(AbstractAdmin::class, 'setParent')]
+#[CoversMethod(AbstractAdmin::class, 'configure')]
+#[CoversMethod(AbstractAdmin::class, 'setUniqId')]
+#[CoversMethod(AbstractAdmin::class, 'getUniqId')]
+#[CoversMethod(AbstractAdmin::class, 'getSubClasses')]
+#[CoversMethod(AbstractAdmin::class, 'getSubClass')]
+#[CoversMethod(AbstractAdmin::class, 'setSubClasses')]
+#[CoversMethod(AbstractAdmin::class, 'hasSubClass')]
+#[CoversMethod(AbstractAdmin::class, 'hasActiveSubClass')]
+#[CoversMethod(AbstractAdmin::class, 'getActiveSubClass')]
+#[CoversMethod(AbstractAdmin::class, 'getActiveSubclassCode')]
+#[CoversMethod(AbstractAdmin::class, 'getClass')]
+#[CoversMethod(AbstractAdmin::class, 'configureActionButtons')]
+#[CoversMethod(AbstractAdmin::class, 'configureBatchActions')]
+#[CoversMethod(AbstractAdmin::class, 'getDashboardActions')]
 final class AdminTest extends TestCase
 {
     protected string $cacheTempFolder;
@@ -98,11 +125,8 @@ final class AdminTest extends TestCase
 
     /**
      * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
-     *
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::__construct
      */
+    #[Group('legacy')]
     public function testConstructor(): void
     {
         $class = Post::class;
@@ -242,14 +266,6 @@ final class AdminTest extends TestCase
         static::assertTrue($admin->hasAccess('edit_action'));
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::hasChild
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::addChild
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getChild
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::isChild
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::hasChildren
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getChildren
-     */
     public function testChildren(): void
     {
         $postAdmin = new PostAdmin();
@@ -275,10 +291,6 @@ final class AdminTest extends TestCase
         static::assertSame(['sonata.post.admin.comment' => $commentAdmin], $postAdmin->getChildren());
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getParent
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::setParent
-     */
     public function testParent(): void
     {
         $postAdmin = new PostAdmin();
@@ -292,9 +304,6 @@ final class AdminTest extends TestCase
         static::assertSame('post', $commentAdmin->getParentAssociationMapping());
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::configure
-     */
     public function testConfigure(): void
     {
         $admin = new PostAdmin();
@@ -332,7 +341,7 @@ final class AdminTest extends TestCase
      *
      * @psalm-suppress MoreSpecificReturnType
      */
-    public function provideGetBaseRoutePattern(): iterable
+    public static function provideGetBaseRoutePattern(): iterable
     {
         // @phpstan-ignore-next-line
         yield [
@@ -413,9 +422,8 @@ final class AdminTest extends TestCase
 
     /**
      * @param class-string $objFqn
-     *
-     * @dataProvider provideGetBaseRoutePattern
      */
+    #[DataProvider('provideGetBaseRoutePattern')]
     public function testGetBaseRoutePattern(string $objFqn, string $expected): void
     {
         $admin = new PostAdmin();
@@ -425,9 +433,8 @@ final class AdminTest extends TestCase
 
     /**
      * @param class-string $objFqn
-     *
-     * @dataProvider provideGetBaseRoutePattern
      */
+    #[DataProvider('provideGetBaseRoutePattern')]
     public function testGetBaseRoutePatternWithChildAdmin(string $objFqn, string $expected): void
     {
         $postAdmin = new PostAdmin();
@@ -441,9 +448,8 @@ final class AdminTest extends TestCase
 
     /**
      * @param class-string $objFqn
-     *
-     * @dataProvider provideGetBaseRoutePattern
      */
+    #[DataProvider('provideGetBaseRoutePattern')]
     public function testGetBaseRoutePatternWithTwoNestedChildAdmin(string $objFqn, string $expected): void
     {
         $postAdmin = new PostAdmin();
@@ -499,7 +505,7 @@ final class AdminTest extends TestCase
      *
      * @psalm-suppress MoreSpecificReturnType
      */
-    public function provideGetBaseRouteName(): iterable
+    public static function provideGetBaseRouteName(): iterable
     {
         // @phpstan-ignore-next-line
         yield [
@@ -580,9 +586,8 @@ final class AdminTest extends TestCase
 
     /**
      * @param class-string $objFqn
-     *
-     * @dataProvider provideGetBaseRouteName
      */
+    #[DataProvider('provideGetBaseRouteName')]
     public function testGetBaseRouteName(string $objFqn, string $expected): void
     {
         $admin = new PostAdmin();
@@ -641,10 +646,6 @@ final class AdminTest extends TestCase
         static::assertSame('admin_fixtures_bundle_post_comment_custom_commentvote', $commentVoteAdmin->getBaseRouteName());
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::setUniqId
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getUniqId
-     */
     public function testSetUniqId(): void
     {
         $admin = new PostAdmin();
@@ -680,16 +681,6 @@ final class AdminTest extends TestCase
         static::assertTrue($commentAdmin->isAclEnabled());
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getSubClasses
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getSubClass
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::setSubClasses
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::hasSubClass
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubClass
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getActiveSubclassCode
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getClass
-     */
     public function testSubClass(): void
     {
         $admin = new PostAdmin();
@@ -772,9 +763,6 @@ final class AdminTest extends TestCase
         $admin->getActiveSubClass();
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::hasActiveSubClass
-     */
     public function testOnlyOneSubclassNeededToBeActive(): void
     {
         $admin = new PostAdmin();
@@ -1253,10 +1241,9 @@ final class AdminTest extends TestCase
     /**
      * NEXT_MAJOR: Remove this test.
      *
-     * @group legacy
-     *
      * @psalm-suppress DeprecatedMethod, DeprecatedConstant
      */
+    #[Group('legacy')]
     public function testShowIn(): void
     {
         $admin = new PostAdmin();
@@ -1297,9 +1284,7 @@ final class AdminTest extends TestCase
         static::assertSame('sonata.post.admin.post', $admin->getObjectIdentifier());
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testSetFilterPersister(): void
     {
         $admin = new PostAdmin();
@@ -1666,7 +1651,7 @@ final class AdminTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{int|string}>
      */
-    public function provideGetSubject(): iterable
+    public static function provideGetSubject(): iterable
     {
         yield [23];
         yield ['azerty'];
@@ -1675,9 +1660,7 @@ final class AdminTest extends TestCase
         yield [\sprintf('123%smy_type', AdapterInterface::ID_SEPARATOR)];
     }
 
-    /**
-     * @dataProvider provideGetSubject
-     */
+    #[DataProvider('provideGetSubject')]
     public function testGetSubjectFailed(int|string $id): void
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
@@ -1695,9 +1678,7 @@ final class AdminTest extends TestCase
         static::assertFalse($admin->hasSubject());
     }
 
-    /**
-     * @dataProvider provideGetSubject
-     */
+    #[DataProvider('provideGetSubject')]
     public function testGetSubject(int|string $id): void
     {
         $model = new Post();
@@ -1779,9 +1760,6 @@ final class AdminTest extends TestCase
         static::assertFalse($commentAdmin->hasSubject());
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::configureActionButtons
-     */
     public function testGetActionButtonsList(): void
     {
         $expected = [
@@ -1816,9 +1794,6 @@ final class AdminTest extends TestCase
         static::assertSame($expected, $admin->getActionButtons('list', null));
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::configureActionButtons
-     */
     public function testGetActionButtonsListCreateDisabled(): void
     {
         $admin = new PostAdmin();
@@ -1857,9 +1832,6 @@ final class AdminTest extends TestCase
         static::assertSame([], $admin->getActionButtons('edit'));
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::configureBatchActions
-     */
     public function testGetBatchActions(): void
     {
         $expected = [
@@ -1935,9 +1907,7 @@ final class AdminTest extends TestCase
         static::assertSame($expected, $admin->getBatchActions());
     }
 
-    /**
-     * @dataProvider provideGetListModeCases
-     */
+    #[DataProvider('provideGetListModeCases')]
     public function testGetListMode(string $expected, ?Request $request = null): void
     {
         $admin = new PostAdmin();
@@ -1978,9 +1948,7 @@ final class AdminTest extends TestCase
         yield ['some_list_mode', $request];
     }
 
-    /**
-     * @dataProvider provideGetListModeWithCustomListModesCases
-     */
+    #[DataProvider('provideGetListModeWithCustomListModesCases')]
     public function testGetListModeWithCustomListModes(string $expected, ?Request $request = null): void
     {
         $admin = new PostAdmin();
@@ -2027,11 +1995,8 @@ final class AdminTest extends TestCase
 
     /**
      * @param class-string $objFqn
-     *
-     * @covers \Sonata\AdminBundle\Admin\AbstractAdmin::getDashboardActions
-     *
-     * @dataProvider provideGetBaseRouteName
      */
+    #[DataProvider('provideGetBaseRouteName')]
     public function testDefaultDashboardActionsArePresent(string $objFqn, string $expected): void
     {
         $pathInfo = new PathInfoBuilder($this->createMock(AuditManagerInterface::class));

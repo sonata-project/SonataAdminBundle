@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\FieldDescription;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
@@ -188,9 +189,7 @@ final class BaseFieldDescriptionTest extends TestCase
         static::assertSame(['getFake', []], $this->callMethod($description, 'getFieldValue', [$foo, 'fake']));
     }
 
-    /**
-     * @dataProvider provideGetFieldValueWithMethodCases
-     */
+    #[DataProvider('provideGetFieldValueWithMethodCases')]
     public function testGetFieldValueWithMethod(string $method): void
     {
         $description = new FieldDescription('name');
@@ -204,7 +203,7 @@ final class BaseFieldDescriptionTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function provideGetFieldValueWithMethodCases(): iterable
+    public static function provideGetFieldValueWithMethodCases(): iterable
     {
         yield ['getFakeFieldValue'];
         yield ['isFakeFieldValue'];

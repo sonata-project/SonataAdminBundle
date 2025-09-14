@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Security\Handler;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -42,9 +45,7 @@ final class RoleSecurityHandlerTest extends TestCase
         $this->admin = $this->createMock(AdminInterface::class);
     }
 
-    /**
-     * @dataProvider provideGetBaseRoleCases
-     */
+    #[DataProvider('provideGetBaseRoleCases')]
     public function testGetBaseRole(string $expected, string $code): void
     {
         $handler = new RoleSecurityHandler($this->authorizationChecker, 'ROLE_BATMAN');
@@ -59,7 +60,7 @@ final class RoleSecurityHandlerTest extends TestCase
     /**
      * @phpstan-return iterable<array{string, string}>
      */
-    public function provideGetBaseRoleCases(): iterable
+    public static function provideGetBaseRoleCases(): iterable
     {
         yield ['ROLE_FOO_BAR_%s', 'foo.bar'];
         yield ['ROLE_FOO_BAR_%s', 'Foo.Bar'];
@@ -68,11 +69,10 @@ final class RoleSecurityHandlerTest extends TestCase
     }
 
     /**
-     * @dataProvider provideIsGrantedWithSecurityInformationCases
-     *
      * @param array<string, string[]> $informationMapping
      * @param string[]                $userRoles
      */
+    #[DataProvider('provideIsGrantedWithSecurityInformationCases')]
     public function testIsGrantedWithSecurityInformation(array $informationMapping, array $userRoles, bool $expected): void
     {
         $handler = new RoleSecurityHandler($this->authorizationChecker, 'ROLE_SUPER_ADMIN');
@@ -106,7 +106,7 @@ final class RoleSecurityHandlerTest extends TestCase
     /**
      * @phpstan-return iterable<array{array<string, string[]>, string[], bool}>
      */
-    public function provideIsGrantedWithSecurityInformationCases(): iterable
+    public static function provideIsGrantedWithSecurityInformationCases(): iterable
     {
         yield 'default mapping' => [[], ['ROLE_TEST_EDIT'], true];
         yield 'with single mapping' => [['VIEW' => ['EDIT', 'SHOW']], ['ROLE_TEST_VIEW'], true];
@@ -118,13 +118,11 @@ final class RoleSecurityHandlerTest extends TestCase
     /**
      * NEXT_MAJOR: Remove the group legacy and only keep string $superAdminRoles and string|Expression $operation in dataProvider.
      *
-     * @group legacy
-     *
      * @param string|string[]                            $superAdminRoles
      * @param string|Expression|array<string|Expression> $operation
-     *
-     * @dataProvider provideIsGrantedCases
      */
+    #[DataProvider('provideIsGrantedCases')]
+    #[Group('legacy')]
     public function testIsGranted(
         bool $expected,
         string|array $superAdminRoles,
@@ -167,7 +165,7 @@ final class RoleSecurityHandlerTest extends TestCase
     /**
      * @phpstan-return iterable<array{0: bool, 1: string|array<string>, 2: string, 3: string|Expression|array<string|Expression>, 4?: object|null}>
      */
-    public function provideIsGrantedCases(): iterable
+    public static function provideIsGrantedCases(): iterable
     {
         // empty
         yield [false, '', 'foo.bar', ''];
@@ -258,18 +256,14 @@ final class RoleSecurityHandlerTest extends TestCase
         $handler->isGranted($this->admin, 'BAZ');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testCreateObjectSecurity(): void
     {
         $handler = $this->getRoleSecurityHandler('ROLE_FOO');
         $handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass());
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testDeleteObjectSecurity(): void
     {
         $handler = $this->getRoleSecurityHandler('ROLE_FOO');

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Object;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Object\Metadata;
 
@@ -44,9 +45,7 @@ final class MetadataTest extends TestCase
         static::assertSame($metadata::DEFAULT_MOSAIC_BACKGROUND, $metadata->getImage());
     }
 
-    /**
-     * @dataProvider provideIsImageAvailableCases
-     */
+    #[DataProvider('provideIsImageAvailableCases')]
     public function testIsImageAvailable(bool $expected, ?string $image): void
     {
         static::assertSame(
@@ -58,7 +57,7 @@ final class MetadataTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{bool, string|null}>
      */
-    public function provideIsImageAvailableCases(): iterable
+    public static function provideIsImageAvailableCases(): iterable
     {
         yield 'image is null' => [false, null];
         yield 'image is available' => [true, 'image.png'];

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Command\GenerateObjectAclCommand;
@@ -26,9 +27,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
  */
 final class ObjectAclManipulatorCompilerPassTest extends TestCase
 {
-    /**
-     * @dataProvider provideAvailableManagerCases
-     */
+    #[DataProvider('provideAvailableManagerCases')]
     public function testAvailableManager(ContainerBuilder $containerBuilder, string $serviceId): void
     {
         $objectAclManipulatorCompilerPass = new ObjectAclManipulatorCompilerPass();

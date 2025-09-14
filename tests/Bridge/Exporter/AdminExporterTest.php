@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Bridge\Exporter;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
@@ -24,7 +25,7 @@ final class AdminExporterTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string[], string[], string[]}>
      */
-    public function provideAdminHasPriorityOverGlobalSettingsCases(): iterable
+    public static function provideAdminHasPriorityOverGlobalSettingsCases(): iterable
     {
         yield 'no override' => [['xls'], [], ['xls']];
         yield 'override in admin' => [['csv'], ['csv'], ['xls']];
@@ -34,9 +35,8 @@ final class AdminExporterTest extends TestCase
      * @param string[] $expectedFormats
      * @param string[] $adminFormats
      * @param string[] $globalFormats
-     *
-     * @dataProvider provideAdminHasPriorityOverGlobalSettingsCases
      */
+    #[DataProvider('provideAdminHasPriorityOverGlobalSettingsCases')]
     public function testAdminHasPriorityOverGlobalSettings(array $expectedFormats, array $adminFormats, array $globalFormats): void
     {
         $writers = [];

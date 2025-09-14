@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Twig\CanonicalizeRuntime;
 use Sonata\AdminBundle\Twig\Extension\CanonicalizeExtension;
@@ -22,9 +24,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
  */
+#[Group('legacy')]
 final class CanonicalizeExtensionTest extends TestCase
 {
     private Request $request;
@@ -45,10 +46,9 @@ final class CanonicalizeExtensionTest extends TestCase
     }
 
     /**
-     * @dataProvider provideCanonicalizedLocaleForMomentCases
-     *
      * @psalm-suppress DeprecatedMethod
      */
+    #[DataProvider('provideCanonicalizedLocaleForMomentCases')]
     public function testCanonicalizedLocaleForMoment(?string $expected, string $original): void
     {
         $this->changeLocale($original);
@@ -59,10 +59,9 @@ final class CanonicalizeExtensionTest extends TestCase
     }
 
     /**
-     * @dataProvider provideCanonicalizedLocaleForSelect2Cases
-     *
      * @psalm-suppress DeprecatedMethod
      */
+    #[DataProvider('provideCanonicalizedLocaleForSelect2Cases')]
     public function testCanonicalizedLocaleForSelect2(?string $expected, string $original): void
     {
         $this->changeLocale($original);
@@ -72,7 +71,7 @@ final class CanonicalizeExtensionTest extends TestCase
     /**
      * @return iterable<array{string|null, string}>
      */
-    public function provideCanonicalizedLocaleForMomentCases(): iterable
+    public static function provideCanonicalizedLocaleForMomentCases(): iterable
     {
         yield ['af', 'af'];
         yield ['ar-dz', 'ar-dz'];
@@ -194,7 +193,7 @@ final class CanonicalizeExtensionTest extends TestCase
     /**
      * @return iterable<array{string|null, string}>
      */
-    public function provideCanonicalizedLocaleForSelect2Cases(): iterable
+    public static function provideCanonicalizedLocaleForSelect2Cases(): iterable
     {
         yield ['ar', 'ar'];
         yield ['az', 'az'];

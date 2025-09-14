@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Translator;
 
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
 
 /**
  * NEXT_MAJOR: Remove this class.
- *
- * @group legacy
  */
+#[Group('legacy')]
 final class BCLabelTranslatorStrategyTest extends TestCase
 {
     /**
