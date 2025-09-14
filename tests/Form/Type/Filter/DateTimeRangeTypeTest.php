@@ -23,7 +23,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * NEXT_MAJOR: Remove this class.
  */
 #[Group('legacy')]
-final class DateTimeRangeTypeTest extends BaseTypeTest
+final class DateTimeRangeTypeTest extends BaseTypeTestCase
 {
     public function testDefaultOptions(): void
     {

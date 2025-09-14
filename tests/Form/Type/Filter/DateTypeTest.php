@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Form\Type\Filter\DateType;
  * NEXT_MAJOR: Remove this class.
  */
 #[Group('legacy')]
-final class DateTypeTest extends BaseTypeTest
+final class DateTypeTest extends BaseTypeTestCase
 {
     public function testDefaultOptions(): void
     {

@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
  * NEXT_MAJOR: Remove this class.
  */
 #[Group('legacy')]
-final class ChoiceTypeTest extends BaseTypeTest
+final class ChoiceTypeTest extends BaseTypeTestCase
 {
     public function testDefaultOptions(): void
     {

@@ -535,7 +535,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @phpstan-return iterable<array{string, string, mixed, array<string, mixed>}>
      */
-    public function provideRenderListElementCases(): iterable
+    public static function provideRenderListElementCases(): iterable
     {
         $elements = [
             [

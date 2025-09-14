@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Form\Type\Filter\DefaultType;
  * NEXT_MAJOR: Remove this class.
  */
 #[Group('legacy')]
-final class DefaultTypeTest extends BaseTypeTest
+final class DefaultTypeTest extends BaseTypeTestCase
 {
     public function testDefaultOptions(): void
     {

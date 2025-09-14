@@ -20,7 +20,7 @@ use Sonata\AdminBundle\Form\Type\Filter\NumberType;
  * NEXT_MAJOR: Remove this class.
  */
 #[Group('legacy')]
-final class NumberTypeTest extends BaseTypeTest
+final class NumberTypeTest extends BaseTypeTestCase
 {
     public function testDefaultOptions(): void
     {

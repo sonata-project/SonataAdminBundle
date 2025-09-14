@@ -16,7 +16,7 @@ namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 
-abstract class BaseTypeTest extends TypeTestCase
+abstract class BaseTypeTestCase extends TypeTestCase
 {
     public function testHasTypeAndValue(): void
     {
