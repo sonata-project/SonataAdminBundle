@@ -20,6 +20,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class CRUDControllerTest extends WebTestCase
 {
+    public function tearDown(): void
+    {
+        restore_exception_handler();
+
+        parent::tearDown();
+    }
+
     public function testList(): void
     {
         $client = static::createClient();

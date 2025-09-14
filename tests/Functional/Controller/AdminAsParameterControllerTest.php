@@ -27,6 +27,8 @@ final class AdminAsParameterControllerTest extends WebTestCase
         $client->request(Request::METHOD_GET, $url);
 
         static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+
+        restore_error_handler();
     }
 
     /**
