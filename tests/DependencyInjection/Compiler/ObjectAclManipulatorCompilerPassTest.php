@@ -43,10 +43,10 @@ final class ObjectAclManipulatorCompilerPassTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{ContainerBuilder, string}>
      */
-    public function provideAvailableManagerCases(): iterable
+    public static function provideAvailableManagerCases(): iterable
     {
         $serviceId = 'sonata.admin.manipulator.acl.object.orm';
-        $container = $this->createContainer();
+        $container = static::createContainer();
         $container
             ->register($serviceId)
             ->setClass(ObjectAclManipulator::class);
@@ -54,7 +54,7 @@ final class ObjectAclManipulatorCompilerPassTest extends TestCase
         yield [$container, $serviceId];
 
         $parameterName = 'sonata.admin.manipulator.acl.object.orm.class';
-        $container = $this->createContainer();
+        $container = static::createContainer();
         $container->setParameter($parameterName, ObjectAclManipulator::class);
 
         $container
@@ -64,7 +64,7 @@ final class ObjectAclManipulatorCompilerPassTest extends TestCase
         yield [$container, $serviceId];
     }
 
-    private function createContainer(): ContainerBuilder
+    private static function createContainer(): ContainerBuilder
     {
         $pool = new Pool(new Container());
         $container = new ContainerBuilder();

@@ -1923,26 +1923,20 @@ final class AdminTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, Request|null}>
      */
-    public function provideGetListModeCases(): iterable
+    public static function provideGetListModeCases(): iterable
     {
         yield ['list', null];
 
         yield ['list', new Request()];
 
         $request = new Request();
-        $session = $this->createMock(SessionInterface::class);
-        $session
-            ->method('get')
-            ->with('sonata.post.admin.post.list_mode', 'list')
-            ->willReturn('list');
+        $session = static::createStub(SessionInterface::class);
+        $session->method('get')->willReturn('list');
         $request->setSession($session);
         yield ['list', $request];
 
-        $session = $this->createMock(SessionInterface::class);
-        $session
-            ->method('get')
-            ->with('sonata.post.admin.post.list_mode', 'list')
-            ->willReturn('some_list_mode');
+        $session = static::createStub(SessionInterface::class);
+        $session->method('get')->willReturn('some_list_mode');
         $request = new Request();
         $request->setSession($session);
         yield ['some_list_mode', $request];
@@ -1968,26 +1962,20 @@ final class AdminTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, Request|null}>
      */
-    public function provideGetListModeWithCustomListModesCases(): iterable
+    public static function provideGetListModeWithCustomListModesCases(): iterable
     {
         yield ['mosaic', null];
 
         yield ['mosaic', new Request()];
 
         $request = new Request();
-        $session = $this->createMock(SessionInterface::class);
-        $session
-            ->method('get')
-            ->with('sonata.post.admin.post.list_mode', 'mosaic')
-            ->willReturn('list');
+        $session = static::createStub(SessionInterface::class);
+        $session->method('get')->willReturn('list');
         $request->setSession($session);
         yield ['list', $request];
 
-        $session = $this->createMock(SessionInterface::class);
-        $session
-            ->method('get')
-            ->with('sonata.post.admin.post.list_mode', 'mosaic')
-            ->willReturn('some_list_mode');
+        $session = static::createStub(SessionInterface::class);
+        $session->method('get')->willReturn('some_list_mode');
         $request = new Request();
         $request->setSession($session);
         yield ['some_list_mode', $request];
