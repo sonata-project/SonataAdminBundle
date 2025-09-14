@@ -17,6 +17,7 @@ use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
@@ -466,7 +467,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     /**
      * NEXT_MAJOR: Remove this test.
      */
-    #[Group('legacy')]
+    #[IgnoreDeprecations]
     public function testProcessAbstractAdminServiceInServiceDefinition(): void
     {
         $this->setUpContainer();

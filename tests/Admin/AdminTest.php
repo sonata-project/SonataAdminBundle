@@ -20,6 +20,7 @@ use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
@@ -126,7 +127,7 @@ final class AdminTest extends TestCase
     /**
      * NEXT_MAJOR: Remove this test.
      */
-    #[Group('legacy')]
+    #[IgnoreDeprecations]
     public function testConstructor(): void
     {
         $class = Post::class;
@@ -1243,7 +1244,7 @@ final class AdminTest extends TestCase
      *
      * @psalm-suppress DeprecatedMethod, DeprecatedConstant
      */
-    #[Group('legacy')]
+    #[IgnoreDeprecations]
     public function testShowIn(): void
     {
         $admin = new PostAdmin();

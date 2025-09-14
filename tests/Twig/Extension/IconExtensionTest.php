@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Twig\Extension\IconExtension;
 use Sonata\AdminBundle\Twig\IconRuntime;
@@ -22,7 +23,7 @@ use Sonata\AdminBundle\Twig\IconRuntime;
 /**
  * NEXT_MAJOR: Remove this test.
  */
-#[Group('legacy')]
+#[IgnoreDeprecations]
 final class IconExtensionTest extends TestCase
 {
     /**

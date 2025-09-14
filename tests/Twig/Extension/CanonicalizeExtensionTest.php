@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Twig\CanonicalizeRuntime;
 use Sonata\AdminBundle\Twig\Extension\CanonicalizeExtension;
@@ -25,7 +26,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * NEXT_MAJOR: Remove this test.
  */
-#[Group('legacy')]
+#[IgnoreDeprecations]
 final class CanonicalizeExtensionTest extends TestCase
 {
     private Request $request;

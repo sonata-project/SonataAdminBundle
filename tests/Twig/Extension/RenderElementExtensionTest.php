@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -51,7 +52,7 @@ use Twig\RuntimeLoader\FactoryRuntimeLoader;
 /**
  * NEXT_MAJOR: Remove this test.
  */
-#[Group('legacy')]
+#[IgnoreDeprecations]
 final class RenderElementExtensionTest extends TestCase
 {
     private RenderElementExtension $twigExtension;

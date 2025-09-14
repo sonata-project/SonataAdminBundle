@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
@@ -24,7 +25,7 @@ use Symfony\Component\Translation\Translator;
 /**
  * NEXT_MAJOR: Remove this test.
  */
-#[Group('legacy')]
+#[IgnoreDeprecations]
 final class XEditableExtensionTest extends TestCase
 {
     /**

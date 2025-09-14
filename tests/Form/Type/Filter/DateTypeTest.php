@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use Sonata\AdminBundle\Form\Type\Filter\DateType;
 
 /**
  * NEXT_MAJOR: Remove this class.
  */
-#[Group('legacy')]
+#[IgnoreDeprecations]
 final class DateTypeTest extends BaseTypeTestCase
 {
     public function testDefaultOptions(): void

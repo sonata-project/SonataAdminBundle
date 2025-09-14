@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
@@ -399,7 +400,7 @@ final class DatagridTest extends TestCase
      * NEXT_MAJOR: Remove this test.
      */
     #[DataProvider('applyFilterDataProvider')]
-    #[Group('legacy')]
+    #[IgnoreDeprecations]
     public function testLegacyApplyFilter(?string $type, ?string $value, int $applyCallNumber): void
     {
         $this->datagrid->setValue('fooFormName', $type, $value);

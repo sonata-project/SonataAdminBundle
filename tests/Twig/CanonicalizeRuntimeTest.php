@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Twig\CanonicalizeRuntime;
 use Sonata\Form\Twig\CanonicalizeRuntime as SonataFormCanonicalizeRuntime;
@@ -42,7 +43,7 @@ final class CanonicalizeRuntimeTest extends TestCase
      * NEXT_MAJOR: Remove this test.
      */
     #[DataProvider('provideCanonicalizedLocaleForMomentCases')]
-    #[Group('legacy')]
+    #[IgnoreDeprecations]
     public function testCanonicalizedLocaleForMoment(?string $expected, string $original): void
     {
         $this->changeLocale($original);

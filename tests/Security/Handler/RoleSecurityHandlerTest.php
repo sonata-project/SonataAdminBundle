@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Security\Handler;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -122,7 +123,7 @@ final class RoleSecurityHandlerTest extends TestCase
      * @param string|Expression|array<string|Expression> $operation
      */
     #[DataProvider('provideIsGrantedCases')]
-    #[Group('legacy')]
+    #[IgnoreDeprecations]
     public function testIsGranted(
         bool $expected,
         string|array $superAdminRoles,

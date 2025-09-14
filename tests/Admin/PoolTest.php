@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Admin;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -40,7 +41,7 @@ final class PoolTest extends TestCase
     /**
      * NEXT_MAJOR: Remove this test.
      */
-    #[Group('legacy')]
+    #[IgnoreDeprecations]
     public function testGetDashboardGroupsForLegacyAdmin(): void
     {
         $adminGroup1 = $this->createMock(AdminInterface::class);
