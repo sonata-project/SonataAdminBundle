@@ -56,7 +56,7 @@ final class AbstractFormContractorTest extends TestCase
 
         $this->formFactory = $this->createMock(FormFactoryInterface::class);
         $formRegistry = static::createStub(FormRegistryInterface::class);
-        $formRegistry->method('getType')->willReturnCallback(function (string $type): ResolvedFormTypeInterface {
+        $formRegistry->method('getType')->willReturnCallback(static function (string $type): ResolvedFormTypeInterface {
             $resolvedType = static::createStub(ResolvedFormTypeInterface::class);
             if (MyCustomType::class === $type) {
                 $parentType = static::createStub(ResolvedFormTypeInterface::class);
