@@ -204,7 +204,7 @@ final class BaseFieldDescriptionTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array-key, array{string}>
+     * @phpstan-return iterable<array-key, array{non-empty-string}>
      */
     public static function provideGetFieldValueWithMethodCases(): iterable
     {
