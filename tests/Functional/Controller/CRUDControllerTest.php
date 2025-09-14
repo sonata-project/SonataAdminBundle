@@ -20,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class CRUDControllerTest extends WebTestCase
 {
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         restore_exception_handler();
 
