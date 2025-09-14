@@ -56,6 +56,8 @@ final class BatchAdminController extends CRUDController
 
     /**
      * @param string[] $idx
+     *
+     * @return true
      */
     public function batchActionBarIsRelevant(array $idx, bool $allElements): bool
     {
