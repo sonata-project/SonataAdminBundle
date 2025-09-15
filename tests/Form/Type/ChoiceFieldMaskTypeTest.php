@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
@@ -45,7 +46,7 @@ final class ChoiceFieldMaskTypeTest extends TypeTestCase
     /**
      * @phpstan-return iterable<array{mixed}>
      */
-    public function provideSetAllowedTypesCases(): iterable
+    public static function provideSetAllowedTypesCases(): iterable
     {
         yield 'null' => [null];
         yield 'integer' => [1];
@@ -54,9 +55,7 @@ final class ChoiceFieldMaskTypeTest extends TypeTestCase
         yield 'class' => [new \stdClass()];
     }
 
-    /**
-     * @dataProvider provideSetAllowedTypesCases
-     */
+    #[DataProvider('provideSetAllowedTypesCases')]
     public function testSetAllowedTypes(mixed $map): void
     {
         $this->expectException(InvalidOptionsException::class);

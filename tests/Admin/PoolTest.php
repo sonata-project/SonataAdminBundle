@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Admin;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -37,9 +39,8 @@ final class PoolTest extends TestCase
 
     /**
      * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
      */
+    #[IgnoreDeprecations]
     public function testGetDashboardGroupsForLegacyAdmin(): void
     {
         $adminGroup1 = $this->createMock(AdminInterface::class);
@@ -234,9 +235,7 @@ final class PoolTest extends TestCase
         $pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid');
     }
 
-    /**
-     * @dataProvider provideGetAdminByAdminCodeWithInvalidRootCodeCases
-     */
+    #[DataProvider('provideGetAdminByAdminCodeWithInvalidRootCodeCases')]
     public function testGetAdminByAdminCodeWithInvalidRootCode(string $adminId): void
     {
         $adminMock = $this->createMock(AdminInterface::class);
@@ -253,16 +252,14 @@ final class PoolTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function provideGetAdminByAdminCodeWithInvalidRootCodeCases(): iterable
+    public static function provideGetAdminByAdminCodeWithInvalidRootCodeCases(): iterable
     {
         yield [''];
         yield ['   '];
         yield ['|sonata.news.admin.child_of_empty_code'];
     }
 
-    /**
-     * @dataProvider provideGetAdminByAdminCodeWithInvalidChildCodeCases
-     */
+    #[DataProvider('provideGetAdminByAdminCodeWithInvalidChildCodeCases')]
     public function testGetAdminByAdminCodeWithInvalidChildCode(string $adminId): void
     {
         $adminMock = $this->createMock(AdminInterface::class);
@@ -287,16 +284,14 @@ final class PoolTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function provideGetAdminByAdminCodeWithInvalidChildCodeCases(): iterable
+    public static function provideGetAdminByAdminCodeWithInvalidChildCodeCases(): iterable
     {
         yield ['admin1|'];
         yield ['admin1|nonexistent_code'];
         yield ['admin1||admin3'];
     }
 
-    /**
-     * @dataProvider provideHasAdminByAdminCodeCases
-     */
+    #[DataProvider('provideHasAdminByAdminCodeCases')]
     public function testHasAdminByAdminCode(string $adminId): void
     {
         $adminMock = $this->createMock(AdminInterface::class);
@@ -327,15 +322,13 @@ final class PoolTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function provideHasAdminByAdminCodeCases(): iterable
+    public static function provideHasAdminByAdminCodeCases(): iterable
     {
         yield ['sonata.news.admin.post'];
         yield ['sonata.news.admin.post|sonata.news.admin.comment'];
     }
 
-    /**
-     * @dataProvider provideHasAdminByAdminCodeWithInvalidCodesCases
-     */
+    #[DataProvider('provideHasAdminByAdminCodeWithInvalidCodesCases')]
     public function testHasAdminByAdminCodeWithInvalidCodes(string $adminId): void
     {
         $adminMock = $this->createMock(AdminInterface::class);
@@ -351,7 +344,7 @@ final class PoolTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function provideHasAdminByAdminCodeWithInvalidCodesCases(): iterable
+    public static function provideHasAdminByAdminCodeWithInvalidCodesCases(): iterable
     {
         yield [''];
         yield ['   '];
@@ -363,9 +356,7 @@ final class PoolTest extends TestCase
         static::assertFalse($this->pool->hasAdminByAdminCode('sonata.news.admin.nonexistent_code'));
     }
 
-    /**
-     * @dataProvider provideHasAdminByAdminCodeWithInvalidChildCodesCases
-     */
+    #[DataProvider('provideHasAdminByAdminCodeWithInvalidChildCodesCases')]
     public function testHasAdminByAdminCodeWithInvalidChildCodes(string $adminId): void
     {
         $adminMock = $this->createMock(AdminInterface::class);
@@ -383,7 +374,7 @@ final class PoolTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function provideHasAdminByAdminCodeWithInvalidChildCodesCases(): iterable
+    public static function provideHasAdminByAdminCodeWithInvalidChildCodesCases(): iterable
     {
         yield ['sonata.news.admin.post|'];
         yield ['sonata.news.admin.post|nonexistent_code'];

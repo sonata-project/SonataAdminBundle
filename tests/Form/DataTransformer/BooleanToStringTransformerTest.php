@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\BooleanToStringTransformer;
 
@@ -24,7 +25,7 @@ final class BooleanToStringTransformerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{bool|null, string|null, string}>
      */
-    public function provideTransformCases(): iterable
+    public static function provideTransformCases(): iterable
     {
         yield [null, null, '1'];
         yield [false, null, '1'];
@@ -34,9 +35,7 @@ final class BooleanToStringTransformerTest extends TestCase
         yield [true, 'on', 'on'];
     }
 
-    /**
-     * @dataProvider provideTransformCases
-     */
+    #[DataProvider('provideTransformCases')]
     public function testTransform(?bool $value, ?string $expected, string $trueValue): void
     {
         $transformer = new BooleanToStringTransformer($trueValue);
@@ -47,7 +46,7 @@ final class BooleanToStringTransformerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string|null, bool}>
      */
-    public function provideReverseTransformCases(): iterable
+    public static function provideReverseTransformCases(): iterable
     {
         yield [null, false];
         yield ['1', true];
@@ -61,9 +60,7 @@ final class BooleanToStringTransformerTest extends TestCase
         yield ['', false];
     }
 
-    /**
-     * @dataProvider provideReverseTransformCases
-     */
+    #[DataProvider('provideReverseTransformCases')]
     public function testReverseTransform(?string $value, bool $expected): void
     {
         $transformer = new BooleanToStringTransformer('1');

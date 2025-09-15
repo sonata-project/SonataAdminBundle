@@ -14,6 +14,10 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
@@ -33,6 +37,7 @@ use Symfony\Component\DependencyInjection\Reference;
 /**
  * @author Tiago Garcia
  */
+#[CoversMethod(AddDependencyCallsCompilerPass::class, 'process')]
 final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestCase
 {
     private SonataAdminExtension $extension;
@@ -63,9 +68,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->compile();
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass::process
-     */
     public function testProcessParsingFullValidConfig(): void
     {
         $this->setUpContainer();
@@ -121,9 +123,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         static::assertTrue($dashboardGroupsSettings['sonata_group_five']['keep_open']);
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass::process
-     */
     public function testProcessResultingConfig(): void
     {
         $this->setUpContainer();
@@ -439,9 +438,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->compile();
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testProcessMultipleOnTopOptionsInServiceDefinition2(): void
     {
         $this->setUpContainer();
@@ -469,9 +466,8 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
     /**
      * NEXT_MAJOR: Remove this test.
-     *
-     * @group legacy
      */
+    #[IgnoreDeprecations]
     public function testProcessAbstractAdminServiceInServiceDefinition(): void
     {
         $this->setUpContainer();
@@ -642,6 +638,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $adminGroups = $this->container->findDefinition('sonata.admin.pool')->getArgument(2);
         static::assertCount(3, $adminGroups);
+        static::assertIsArray($adminGroups);
         static::assertSame(['sonata_group_priority_2', 'sonata_group_priority_3', 'sonata_group_priority_1'], array_keys($adminGroups));
     }
 

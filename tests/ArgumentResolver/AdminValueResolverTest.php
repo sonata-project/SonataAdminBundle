@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\ArgumentResolver;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
@@ -26,9 +27,7 @@ use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
 final class AdminValueResolverTest extends TestCase
 {
-    /**
-     * @dataProvider provideWithInvalidDataCases
-     */
+    #[DataProvider('provideWithInvalidDataCases')]
     public function testWithInvalidData(Request $request, ArgumentMetadata $argumentMetadata): void
     {
         $admin = new PostAdmin();
@@ -50,7 +49,7 @@ final class AdminValueResolverTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{Request, ArgumentMetadata}>
      */
-    public function provideWithInvalidDataCases(): iterable
+    public static function provideWithInvalidDataCases(): iterable
     {
         yield 'Object with no type' => [
             static::createRequest(),

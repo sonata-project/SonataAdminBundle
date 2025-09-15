@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Enum\Suit;
@@ -24,9 +25,8 @@ final class XEditableRuntimeTest extends TestCase
     /**
      * @param array<string, mixed>         $options
      * @param array<array<string, string>> $expectedChoices
-     *
-     * @dataProvider provideGetXEditableChoicesIsIdempotentCases
      */
+    #[DataProvider('provideGetXEditableChoicesIsIdempotentCases')]
     public function testGetXEditableChoicesIsIdempotent(array $options, array $expectedChoices): void
     {
         $xEditableRuntime = new XEditableRuntime(new Translator('en'));
@@ -51,7 +51,7 @@ final class XEditableRuntimeTest extends TestCase
      *     array<array{value: string, text: string}>
      * }>
      */
-    public function provideGetXEditableChoicesIsIdempotentCases(): iterable
+    public static function provideGetXEditableChoicesIsIdempotentCases(): iterable
     {
         yield 'needs processing' => [
             ['choices' => ['Status1' => 'Alias1', 'Status2' => 'Alias2']],

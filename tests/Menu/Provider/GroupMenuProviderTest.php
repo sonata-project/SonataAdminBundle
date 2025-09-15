@@ -17,6 +17,7 @@ use Knp\Menu\Integration\Symfony\RoutingExtension;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -78,9 +79,8 @@ final class GroupMenuProviderTest extends TestCase
 
     /**
      * @phpstan-param Group $adminGroups
-     *
-     * @dataProvider getAdminGroups
      */
+    #[DataProvider('getAdminGroups')]
     public function testGetMenuProviderWithCheckerGrantedGroupRoles(array $adminGroups): void
     {
         $this->container->set('sonata_admin_foo_service', $this->getAdminMock());
@@ -127,9 +127,8 @@ final class GroupMenuProviderTest extends TestCase
 
     /**
      * @phpstan-param Group $adminGroups
-     *
-     * @dataProvider getAdminGroupsMultipleRoles
      */
+    #[DataProvider('getAdminGroupsMultipleRoles')]
     public function testGetMenuProviderWithCheckerGrantedMultipleGroupRoles(
         array $adminGroups,
     ): void {
@@ -154,9 +153,8 @@ final class GroupMenuProviderTest extends TestCase
 
     /**
      * @phpstan-param Group $adminGroups
-     *
-     * @dataProvider getAdminGroupsMultipleRoles
      */
+    #[DataProvider('getAdminGroupsMultipleRoles')]
     public function testGetMenuProviderWithCheckerGrantedGroupAndItemRoles(
         array $adminGroups,
     ): void {
@@ -182,9 +180,8 @@ final class GroupMenuProviderTest extends TestCase
 
     /**
      * @phpstan-param Group $adminGroups
-     *
-     * @dataProvider provideGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTopCases
      */
+    #[DataProvider('provideGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTopCases')]
     public function testGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTop(
         array $adminGroups,
     ): void {
@@ -206,9 +203,8 @@ final class GroupMenuProviderTest extends TestCase
 
     /**
      * @phpstan-param Group $adminGroups
-     *
-     * @dataProvider getAdminGroups
      */
+    #[DataProvider('getAdminGroups')]
     public function testGetMenuProviderWithAdmin(array $adminGroups): void
     {
         $this->container->set('sonata_admin_foo_service', $this->getAdminMock());
@@ -254,9 +250,8 @@ final class GroupMenuProviderTest extends TestCase
 
     /**
      * @phpstan-param Group $adminGroups
-     *
-     * @dataProvider getAdminGroups
      */
+    #[DataProvider('getAdminGroups')]
     public function testGetKnpMenuWithListRoute(array $adminGroups): void
     {
         $this->container->set('sonata_admin_foo_service', $this->getAdminMock(false));
@@ -281,9 +276,8 @@ final class GroupMenuProviderTest extends TestCase
 
     /**
      * @phpstan-param Group $adminGroups
-     *
-     * @dataProvider getAdminGroups
      */
+    #[DataProvider('getAdminGroups')]
     public function testGetKnpMenuWithGrantedList(array $adminGroups): void
     {
         $this->container->set('sonata_admin_foo_service', $this->getAdminMock(true, false));
@@ -308,9 +302,8 @@ final class GroupMenuProviderTest extends TestCase
 
     /**
      * @phpstan-param Group $adminGroupsOnTopOption
-     *
-     * @dataProvider provideGetMenuProviderOnTopOptionsCases
      */
+    #[DataProvider('provideGetMenuProviderOnTopOptionsCases')]
     public function testGetMenuProviderOnTopOptions(array $adminGroupsOnTopOption): void
     {
         $this->container->set('sonata_admin_foo_service', $this->getAdminMock(true, false));
@@ -329,9 +322,8 @@ final class GroupMenuProviderTest extends TestCase
 
     /**
      * @phpstan-param Group $adminGroups
-     *
-     * @dataProvider getAdminGroups
      */
+    #[DataProvider('getAdminGroups')]
     public function testGetMenuProviderKeepOpenOption(array $adminGroups): void
     {
         $this->container->set('sonata_admin_foo_service', $this->getAdminMock());
@@ -357,9 +349,8 @@ final class GroupMenuProviderTest extends TestCase
 
     /**
      * @phpstan-param Group $item
-     *
-     * @dataProvider provideRootMenuItemUrlCases
      */
+    #[DataProvider('provideRootMenuItemUrlCases')]
     public function testRootMenuItemUrl(string $expectedUrl, array $item): void
     {
         $this->container->set('sonata_admin_absolute_url', $this->getAdminMock());
@@ -385,7 +376,7 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @phpstan-return iterable<array{Group}>
      */
-    public function getAdminGroups(): iterable
+    public static function getAdminGroups(): iterable
     {
         yield [
             [
@@ -428,7 +419,7 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @phpstan-return iterable<array{Group}>
      */
-    public function getAdminGroupsMultipleRoles(): iterable
+    public static function getAdminGroupsMultipleRoles(): iterable
     {
         yield [
             // group for all roles, children with different roles
@@ -525,7 +516,7 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @phpstan-return iterable<array{Group}>
      */
-    public function provideGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTopCases(): iterable
+    public static function provideGetMenuProviderWithCheckerGrantedMultipleGroupRolesOnTopCases(): iterable
     {
         yield [
             [
@@ -592,7 +583,7 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @phpstan-return iterable<array{Group}>
      */
-    public function provideGetMenuProviderOnTopOptionsCases(): iterable
+    public static function provideGetMenuProviderOnTopOptionsCases(): iterable
     {
         yield [
             [
@@ -619,7 +610,7 @@ final class GroupMenuProviderTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, Group}>
      */
-    public function provideRootMenuItemUrlCases(): iterable
+    public static function provideRootMenuItemUrlCases(): iterable
     {
         yield 'absolute_url' => [
             'http://sonata-project/list',

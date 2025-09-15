@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Admin;
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuFactory;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
@@ -136,7 +137,7 @@ final class BreadcrumbsBuilderTest extends TestCase
     /**
      * @phpstan-return iterable<array{string}>
      */
-    public function provideBuildBreadcrumbsCases(): iterable
+    public static function provideBuildBreadcrumbsCases(): iterable
     {
         yield ['my_action'];
         yield ['list'];
@@ -144,9 +145,7 @@ final class BreadcrumbsBuilderTest extends TestCase
         yield ['create'];
     }
 
-    /**
-     * @dataProvider provideBuildBreadcrumbsCases
-     */
+    #[DataProvider('provideBuildBreadcrumbsCases')]
     public function testBuildBreadcrumbs(string $action): void
     {
         $subject = new \stdClass();

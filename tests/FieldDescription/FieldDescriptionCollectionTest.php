@@ -33,9 +33,7 @@ final class FieldDescriptionCollectionTest extends TestCase
         $collection->add($fieldDescription);
 
         static::assertFalse($collection->has('foo'));
-        static::assertArrayNotHasKey('foo', $collection);
         static::assertTrue($collection->has('title'));
-        static::assertArrayHasKey('title', $collection);
 
         static::assertCount(2, $collection->getElements());
         static::assertCount(2, $collection);

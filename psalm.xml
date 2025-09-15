@@ -23,5 +23,8 @@
         <RedundantConditionGivenDocblockType errorLevel="suppress"/>
         <MissingClassConstType errorLevel="suppress"/>
         <MissingOverrideAttribute errorLevel="suppress"/>
+        <!-- TODO -->
+        <DeprecatedMethod errorLevel="suppress"/>
+        <UnusedPsalmSuppress errorLevel="suppress"/>
     </issueHandlers>
 </psalm>

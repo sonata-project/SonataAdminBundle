@@ -19,6 +19,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class DashboardActionTest extends WebTestCase
 {
+    protected function tearDown(): void
+    {
+        restore_exception_handler();
+
+        parent::tearDown();
+    }
+
     public function testDashboard(): void
     {
         $client = static::createClient();

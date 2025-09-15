@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
@@ -21,19 +23,17 @@ use Symfony\Component\Translation\Translator;
 
 /**
  * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
  */
+#[IgnoreDeprecations]
 final class XEditableExtensionTest extends TestCase
 {
     /**
      * @param array<string, mixed>         $options
      * @param array<array<string, string>> $expectedChoices
      *
-     * @dataProvider provideGetXEditableChoicesIsIdempotentCases
-     *
      * @psalm-suppress DeprecatedMethod
      */
+    #[DataProvider('provideGetXEditableChoicesIsIdempotentCases')]
     public function testGetXEditableChoicesIsIdempotent(array $options, array $expectedChoices): void
     {
         $twigExtension = new XEditableExtension(new XEditableRuntime(new Translator('en')));
@@ -58,7 +58,7 @@ final class XEditableExtensionTest extends TestCase
      *	array<array{value: string, text: string}>
      * }>
      */
-    public function provideGetXEditableChoicesIsIdempotentCases(): iterable
+    public static function provideGetXEditableChoicesIsIdempotentCases(): iterable
     {
         yield 'needs processing' => [
             ['choices' => ['Status1' => 'Alias1', 'Status2' => 'Alias2']],

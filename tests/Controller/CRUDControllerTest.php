@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
@@ -903,9 +905,8 @@ final class CRUDControllerTest extends TestCase
     /**
      * @param array<string, bool|float|int|string|null> $queryParams
      * @param array<string, bool|float|int|string|null> $requestParams
-     *
-     * @dataProvider provideRedirectToCases
      */
+    #[DataProvider('provideRedirectToCases')]
     public function testRedirectTo(
         string $expected,
         string $route,
@@ -968,7 +969,7 @@ final class CRUDControllerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, string, array<string, bool|float|int|string|null>, array<string, bool|float|int|string|null>, bool}>
      */
-    public function provideRedirectToCases(): iterable
+    public static function provideRedirectToCases(): iterable
     {
         yield ['stdClass_edit', 'edit', [], [], false];
         yield ['list', 'list', ['btn_update_and_list' => true], [], false];
@@ -1257,9 +1258,7 @@ final class CRUDControllerTest extends TestCase
         $this->controller->deleteAction($this->request);
     }
 
-    /**
-     * @dataProvider getToStringValues
-     */
+    #[DataProvider('getToStringValues')]
     public function testDeleteActionSuccess1(string $expectedToStringValue, string $toStringValue): void
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
@@ -1292,9 +1291,7 @@ final class CRUDControllerTest extends TestCase
         static::assertSame('list', $response->getTargetUrl());
     }
 
-    /**
-     * @dataProvider getToStringValues
-     */
+    #[DataProvider('getToStringValues')]
     public function testDeleteActionSuccess2(string $expectedToStringValue, string $toStringValue): void
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
@@ -1327,9 +1324,7 @@ final class CRUDControllerTest extends TestCase
         static::assertSame('list', $response->getTargetUrl());
     }
 
-    /**
-     * @dataProvider getToStringValues
-     */
+    #[DataProvider('getToStringValues')]
     public function testDeleteActionSuccessNoCsrfTokenProvider(string $expectedToStringValue, string $toStringValue): void
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
@@ -1393,9 +1388,7 @@ final class CRUDControllerTest extends TestCase
         static::assertSame(Request::METHOD_GET, $this->request->getMethod());
     }
 
-    /**
-     * @dataProvider getToStringValues
-     */
+    #[DataProvider('getToStringValues')]
     public function testDeleteActionError(string $expectedToStringValue, string $toStringValue): void
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
@@ -1667,9 +1660,7 @@ final class CRUDControllerTest extends TestCase
         static::assertSame([], $this->session->getFlashBag()->all());
     }
 
-    /**
-     * @dataProvider getToStringValues
-     */
+    #[DataProvider('getToStringValues')]
     public function testEditActionSuccess(string $expectedToStringValue, string $toStringValue): void
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
@@ -1737,9 +1728,7 @@ final class CRUDControllerTest extends TestCase
         static::assertSame('stdClass_edit', $response->getTargetUrl());
     }
 
-    /**
-     * @dataProvider getToStringValues
-     */
+    #[DataProvider('getToStringValues')]
     public function testEditActionError(string $expectedToStringValue, string $toStringValue): void
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
@@ -2142,9 +2131,7 @@ final class CRUDControllerTest extends TestCase
         static::assertSame(Response::HTTP_NOT_ACCEPTABLE, $response->getStatusCode());
     }
 
-    /**
-     * @dataProvider getToStringValues
-     */
+    #[DataProvider('getToStringValues')]
     public function testEditActionWithModelManagerException(string $expectedToStringValue, string $toStringValue): void
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);
@@ -2430,9 +2417,7 @@ final class CRUDControllerTest extends TestCase
         static::assertSame([], $this->session->getFlashBag()->all());
     }
 
-    /**
-     * @dataProvider getToStringValues
-     */
+    #[DataProvider('getToStringValues')]
     public function testCreateActionSuccess(string $expectedToStringValue, string $toStringValue): void
     {
         $object = new \stdClass();
@@ -2513,9 +2498,7 @@ final class CRUDControllerTest extends TestCase
         static::assertSame('stdClass_edit', $response->getTargetUrl());
     }
 
-    /**
-     * @dataProvider getToStringValues
-     */
+    #[DataProvider('getToStringValues')]
     public function testCreateActionError(string $expectedToStringValue, string $toStringValue): void
     {
         $this->admin->expects(static::once())
@@ -2577,9 +2560,7 @@ final class CRUDControllerTest extends TestCase
         static::assertSame(['sonata_flash_error' => ['flash_create_error']], $this->session->getFlashBag()->all());
     }
 
-    /**
-     * @dataProvider getToStringValues
-     */
+    #[DataProvider('getToStringValues')]
     public function testCreateActionWithModelManagerException(string $expectedToStringValue, string $toStringValue): void
     {
         $this->admin->expects(static::once())
@@ -4170,7 +4151,7 @@ final class CRUDControllerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{array<string, mixed>}>
      */
-    public function provideBatchActionWithConfirmationCases(): iterable
+    public static function provideBatchActionWithConfirmationCases(): iterable
     {
         yield 'normal data' => [['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]];
         yield 'without all elements' => [['action' => 'delete', 'idx' => ['123', '456']]];
@@ -4181,9 +4162,8 @@ final class CRUDControllerTest extends TestCase
 
     /**
      * @param array<string, mixed> $data
-     *
-     * @dataProvider provideBatchActionWithConfirmationCases
      */
+    #[DataProvider('provideBatchActionWithConfirmationCases')]
     public function testBatchActionWithConfirmation(array $data): void
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'translation_domain' => 'FooBarBaz', 'ask_confirmation' => true]];
@@ -4242,13 +4222,9 @@ final class CRUDControllerTest extends TestCase
         static::assertSame([], $this->session->getFlashBag()->all());
     }
 
-    /**
-     * @dataProvider provideBatchActionNonRelevantActionCases
-     *
-     * @group legacy
-     *
-     * NEXT_MAJOR: Remove this test
-     */
+    #[DataProvider('provideBatchActionNonRelevantActionCases')]
+    #[Group('legacy
+NEXT_MAJOR: Remove this test')]
     public function testBatchActionNonRelevantAction(string $actionName): void
     {
         $controller = new BatchAdminController();
@@ -4289,7 +4265,7 @@ final class CRUDControllerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function provideBatchActionNonRelevantActionCases(): iterable
+    public static function provideBatchActionNonRelevantActionCases(): iterable
     {
         yield ['foo'];
         yield ['foo_bar'];
@@ -4337,11 +4313,8 @@ final class CRUDControllerTest extends TestCase
         $this->controller->batchAction($this->request);
     }
 
-    /**
-     * @group legacy
-     *
-     * NEXT_MAJOR: Remove this test
-     */
+    #[Group('legacy
+NEXT_MAJOR: Remove this test')]
     public function testBatchActionNonRelevantAction2(): void
     {
         $controller = new BatchAdminController();
@@ -4406,11 +4379,8 @@ final class CRUDControllerTest extends TestCase
         static::assertSame('list', $result->getTargetUrl());
     }
 
-    /**
-     * @group legacy
-     *
-     * NEXT_MAJOR: Remove this test
-     */
+    #[Group('legacy
+NEXT_MAJOR: Remove this test')]
     public function testBatchActionNoItemsEmptyQuery(): void
     {
         $controller = new BatchAdminController();
@@ -4561,7 +4531,7 @@ final class CRUDControllerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string, string}>
      */
-    public function getToStringValues(): iterable
+    public static function getToStringValues(): iterable
     {
         yield ['', ''];
         yield ['Foo', 'Foo'];

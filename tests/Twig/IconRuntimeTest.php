@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Twig\IconRuntime;
 
 final class IconRuntimeTest extends TestCase
 {
-    /**
-     * @dataProvider provideParseIconCases
-     */
+    #[DataProvider('provideParseIconCases')]
     public function testParseIcon(string $icon, string $expected): void
     {
         $iconRuntime = new IconRuntime();
@@ -31,7 +30,7 @@ final class IconRuntimeTest extends TestCase
     /**
      * @return iterable<array{string, string}>
      */
-    public function provideParseIconCases(): iterable
+    public static function provideParseIconCases(): iterable
     {
         yield ['', ''];
         yield ['<i class="fa fa-cog" aria-hidden="true"></i>', '<i class="fa fa-cog" aria-hidden="true"></i>'];

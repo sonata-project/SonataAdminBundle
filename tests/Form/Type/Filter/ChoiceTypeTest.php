@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use Sonata\AdminBundle\Form\Type\Filter\ChoiceType;
 
 /**
  * NEXT_MAJOR: Remove this class.
- *
- * @group legacy
  */
-final class ChoiceTypeTest extends BaseTypeTest
+#[IgnoreDeprecations]
+final class ChoiceTypeTest extends BaseTypeTestCase
 {
     public function testDefaultOptions(): void
     {

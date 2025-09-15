@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -161,9 +162,8 @@ final class SimplePagerTest extends TestCase
 
     /**
      * @param string[] $queryReturnValues
-     *
-     * @dataProvider provideGetCurrentPageResultsReturnTypeArrayCollectionCases
      */
+    #[DataProvider('provideGetCurrentPageResultsReturnTypeArrayCollectionCases')]
     public function testGetCurrentPageResultsReturnTypeArrayCollection(array $queryReturnValues, int $maxPerPage): void
     {
         $this->proxyQuery->expects(static::once())
@@ -179,7 +179,7 @@ final class SimplePagerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{string[], int}>
      */
-    public function provideGetCurrentPageResultsReturnTypeArrayCollectionCases(): iterable
+    public static function provideGetCurrentPageResultsReturnTypeArrayCollectionCases(): iterable
     {
         yield [['foo', 'bar'], 2];
         yield [['foo', 'bar'], 1];
