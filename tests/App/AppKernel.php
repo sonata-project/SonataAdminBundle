@@ -27,8 +27,8 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\UX\StimulusBundle\StimulusBundle;
 
 final class AppKernel extends Kernel
@@ -73,7 +73,7 @@ final class AppKernel extends Kernel
 
     protected function configureContainer(ContainerBuilder $containerBuilder, LoaderInterface $loader): void
     {
-        $containerBuilder->loadFromExtension('framework', [
+        $frameworkConfig = [
             'secret' => 'MySecret',
             'fragments' => ['enabled' => true],
             'form' => ['enabled' => true],
@@ -87,19 +87,20 @@ final class AppKernel extends Kernel
             'session' => [
                 'storage_factory_id' => 'session.storage.factory.mock_file',
             ],
-        ]);
-
-        $securityConfig = [
-            'firewalls' => ['main' => []],
-            'providers' => ['in_memory' => ['memory' => null]],
         ];
 
-        // TODO: Remove if when dropping support of Symfony 5.4
-        if (!class_exists(IsGranted::class)) {
-            $securityConfig['enable_authenticator_manager'] = true;
+        // TODO: remove once Support for Symfony < 8 is dropped
+        /* @phpstan-ignore function.alreadyNarrowedType */
+        if (method_exists(ReflectionExtractor::class, 'getReadVisibilityForMethod')) {
+            $frameworkConfig['property_info']['with_constructor_extractor'] = true;
         }
 
-        $containerBuilder->loadFromExtension('security', $securityConfig);
+        $containerBuilder->loadFromExtension('framework', $frameworkConfig);
+
+        $containerBuilder->loadFromExtension('security', [
+            'firewalls' => ['main' => []],
+            'providers' => ['in_memory' => ['memory' => null]],
+        ]);
 
         $containerBuilder->loadFromExtension('twig', [
             'default_path' => \sprintf('%s/templates', $this->getProjectDir()),
