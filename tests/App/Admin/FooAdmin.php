@@ -78,13 +78,13 @@ class FooAdmin extends AbstractAdmin
                     'help' => 'Elements main field help message',
                     'error_bubbling' => false,
                     'constraints' => [
-                        new Collection([
-                            'fields' => [
+                        new Collection(
+                            fields: [
                                 'elements_item' => new NotBlank(),
                                 'missing_field' => new NotBlank(),
                             ],
-                            'allowMissingFields' => false,
-                        ]),
+                            allowMissingFields: false,
+                        ),
                     ],
                     'keys' => [
                         [
@@ -103,9 +103,7 @@ class FooAdmin extends AbstractAdmin
                 [
                     'error_bubbling' => false,
                     'constraints' => [
-                        new Count([
-                            'min' => 2,
-                        ]),
+                        new Count(min: 2),
                     ],
                     'entry_type' => TextType::class,
                 ],
