@@ -23,12 +23,12 @@
         <!-- TODO -->
         <DeprecatedMethod>
             <errorLevel type="suppress">
-                <directory name="tests" />
+                <directory name="tests"/>
             </errorLevel>
         </DeprecatedMethod>
         <UnusedPsalmSuppress>
             <errorLevel type="suppress">
-                <directory name="tests" />
+                <directory name="tests"/>
             </errorLevel>
         </UnusedPsalmSuppress>
     </issueHandlers>

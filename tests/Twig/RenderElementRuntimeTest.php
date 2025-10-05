@@ -32,7 +32,6 @@ use Sonata\AdminBundle\Twig\XEditableRuntime;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
@@ -89,9 +88,6 @@ final class RenderElementRuntimeTest extends TestCase
 
         $this->templateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-
-        $request = $this->createMock(Request::class);
-        $request->method('get')->with('_sonata_admin')->willReturn('sonata_admin_foo_service');
 
         $loader = new StubFilesystemLoader([
             __DIR__.'/../../src/Resources/views/CRUD',
