@@ -67,6 +67,9 @@ final class AdminMakerTest extends TestCase
         $this->filesystem->remove($this->projectDirectory);
     }
 
+    /**
+     * @psalm-suppress InternalClass, InternalMethod
+     */
     public function testExecute(): void
     {
         $maker = new AdminMaker($this->projectDirectory, $this->modelManagers, CRUDController::class);

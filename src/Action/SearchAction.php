@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +35,7 @@ final class SearchAction
             'base_template' => $request->isXmlHttpRequest() ?
                 $this->templateRegistry->getTemplate('ajax') :
                 $this->templateRegistry->getTemplate('layout'),
-            'query' => $request->get('q', ''),
+            'query' => BCHelper::getFromRequest($request, 'q', ''),
             'groups' => $this->pool->getDashboardGroups(),
         ]));
     }

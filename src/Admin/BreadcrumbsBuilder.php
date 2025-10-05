@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Admin;
 
 use Knp\Menu\ItemInterface;
+use Sonata\AdminBundle\BCLayer\BCHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -105,7 +106,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         $childAdmin = $admin->getCurrentChildAdmin();
 
         if (null !== $childAdmin && $admin->hasSubject()) {
-            $id = $admin->getRequest()->get($admin->getIdParameter());
+            $id = BCHelper::getFromRequest($admin->getRequest(), $admin->getIdParameter());
 
             $menu = $menu->addChild(
                 $admin->toString($admin->getSubject()),

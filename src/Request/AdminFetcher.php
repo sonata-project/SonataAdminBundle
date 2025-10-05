@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Request;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\BCLayer\BCHelper;
 use Symfony\Component\HttpFoundation\Request;
 
 final class AdminFetcher implements AdminFetcherInterface
@@ -26,10 +27,10 @@ final class AdminFetcher implements AdminFetcherInterface
 
     public function get(Request $request): AdminInterface
     {
-        $adminCode = $request->get('_sonata_admin');
+        $adminCode = BCHelper::getFromRequest($request, '_sonata_admin');
 
         if (!\is_string($adminCode)) {
-            $route = $request->get('_route', '');
+            $route = BCHelper::getFromRequest($request, '_route', '');
             \assert(\is_string($route));
 
             throw new \InvalidArgumentException(\sprintf(
@@ -48,8 +49,8 @@ final class AdminFetcher implements AdminFetcherInterface
 
         $rootAdmin->setRequest($request);
 
-        if (\is_string($request->get('uniqid'))) {
-            $admin->setUniqId($request->get('uniqid'));
+        if (\is_string(BCHelper::getFromRequest($request, 'uniqid'))) {
+            $admin->setUniqId(BCHelper::getFromRequest($request, 'uniqid'));
         }
 
         return $admin;
