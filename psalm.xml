@@ -15,16 +15,21 @@
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
     </plugins>
     <issueHandlers>
-        <InternalClass errorLevel="suppress"/>
-        <InternalMethod errorLevel="suppress"/>
-        <InternalProperty errorLevel="suppress"/>
         <!-- Psalm equivalent of PHPStan config `treatPhpDocTypesAsCertain: false` -->
         <DocblockTypeContradiction errorLevel="suppress"/>
         <RedundantConditionGivenDocblockType errorLevel="suppress"/>
         <MissingClassConstType errorLevel="suppress"/>
         <MissingOverrideAttribute errorLevel="suppress"/>
         <!-- TODO -->
-        <DeprecatedMethod errorLevel="suppress"/>
-        <UnusedPsalmSuppress errorLevel="suppress"/>
+        <DeprecatedMethod>
+            <errorLevel type="suppress">
+                <directory name="tests" />
+            </errorLevel>
+        </DeprecatedMethod>
+        <UnusedPsalmSuppress>
+            <errorLevel type="suppress">
+                <directory name="tests" />
+            </errorLevel>
+        </UnusedPsalmSuppress>
     </issueHandlers>
 </psalm>

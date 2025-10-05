@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\AdminHelper;
+use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\Form\FormRenderer;
@@ -42,7 +43,7 @@ final class RetrieveFormFieldElementAction
             throw new NotFoundHttpException($e->getMessage());
         }
 
-        $objectId = $request->get('objectId');
+        $objectId = BCHelper::getFromRequest($request, 'objectId');
         if (null === $objectId) {
             $subject = $admin->getNewInstance();
         } elseif (\is_string($objectId) || \is_int($objectId)) {
@@ -66,7 +67,7 @@ final class RetrieveFormFieldElementAction
         $form->setData($subject);
         $form->handleRequest($request);
 
-        $elementId = $request->get('elementId');
+        $elementId = BCHelper::getFromRequest($request, 'elementId');
         if (!\is_string($elementId)) {
             throw new BadRequestParamHttpException('elementId', 'string', $elementId);
         }
