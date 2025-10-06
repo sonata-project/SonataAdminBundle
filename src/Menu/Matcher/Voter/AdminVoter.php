@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Menu\Matcher\Voter;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\Voter\VoterInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\BCLayer\BCHelper;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -41,13 +42,13 @@ final class AdminVoter implements VoterInterface
         if (
             $admin instanceof AdminInterface
             && $admin->hasRoute('list') && $admin->hasAccess('list')
-            && $this->match($admin, $request->get('_sonata_admin'))
+            && $this->match($admin, BCHelper::getFromRequest($request, '_sonata_admin'))
         ) {
             return true;
         }
 
         $route = $item->getExtra('route');
-        if (null !== $route && $route === $request->get('_route')) {
+        if (null !== $route && $route === BCHelper::getFromRequest($request, '_route')) {
             return true;
         }
 

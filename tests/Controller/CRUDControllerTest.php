@@ -21,6 +21,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
@@ -4071,11 +4072,11 @@ final class CRUDControllerTest extends TestCase
         $this->request->request->set('data', json_encode(['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
-        static::assertNull($this->request->get('idx'));
+        static::assertNull(BCHelper::getFromRequest($this->request, 'idx'));
 
         $result = $this->controller->batchAction($this->request);
 
-        static::assertNull($this->request->get('idx'), 'Ensure original request is not modified by calling `CRUDController::batchAction()`.');
+        static::assertNull(BCHelper::getFromRequest($this->request, 'idx'), 'Ensure original request is not modified by calling `CRUDController::batchAction()`.');
         static::assertSame($response, $result);
     }
 
@@ -4252,11 +4253,11 @@ NEXT_MAJOR: Remove this test')]
         $this->request->request->set('idx', ['789']);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
-        static::assertNull($this->request->get('all_elements'));
+        static::assertNull(BCHelper::getFromRequest($this->request, 'all_elements'));
 
         $result = $controller->batchAction($this->request);
 
-        static::assertNull($this->request->get('all_elements'), 'Ensure original request is not modified by calling `CRUDController::batchAction()`.');
+        static::assertNull(BCHelper::getFromRequest($this->request, 'all_elements'), 'Ensure original request is not modified by calling `CRUDController::batchAction()`.');
         static::assertInstanceOf(RedirectResponse::class, $result);
         static::assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sonata_flash_info'));
         static::assertSame('list', $result->getTargetUrl());

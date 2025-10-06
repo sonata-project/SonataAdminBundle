@@ -85,8 +85,7 @@ final class BreadcrumbsBuilderTest extends TestCase
         ]);
 
         $admin->method('getCurrentChildAdmin')->willReturn($childAdmin);
-        $request = $this->createMock(Request::class);
-        $request->method('get')->with('slug')->willReturn('my-object');
+        $request = new Request(['slug' => 'my-object']);
 
         $admin->method('getIdParameter')->willReturn('slug');
         $admin->method('getRequest')->willReturn($request);
@@ -223,8 +222,7 @@ final class BreadcrumbsBuilderTest extends TestCase
             $menu->expects(static::never())->method('setUri');
         }
 
-        $request = $this->createMock(Request::class);
-        $request->method('get')->with('slug')->willReturn('my-object');
+        $request = new Request(['slug' => 'my-object']);
 
         $admin->method('getIdParameter')->willReturn('slug');
         $admin->method('getRequest')->willReturn($request);

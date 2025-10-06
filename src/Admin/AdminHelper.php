@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
+use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Exception\NoValueException;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Manipulator\ObjectManipulator;
@@ -95,14 +96,14 @@ final class AdminHelper
         $childFormBuilder = $this->getChildFormBuilder($formBuilder, $elementId);
 
         if (null !== $childFormBuilder) {
-            $formData = $admin->getRequest()->get($formBuilder->getName(), []);
+            $formData = BCHelper::getFromRequest($admin->getRequest(), $formBuilder->getName(), []);
             \assert(\is_array($formData));
 
             if (
                 \array_key_exists($childFormBuilder->getName(), $formData)
                 && is_iterable($formData[$childFormBuilder->getName()])
             ) {
-                $formData = $admin->getRequest()->get($formBuilder->getName(), []);
+                $formData = BCHelper::getFromRequest($admin->getRequest(), $formBuilder->getName(), []);
                 \assert(\is_array($formData));
 
                 $i = 0;
@@ -143,7 +144,7 @@ final class AdminHelper
             }
 
             // retrieve the posted data
-            $data = $admin->getRequest()->get($formBuilder->getName());
+            $data = BCHelper::getFromRequest($admin->getRequest(), $formBuilder->getName());
 
             if (!isset($data[$childFormBuilder->getName()])) {
                 $data[$childFormBuilder->getName()] = [];

@@ -1397,8 +1397,7 @@ final class AdminTest extends TestCase
         $tagAdmin->setModelClass(Tag::class);
         $tagAdmin->setParent($postAdmin, 'post');
 
-        $request = $this->createMock(Request::class);
-        $request->method('get')->with('parent_id')->willReturn(42);
+        $request = new Request(['parent_id' => 42]);
         $tagAdmin->setRequest($request);
 
         $tag = $tagAdmin->getNewInstance();
@@ -1438,8 +1437,7 @@ final class AdminTest extends TestCase
         $postCategoryAdmin->setModelClass(PostCategory::class);
         $postCategoryAdmin->setParent($postAdmin, 'posts');
 
-        $request = $this->createMock(Request::class);
-        $request->method('get')->with('parent_id')->willReturn(42);
+        $request = new Request(['parent_id' => 42]);
         $postCategoryAdmin->setRequest($request);
 
         $postCategory = $postCategoryAdmin->getNewInstance();
@@ -1471,8 +1469,7 @@ final class AdminTest extends TestCase
         $tagAdmin->setModelClass(Tag::class);
         $tagAdmin->setParentFieldDescription($parentField);
 
-        $request = $this->createMock(Request::class);
-        $request->method('get')->with('parent_id')->willReturn(42);
+        $request = new Request(['parent_id' => 42]);
         $tagAdmin->setRequest($request);
 
         $tag = $tagAdmin->getNewInstance();
