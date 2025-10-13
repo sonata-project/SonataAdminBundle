@@ -63,6 +63,8 @@ final class ArrayToModelTransformer implements DataTransformerInterface
     /**
      * @param object|null $value
      *
+     * @phpstan-throws void
+     *
      * @phpstan-param T|null $value
      * @phpstan-return T|null
      */

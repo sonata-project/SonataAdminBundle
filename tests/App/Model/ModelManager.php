@@ -32,14 +32,23 @@ final class ModelManager implements ModelManagerInterface, LockInterface
     ) {
     }
 
+    /**
+     * @phpstan-throws void
+     */
     public function create(object $object): void
     {
     }
 
+    /**
+     * @phpstan-throws void
+     */
     public function update(object $object): void
     {
     }
 
+    /**
+     * @phpstan-throws void
+     */
     public function delete(object $object): void
     {
     }
@@ -59,6 +68,9 @@ final class ModelManager implements ModelManagerInterface, LockInterface
         return $this->repository->byId((string) $id);
     }
 
+    /**
+     * @phpstan-throws void
+     */
     public function batchDelete(string $class, ProxyQueryInterface $query): void
     {
     }
@@ -119,6 +131,9 @@ final class ModelManager implements ModelManagerInterface, LockInterface
         return null;
     }
 
+    /**
+     * @phpstan-throws void
+     */
     public function lock(object $object, ?int $expectedVersion): void
     {
     }
