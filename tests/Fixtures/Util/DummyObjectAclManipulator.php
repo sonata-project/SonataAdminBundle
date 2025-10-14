@@ -20,6 +20,9 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 
 final class DummyObjectAclManipulator extends ObjectAclManipulator
 {
+    /**
+     * @phpstan-throws void
+     */
     public function batchConfigureAcls(OutputInterface $output, AdminInterface $admin, ?UserSecurityIdentity $securityIdentity = null): void
     {
     }

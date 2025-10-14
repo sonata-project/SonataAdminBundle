@@ -23,6 +23,9 @@ final class CustomModelManagerThrowableMessageController extends CRUDController
 {
     public const ERROR_MESSAGE = 'message from model manager throwable';
 
+    /**
+     * @phpstan-throws void
+     */
     protected function handleModelManagerThrowable(ModelManagerThrowable $exception): string
     {
         return self::ERROR_MESSAGE;
