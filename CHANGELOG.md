@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.39.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.38.2...4.39.0) - 2025-10-21
+### Added
+- [[#8312](https://github.com/sonata-project/SonataAdminBundle/pull/8312)] Added `sonata_admin.php` routing config ([@willemverspyck](https://github.com/willemverspyck))
+
+### Deprecated
+- [[#8312](https://github.com/sonata-project/SonataAdminBundle/pull/8312)] Importing `sonata_admin.xml` is deprecated ([@willemverspyck](https://github.com/willemverspyck))
+
+### Fixed
+- [[#8341](https://github.com/sonata-project/SonataAdminBundle/pull/8341)] Stop using internal/deprecated method `Request::get()` ([@VincentLanglet](https://github.com/VincentLanglet))
+
 ## [4.38.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.38.1...4.38.2) - 2025-09-10
 ### Fixed
 - [[#8334](https://github.com/sonata-project/SonataAdminBundle/pull/8334)] * ImmutableArrayType field helper message must not displayed twice ([@sad270](https://github.com/sad270))
