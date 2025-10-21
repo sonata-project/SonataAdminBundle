@@ -23,7 +23,7 @@ use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Sonata\AdminBundle\Twig\SonataAdminRuntime;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\Routing\Loader\XmlFileLoader;
+use Symfony\Component\Routing\Loader\PhpFileLoader;
 use Twig\Environment;
 use Twig\Extra\String\StringExtension;
 use Twig\Loader\FilesystemLoader;
@@ -81,11 +81,11 @@ final class SonataAdminExtensionTest extends TestCase
         $this->environment->addExtension(new FakeTemplateRegistryExtension());
 
         // routing extension
-        $xmlFileLoader = new XmlFileLoader(new FileLocator([\sprintf('%s/../../../src/Resources/config/routing', __DIR__)]));
-        $routeCollection = $xmlFileLoader->load('sonata_admin.xml');
+        $phpFileLoader = new PhpFileLoader(new FileLocator([\sprintf('%s/../../../src/Resources/config/routing', __DIR__)]));
+        $routeCollection = $phpFileLoader->load('sonata_admin.php');
 
-        $xmlFileLoader = new XmlFileLoader(new FileLocator([\sprintf('%s/../../Fixtures/Resources/config/routing', __DIR__)]));
-        $testRouteCollection = $xmlFileLoader->load('routing.xml');
+        $phpFileLoader = new PhpFileLoader(new FileLocator([\sprintf('%s/../../Fixtures/Resources/config/routing', __DIR__)]));
+        $testRouteCollection = $phpFileLoader->load('routing.php');
 
         $routeCollection->addCollection($testRouteCollection);
         $this->environment->addExtension(new StringExtension());

@@ -35,7 +35,7 @@ use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Generator\UrlGenerator;
-use Symfony\Component\Routing\Loader\XmlFileLoader;
+use Symfony\Component\Routing\Loader\PhpFileLoader;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
@@ -2192,16 +2192,16 @@ final class RenderElementExtensionTest extends TestCase
 
     private function registerRoutingExtension(): void
     {
-        $xmlFileLoader = new XmlFileLoader(new FileLocator([
+        $phpFileLoader = new PhpFileLoader(new FileLocator([
             \sprintf('%s/../../../src/Resources/config/routing', __DIR__),
         ]));
-        $routeCollection = $xmlFileLoader->load('sonata_admin.xml');
+        $routeCollection = $phpFileLoader->load('sonata_admin.php');
 
-        $xmlFileLoader = new XmlFileLoader(new FileLocator([
+        $phpFileLoader = new PhpFileLoader(new FileLocator([
             \sprintf('%s/../../Fixtures/Resources/config/routing', __DIR__),
         ]));
 
-        $testRouteCollection = $xmlFileLoader->load('routing.xml');
+        $testRouteCollection = $phpFileLoader->load('routing.php');
 
         $routeCollection->addCollection($testRouteCollection);
         $requestContext = new RequestContext();
