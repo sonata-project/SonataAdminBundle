@@ -11,20 +11,19 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
-use Symfony\Bundle\FrameworkBundle\Controller\RedirectController;
 
 return static function (RoutingConfigurator $routes) {
-    foreach (debug_backtrace(\DEBUG_BACKTRACE_PROVIDE_OBJECT) as $trace) {
-        if (isset($trace['object']) && $trace['object'] instanceof XmlFileLoader && 'doImport' === $trace['function']) {
-            if (__DIR__ === dirname(realpath($trace['args'][3]))) {
+    foreach (debug_backtrace() as $trace) {
+        if (isset($trace['object']) && $trace['object'] instanceof XmlFileLoader && 'doImport' === $trace['function'] && isset($trace['args'])) {
+            $realpath = realpath($trace['args'][3]);
+
+            if (false !== $realpath && __DIR__ === dirname($realpath)) {
                 @trigger_error(
-                    sprintf(
-                        'The "sonata_admin.xml" routing configuration is deprecated since sonata-project/admin-bundle 4.37'
-                        .' and will throw an error in 5.0. Import "sonata_admin.php" instead.',
-                        __METHOD__
-                    ),
+                    'The "sonata_admin.xml" routing configuration is deprecated since sonata-project/admin-bundle 4.83'
+                    .' and will throw an error in 5.0. Import "sonata_admin.php" instead.',
                     \E_USER_DEPRECATED
                 );
 
