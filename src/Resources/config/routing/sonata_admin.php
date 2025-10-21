@@ -22,7 +22,7 @@ return static function (RoutingConfigurator $routes) {
 
             if (false !== $realpath && __DIR__ === dirname($realpath)) {
                 @trigger_error(
-                    'The "sonata_admin.xml" routing configuration is deprecated since sonata-project/admin-bundle 4.83'
+                    'The "sonata_admin.xml" routing configuration is deprecated since sonata-project/admin-bundle 4.39'
                     .' and will throw an error in 5.0. Import "sonata_admin.php" instead.',
                     \E_USER_DEPRECATED
                 );
