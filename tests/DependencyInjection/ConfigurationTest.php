@@ -248,6 +248,81 @@ final class ConfigurationTest extends TestCase
         static::assertSame([], $config['assets']['remove_javascripts']);
     }
 
+    public function testNormalizationForAssetNodes(): void
+    {
+        $config = $this->process([[
+            'assets' => [
+                'extra_stylesheets' => [
+                    'foo.css',
+                    ['path' => 'bar.css', 'package_name' => 'pkg'],
+                    ['path' => 'baz.css', 'package_name' => null],
+                ],
+                'extra_javascripts' => [
+                    'foo.js',
+                    ['path' => 'bar.js', 'package_name' => 'pkg'],
+                    ['path' => 'baz.js', 'package_name' => null],
+                ],
+            ],
+        ]]);
+
+        static::assertSame([
+            ['path' => 'foo.css', 'package_name' => 'sonata_admin'],
+            ['path' => 'bar.css', 'package_name' => 'pkg'],
+            ['path' => 'baz.css', 'package_name' => null],
+        ], $config['assets']['extra_stylesheets']);
+
+        static::assertSame([
+            ['path' => 'foo.js', 'package_name' => 'sonata_admin'],
+            ['path' => 'bar.js', 'package_name' => 'pkg'],
+            ['path' => 'baz.js', 'package_name' => null],
+        ], $config['assets']['extra_javascripts']);
+    }
+
+    public function testAssetWithWrongType(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid "stylesheets" item type. String or associative array are allowed.');
+
+        $this->process([[
+            'assets' => [
+                'stylesheets' => [
+                    'foo.css',
+                    null,
+                ],
+            ],
+        ]]);
+    }
+
+    public function testAssetWithNullPath(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "path" key of the "extra_stylesheets" item can not be null.');
+
+        $this->process([[
+            'assets' => [
+                'extra_stylesheets' => [
+                    'foo.css',
+                    ['path' => null, 'package_name' => 'pkg'],
+                    ['path' => 'bar.css', 'package_name' => null],
+                ],
+            ],
+        ]]);
+    }
+
+    public function testAssetWithNoPackageName(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "javascripts" item with array form must contain the "path" and the "package_name" keys.');
+
+        $this->process([[
+            'assets' => [
+                'javascripts' => [
+                    ['path' => 'bar.js'],
+                ],
+            ],
+        ]]);
+    }
+
     public function testDefaultControllerIsCRUDController(): void
     {
         $config = $this->process([]);

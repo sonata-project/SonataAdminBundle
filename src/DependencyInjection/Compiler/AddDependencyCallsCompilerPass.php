@@ -202,7 +202,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     'priority' => $attributes['priority'] ?? 0,
                 ];
 
-                if (isset($groupDefaults[$resolvedGroupName]['on_top']) && true === $groupDefaults[$resolvedGroupName]['on_top']
+                if (true === $groupDefaults[$resolvedGroupName]['on_top']
                     || true === $onTop && (\count($groupDefaults[$resolvedGroupName]['items']) > 1)) {
                     throw new \RuntimeException('You can\'t use "on_top" option with multiple same name groups.');
                 }

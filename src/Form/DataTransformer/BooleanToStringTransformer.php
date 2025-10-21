@@ -32,6 +32,8 @@ final class BooleanToStringTransformer implements DataTransformerInterface
 
     /**
      * @param bool|null $value
+     *
+     * @phpstan-throws void
      */
     public function transform($value): ?string
     {

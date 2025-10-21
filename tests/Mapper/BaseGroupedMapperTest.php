@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Mapper;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -249,7 +250,7 @@ final class BaseGroupedMapperTest extends TestCase
     /**
      * @phpstan-return iterable<array{string, string, string|null, string}>
      */
-    public function provideLabelCases(): iterable
+    public static function provideLabelCases(): iterable
     {
         yield 'nominal use case not translated' => ['label_default', 'fooGroup1', null, 'label_foogroup1'];
         yield 'nominal use case translated' => ['label_default', 'fooGroup1', null, 'label_foogroup1'];
@@ -257,9 +258,7 @@ final class BaseGroupedMapperTest extends TestCase
         yield 'custom label translated' => ['label_default', 'fooGroup1', 'custom_label', 'custom_label'];
     }
 
-    /**
-     * @dataProvider provideLabelCases
-     */
+    #[DataProvider('provideLabelCases')]
     public function testLabel(string $translated, string $name, ?string $label, string $expectedLabel): void
     {
         $options = [];

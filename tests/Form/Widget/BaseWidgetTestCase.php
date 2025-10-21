@@ -29,7 +29,7 @@ use Twig\Environment;
  * filter_admin_fields.html.twig. Template to use is defined by $this->type variable, that needs to be overridden in
  * child classes.
  */
-abstract class BaseWidgetTest extends AbstractWidgetTestCase
+abstract class BaseWidgetTestCase extends AbstractWidgetTestCase
 {
     /**
      * Current template type, form or filter.

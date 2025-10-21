@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\Pager;
@@ -41,9 +42,7 @@ final class PagerTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider provideGetMaxPerPage1Cases
-     */
+    #[DataProvider('provideGetMaxPerPage1Cases')]
     public function testGetMaxPerPage1(int $expectedMaxPerPage, int $expectedPage, int $maxPerPage, ?int $page): void
     {
         static::assertSame(10, $this->pager->getMaxPerPage());
@@ -62,7 +61,7 @@ final class PagerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{int, int, int, int|null}>
      */
-    public function provideGetMaxPerPage1Cases(): iterable
+    public static function provideGetMaxPerPage1Cases(): iterable
     {
         yield [123, 1, 123, 1];
         yield [123, 321, 123, 321];
@@ -229,7 +228,6 @@ final class PagerTest extends TestCase
     {
         $class = new \ReflectionClass($obj);
         $method = $class->getMethod($name);
-        $method->setAccessible(true);
 
         return $method->invokeArgs($obj, $args);
     }

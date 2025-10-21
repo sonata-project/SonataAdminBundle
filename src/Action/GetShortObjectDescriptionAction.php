@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Action;
 
+use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -41,7 +42,7 @@ final class GetShortObjectDescriptionAction
             throw new NotFoundHttpException($e->getMessage());
         }
 
-        $objectId = $request->get('objectId');
+        $objectId = BCHelper::getFromRequest($request, 'objectId');
         if (!\is_string($objectId) && !\is_int($objectId)) {
             throw new BadRequestParamHttpException('objectId', ['string', 'int'], $objectId);
         }
@@ -63,21 +64,21 @@ final class GetShortObjectDescriptionAction
             }
         }
 
-        if ('json' === $request->get('_format')) {
+        if ('json' === BCHelper::getFromRequest($request, '_format')) {
             return new JsonResponse(['result' => [
                 'id' => $admin->id($object),
                 'label' => $admin->toString($object),
             ]]);
         }
 
-        if ('html' === $request->get('_format')) {
+        if ('html' === BCHelper::getFromRequest($request, '_format')) {
             $templateRegistry = $admin->getTemplateRegistry();
 
             return new Response($this->twig->render($templateRegistry->getTemplate('short_object_description'), [
                 'admin' => $admin,
                 'description' => $admin->toString($object),
                 'object' => $object,
-                'link_parameters' => $request->get('linkParameters', []),
+                'link_parameters' => BCHelper::getFromRequest($request, 'linkParameters', []),
             ]));
         }
 

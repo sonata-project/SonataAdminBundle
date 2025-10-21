@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -31,7 +33,6 @@ use Sonata\AdminBundle\Twig\XEditableRuntime;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Component\Config\FileLocator;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Generator\UrlGenerator;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
@@ -48,9 +49,8 @@ use Twig\RuntimeLoader\FactoryRuntimeLoader;
 
 /**
  * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
  */
+#[IgnoreDeprecations]
 final class RenderElementExtensionTest extends TestCase
 {
     private RenderElementExtension $twigExtension;
@@ -101,9 +101,6 @@ final class RenderElementExtensionTest extends TestCase
 
         $this->templateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
         $propertyAccessor = PropertyAccess::createPropertyAccessor();
-
-        $request = $this->createMock(Request::class);
-        $request->method('get')->with('_sonata_admin')->willReturn('sonata_admin_foo_service');
 
         $loader = new StubFilesystemLoader([
             __DIR__.'/../../../src/Resources/views/CRUD',
@@ -199,10 +196,9 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider provideRenderListElementCases
-     *
      * @psalm-suppress DeprecatedMethod
      */
+    #[DataProvider('provideRenderListElementCases')]
     public function testRenderListElement(string $expected, string $type, mixed $value, array $options): void
     {
         $this->admin
@@ -237,8 +233,8 @@ final class RenderElementExtensionTest extends TestCase
             ->willReturnCallback(static fn (): ?string => TemplateRegistryInterface::LIST_TEMPLATES[$type] ?? null);
 
         static::assertSame(
-            $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace($this->twigExtension->renderListElement(
+            static::removeExtraWhitespace($expected),
+            static::removeExtraWhitespace($this->twigExtension->renderListElement(
                 $this->environment,
                 $this->object,
                 $this->fieldDescription,
@@ -259,8 +255,8 @@ final class RenderElementExtensionTest extends TestCase
             ->willReturn('@SonataAdmin/CRUD/list_string.html.twig');
 
         static::assertSame(
-            $this->removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> Extra value </td>'),
-            $this->removeExtraWhitespace($this->twigExtension->renderListElement(
+            static::removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> Extra value </td>'),
+            static::removeExtraWhitespace($this->twigExtension->renderListElement(
                 $this->environment,
                 [$this->object, 'fd_name' => 'Extra value'],
                 $this->fieldDescription
@@ -295,7 +291,7 @@ final class RenderElementExtensionTest extends TestCase
         $this->environment->enableDebug();
 
         static::assertSame(
-            $this->removeExtraWhitespace(
+            static::removeExtraWhitespace(
                 <<<'EOT'
                     <!-- START
                         fieldName: fd_name
@@ -306,7 +302,7 @@ final class RenderElementExtensionTest extends TestCase
                     <!-- END - fieldName: fd_name -->
                     EOT
             ),
-            $this->removeExtraWhitespace(
+            static::removeExtraWhitespace(
                 $this->twigExtension->renderListElement($this->environment, $this->object, $this->fieldDescription, $parameters)
             )
         );
@@ -315,10 +311,9 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider provideRenderViewElementCases
-     *
      * @psalm-suppress DeprecatedMethod
      */
+    #[DataProvider('provideRenderViewElementCases')]
     public function testRenderViewElement(string $expected, string $type, mixed $value, array $options): void
     {
         $this->fieldDescription
@@ -342,8 +337,8 @@ final class RenderElementExtensionTest extends TestCase
             ->willReturnCallback(static fn (): ?string => TemplateRegistryInterface::SHOW_TEMPLATES[$type] ?? null);
 
         static::assertSame(
-            $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace(
+            static::removeExtraWhitespace($expected),
+            static::removeExtraWhitespace(
                 $this->twigExtension->renderViewElement(
                     $this->environment,
                     $this->fieldDescription,
@@ -356,10 +351,9 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @param array<string, mixed> $options
      *
-     * @dataProvider provideRenderViewElementCompareCases
-     *
      * @psalm-suppress DeprecatedMethod
      */
+    #[DataProvider('provideRenderViewElementCompareCases')]
     public function testRenderViewElementCompare(
         string $expected,
         string $type,
@@ -402,8 +396,8 @@ final class RenderElementExtensionTest extends TestCase
         }
 
         static::assertSame(
-            $this->removeExtraWhitespace($expected),
-            $this->removeExtraWhitespace(
+            static::removeExtraWhitespace($expected),
+            static::removeExtraWhitespace(
                 $this->twigExtension->renderViewElementCompare(
                     $this->environment,
                     $this->fieldDescription,
@@ -537,7 +531,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @phpstan-return iterable<array{string, string, mixed, array<string, mixed>}>
      */
-    public function provideRenderListElementCases(): iterable
+    public static function provideRenderListElementCases(): iterable
     {
         $elements = [
             [
@@ -785,21 +779,21 @@ final class RenderElementExtensionTest extends TestCase
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
-                    <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme', 'body' => 'Message Body']).'">admin@admin.com</a>  </td>',
+                    <a href="mailto:admin@admin.com?'.static::buildTwigLikeUrl(['subject' => 'Main Theme', 'body' => 'Message Body']).'">admin@admin.com</a>  </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['subject' => 'Main Theme', 'body' => 'Message Body'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
-                    <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme']).'">admin@admin.com</a>  </td>',
+                    <a href="mailto:admin@admin.com?'.static::buildTwigLikeUrl(['subject' => 'Main Theme']).'">admin@admin.com</a>  </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['subject' => 'Main Theme'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
-                    <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['body' => 'Message Body']).'">admin@admin.com</a>  </td>',
+                    <a href="mailto:admin@admin.com?'.static::buildTwigLikeUrl(['body' => 'Message Body']).'">admin@admin.com</a>  </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['body' => 'Message Body'],
@@ -875,8 +869,7 @@ final class RenderElementExtensionTest extends TestCase
                             <span class="label label-success">yes</span>
                         </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 true,
                 ['editable' => true],
@@ -895,8 +888,7 @@ final class RenderElementExtensionTest extends TestCase
                         >
                         <span class="label label-danger">no</span> </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 false,
                 ['editable' => true],
@@ -914,8 +906,7 @@ final class RenderElementExtensionTest extends TestCase
                             data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]" >
                             <span class="label label-danger">no</span> </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 null,
                 ['editable' => true],
@@ -1084,8 +1075,7 @@ final class RenderElementExtensionTest extends TestCase
                             Status1
                         </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'Status1',
                 ['editable' => true],
@@ -1103,8 +1093,7 @@ final class RenderElementExtensionTest extends TestCase
                             data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
                             Alias1 </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'Status1',
                 [
@@ -1130,8 +1119,7 @@ final class RenderElementExtensionTest extends TestCase
 
                         </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 null,
                 [
@@ -1156,8 +1144,7 @@ final class RenderElementExtensionTest extends TestCase
                             NoValidKeyInChoices
                         </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'NoValidKeyInChoices',
                 [
@@ -1183,8 +1170,7 @@ final class RenderElementExtensionTest extends TestCase
                              Delete
                         </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'Foo',
                 [
@@ -1469,8 +1455,7 @@ final class RenderElementExtensionTest extends TestCase
                                     data-action="click->sonata-readmore#toggle"></button>
                         </div>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_STRING,
                 'A very long string',
                 [
@@ -1492,8 +1477,7 @@ final class RenderElementExtensionTest extends TestCase
                                     data-action="click->sonata-readmore#toggle"></button>
                         </div>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_STRING,
                 'A very long string',
                 [
@@ -1518,8 +1502,7 @@ final class RenderElementExtensionTest extends TestCase
                              Delete, Alias2
                         </span>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_CHOICE,
                 [
                     'Status1',
@@ -1614,7 +1597,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @phpstan-return iterable<array{string, string, mixed, array<string, mixed>}>
      */
-    public function provideRenderViewElementCases(): iterable
+    public static function provideRenderViewElementCases(): iterable
     {
         $elements = [
             ['<th>Data</th> <td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false]],
@@ -1976,19 +1959,19 @@ final class RenderElementExtensionTest extends TestCase
                 [],
             ],
             [
-                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme', 'body' => 'Message Body']).'">admin@admin.com</a></td>',
+                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.static::buildTwigLikeUrl(['subject' => 'Main Theme', 'body' => 'Message Body']).'">admin@admin.com</a></td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['subject' => 'Main Theme', 'body' => 'Message Body'],
             ],
             [
-                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['subject' => 'Main Theme']).'">admin@admin.com</a></td>',
+                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.static::buildTwigLikeUrl(['subject' => 'Main Theme']).'">admin@admin.com</a></td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['subject' => 'Main Theme'],
             ],
             [
-                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.$this->buildTwigLikeUrl(['body' => 'Message Body']).'">admin@admin.com</a></td>',
+                '<th>Data</th> <td> <a href="mailto:admin@admin.com?'.static::buildTwigLikeUrl(['body' => 'Message Body']).'">admin@admin.com</a></td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['body' => 'Message Body'],
@@ -2086,8 +2069,7 @@ final class RenderElementExtensionTest extends TestCase
                                     data-action="click->sonata-readmore#toggle"></button>
                         </div>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_STRING,
                 ' A very long string ',
                 [
@@ -2110,8 +2092,7 @@ final class RenderElementExtensionTest extends TestCase
                                     data-action="click->sonata-readmore#toggle"></button>
                         </div>
                     </td>
-                    EOT
-                ,
+                    EOT,
                 FieldDescriptionInterface::TYPE_STRING,
                 ' A very long string ',
                 [
@@ -2138,7 +2119,7 @@ final class RenderElementExtensionTest extends TestCase
     /**
      * @phpstan-return iterable<array{string, string, mixed, array<string, mixed>, string|null}>
      */
-    public function provideRenderViewElementCompareCases(): iterable
+    public static function provideRenderViewElementCompareCases(): iterable
     {
         yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];
         yield ['<th>Data</th> <td>Example</td><td>Example</td>', FieldDescriptionInterface::TYPE_STRING, 'Example', ['safe' => false], null];
@@ -2184,12 +2165,12 @@ final class RenderElementExtensionTest extends TestCase
      *
      * @param array<string, string> $url
      */
-    private function buildTwigLikeUrl(array $url): string
+    private static function buildTwigLikeUrl(array $url): string
     {
         return htmlspecialchars(http_build_query($url, '', '&', \PHP_QUERY_RFC3986));
     }
 
-    private function removeExtraWhitespace(string $string): string
+    private static function removeExtraWhitespace(string $string): string
     {
         return trim(preg_replace('/\s+/', ' ', preg_replace('/>\s+</', '><', $string) ?? '') ?? '');
     }

@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Exception\AbstractClassException;
 use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
@@ -49,7 +50,7 @@ final class RetrieveAutocompleteItemsAction
             throw new NotFoundHttpException($e->getMessage());
         }
 
-        $context = $request->get('_context', '');
+        $context = BCHelper::getFromRequest($request, '_context', '');
         if ('filter' === $context) {
             $admin->checkAccess('list');
         } elseif (!$admin->hasAccess('create') && !$admin->hasAccess('edit')) {
@@ -63,7 +64,7 @@ final class RetrieveAutocompleteItemsAction
             // in case the subject is an abstract entity, we continue because the admin subject is non-mandatory here
         }
 
-        $field = $request->get('field');
+        $field = BCHelper::getFromRequest($request, 'field');
         if (!\is_string($field)) {
             throw new BadRequestParamHttpException('field', 'string', $field);
         }
@@ -103,7 +104,7 @@ final class RetrieveAutocompleteItemsAction
             $responseItemCallback = $formAutocompleteConfig->getAttribute('response_item_callback');
         }
 
-        $searchText = $request->get('q', '');
+        $searchText = BCHelper::getFromRequest($request, 'q', '');
         if (!\is_string($searchText)) {
             throw new BadRequestParamHttpException('q', 'string', $searchText);
         }
@@ -204,7 +205,7 @@ final class RetrieveAutocompleteItemsAction
             }
 
             $item = [
-                'id' => $admin->id($model),
+                'id' => $targetAdmin->id($model),
                 'label' => $label,
             ];
 

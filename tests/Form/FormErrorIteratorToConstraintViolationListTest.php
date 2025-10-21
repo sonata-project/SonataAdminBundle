@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\FormErrorIteratorToConstraintViolationList;
 use Symfony\Component\Form\FormError;
@@ -28,9 +29,8 @@ final class FormErrorIteratorToConstraintViolationListTest extends TestCase
 {
     /**
      * @param FormErrorIterator<FormError> $formErrors
-     *
-     * @dataProvider provideTransformCases
      */
+    #[DataProvider('provideTransformCases')]
     public function testTransform(int $expectedCount, FormErrorIterator $formErrors): void
     {
         $violationList = FormErrorIteratorToConstraintViolationList::transform($formErrors);
@@ -43,7 +43,7 @@ final class FormErrorIteratorToConstraintViolationListTest extends TestCase
      * @phpstan-return iterable<array{int, FormErrorIterator<FormError>}>
      * @psalm-return iterable<array{int, FormErrorIterator<FormError|FormErrorIterator>}>
      */
-    public function provideTransformCases(): iterable
+    public static function provideTransformCases(): iterable
     {
         $form = static::createStub(FormInterface::class);
         $form->method('getName')->willReturn('name');

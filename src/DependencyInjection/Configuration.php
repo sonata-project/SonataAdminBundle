@@ -55,14 +55,18 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *     use_select2: bool,
  *     use_stickyforms: bool,
  * }
+ * @phpstan-type SonataAdminAsset = array{
+ *     path: string,
+ *     package_name: string|null,
+ * }
  * @phpstan-type SonataAdminConfiguration = array{
  *     assets: array{
- *         extra_javascripts: list<string>,
- *         extra_stylesheets: list<string>,
- *         javascripts: list<string>,
- *         remove_javascripts: list<string>,
- *         remove_stylesheets: list<string>,
- *         stylesheets: list<string>,
+ *         extra_javascripts: list<SonataAdminAsset>,
+ *         extra_stylesheets: list<SonataAdminAsset>,
+ *         javascripts: list<SonataAdminAsset>,
+ *         remove_javascripts: list<SonataAdminAsset>,
+ *         remove_stylesheets: list<SonataAdminAsset>,
+ *         stylesheets: list<SonataAdminAsset>,
  *     },
  *     breadcrumbs: array{
  *         child_admin_route: string,
@@ -172,6 +176,8 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 final class Configuration implements ConfigurationInterface
 {
+    private const DEFAULT_PACKAGE = 'sonata_admin';
+
     /**
      * @psalm-suppress UndefinedInterfaceMethod
      *
@@ -615,38 +621,86 @@ final class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->arrayNode('stylesheets')
-                            ->defaultValue([
+                            ->beforeNormalization()
+                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'stylesheets'))
+                            ->end()
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode('path')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
+                                ->end()
+                            ->end()
+                            ->defaultValue(self::normalizeDefaultAssets([
                                 'bundles/sonataadmin/app.css',
                                 'bundles/sonataform/app.css',
-                            ])
-                            ->prototype('scalar')->end()
+                            ]))
                         ->end()
                         ->arrayNode('extra_stylesheets')
                             ->info('stylesheets to add to the page')
+                            ->beforeNormalization()
+                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'extra_stylesheets'))
+                            ->end()
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode('path')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
+                                ->end()
+                            ->end()
                             ->defaultValue([])
-                            ->prototype('scalar')->end()
                         ->end()
                         ->arrayNode('remove_stylesheets')
                             ->info('stylesheets to remove from the page')
+                            ->beforeNormalization()
+                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'extra_javascripts'))
+                            ->end()
                             ->defaultValue([])
-                            ->prototype('scalar')->end()
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode('path')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
+                                ->end()
+                            ->end()
                         ->end()
                         ->arrayNode('javascripts')
-                            ->defaultValue([
+                            ->beforeNormalization()
+                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'javascripts'))
+                            ->end()
+                            ->defaultValue(self::normalizeDefaultAssets([
                                 'bundles/sonataadmin/app.js',
                                 'bundles/sonataform/app.js',
-                            ])
-                            ->prototype('scalar')->end()
+                            ]))
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode('path')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
+                                ->end()
+                            ->end()
                         ->end()
                         ->arrayNode('extra_javascripts')
                             ->info('javascripts to add to the page')
+                            ->beforeNormalization()
+                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'extra_javascripts'))
+                            ->end()
                             ->defaultValue([])
-                            ->prototype('scalar')->end()
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode('path')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
+                                ->end()
+                            ->end()
                         ->end()
                         ->arrayNode('remove_javascripts')
                             ->info('javascripts to remove from the page')
+                            ->beforeNormalization()
+                                ->always(static fn (array $value) => self::normalizeAssetList($value, 'extra_javascripts'))
+                            ->end()
                             ->defaultValue([])
-                            ->prototype('scalar')->end()
+                            ->arrayPrototype()
+                                ->children()
+                                    ->scalarNode('path')->isRequired()->cannotBeEmpty()->end()
+                                    ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
+                                ->end()
+                            ->end()
                         ->end()
                     ->end()
                 ->end()
@@ -711,5 +765,76 @@ final class Configuration implements ConfigurationInterface
         ->end();
 
         return $treeBuilder;
+    }
+
+    /**
+     * Normalizes an asset list node to an array of items with shape:
+     *   [ ['path' => string, 'package_name' => string], ... ]
+     * Supports input elements as string or associative array {path: ..., package_name: ...}.
+     *
+     * @param array<mixed> $value
+     *
+     * @return list<SonataAdminAsset>
+     */
+    private static function normalizeAssetList(mixed $value, string $nodeName): array
+    {
+        if (null === $value) {
+            return [];
+        }
+
+        if (!\is_array($value)) {
+            throw new \InvalidArgumentException(\sprintf('The "%s" node must be an array.', $nodeName));
+        }
+
+        return array_values(array_map(static fn (mixed $item) => self::normalizeAssetItem($item, $nodeName), $value));
+    }
+
+    /**
+     * @return SonataAdminAsset
+     */
+    private static function normalizeAssetItem(mixed $item, string $nodeName): array
+    {
+        // 1) Simple string form
+        if (\is_string($item)) {
+            return [
+                'path' => $item,
+                'package_name' => self::DEFAULT_PACKAGE,
+            ];
+        }
+
+        // 2) Associative form: {path: ..., package_name: ...}
+        if (\is_array($item)) {
+            if (!\array_key_exists('path', $item) || !\array_key_exists('package_name', $item)) {
+                throw new \InvalidArgumentException(\sprintf('The "%s" item with array form must contain the "path" and the "package_name" keys.', $nodeName));
+            }
+
+            if (null === $item['path']) {
+                throw new \InvalidArgumentException(\sprintf('The "path" key of the "%s" item can not be null.', $nodeName));
+            }
+
+            return [
+                'path' => (string) $item['path'],
+                'package_name' => null === $item['package_name'] ? null : (string) $item['package_name'],
+            ];
+        }
+
+        throw new \InvalidArgumentException(\sprintf('Invalid "%s" item type. String or associative array are allowed.', $nodeName));
+    }
+
+    /**
+     * Helper to build normalized defaults from a list of asset strings.
+     *
+     * @param array<int, string> $assets
+     *
+     * @return list<SonataAdminAsset>
+     */
+    private static function normalizeDefaultAssets(array $assets): array
+    {
+        return array_values(
+            array_map(static fn (string $asset) => [
+                'path' => $asset,
+                'package_name' => self::DEFAULT_PACKAGE,
+            ], $assets)
+        );
     }
 }

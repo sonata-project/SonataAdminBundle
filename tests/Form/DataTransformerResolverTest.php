@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
@@ -57,7 +58,7 @@ final class DataTransformerResolverTest extends TestCase
     /**
      * @phpstan-return iterable<array{string}>
      */
-    public function provideFieldTypes(): iterable
+    public static function provideFieldTypes(): iterable
     {
         yield ['foo'];
         // override predefined transformers
@@ -66,9 +67,7 @@ final class DataTransformerResolverTest extends TestCase
         yield ['choice'];
     }
 
-    /**
-     * @dataProvider provideFieldTypes
-     */
+    #[DataProvider('provideFieldTypes')]
     public function testResolveCustomDataTransformer(string $fieldType): void
     {
         $customDataTransformer = new CallbackTransformer(
@@ -87,7 +86,7 @@ final class DataTransformerResolverTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{mixed, \DateTimeZone}>
      */
-    public function provideResolveDateDataTransformerCases(): iterable
+    public static function provideResolveDateDataTransformerCases(): iterable
     {
         $default = new \DateTimeZone(date_default_timezone_get());
         $custom = new \DateTimeZone('Europe/Rome');
@@ -99,9 +98,7 @@ final class DataTransformerResolverTest extends TestCase
         yield 'custom timezone by object' => [$custom, $custom];
     }
 
-    /**
-     * @dataProvider provideResolveDateDataTransformerCases
-     */
+    #[DataProvider('provideResolveDateDataTransformerCases')]
     public function testResolveDateDataTransformer(mixed $timezone, \DateTimeZone $expectedTimezone): void
     {
         $this->fieldDescription->method('getOption')->willReturnMap([
@@ -191,9 +188,7 @@ final class DataTransformerResolverTest extends TestCase
         static::assertSame($object, $dataTransformer->reverseTransform($newId));
     }
 
-    /**
-     * @dataProvider provideFieldTypes
-     */
+    #[DataProvider('provideFieldTypes')]
     public function testCustomGlobalTransformers(string $fieldType): void
     {
         $customDataTransformer = new CallbackTransformer(
@@ -213,9 +208,7 @@ final class DataTransformerResolverTest extends TestCase
         static::assertSame($customDataTransformer, $dataTransformer);
     }
 
-    /**
-     * @dataProvider provideFieldTypes
-     */
+    #[DataProvider('provideFieldTypes')]
     public function testAddCustomGlobalTransformer(string $fieldType): void
     {
         $customDataTransformer = new CallbackTransformer(

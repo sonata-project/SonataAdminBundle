@@ -31,7 +31,7 @@ You can enable it in your ``sonata_admin`` configuration:
 You must also configure each entity that you want to support by adding a
 field called ``$version`` on which the Doctrine ``Version`` feature is activated.
 
-Using Annotations::
+Using Attributes::
 
     // src/Entity/Car.php
 

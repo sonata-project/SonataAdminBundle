@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Admin\Extension;
 
 use Sonata\AdminBundle\Admin\AbstractAdminExtension;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Model\LockInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -66,7 +67,7 @@ final class LockExtension extends AbstractAdminExtension
             return;
         }
 
-        $data = $admin->getRequest()->get($admin->getUniqId());
+        $data = BCHelper::getFromRequest($admin->getRequest(), $admin->getUniqId());
         if (!\is_array($data)) {
             return;
         }

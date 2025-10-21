@@ -485,7 +485,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
                 $parentAssociationMapping = $this->getParentAssociationMapping();
                 if (null !== $parentAssociationMapping) {
                     $name = str_replace('.', '__', $parentAssociationMapping);
-                    $parameters[$name] = ['value' => $this->getRequest()->get($this->getParent()->getIdParameter())];
+                    $parameters[$name] = ['value' => BCHelper::getFromRequest($this->getRequest(), $this->getParent()->getIdParameter())];
                 }
             }
         }
@@ -734,7 +734,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         }
 
         $request = $this->getRequest();
-        $route = $request->get('_route');
+        $route = BCHelper::getFromRequest($request, '_route');
 
         if (null !== $adminCode) {
             $pool = $this->getConfigurationPool();
@@ -1078,7 +1078,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     final public function hasSubject(): bool
     {
         if (null === $this->subject && $this->hasRequest() && !$this->hasParentFieldDescription()) {
-            $id = $this->getRequest()->get($this->getIdParameter());
+            $id = BCHelper::getFromRequest($this->getRequest(), $this->getIdParameter());
 
             if (null !== $id) {
                 $this->subject = $this->getObject($id);
@@ -2276,7 +2276,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
             if (null !== $parentAssociationMapping) {
                 $parentAdmin = $this->getParent();
-                $parentObject = $parentAdmin->getObject($this->getRequest()->get($parentAdmin->getIdParameter()));
+                $parentObject = $parentAdmin->getObject(BCHelper::getFromRequest($this->getRequest(), $parentAdmin->getIdParameter()));
 
                 if (null !== $parentObject) {
                     $propertyAccessor = PropertyAccess::createPropertyAccessor();
@@ -2301,7 +2301,7 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         if ($this->hasParentFieldDescription()) {
             $parentAdmin = $this->getParentFieldDescription()->getAdmin();
-            $parentObject = $parentAdmin->getObject($this->getRequest()->get($parentAdmin->getIdParameter()));
+            $parentObject = $parentAdmin->getObject(BCHelper::getFromRequest($this->getRequest(), $parentAdmin->getIdParameter()));
 
             if (null !== $parentObject) {
                 ObjectManipulator::setObject($object, $parentObject, $this->getParentFieldDescription());

@@ -16,6 +16,8 @@ namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
+use PHPUnit\Framework\Attributes\CoversMethod;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminExtensionInterface;
@@ -43,6 +45,9 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
+#[CoversMethod(SonataAdminExtension::class, 'load')]
+#[CoversMethod(ExtensionCompilerPass::class, 'flattenExtensionConfiguration')]
+#[CoversMethod(ExtensionCompilerPass::class, 'process')]
 final class ExtensionCompilerPassTest extends TestCase
 {
     private SonataAdminExtension $extension;
@@ -64,9 +69,6 @@ final class ExtensionCompilerPassTest extends TestCase
         $this->root = TaggedAdminInterface::ADMIN_TAG;
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\DependencyInjection\SonataAdminExtension::load
-     */
     public function testAdminExtensionLoad(): void
     {
         $this->extension->load([], $container = $this->getContainer());
@@ -77,9 +79,6 @@ final class ExtensionCompilerPassTest extends TestCase
         static::assertSame([], $extensionMap);
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::flattenExtensionConfiguration
-     */
     public function testFlattenEmptyExtensionConfiguration(): void
     {
         $this->extension->load([], $container = $this->getContainer());
@@ -89,8 +88,6 @@ final class ExtensionCompilerPassTest extends TestCase
             ExtensionCompilerPass::class,
             'flattenExtensionConfiguration'
         );
-
-        $method->setAccessible(true);
         $extensionMap = $method->invokeArgs(new ExtensionCompilerPass(), [$extensionMap]);
 
         static::assertIsArray($extensionMap);
@@ -110,9 +107,6 @@ final class ExtensionCompilerPassTest extends TestCase
         static::assertEmpty($extensionMap['uses']);
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::flattenExtensionConfiguration
-     */
     public function testFlattenExtensionConfiguration(): void
     {
         $config = $this->getConfig();
@@ -123,8 +117,6 @@ final class ExtensionCompilerPassTest extends TestCase
             ExtensionCompilerPass::class,
             'flattenExtensionConfiguration'
         );
-
-        $method->setAccessible(true);
         $extensionMap = $method->invokeArgs(new ExtensionCompilerPass(), [$extensionMap]);
 
         static::assertIsArray($extensionMap);
@@ -182,9 +174,6 @@ final class ExtensionCompilerPassTest extends TestCase
         static::assertArrayHasKey('sonata_extension_post', $extensionMap['uses'][TimestampableTrait::class]);
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
-     */
     public function testProcessWithInvalidExtensionId(): void
     {
         $this->expectException(\InvalidArgumentException::class);
@@ -206,11 +195,7 @@ final class ExtensionCompilerPassTest extends TestCase
         $container->compile();
     }
 
-    /**
-     * @doesNotPerformAssertions
-     *
-     * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
-     */
+    #[DoesNotPerformAssertions]
     public function testProcessWithInvalidAdminId(): void
     {
         $config = [
@@ -232,9 +217,6 @@ final class ExtensionCompilerPassTest extends TestCase
         // nothing should fail the extension just isn't added to the 'sonata_unknown_admin'
     }
 
-    /**
-     * @covers \Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass::process
-     */
     public function testProcess(): void
     {
         $container = $this->getContainer();
@@ -341,9 +323,7 @@ final class ExtensionCompilerPassTest extends TestCase
         static::assertSame($globalExtension, $extensions[3]);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testProcessThrowsExceptionIfTraitsAreNotAvailable(): void
     {
         $config = [

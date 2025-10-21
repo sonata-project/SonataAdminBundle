@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Security\Handler;
 
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -38,17 +39,13 @@ final class NoopSecurityHandlerTest extends TestCase
         static::assertSame([], $this->handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testCreateObjectSecurity(): void
     {
         $this->handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass());
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testDeleteObjectSecurity(): void
     {
         $this->handler->deleteObjectSecurity($this->getSonataAdminObject(), new \stdClass());

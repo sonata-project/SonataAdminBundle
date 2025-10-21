@@ -13,14 +13,13 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Translator;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
 
 final class NativeLabelTranslatorStrategyTest extends TestCase
 {
-    /**
-     * @dataProvider provideLabelCases
-     */
+    #[DataProvider('provideLabelCases')]
     public function testLabel(string $expectedLabel, string $label): void
     {
         $strategy = new NativeLabelTranslatorStrategy();
@@ -31,7 +30,7 @@ final class NativeLabelTranslatorStrategyTest extends TestCase
     /**
      * @phpstan-return iterable<array{string, string}>
      */
-    public function provideLabelCases(): iterable
+    public static function provideLabelCases(): iterable
     {
         yield ['Is Valid', 'isValid'];
         yield ['Is Valid', 'is_Valid'];

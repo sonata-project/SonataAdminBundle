@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\FieldDescription;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Exception\NoValueException;
@@ -189,8 +190,9 @@ final class BaseFieldDescriptionTest extends TestCase
     }
 
     /**
-     * @dataProvider provideGetFieldValueWithMethodCases
+     * @param non-empty-string $method
      */
+    #[DataProvider('provideGetFieldValueWithMethodCases')]
     public function testGetFieldValueWithMethod(string $method): void
     {
         $description = new FieldDescription('name');
@@ -202,9 +204,9 @@ final class BaseFieldDescriptionTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array-key, array{string}>
+     * @phpstan-return iterable<array-key, array{non-empty-string}>
      */
-    public function provideGetFieldValueWithMethodCases(): iterable
+    public static function provideGetFieldValueWithMethodCases(): iterable
     {
         yield ['getFakeFieldValue'];
         yield ['isFakeFieldValue'];
@@ -271,7 +273,6 @@ final class BaseFieldDescriptionTest extends TestCase
     {
         $class = new \ReflectionClass($obj);
         $method = $class->getMethod($name);
-        $method->setAccessible(true);
 
         return $method->invokeArgs($obj, $args);
     }

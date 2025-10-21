@@ -2,6 +2,23 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.38.2](https://github.com/sonata-project/SonataAdminBundle/compare/4.38.1...4.38.2) - 2025-09-10
+### Fixed
+- [[#8334](https://github.com/sonata-project/SonataAdminBundle/pull/8334)] * ImmutableArrayType field helper message must not displayed twice ([@sad270](https://github.com/sad270))
+- [[#8335](https://github.com/sonata-project/SonataAdminBundle/pull/8335)] Error messages displayed twice with form type `sonata_type_native_collection` or `sonata_type_immutable_array` when `error_bubbling` sets to `false` #2761 ([@sad270](https://github.com/sad270))
+
+## [4.38.1](https://github.com/sonata-project/SonataAdminBundle/compare/4.38.0...4.38.1) - 2025-09-05
+### Fixed
+- [[#8329](https://github.com/sonata-project/SonataAdminBundle/pull/8329)] `ImmutableArrayType` field and it subfields help message are not displayed ([@sad270](https://github.com/sad270))
+
+## [4.38.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.37.5...4.38.0) - 2025-08-24
+### Added
+- [[#8316](https://github.com/sonata-project/SonataAdminBundle/pull/8316)] Optional package_name for assets ([@andreybotanic](https://github.com/andreybotanic))
+
+## [4.37.5](https://github.com/sonata-project/SonataAdminBundle/compare/4.37.4...4.37.5) - 2025-08-08
+### Fixed
+- [[#8313](https://github.com/sonata-project/SonataAdminBundle/pull/8313)] ID retrieving in autocomplete results ([@valkars](https://github.com/valkars))
+
 ## [4.37.4](https://github.com/sonata-project/SonataAdminBundle/compare/4.37.3...4.37.4) - 2025-07-03
 ### Fixed
 - [[#8309](https://github.com/sonata-project/SonataAdminBundle/pull/8309)] Allow HTML values in readmore controller ([@onEXHovia](https://github.com/onEXHovia))

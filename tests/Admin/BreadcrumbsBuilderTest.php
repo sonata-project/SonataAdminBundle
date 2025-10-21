@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests\Admin;
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuFactory;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
@@ -84,8 +85,7 @@ final class BreadcrumbsBuilderTest extends TestCase
         ]);
 
         $admin->method('getCurrentChildAdmin')->willReturn($childAdmin);
-        $request = $this->createMock(Request::class);
-        $request->method('get')->with('slug')->willReturn('my-object');
+        $request = new Request(['slug' => 'my-object']);
 
         $admin->method('getIdParameter')->willReturn('slug');
         $admin->method('getRequest')->willReturn($request);
@@ -136,7 +136,7 @@ final class BreadcrumbsBuilderTest extends TestCase
     /**
      * @phpstan-return iterable<array{string}>
      */
-    public function provideBuildBreadcrumbsCases(): iterable
+    public static function provideBuildBreadcrumbsCases(): iterable
     {
         yield ['my_action'];
         yield ['list'];
@@ -144,9 +144,7 @@ final class BreadcrumbsBuilderTest extends TestCase
         yield ['create'];
     }
 
-    /**
-     * @dataProvider provideBuildBreadcrumbsCases
-     */
+    #[DataProvider('provideBuildBreadcrumbsCases')]
     public function testBuildBreadcrumbs(string $action): void
     {
         $subject = new \stdClass();
@@ -224,8 +222,7 @@ final class BreadcrumbsBuilderTest extends TestCase
             $menu->expects(static::never())->method('setUri');
         }
 
-        $request = $this->createMock(Request::class);
-        $request->method('get')->with('slug')->willReturn('my-object');
+        $request = new Request(['slug' => 'my-object']);
 
         $admin->method('getIdParameter')->willReturn('slug');
         $admin->method('getRequest')->willReturn($request);

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Twig\Extension;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -22,7 +23,6 @@ use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
 use Sonata\AdminBundle\Twig\SonataAdminRuntime;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Loader\XmlFileLoader;
 use Twig\Environment;
 use Twig\Extra\String\StringExtension;
@@ -30,9 +30,8 @@ use Twig\Loader\FilesystemLoader;
 
 /**
  * NEXT_MAJOR: Remove this test.
- *
- * @group legacy
  */
+#[IgnoreDeprecations]
 final class SonataAdminExtensionTest extends TestCase
 {
     private SonataAdminExtension $twigExtension;
@@ -64,9 +63,6 @@ final class SonataAdminExtensionTest extends TestCase
         $this->pool = new Pool($this->container, ['sonata_admin_foo_service'], [], [Foo::class => ['sonata_admin_foo_service']]);
 
         $this->twigExtension = new SonataAdminExtension(new SonataAdminRuntime($this->pool));
-
-        $request = $this->createMock(Request::class);
-        $request->method('get')->with('_sonata_admin')->willReturn('sonata_admin_foo_service');
 
         $loader = new FilesystemLoader([
             __DIR__.'/../../../src/Resources/views/CRUD',

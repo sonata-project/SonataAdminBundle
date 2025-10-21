@@ -13,12 +13,20 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Functional\Controller;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 final class CRUDControllerTest extends WebTestCase
 {
+    protected function tearDown(): void
+    {
+        restore_exception_handler();
+
+        parent::tearDown();
+    }
+
     public function testList(): void
     {
         $client = static::createClient();
@@ -44,6 +52,65 @@ final class CRUDControllerTest extends WebTestCase
         static::assertCount(
             1,
             $crawler->filter('.help-block.sonata-ba-field-help:contains("Help me!")')
+        );
+    }
+
+    public function testImmutableArrayErrorMessageIsDisplayOnce(): void
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+        $client->setMaxRedirects(1);
+        $client->request(Request::METHOD_GET, '/admin/tests/app/foo/create', ['with_form_errors' => '1']);
+        $crawler = $client->submitForm('Create', []);
+        file_put_contents('tmp.html', $crawler->html());
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertCount(
+            1,
+            $crawler->filter('.sonata-ba-field li:contains("This field is missing.")')
+        );
+    }
+
+    public function testCollectionErrorMessageIsDisplayOnce(): void
+    {
+        $client = static::createClient();
+        $client->followRedirects();
+        $client->setMaxRedirects(1);
+        $client->request(Request::METHOD_GET, '/admin/tests/app/foo/create', ['with_form_errors' => '1']);
+        $crawler = $client->submitForm('Create', []);
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertCount(
+            1,
+            $crawler->filter('.sonata-ba-field li:contains("This collection should contain 2 elements or more.")')
+        );
+    }
+
+    /**
+     * @see https://github.com/sonata-project/SonataAdminBundle/issues/8328
+     */
+    public function testImmutableArrayHelpAttributeIsDisplayed(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/create');
+
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertCount(
+            1,
+            $crawler->filter('.help-block.sonata-ba-field-help:contains("Elements main field help message")')
+        );
+    }
+
+    /**
+     * @see https://github.com/sonata-project/SonataAdminBundle/issues/8328
+     */
+    public function testImmutableArrayKeysItemHelpAttributeAreDisplayed(): void
+    {
+        $client = static::createClient();
+        $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/foo/create');
+
+        static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        static::assertCount(
+            1,
+            $crawler->filter('.help-block.sonata-ba-field-help:contains("Elements sub field help message")')
         );
     }
 
@@ -89,9 +156,7 @@ final class CRUDControllerTest extends WebTestCase
         );
     }
 
-    /**
-     * @dataProvider provideUrlIsSuccessfulCases
-     */
+    #[DataProvider('provideUrlIsSuccessfulCases')]
     public function testUrlIsSuccessful(string $url): void
     {
         $client = static::createClient();
@@ -126,7 +191,7 @@ final class CRUDControllerTest extends WebTestCase
     /**
      * @phpstan-return iterable<array-key, array{string}>
      */
-    public function provideUrlIsSuccessfulCases(): iterable
+    public static function provideUrlIsSuccessfulCases(): iterable
     {
         yield ['/admin/tests/app/foo/browse'];
         // CustomAdminExtension route

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
@@ -30,9 +31,7 @@ final class ModelToIdTransformerTest extends TestCase
         $this->modelManager = $this->createMock(ModelManagerInterface::class);
     }
 
-    /**
-     * @dataProvider provideReverseTransformCases
-     */
+    #[DataProvider('provideReverseTransformCases')]
     public function testReverseTransform(int|string $value): void
     {
         $className = \stdClass::class;
@@ -50,7 +49,7 @@ final class ModelToIdTransformerTest extends TestCase
     /**
      * @return iterable<array{int|string}>
      */
-    public function provideReverseTransformCases(): iterable
+    public static function provideReverseTransformCases(): iterable
     {
         yield [0];
         yield ['0'];

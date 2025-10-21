@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
@@ -43,9 +44,8 @@ final class ArrayToModelTransformerTest extends TestCase
 
     /**
      * @param \stdClass|array<string, mixed>|null $value
-     *
-     * @dataProvider provideReverseTransformCases
      */
+    #[DataProvider('provideReverseTransformCases')]
     public function testReverseTransform(\stdClass|array|null $value): void
     {
         $transformer = new ArrayToModelTransformer($this->modelManager, \stdClass::class);
@@ -56,7 +56,7 @@ final class ArrayToModelTransformerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{\stdClass|array<string, mixed>|null}>
      */
-    public function provideReverseTransformCases(): iterable
+    public static function provideReverseTransformCases(): iterable
     {
         yield [new \stdClass()];
         yield [[]];
@@ -64,9 +64,7 @@ final class ArrayToModelTransformerTest extends TestCase
         yield [null];
     }
 
-    /**
-     * @dataProvider provideTransformCases
-     */
+    #[DataProvider('provideTransformCases')]
     public function testTransform(?\stdClass $expected, ?\stdClass $value): void
     {
         $transformer = new ArrayToModelTransformer($this->modelManager, \stdClass::class);
@@ -77,7 +75,7 @@ final class ArrayToModelTransformerTest extends TestCase
     /**
      * @phpstan-return iterable<array-key, array{\stdClass|null, \stdClass|null}>
      */
-    public function provideTransformCases(): iterable
+    public static function provideTransformCases(): iterable
     {
         $foo = new \stdClass();
         yield [$foo, $foo];

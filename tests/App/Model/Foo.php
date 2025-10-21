@@ -18,12 +18,18 @@ final class Foo implements EntityInterface
     private ?Bar $referenced;
 
     /**
-     * @param string[] $elements
+     * @var array<string, string>
      */
+    private array $elements = [];
+
+    /**
+     * @var string[]
+     */
+    private array $collection = [];
+
     public function __construct(
         private string $id,
         private string $name,
-        private array $elements = [],
     ) {
         $this->referenced = null;
     }
@@ -49,10 +55,34 @@ final class Foo implements EntityInterface
     }
 
     /**
-     * @return string[]
+     * @param array<string, string> $elements
+     */
+    public function setElements(array $elements): void
+    {
+        $this->elements = $elements;
+    }
+
+    /**
+     * @return array<string, string>
      */
     public function getElements(): array
     {
         return $this->elements;
+    }
+
+    /**
+     * @param string[] $collection
+     */
+    public function setCollection(array $collection): void
+    {
+        $this->collection = $collection;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCollection(): array
+    {
+        return $this->collection;
     }
 }
