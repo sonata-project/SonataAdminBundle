@@ -64,13 +64,6 @@ file that was distributed with this source code.
                 {% endfor %}
             {% endblock %}
 
-            {# TODO: Drop locale for moment calls when dropping support for `sonata-project/form-extensions` 1.x #}
-            {# localize moment #}
-            {% set localeForMoment = canonicalize_locale_for_moment() %}
-            {% if localeForMoment %}
-                <script src="{{ asset('bundles/sonataform/moment-locale/' ~ localeForMoment ~ '.js', 'sonata_admin') }}"></script>
-            {% endif %}
-
             {# localize select2 #}
             {% if sonata_config.getOption('use_select2') %}
                 {% set localeForSelect2 = canonicalize_locale_for_select2() %}
