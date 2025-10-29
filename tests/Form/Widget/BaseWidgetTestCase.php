@@ -96,7 +96,7 @@ abstract class BaseWidgetTestCase extends AbstractWidgetTestCase
         $twigPaths = array_filter([
             \sprintf('%s/../../../vendor/symfony/symfony/src/Symfony/Bridge/Twig/Resources/views/Form', __DIR__),
             \sprintf('%s/../../../src/Resources/views/Form', __DIR__),
-        ], 'is_dir');
+        ], is_dir(...));
 
         return array_merge(parent::getTemplatePaths(), $twigPaths);
     }
