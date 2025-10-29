@@ -33,7 +33,7 @@
         "psr/log": "^2.0 || ^3.0",
         "sonata-project/block-bundle": "^5.0",
         "sonata-project/doctrine-extensions": "^2.0",
-        "sonata-project/exporter": "^2.14 || ^3.1.1",
+        "sonata-project/exporter": "^3.1.1",
         "sonata-project/form-extensions": "^1.15 || ^2.0",
         "sonata-project/twig-extensions": "^2.0",
         "symfony/asset": "^6.4 || ^7.1",
