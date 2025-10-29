@@ -25,8 +25,6 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
-use Sonata\BlockBundle\Cache\HttpCacheHandler;
-use Sonata\BlockBundle\DependencyInjection\SonataBlockExtension;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -544,17 +542,6 @@ final class ExtensionCompilerPassTest extends TestCase
         $container
             ->register('file_locator')
             ->setClass(FileLocatorInterface::class);
-
-        $blockExtension = new SonataBlockExtension();
-        /*
-         * TODO: remove "http_cache" parameter when support for SonataBlockBundle 4 is dropped.
-         */
-        $blockExtension->load(
-            [
-                'sonata_block' => class_exists(HttpCacheHandler::class) ? ['http_cache' => false] : [],
-            ],
-            $container
-        );
 
         return $container;
     }
