@@ -43,22 +43,20 @@ final class CanonicalizeExtension extends AbstractExtension
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * @deprecated since sonata-project/admin-bundle version 4.7 use CanonicalizeRuntime::getCanonicalizedLocaleForMoment() instead
+     * @deprecated since sonata-project/admin-bundle version 4.7
      *
-     * Returns a canonicalized locale for "moment" NPM library,
-     * or `null` if the locale's language is "en", which doesn't require localization.
+     * @phpstan-ignore return.unusedType
      */
     public function getCanonicalizedLocaleForMoment(): ?string
     {
-        @trigger_error(\sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
-            .'  Use "%s::%s()" instead.',
+        trigger_deprecation(
+            'sonata-project/admin-bundle',
+            '4.7.0',
+            'Method "%s" is deprecated and no-op. It always returns null and will be removed in 5.0.',
             __METHOD__,
-            CanonicalizeRuntime::class,
-            __FUNCTION__
-        ), \E_USER_DEPRECATED);
+        );
 
-        return $this->canonicalizeRuntime->getCanonicalizedLocaleForMoment();
+        return null;
     }
 
     /**
