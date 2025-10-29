@@ -40,7 +40,7 @@ abstract class BaseMenuTestCase extends TestCase
             \sprintf('%s/../../../../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views', __DIR__),
             \sprintf('%s/../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views', __DIR__),
             \sprintf('%s/../../../src/Resources/views', __DIR__),
-        ], 'is_dir');
+        ], is_dir(...));
 
         $loader = new FilesystemLoader($twigPaths);
         $this->environment = new Environment($loader, ['strict_variables' => true]);
