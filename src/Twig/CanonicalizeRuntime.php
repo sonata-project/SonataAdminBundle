@@ -13,38 +13,35 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Twig;
 
-use Sonata\Form\Twig\CanonicalizeRuntime as SonataFormCanonicalizeRuntime;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\RuntimeExtensionInterface;
 
-/** @psalm-suppress UndefinedClass */
 final class CanonicalizeRuntime implements RuntimeExtensionInterface
 {
     /**
-     * TODO: Remove second argument when dropping support for `sonata-project/form-extensions` 1.x.
-     *
      * @internal This class should only be used through Twig
      */
-    public function __construct(
-        private RequestStack $requestStack,
-        private ?SonataFormCanonicalizeRuntime $canonicalizeRuntime = null, // @phpstan-ignore-line
-    ) {
+    public function __construct(private RequestStack $requestStack)
+    {
     }
 
     /**
      * NEXT_MAJOR: Remove this method.
      *
-     * Returns a canonicalized locale for "Moment.js" NPM library,
-     * or `null` if the locale's language is "en", which doesn't require localization.
+     * @deprecated since sonata-project/admin-bundle 4.40.0
+     *
+     * @phpstan-ignore return.unusedType
      */
     public function getCanonicalizedLocaleForMoment(): ?string
     {
-        if (null === $this->canonicalizeRuntime) {
-            return null;
-        }
+        trigger_deprecation(
+            'sonata-project/admin-bundle',
+            '4.40.0',
+            'Method "%s" is deprecated and no-op. It always returns null and will be removed in 5.0.',
+            __METHOD__,
+        );
 
-        // @phpstan-ignore-next-line
-        return $this->canonicalizeRuntime->getCanonicalizedLocaleForMoment();
+        return null;
     }
 
     /**

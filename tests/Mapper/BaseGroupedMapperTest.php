@@ -69,7 +69,7 @@ final class BaseGroupedMapperTest extends TestCase
 
         $this->baseGroupedMapper
             ->method('getTabs')
-            ->willReturnCallback(fn (): array => $this->getTabs());
+            ->willReturnCallback($this->getTabs(...));
 
         $this->baseGroupedMapper
             ->method('setTabs')
@@ -79,7 +79,7 @@ final class BaseGroupedMapperTest extends TestCase
 
         $this->baseGroupedMapper
             ->method('getGroups')
-            ->willReturnCallback(fn (): array => $this->getTestGroups());
+            ->willReturnCallback($this->getTestGroups(...));
 
         $this->baseGroupedMapper
             ->method('setGroups')
