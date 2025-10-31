@@ -1281,7 +1281,7 @@ final class AdminTest extends TestCase
         $admin = new PostAdmin();
         $admin->setCode('sonata.post.admin.post');
 
-        static::assertSame('sonata.post.admin.post', $admin->getObjectIdentifier());
+        static::assertSame('sonata.post.admin.post', $admin->getCode());
     }
 
     #[DoesNotPerformAssertions]

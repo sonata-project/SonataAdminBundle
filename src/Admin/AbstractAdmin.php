@@ -45,7 +45,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\Exception\UninitializedPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
-use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -55,7 +54,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  * @phpstan-extends AbstractTaggedAdmin<T>
  * @phpstan-implements AdminInterface<T>
  */
-abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterface, DomainObjectInterface, AdminTreeInterface
+abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterface, AdminTreeInterface
 {
     // NEXT_MAJOR: Remove the CONTEXT constants.
     /** @deprecated */
@@ -1488,14 +1487,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
             return $this->getParent()->getBaseCodeRoute().'|'.$this->getCode();
         }
 
-        return $this->getCode();
-    }
-
-    /**
-     * @return string
-     */
-    public function getObjectIdentifier()
-    {
         return $this->getCode();
     }
 
