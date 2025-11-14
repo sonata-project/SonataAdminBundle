@@ -192,7 +192,7 @@ file that was distributed with this source code.
                                 {% if sonata_config.getOption('search') %}
                                     <form action="{{ path('sonata_admin_search') }}" method="GET" class="sidebar-form" role="search">
                                         <div class="input-group custom-search-form">
-                                            <input type="text" name="q" value="{{ app.request.get('q') }}" class="form-control" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
+                                            <input type="text" name="q" value="{{ app.request.attributes.get('q', app.request.query.get('q', app.request.request.get('q'))) }}" class="form-control" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
                                             <span class="input-group-btn">
                                                 <button class="btn btn-flat" type="submit">
                                                     <i class="fas fa-search" aria-hidden="true"></i>
