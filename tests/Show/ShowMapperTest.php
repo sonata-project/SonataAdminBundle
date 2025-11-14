@@ -17,13 +17,13 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
-use Sonata\AdminBundle\FieldDescription\BaseFieldDescription;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Tests\App\Builder\ShowBuilder;
+use Sonata\AdminBundle\Tests\App\FieldDescription\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
@@ -99,8 +99,8 @@ final class ShowMapperTest extends TestCase
 
         $this->admin
             ->method('createFieldDescription')
-            ->willReturnCallback(function (string $name, array $options = []): FieldDescriptionInterface {
-                $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
+            ->willReturnCallback(static function (string $name, array $options = []): FieldDescriptionInterface {
+                $fieldDescription = new FieldDescription($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;
@@ -541,8 +541,8 @@ final class ShowMapperTest extends TestCase
         $fieldDescriptionFactory = static::createStub(FieldDescriptionFactoryInterface::class);
         $fieldDescriptionFactory
             ->method('create')
-            ->willReturnCallback(function (string $class, string $name, array $options = []): FieldDescriptionInterface {
-                $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
+            ->willReturnCallback(static function (string $class, string $name, array $options = []): FieldDescriptionInterface {
+                $fieldDescription = new FieldDescription($name);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;

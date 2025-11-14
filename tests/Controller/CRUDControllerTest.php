@@ -3250,6 +3250,7 @@ final class CRUDControllerTest extends TestCase
         $this->controller->aclAction($this->request);
     }
 
+    #[IgnoreDeprecations]
     public function testAclAction(): void
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);

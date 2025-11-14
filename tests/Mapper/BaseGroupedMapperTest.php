@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Mapper;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
@@ -27,20 +26,7 @@ use Symfony\Component\DependencyInjection\Container;
  */
 final class BaseGroupedMapperTest extends TestCase
 {
-    /**
-     * @var AbstractDummyGroupedMapper&MockObject
-     */
-    protected $baseGroupedMapper;
-
-    /**
-     * @var array<string, array<string, mixed>>
-     */
-    private array $tabs;
-
-    /**
-     * @var array<string, array<string, mixed>>
-     */
-    private array $groups;
+    private AbstractDummyGroupedMapper $baseGroupedMapper;
 
     protected function setUp(): void
     {
@@ -59,42 +45,90 @@ final class BaseGroupedMapperTest extends TestCase
 
         $admin->setConfigurationPool($configurationPool);
 
-        $this->baseGroupedMapper = $this->getMockForAbstractClass(
-            AbstractDummyGroupedMapper::class,
-            [$admin]
-        );
+        $this->baseGroupedMapper = new class($admin) extends AbstractDummyGroupedMapper {
+            /**
+             * @var array<string, array<string, mixed>>
+             */
+            public array $groups = [];
 
-        $this->tabs = [];
-        $this->groups = [];
+            /**
+             * @var array<string, array<string, mixed>>
+             */
+            public array $tabs = [];
 
-        $this->baseGroupedMapper
-            ->method('getTabs')
-            ->willReturnCallback($this->getTabs(...));
+            /**
+             * @var string[]
+             */
+            public array $removed = [];
 
-        $this->baseGroupedMapper
-            ->method('setTabs')
-            ->willReturnCallback(function (array $tabs): void {
-                $this->setTabs($tabs);
-            });
+            /**
+             * @return array<string, array<string, mixed>>
+             */
+            protected function getGroups(): array
+            {
+                return $this->groups;
+            }
 
-        $this->baseGroupedMapper
-            ->method('getGroups')
-            ->willReturnCallback($this->getTestGroups(...));
+            /**
+             * @return array<string, array<string, mixed>>
+             */
+            protected function getTabs(): array
+            {
+                return $this->tabs;
+            }
 
-        $this->baseGroupedMapper
-            ->method('setGroups')
-            ->willReturnCallback(function (array $groups): void {
-                $this->setTestGroups($groups);
-            });
+            /**
+             * @param array<string, array<string, mixed>> $groups
+             */
+            protected function setGroups(array $groups): void
+            {
+                $this->groups = $groups;
+            }
+
+            /**
+             * @param array<string, array<string, mixed>> $tabs
+             */
+            protected function setTabs(array $tabs): void
+            {
+                $this->tabs = $tabs;
+            }
+
+            public function get(string $key)
+            {
+                return null;
+            }
+
+            public function has(string $key): bool
+            {
+                return false;
+            }
+
+            public function remove(string $key)
+            {
+                $this->removed[] = $key;
+
+                return $this;
+            }
+
+            public function keys(): array
+            {
+                return [];
+            }
+
+            public function reorder(array $keys)
+            {
+                return $this;
+            }
+        };
     }
 
     public function testWith(): void
     {
-        static::assertCount(0, $this->tabs);
-        static::assertCount(0, $this->groups);
+        static::assertCount(0, $this->getTabs());
+        static::assertCount(0, $this->getTestGroups());
         static::assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooGroup'));
-        static::assertCount(1, $this->tabs);
-        static::assertCount(1, $this->groups);
+        static::assertCount(1, $this->getTabs());
+        static::assertCount(1, $this->getTestGroups());
     }
 
     public function testEnd(): void
@@ -104,26 +138,26 @@ final class BaseGroupedMapperTest extends TestCase
 
     public function testTab(): void
     {
-        static::assertCount(0, $this->tabs);
-        static::assertCount(0, $this->groups);
+        static::assertCount(0, $this->getTabs());
+        static::assertCount(0, $this->getTestGroups());
         static::assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->tab('fooTab'));
-        static::assertCount(1, $this->tabs);
-        static::assertCount(0, $this->groups);
+        static::assertCount(1, $this->getTabs());
+        static::assertCount(0, $this->getTestGroups());
     }
 
     public function testTab2(): void
     {
-        static::assertCount(0, $this->tabs);
-        static::assertCount(0, $this->groups);
+        static::assertCount(0, $this->getTabs());
+        static::assertCount(0, $this->getTestGroups());
         static::assertSame($this->baseGroupedMapper, $this->baseGroupedMapper->with('fooTab', ['tab' => true]));
-        static::assertCount(1, $this->tabs);
-        static::assertCount(0, $this->groups);
+        static::assertCount(1, $this->getTabs());
+        static::assertCount(0, $this->getTestGroups());
     }
 
     public function testRemoveGroup(): void
     {
-        static::assertCount(0, $this->tabs);
-        static::assertCount(0, $this->groups);
+        static::assertCount(0, $this->getTabs());
+        static::assertCount(0, $this->getTestGroups());
 
         $this->baseGroupedMapper
             ->tab('fooTab1')
@@ -132,20 +166,25 @@ final class BaseGroupedMapperTest extends TestCase
             ->end()
             ->end();
 
-        static::assertCount(1, $this->tabs);
-        static::assertCount(1, $this->groups);
+        static::assertCount(1, $this->getTabs());
+        static::assertCount(1, $this->getTestGroups());
 
-        $this->baseGroupedMapper->expects(static::once())->method('remove')->with('field1');
         $this->baseGroupedMapper->removeGroup('fooGroup1', 'fooTab1');
+        /**
+         * @psalm-suppress UndefinedPropertyFetch
+         *
+         * @phpstan-ignore property.notFound
+         */
+        static::assertSame(['field1'], $this->baseGroupedMapper->removed);
 
-        static::assertCount(1, $this->tabs);
-        static::assertCount(0, $this->groups);
+        static::assertCount(1, $this->getTabs());
+        static::assertCount(0, $this->getTestGroups());
     }
 
     public function testRemoveTab(): void
     {
-        static::assertCount(0, $this->tabs);
-        static::assertCount(0, $this->groups);
+        static::assertCount(0, $this->getTabs());
+        static::assertCount(0, $this->getTestGroups());
 
         $this->baseGroupedMapper
             ->tab('fooTab1')
@@ -154,14 +193,19 @@ final class BaseGroupedMapperTest extends TestCase
             ->end()
             ->end();
 
-        static::assertCount(1, $this->tabs);
-        static::assertCount(1, $this->groups);
+        static::assertCount(1, $this->getTabs());
+        static::assertCount(1, $this->getTestGroups());
 
-        $this->baseGroupedMapper->expects(static::once())->method('remove')->with('field1');
         $this->baseGroupedMapper->removeTab('fooTab1');
+        /**
+         * @psalm-suppress UndefinedPropertyFetch
+         *
+         * @phpstan-ignore property.notFound
+         */
+        static::assertSame(['field1'], $this->baseGroupedMapper->removed);
 
-        static::assertCount(0, $this->tabs);
-        static::assertCount(0, $this->groups);
+        static::assertCount(0, $this->getTabs());
+        static::assertCount(0, $this->getTestGroups());
     }
 
     public function testFluidInterface(): void
@@ -269,39 +313,33 @@ final class BaseGroupedMapperTest extends TestCase
 
         $this->baseGroupedMapper->with($name, $options);
 
-        static::assertSame($translated, $this->tabs['default']['label']);
-        static::assertSame($expectedLabel, $this->groups[$name]['label']);
+        static::assertSame($translated, $this->getTabs()['default']['label']);
+        static::assertSame($expectedLabel, $this->getTestGroups()[$name]['label']);
     }
 
     /**
      * @return array<string, array<string, mixed>>
      */
-    public function getTabs(): array
+    private function getTabs(): array
     {
-        return $this->tabs;
-    }
-
-    /**
-     * @param array<string, array<string, mixed>> $tabs
-     */
-    public function setTabs(array $tabs): void
-    {
-        $this->tabs = $tabs;
+        /**
+         * @psalm-suppress UndefinedPropertyFetch
+         *
+         * @phpstan-ignore property.notFound
+         */
+        return $this->baseGroupedMapper->tabs;
     }
 
     /**
      * @return array<string, array<string, mixed>>
      */
-    public function getTestGroups(): array
+    private function getTestGroups(): array
     {
-        return $this->groups;
-    }
-
-    /**
-     * @param array<string, array<string, mixed>> $groups
-     */
-    public function setTestGroups(array $groups): void
-    {
-        $this->groups = $groups;
+        /**
+         * @psalm-suppress UndefinedPropertyFetch
+         *
+         * @phpstan-ignore property.notFound
+         */
+        return $this->baseGroupedMapper->groups;
     }
 }

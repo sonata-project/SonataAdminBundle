@@ -21,11 +21,11 @@ use Sonata\AdminBundle\Datagrid\Datagrid;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\PagerInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\FieldDescription\BaseFieldDescription;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\Filter;
 use Sonata\AdminBundle\Filter\FilterInterface;
+use Sonata\AdminBundle\Tests\App\FieldDescription\FieldDescription;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilder;
@@ -88,8 +88,8 @@ final class DatagridMapperTest extends TestCase
 
         $this->admin
             ->method('createFieldDescription')
-            ->willReturnCallback(function (string $name, array $options = []): FieldDescriptionInterface {
-                $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
+            ->willReturnCallback(static function (string $name, array $options = []): FieldDescriptionInterface {
+                $fieldDescription = new FieldDescription($name, []);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;

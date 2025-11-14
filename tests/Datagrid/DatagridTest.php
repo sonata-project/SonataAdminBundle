@@ -320,9 +320,7 @@ final class DatagridTest extends TestCase
 
     public function testBuildPager(): void
     {
-        $filter1 = $this->getMockBuilder(FilterInterface::class)
-            ->addMethods(['getFormOptions', 'getLabelTranslationParameters'])
-            ->getMockForAbstractClass();
+        $filter1 = $this->createMock(NextMajorFilterInterface::class);
         $filter1->expects(static::once())
             ->method('getName')
             ->willReturn('foo');
@@ -341,9 +339,7 @@ final class DatagridTest extends TestCase
 
         $this->datagrid->addFilter($filter1);
 
-        $filter2 = $this->getMockBuilder(FilterInterface::class)
-            ->addMethods(['getFormOptions', 'getLabelTranslationParameters'])
-            ->getMockForAbstractClass();
+        $filter2 = $this->createMock(NextMajorFilterInterface::class);
         $filter2->expects(static::once())
             ->method('getName')
             ->willReturn('bar');
@@ -380,9 +376,7 @@ final class DatagridTest extends TestCase
     {
         $this->datagrid->setValue('fooFormName', $type, $value);
 
-        $filter = $this->getMockBuilder(FilterInterface::class)
-            ->addMethods(['getFormOptions', 'getLabelTranslationParameters'])
-            ->getMockForAbstractClass();
+        $filter = $this->createMock(NextMajorFilterInterface::class);
         $filter->expects(static::once())->method('getName')->willReturn('foo');
         $filter->method('getFormName')->willReturn('fooFormName');
         $filter->method('isActive')->willReturn(false);
@@ -435,9 +429,7 @@ final class DatagridTest extends TestCase
 
     public function testBuildPagerWithException(): void
     {
-        $filter = $this->getMockBuilder(FilterInterface::class)
-            ->addMethods(['getFormOptions', 'getLabelTranslationParameters'])
-            ->getMockForAbstractClass();
+        $filter = $this->createMock(NextMajorFilterInterface::class);
         $filter->expects(static::once())
             ->method('getName')
             ->willReturn('foo');
@@ -483,9 +475,7 @@ final class DatagridTest extends TestCase
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, [DatagridInterface::SORT_BY => $sortBy]);
 
-        $filter = $this->getMockBuilder(FilterInterface::class)
-            ->addMethods(['getFormOptions', 'getLabelTranslationParameters'])
-            ->getMockForAbstractClass();
+        $filter = $this->createMock(NextMajorFilterInterface::class);
         $filter->expects(static::once())
             ->method('getName')
             ->willReturn('foo');
@@ -536,9 +526,7 @@ final class DatagridTest extends TestCase
 
         $this->datagrid = new Datagrid($this->query, $this->columns, $this->pager, $this->formBuilder, [DatagridInterface::SORT_BY => $sortBy, DatagridInterface::PAGE => $page, DatagridInterface::PER_PAGE => $perPage]);
 
-        $filter = $this->getMockBuilder(FilterInterface::class)
-            ->addMethods(['getFormOptions', 'getLabelTranslationParameters'])
-            ->getMockForAbstractClass();
+        $filter = $this->createMock(NextMajorFilterInterface::class);
         $filter->expects(static::once())
             ->method('getName')
             ->willReturn('foo');
@@ -704,4 +692,21 @@ final class DatagridTest extends TestCase
         $values = $this->datagrid->getValues();
         static::assertSame('ASC', $values[DatagridInterface::SORT_ORDER]);
     }
+}
+
+interface NextMajorFilterInterface extends FilterInterface
+{
+    /**
+     * @return array<array-key, mixed>
+     */
+    public function getFormOptions(): array;
+
+    /**
+     * @return array<array-key, mixed>
+     */
+    public function getLabelTranslationParameters(): array;
+
+    public function showFilter(): ?bool;
+
+    public function withAdvancedFilter(): bool;
 }
