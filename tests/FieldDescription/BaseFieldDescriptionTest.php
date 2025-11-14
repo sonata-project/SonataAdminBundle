@@ -130,7 +130,7 @@ final class BaseFieldDescriptionTest extends TestCase
         $admin = static::createStub(AdminInterface::class);
         $description = new FieldDescription('name');
         $description->setAdmin($admin);
-        $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
+        $mock = new \stdClass();
 
         $this->expectException(NoValueException::class);
         $this->callMethod($description, 'getFieldValue', [$mock, 'fake']);
@@ -139,7 +139,7 @@ final class BaseFieldDescriptionTest extends TestCase
     public function testGetVirtualFieldValue(): void
     {
         $description = new FieldDescription('name');
-        $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
+        $mock = new \stdClass();
 
         $description->setOption('virtual_field', true);
         static::assertNull($this->callMethod($description, 'getFieldValue', [$mock, 'fake']));
@@ -154,16 +154,16 @@ final class BaseFieldDescriptionTest extends TestCase
     public function testGetFieldValueWithAccessor(): void
     {
         $description = new FieldDescription('name', ['accessor' => 'foo']);
-        $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
-        $mock->expects(static::once())->method('getFoo')->willReturn(42);
+        $mock = new \stdClass();
+        $mock->foo = 42;
         static::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fake']));
     }
 
     public function testGetFieldValueWithTopLevelFunctionName(): void
     {
         $description = new FieldDescription('microtime');
-        $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getMicrotime'])->getMock();
-        $mock->expects(static::once())->method('getMicrotime')->willReturn(42);
+        $mock = new \stdClass();
+        $mock->microtime = 42;
         static::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'microtime']));
     }
 
@@ -171,10 +171,10 @@ final class BaseFieldDescriptionTest extends TestCase
     {
         $description = new FieldDescription('name', [
             // @phpstan-ignore-next-line
-            'accessor' => static fn (object $object): int => $object->getFoo(),
+            'accessor' => static fn (object $object): int => $object->bar,
         ]);
-        $mock = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
-        $mock->expects(static::once())->method('getFoo')->willReturn(42);
+        $mock = new \stdClass();
+        $mock->bar = 42;
         static::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fake']));
     }
 
@@ -196,9 +196,32 @@ final class BaseFieldDescriptionTest extends TestCase
     public function testGetFieldValueWithMethod(string $method): void
     {
         $description = new FieldDescription('name');
-        $mock = $this->getMockBuilder(\stdClass::class)->addMethods([$method])->getMock();
 
-        $mock->method($method)->willReturn(42);
+        if ('getFakeFieldValue' === $method) {
+            $mock = new class {
+                public function getFakeFieldValue(): int
+                {
+                    return 42;
+                }
+            };
+        } elseif ('isFakeFieldValue' === $method) {
+            $mock = new class {
+                public function isFakeFieldValue(): int
+                {
+                    return 42;
+                }
+            };
+        } elseif ('hasFakeFieldValue' === $method) {
+            $mock = new class {
+                public function hasFakeFieldValue(): int
+                {
+                    return 42;
+                }
+            };
+        } else {
+            throw new \LogicException('Unexpected method name');
+        }
+
         static::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fake_field_value']));
         static::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mock, 'fakeFieldValue']));
     }
@@ -215,11 +238,17 @@ final class BaseFieldDescriptionTest extends TestCase
 
     public function testGetFieldValueWithChainedFieldName(): void
     {
-        $mockChild = $this->getMockBuilder(\stdClass::class)->addMethods(['getFoo'])->getMock();
-        $mockChild->expects(static::once())->method('getFoo')->willReturn(42);
-
-        $mockParent = $this->getMockBuilder(\stdClass::class)->addMethods(['getChild'])->getMock();
-        $mockParent->expects(static::once())->method('getChild')->willReturn($mockChild);
+        $mockParent = new class {
+            public function getChild(): object
+            {
+                return new class {
+                    public function getFoo(): int
+                    {
+                        return 42;
+                    }
+                };
+            }
+        };
 
         $description = new FieldDescription('name');
         static::assertSame(42, $this->callMethod($description, 'getFieldValue', [$mockParent, 'child.foo']));

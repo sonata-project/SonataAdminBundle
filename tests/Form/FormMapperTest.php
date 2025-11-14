@@ -24,6 +24,7 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
+use Sonata\AdminBundle\Tests\App\FieldDescription\FieldDescription;
 use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -553,7 +554,7 @@ final class FormMapperTest extends TestCase
         ?string $label = null,
         ?string $translationDomain = null,
     ): BaseFieldDescription {
-        $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
+        $fieldDescription = new FieldDescription($name);
 
         if (null !== $label) {
             $fieldDescription->setOption('label', $label);

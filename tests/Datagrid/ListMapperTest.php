@@ -18,9 +18,9 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\FieldDescription\BaseFieldDescription;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use Sonata\AdminBundle\Tests\App\FieldDescription\FieldDescription;
 use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
 /**
@@ -64,8 +64,8 @@ final class ListMapperTest extends TestCase
 
         $this->admin
             ->method('createFieldDescription')
-            ->willReturnCallback(function (string $name, array $options = []): FieldDescriptionInterface {
-                $fieldDescription = $this->getMockForAbstractClass(BaseFieldDescription::class, [$name, []]);
+            ->willReturnCallback(static function (string $name, array $options = []): FieldDescriptionInterface {
+                $fieldDescription = new FieldDescription($name, []);
                 $fieldDescription->setOptions($options);
 
                 return $fieldDescription;

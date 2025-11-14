@@ -83,19 +83,37 @@ final class AdminHelperTest extends TestCase
 
     public function testGetElementAccessPath(): void
     {
-        $object = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['getPathToObject'])
-            ->getMock();
-        $subObject = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['getAnother'])
-            ->getMock();
-        $sub2Object = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['getMoreThings'])
-            ->getMock();
+        $sub2Object = new class {
+            public function getMoreThings(): string
+            {
+                return 'Value';
+            }
+        };
 
-        $object->expects(static::atLeastOnce())->method('getPathToObject')->willReturn([$subObject]);
-        $subObject->expects(static::atLeastOnce())->method('getAnother')->willReturn($sub2Object);
-        $sub2Object->expects(static::atLeastOnce())->method('getMoreThings')->willReturn('Value');
+        $subObject = new class($sub2Object) {
+            public function __construct(private object $sub2Object)
+            {
+            }
+
+            public function getAnother(): object
+            {
+                return $this->sub2Object;
+            }
+        };
+
+        $object = new class($subObject) {
+            public function __construct(private object $subObject)
+            {
+            }
+
+            /**
+             * @return object[]
+             */
+            public function getPathToObject(): array
+            {
+                return [$this->subObject];
+            }
+        };
 
         $path = $this->getMethodAsPublic('getElementAccessPath')->invoke(
             $this->helper,
@@ -109,15 +127,27 @@ final class AdminHelperTest extends TestCase
     public function testItThrowsExceptionWhenDoesNotFindTheFullPath(): void
     {
         $path = 'uniquePartOfId_path_to_object_0_more_calls';
-        $object = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['getPathToObject'])
-            ->getMock();
-        $subObject = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['getMore'])
-            ->getMock();
 
-        $object->expects(static::atLeastOnce())->method('getPathToObject')->willReturn([$subObject]);
-        $subObject->expects(static::atLeastOnce())->method('getMore')->willReturn('Value');
+        $subObject = new class {
+            public function getMore(): string
+            {
+                return 'Value';
+            }
+        };
+
+        $object = new class($subObject) {
+            public function __construct(private object $subObject)
+            {
+            }
+
+            /**
+             * @return object[]
+             */
+            public function getPathToObject(): array
+            {
+                return [$this->subObject];
+            }
+        };
 
         $this->expectException(\Exception::class);
         $this->expectExceptionMessage(\sprintf('Could not get element id from %s Failing part: calls', $path));
@@ -572,29 +602,44 @@ final class AdminHelperTest extends TestCase
             ->expects(static::atLeastOnce())
             ->method('getRequest')
             ->willReturn($request);
-        $object = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['getSubObject'])
-            ->getMock();
 
-        $subObject = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['getAnd'])
-            ->getMock();
-        $sub2Object = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['getMore'])
-            ->getMock();
-        $sub3Object = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['getFinalData'])
-            ->getMock();
+        $object = new class {
+            /**
+             * @return object[]
+             */
+            public function getSubObject(): array
+            {
+                return [
+                    new class {
+                        public function getAnd(): object
+                        {
+                            return new class {
+                                /**
+                                 * @return object[]
+                                 */
+                                public function getMore(): array
+                                {
+                                    return [
+                                        new class {
+                                            public function getFinalData(): string
+                                            {
+                                                return 'value';
+                                            }
+                                        },
+                                    ];
+                                }
+                            };
+                        }
+                    },
+                ];
+            }
+        };
+
         $dataMapper = static::createStub(DataMapperInterface::class);
         $formFactory = static::createStub(FormFactoryInterface::class);
         $eventDispatcher = static::createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', $object::class, $eventDispatcher, $formFactory);
-        $childFormBuilder = new FormBuilder('subObject', $subObject::class, $eventDispatcher, $formFactory);
-
-        $object->expects(static::atLeastOnce())->method('getSubObject')->willReturn([$subObject]);
-        $subObject->expects(static::atLeastOnce())->method('getAnd')->willReturn($sub2Object);
-        $sub2Object->expects(static::atLeastOnce())->method('getMore')->willReturn([$sub3Object]);
-        $sub3Object->expects(static::atLeastOnce())->method('getFinalData')->willReturn('value');
+        $childFormBuilder = new FormBuilder('subObject', $object::class, $eventDispatcher, $formFactory);
 
         $formBuilder->setRequestHandler(new HttpFoundationRequestHandler());
         $formBuilder->setCompound(true);
@@ -635,14 +680,23 @@ final class AdminHelperTest extends TestCase
             }
         };
 
-        $object = $this->getMockBuilder(\stdClass::class)
-            ->addMethods(['getSubObject', 'getCollection'])
-            ->getMock();
+        $object = new class($subObject) {
+            public function __construct(private object $subObject)
+            {
+            }
+
+            public function getCollection(): mixed
+            {
+                throw new \LogicException('This method should not be called.');
+            }
+
+            public function getSubObject(): object
+            {
+                return $this->subObject;
+            }
+        };
 
         $collectionObject = $this->createMock(\stdClass::class);
-
-        $object->expects(static::never())->method('getCollection');
-        $object->expects(static::atLeastOnce())->method('getSubObject')->willReturn($subObject);
 
         $admin = $this->createMock(AdminInterface::class);
         $admin->method('hasFormFieldDescription')->with('collection')->willReturn(true);
