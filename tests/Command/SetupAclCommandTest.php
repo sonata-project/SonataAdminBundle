@@ -44,7 +44,7 @@ final class SetupAclCommandTest extends TestCase
         $command = new SetupAclCommand($pool, $this->createMock(AdminAclManipulatorInterface::class));
 
         $application = new Application();
-        $application->add($command);
+        CommandHelper::addCommandToApplication($application, $command);
 
         $command = $application->find('sonata:admin:setup-acl');
         $commandTester = new CommandTester($command);
@@ -61,7 +61,7 @@ final class SetupAclCommandTest extends TestCase
         $command = new SetupAclCommand($pool, $this->createMock(AdminAclManipulatorInterface::class));
 
         $application = new Application();
-        $application->add($command);
+        CommandHelper::addCommandToApplication($application, $command);
 
         $command = $application->find('sonata:admin:setup-acl');
         $commandTester = new CommandTester($command);
