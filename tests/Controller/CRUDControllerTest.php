@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Controller;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
@@ -4213,8 +4213,7 @@ final class CRUDControllerTest extends TestCase
     }
 
     #[DataProvider('provideBatchActionNonRelevantActionCases')]
-    #[Group('legacy
-NEXT_MAJOR: Remove this test')]
+    #[IgnoreDeprecations] // NEXT_MAJOR: remove this test
     public function testBatchActionNonRelevantAction(string $actionName): void
     {
         $controller = new BatchAdminController();
@@ -4303,8 +4302,7 @@ NEXT_MAJOR: Remove this test')]
         $this->controller->batchAction($this->request);
     }
 
-    #[Group('legacy
-NEXT_MAJOR: Remove this test')]
+    #[IgnoreDeprecations] // NEXT_MAJOR: remove this test
     public function testBatchActionNonRelevantAction2(): void
     {
         $controller = new BatchAdminController();
@@ -4369,8 +4367,7 @@ NEXT_MAJOR: Remove this test')]
         static::assertSame('list', $result->getTargetUrl());
     }
 
-    #[Group('legacy
-NEXT_MAJOR: Remove this test')]
+    #[IgnoreDeprecations] // NEXT_MAJOR: remove this test
     public function testBatchActionNoItemsEmptyQuery(): void
     {
         $controller = new BatchAdminController();
