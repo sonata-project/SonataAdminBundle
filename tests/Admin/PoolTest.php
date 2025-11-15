@@ -76,15 +76,15 @@ final class PoolTest extends TestCase
     public function testGetDashboardGroups(): void
     {
         // NEXT_MAJOR: Use $this->createMock(AdminInterface::class);
-        $adminGroup1 = $this->getMockBuilder(AdminInterface::class)->addMethods(['showInDashboard'])->getMockForAbstractClass();
+        $adminGroup1 = $this->createMock(NextMajorAdminInterface::class);
         $adminGroup1->expects(static::once())->method('showInDashboard')->willReturn(true);
 
         // NEXT_MAJOR: Use $this->createMock(AdminInterface::class);
-        $adminGroup2 = $this->getMockBuilder(AdminInterface::class)->addMethods(['showInDashboard'])->getMockForAbstractClass();
+        $adminGroup2 = $this->createMock(NextMajorAdminInterface::class);
         $adminGroup2->expects(static::once())->method('showInDashboard')->willReturn(false);
 
         // NEXT_MAJOR: Use $this->createMock(AdminInterface::class);
-        $adminGroup3 = $this->getMockBuilder(AdminInterface::class)->addMethods(['showInDashboard'])->getMockForAbstractClass();
+        $adminGroup3 = $this->createMock(NextMajorAdminInterface::class);
         $adminGroup3->expects(static::once())->method('showInDashboard')->willReturn(false);
 
         $this->container->set('sonata.user.admin.group1', $adminGroup1);

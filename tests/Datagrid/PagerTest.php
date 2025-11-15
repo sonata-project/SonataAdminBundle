@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -24,22 +23,43 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
  */
 final class PagerTest extends TestCase
 {
+    public static int $countResults = 0;
     /**
-     * @var Pager<ProxyQueryInterface<object>>&MockObject
+     * @var Pager<ProxyQueryInterface<object>>
      */
     private Pager $pager;
 
     protected function setUp(): void
     {
-        $this->pager = $this->getMockForAbstractClass(
-            Pager::class,
-            [],
-            '',
-            true,
-            true,
-            true,
-            ['countResults']
-        );
+        self::$countResults = 0;
+
+        /**
+         * @psalm-suppress MissingTemplateParam
+         *
+         * @phpstan-ignore assign.propertyType
+         */
+        $this->pager = new class extends Pager {
+            private int $count = 0;
+
+            public function init(): void
+            {
+            }
+
+            public function getCurrentPageResults(): iterable
+            {
+                return [];
+            }
+
+            public function countResults(): int
+            {
+                return $this->count;
+            }
+
+            public function setCount(int $count): void
+            {
+                $this->count = $count;
+            }
+        };
     }
 
     #[DataProvider('provideGetMaxPerPage1Cases')]
@@ -186,9 +206,12 @@ final class PagerTest extends TestCase
         $this->pager->setMaxPerPage(10);
         static::assertFalse($this->pager->haveToPaginate());
 
-        $this->pager->expects(static::once())
-            ->method('countResults')
-            ->willReturn(100);
+        /**
+         * @psalm-suppress UndefinedMethod
+         *
+         * @phpstan-ignore method.notFound
+         */
+        $this->pager->setCount(100);
 
         static::assertTrue($this->pager->haveToPaginate());
     }

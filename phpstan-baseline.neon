@@ -3,9 +3,6 @@ parameters:
         - # Disallow VariableMethodCallRule and VariablePropertyFetchRule
             message: '#^Variable (method call|property access)#'
             path: .
-        - # https://github.com/phpstan/phpstan-phpunit/issues/87
-            message: '#^Trying to mock an undefined method [a-zA-Z]*\(\) on class stdClass\.$#'
-            path: tests/
         - # https://github.com/phpstan/phpstan-strict-rules/issues/130
             message: '#^Call to static method PHPUnit\\Framework\\Assert::.* will always evaluate to true\.$#'
             path: tests/

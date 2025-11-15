@@ -17,6 +17,7 @@ use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Tests\Admin\NextMajorAdminInterface;
 use Sonata\AdminBundle\Twig\Extension\GroupExtension;
 use Sonata\AdminBundle\Twig\GroupRuntime;
 use Symfony\Component\DependencyInjection\Container;
@@ -74,8 +75,8 @@ final class GroupExtensionTest extends TestCase
         $twigExtension = new GroupExtension(new GroupRuntime($pool));
 
         // NEXT_MAJOR: Use createMock instead.
-        $adminNonCreatable = $this->getMockBuilder(AdminInterface::class)->addMethods(['showInDashboard'])->getMockForAbstractClass();
-        $adminCreatable = $this->getMockBuilder(AdminInterface::class)->addMethods(['showInDashboard'])->getMockForAbstractClass();
+        $adminNonCreatable = $this->createMock(AdminInterface::class);
+        $adminCreatable = $this->createMock(NextMajorAdminInterface::class);
 
         $container->set('sonata_admin_non_creatable', $adminNonCreatable);
         $container->set('sonata_admin_creatable', $adminCreatable);

@@ -133,10 +133,7 @@ final class ExplainAdminCommandTest extends TestCase
         $container->set('acme.admin.foo', $this->admin);
 
         $pool = new Pool($container, ['acme.admin.foo', 'acme.admin.bar']);
-
-        $command = new ExplainAdminCommand($pool);
-
-        $this->application->add($command);
+        CommandHelper::addCommandToApplication($this->application, new ExplainAdminCommand($pool));
     }
 
     public function testExecute(): void
