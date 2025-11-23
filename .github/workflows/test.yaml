@@ -30,34 +30,39 @@ jobs:
         strategy:
             matrix:
                 php-version:
-                    - '8.1'
                     - '8.2'
                     - '8.3'
                     - '8.4'
+                    - '8.5'
                 dependencies: [highest]
                 allowed-to-fail: [false]
                 symfony-require: ['']
                 variant: [normal]
                 include:
-                    - php-version: '8.1'
+                    - php-version: '8.2'
                       dependencies: lowest
                       allowed-to-fail: false
                       variant: normal
-                    - php-version: '8.4'
+                    - php-version: '8.5'
                       dependencies: highest
                       allowed-to-fail: false
                       symfony-require: 6.4.*
                       variant: symfony/symfony:"6.4.*"
-                    - php-version: '8.4'
+                    - php-version: '8.5'
                       dependencies: highest
                       allowed-to-fail: false
-                      symfony-require: 7.1.*
-                      variant: symfony/symfony:"7.1.*"
-                    - php-version: '8.4'
+                      symfony-require: 7.3.*
+                      variant: symfony/symfony:"7.3.*"
+                    - php-version: '8.5'
                       dependencies: highest
                       allowed-to-fail: false
-                      symfony-require: 7.2.*
-                      variant: symfony/symfony:"7.2.*"
+                      symfony-require: 7.4.*
+                      variant: symfony/symfony:"7.4.*"
+                    - php-version: '8.5'
+                      dependencies: highest
+                      allowed-to-fail: false
+                      symfony-require: 8.0.*
+                      variant: symfony/symfony:"8.0.*"
 
         steps:
             - name: Checkout
@@ -72,6 +77,11 @@ jobs:
 
             - name: Add PHPUnit matcher
               run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+            # until Psalm supports Symfony 8
+            - name: Remove psalm
+              if: matrix.symfony-require == '8.0.*'
+              run: composer remove vimeo/psalm psalm/plugin-symfony psalm/plugin-phpunit --dev --no-update
 
             - name: Install variant
               if: matrix.variant != 'normal' && !startsWith(matrix.variant, 'symfony/symfony')
