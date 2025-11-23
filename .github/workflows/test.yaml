@@ -78,11 +78,6 @@ jobs:
             - name: Add PHPUnit matcher
               run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-            # until Psalm supports Symfony 8
-            - name: Remove psalm
-              if: matrix.symfony-require == '8.0.*'
-              run: composer remove vimeo/psalm psalm/plugin-symfony psalm/plugin-phpunit --dev --no-update
-
             - name: Install variant
               if: matrix.variant != 'normal' && !startsWith(matrix.variant, 'symfony/symfony')
               run: composer require ${{ matrix.variant }} --no-update

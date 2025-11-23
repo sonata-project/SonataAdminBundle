@@ -116,10 +116,6 @@ phpstan:
 	vendor/bin/phpstan --memory-limit=1G analyse
 .PHONY: phpstan
 
-psalm:
-	vendor/bin/psalm --php-version=8.5
-.PHONY: psalm
-
 rector:
 	vendor/bin/rector
 .PHONY: rector
