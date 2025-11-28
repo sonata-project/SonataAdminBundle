@@ -2,6 +2,20 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.40.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.39.0...4.40.0) - 2025-11-28
+### Deprecated
+- [[#8350](https://github.com/sonata-project/SonataAdminBundle/pull/8350)] Method `CanonicalizeRuntime::getCanonicalizedLocaleForMoment()` is deprecated and no-op. It always returns null. ([@dmaicher](https://github.com/dmaicher))
+
+### Fixed
+- [[#8355](https://github.com/sonata-project/SonataAdminBundle/pull/8355)] Fix remaining Symfony 7.4 deprecations for Request::get in twig templates ([@dmaicher](https://github.com/dmaicher))
+
+### Removed
+- [[#8350](https://github.com/sonata-project/SonataAdminBundle/pull/8350)] Support for `sonata-project/form-extensions` v1 was removed ([@dmaicher](https://github.com/dmaicher))
+- [[#8349](https://github.com/sonata-project/SonataAdminBundle/pull/8349)] Support for `sonata-project/exporter` v2 was removed ([@dmaicher](https://github.com/dmaicher))
+- [[#8348](https://github.com/sonata-project/SonataAdminBundle/pull/8348)] Support for `sonata-project/doctrine-extensions` v1 was removed ([@dmaicher](https://github.com/dmaicher))
+- [[#8347](https://github.com/sonata-project/SonataAdminBundle/pull/8347)] Support for `sonata-project/twig-extensions` v1 was removed ([@dmaicher](https://github.com/dmaicher))
+- [[#8344](https://github.com/sonata-project/SonataAdminBundle/pull/8344)] Support for `sonata-project/block-bundle` v4 was removed ([@dmaicher](https://github.com/dmaicher))
+
 ## [4.39.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.38.2...4.39.0) - 2025-10-21
 ### Added
 - [[#8312](https://github.com/sonata-project/SonataAdminBundle/pull/8312)] Added `sonata_admin.php` routing config ([@willemverspyck](https://github.com/willemverspyck))
