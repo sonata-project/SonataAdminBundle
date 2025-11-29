@@ -58,6 +58,11 @@ jobs:
                       allowed-to-fail: false
                       symfony-require: 7.2.*
                       variant: symfony/symfony:"7.2.*"
+                    - php-version: '8.4'
+                      dependencies: highest
+                      allowed-to-fail: false
+                      symfony-require: 8.0.*
+                      variant: symfony/symfony:"7.2.*"
 
         steps:
             - name: Checkout
