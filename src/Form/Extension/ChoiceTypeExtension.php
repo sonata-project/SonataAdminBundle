@@ -22,8 +22,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Amine Zaghdoudi <amine.zaghdoudi@ekino.com>
- *
- * @psalm-suppress MissingTemplateParam https://github.com/phpstan/phpstan-symfony/issues/320
  */
 final class ChoiceTypeExtension extends AbstractTypeExtension
 {

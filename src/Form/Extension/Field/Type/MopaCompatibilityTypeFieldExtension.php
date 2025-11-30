@@ -25,8 +25,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * if the MopaBootstrapBundle is not installed.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @psalm-suppress MissingTemplateParam https://github.com/phpstan/phpstan-symfony/issues/320
  */
 final class MopaCompatibilityTypeFieldExtension extends AbstractTypeExtension
 {

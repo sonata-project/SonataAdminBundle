@@ -23,9 +23,6 @@ use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
 #[IgnoreDeprecations]
 final class BCLabelTranslatorStrategyTest extends TestCase
 {
-    /**
-     * @psalm-suppress DeprecatedClass
-     */
     public function testLabel(): void
     {
         $strategy = new BCLabelTranslatorStrategy();

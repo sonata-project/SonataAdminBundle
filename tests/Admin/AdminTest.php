@@ -338,8 +338,6 @@ final class AdminTest extends TestCase
 
     /**
      * @phpstan-return iterable<array-key, array{class-string, string}>
-     *
-     * @psalm-suppress MoreSpecificReturnType
      */
     public static function provideGetBaseRoutePattern(): iterable
     {
@@ -487,9 +485,6 @@ final class AdminTest extends TestCase
         static::assertSame('/fixtures/bundle/post/{id}/comment-custom', $commentAdmin->getBaseRoutePattern());
     }
 
-    /**
-     * @psalm-suppress ArgumentTypeCoercion, UndefinedClass
-     */
     public function testGetBaseRoutePatternWithUnrecognizedClassname(): void
     {
         $this->expectException(\LogicException::class);
@@ -502,8 +497,6 @@ final class AdminTest extends TestCase
 
     /**
      * @phpstan-return iterable<array-key, array{class-string, string}>
-     *
-     * @psalm-suppress MoreSpecificReturnType
      */
     public static function provideGetBaseRouteName(): iterable
     {
@@ -596,9 +589,6 @@ final class AdminTest extends TestCase
         static::assertSame($expected, $admin->getBaseRouteName());
     }
 
-    /**
-     * @psalm-suppress ArgumentTypeCoercion, UndefinedClass
-     */
     public function testGetBaseRouteNameWithUnrecognizedClassname(): void
     {
         $this->expectException(\LogicException::class);
@@ -1240,8 +1230,6 @@ final class AdminTest extends TestCase
 
     /**
      * NEXT_MAJOR: Remove this test.
-     *
-     * @psalm-suppress DeprecatedMethod, DeprecatedConstant
      */
     #[IgnoreDeprecations]
     public function testShowIn(): void

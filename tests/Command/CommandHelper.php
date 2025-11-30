@@ -27,10 +27,8 @@ final class CommandHelper
         if (method_exists($application, 'addCommand')) {
             $application->addCommand($command);
         } else {
-            /**
-             * @psalm-suppress PossiblyInvalidArgument
-             *
-             * @phpstan-ignore argument.type
+            /*
+             * @phpstan-ignore method.notFound
              */
             $application->add($command);
         }

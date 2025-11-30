@@ -61,9 +61,6 @@ final class BreadcrumbsExtensionTest extends TestCase
         $this->breadcrumbsExtension = new BreadcrumbsExtension(new BreadcrumbsRuntime($this->breadcrumbBuilder));
     }
 
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     public function testBreadcrumbsForTitle(): void
     {
         $item = $this->createMock(ItemInterface::class);
@@ -103,9 +100,6 @@ final class BreadcrumbsExtensionTest extends TestCase
         );
     }
 
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     public function testBreadcrumbs(): void
     {
         $item = $this->createMock(ItemInterface::class);

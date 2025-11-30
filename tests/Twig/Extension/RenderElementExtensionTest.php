@@ -195,8 +195,6 @@ final class RenderElementExtensionTest extends TestCase
 
     /**
      * @param array<string, mixed> $options
-     *
-     * @psalm-suppress DeprecatedMethod
      */
     #[DataProvider('provideRenderListElementCases')]
     public function testRenderListElement(string $expected, string $type, mixed $value, array $options): void
@@ -242,9 +240,6 @@ final class RenderElementExtensionTest extends TestCase
         );
     }
 
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     public function testRenderListElementWithAdditionalValuesInArray(): void
     {
         $this->templateRegistry->method('getTemplate')->with('base_list_field')
@@ -264,9 +259,6 @@ final class RenderElementExtensionTest extends TestCase
         );
     }
 
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     public function testRenderWithDebug(): void
     {
         $this->fieldDescription
@@ -310,8 +302,6 @@ final class RenderElementExtensionTest extends TestCase
 
     /**
      * @param array<string, mixed> $options
-     *
-     * @psalm-suppress DeprecatedMethod
      */
     #[DataProvider('provideRenderViewElementCases')]
     public function testRenderViewElement(string $expected, string $type, mixed $value, array $options): void
@@ -350,8 +340,6 @@ final class RenderElementExtensionTest extends TestCase
 
     /**
      * @param array<string, mixed> $options
-     *
-     * @psalm-suppress DeprecatedMethod
      */
     #[DataProvider('provideRenderViewElementCompareCases')]
     public function testRenderViewElementCompare(
@@ -408,17 +396,11 @@ final class RenderElementExtensionTest extends TestCase
         );
     }
 
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     public function testRenderRelationElementNoObject(): void
     {
         static::assertSame('foo', $this->twigExtension->renderRelationElement('foo', $this->fieldDescription));
     }
 
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     public function testRenderRelationElementToString(): void
     {
         $this->fieldDescription->expects(static::once())
@@ -435,9 +417,6 @@ final class RenderElementExtensionTest extends TestCase
         static::assertSame('salut', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     public function testRenderRelationElementCustomToString(): void
     {
         $this->fieldDescription->expects(static::once())
@@ -460,9 +439,6 @@ final class RenderElementExtensionTest extends TestCase
         static::assertSame('fooBar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     public function testRenderRelationElementMethodNotExist(): void
     {
         $this->fieldDescription->expects(static::once())
@@ -482,9 +458,6 @@ final class RenderElementExtensionTest extends TestCase
         $this->twigExtension->renderRelationElement($element, $this->fieldDescription);
     }
 
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     public function testRenderRelationElementWithPropertyPath(): void
     {
         $this->fieldDescription->expects(static::once())
@@ -504,9 +477,6 @@ final class RenderElementExtensionTest extends TestCase
         static::assertSame('bar', $this->twigExtension->renderRelationElement($element, $this->fieldDescription));
     }
 
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     public function testRenderRelationElementWithClosure(): void
     {
         $this->fieldDescription->expects(static::once())

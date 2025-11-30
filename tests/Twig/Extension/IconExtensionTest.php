@@ -25,9 +25,6 @@ use Sonata\AdminBundle\Twig\IconRuntime;
 #[IgnoreDeprecations]
 final class IconExtensionTest extends TestCase
 {
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     #[DataProvider('provideParseIconCases')]
     public function testParseIcon(string $icon, string $expected): void
     {

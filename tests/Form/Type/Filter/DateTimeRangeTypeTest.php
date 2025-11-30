@@ -35,9 +35,6 @@ final class DateTimeRangeTypeTest extends BaseTypeTestCase
         static::assertFalse($view->children['value']->vars['required']);
     }
 
-    /**
-     * @psalm-suppress DeprecatedClass
-     */
     public function testGetDefaultOptions(): void
     {
         $type = new DateTimeRangeType();
@@ -56,9 +53,6 @@ final class DateTimeRangeTypeTest extends BaseTypeTestCase
         static::assertSame($expected, $options);
     }
 
-    /**
-     * @psalm-suppress DeprecatedClass
-     */
     protected function getTestedType(): string
     {
         return DateTimeRangeType::class;

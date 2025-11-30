@@ -1258,9 +1258,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         return $this->filterFieldDescriptions;
     }
 
-    /**
-     * @psalm-suppress PossiblyNullArgument Will be solved in NEXT_MAJOR
-     */
     final public function addChild(AdminInterface $child, ?string $field = null): void
     {
         $parentAdmin = $this;
@@ -1503,8 +1500,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
         /**
          * NEXT_MAJOR: Remove those lines and uncomment the last one.
-         *
-         * @psalm-suppress DeprecatedMethod, DeprecatedConstant
          */
         $permissionShow = $this->getPermissionsShow(self::CONTEXT_DASHBOARD, 'sonata_deprecation_mute');
         $permission = 1 === \count($permissionShow) ? reset($permissionShow) : $permissionShow;
@@ -1517,8 +1512,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
      * NEXT_MAJOR: Remove this method.
      *
      * @deprecated since sonata-project/admin-bundle version 4.7 use showInDashboard instead
-     *
-     * @psalm-suppress DeprecatedMethod
      */
     final public function showIn(string $context): bool
     {
@@ -1822,9 +1815,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
     {
     }
 
-    /**
-     * @psalm-suppress DeprecatedProperty
-     */
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
         // NEXT_MAJOR: Remove this code
@@ -1859,9 +1849,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
         );
     }
 
-    /**
-     * @psalm-suppress DeprecatedProperty
-     */
     protected function generateBaseRouteName(bool $isChildAdmin = false): string
     {
         // NEXT_MAJOR: Remove this code
@@ -2423,7 +2410,6 @@ abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterfa
 
         $this->datagrid->getPager()->setMaxPageLinks($this->getMaxPageLinks());
 
-        /** @psalm-suppress InvalidArgument https://github.com/vimeo/psalm/issues/8423 */
         $mapper = new DatagridMapper($this->getDatagridBuilder(), $this->datagrid, $this);
 
         // build the datagrid filter

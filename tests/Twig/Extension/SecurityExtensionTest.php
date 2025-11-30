@@ -25,9 +25,6 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 #[IgnoreDeprecations]
 final class SecurityExtensionTest extends TestCase
 {
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     public function testIsGrantedAffirmative(): void
     {
         $securityChecker = $this->createMock(AuthorizationCheckerInterface::class);
