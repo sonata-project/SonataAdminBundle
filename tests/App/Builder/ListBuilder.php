@@ -51,6 +51,10 @@ final class ListBuilder implements ListBuilderInterface
 
     private function getTemplate(?string $type): ?string
     {
+        if (null === $type) {
+            return null;
+        }
+
         return TemplateRegistryInterface::LIST_TEMPLATES[$type] ?? null;
     }
 }

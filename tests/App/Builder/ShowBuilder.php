@@ -45,6 +45,10 @@ final class ShowBuilder implements ShowBuilderInterface
 
     private function getTemplate(?string $type): ?string
     {
+        if (null === $type) {
+            return null;
+        }
+
         return TemplateRegistryInterface::SHOW_TEMPLATES[$type] ?? null;
     }
 }
