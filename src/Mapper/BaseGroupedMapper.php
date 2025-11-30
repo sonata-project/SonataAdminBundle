@@ -155,6 +155,7 @@ abstract class BaseGroupedMapper implements MapperInterface
             $this->setGroups($groups);
             $tabs = $this->getTabs();
         }
+        \assert(null !== $this->currentTab);
 
         if (null !== $this->currentGroup && isset($tabs[$this->currentTab]) && !\in_array($this->currentGroup, $tabs[$this->currentTab]['groups'], true)) {
             $tabs[$this->currentTab]['groups'][] = $this->currentGroup;
