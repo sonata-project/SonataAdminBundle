@@ -16,8 +16,6 @@ namespace Sonata\AdminBundle\Tests\App\Controller;
 use Sonata\AdminBundle\Controller\CRUDController;
 
 /**
- * @psalm-suppress MissingConstructor
- *
  * @see ConfigureCRUDControllerListener
  *
  * @phpstan-extends CRUDController<object>

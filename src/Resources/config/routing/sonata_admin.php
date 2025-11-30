@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Loader\XmlFileLoader;
 
 return static function (RoutingConfigurator $routes) {
     foreach (debug_backtrace() as $trace) {
+        /* @phpstan-ignore class.notFound */
         if (isset($trace['object']) && $trace['object'] instanceof XmlFileLoader && 'doImport' === $trace['function'] && isset($trace['args'])) {
             $realpath = realpath($trace['args'][3]);
 

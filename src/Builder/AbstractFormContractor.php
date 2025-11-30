@@ -26,9 +26,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormRegistryInterface;
 
-/**
- * @psalm-suppress DeprecatedInterface
- */
 abstract class AbstractFormContractor implements FormContractorInterface
 {
     /**

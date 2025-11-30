@@ -123,9 +123,6 @@ final class SonataAdminExtensionTest extends TestCase
         $this->container->set('sonata_admin_bar_service', $this->adminBar);
     }
 
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     public function testGetUrlsafeIdentifier(): void
     {
         $model = new \stdClass();
@@ -149,9 +146,6 @@ final class SonataAdminExtensionTest extends TestCase
         static::assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model));
     }
 
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     public function testGetUrlsafeIdentifierGivenAdminFoo(): void
     {
         $model = new \stdClass();
@@ -182,9 +176,6 @@ final class SonataAdminExtensionTest extends TestCase
         static::assertSame('1234567', $twigExtension->getUrlSafeIdentifier($model, $this->admin));
     }
 
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     public function testGetUrlsafeIdentifierGivenAdminBar(): void
     {
         $model = new \stdClass();

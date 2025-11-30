@@ -64,7 +64,6 @@ final class ModelToIdPropertyTransformerTest extends TestCase
      * @param array<int|string|array<string>>|null $params
      *
      * @phpstan-param array<int|string|array<string>>|null $params
-     * @psalm-param (array{_labels?: array<string>}&array<int|string>)|null $params
      */
     #[DataProvider('provideReverseTransformMultipleCases')]
     public function testReverseTransformMultiple(array $expected, ?array $params, Foo $entity1, Foo $entity2, Foo $entity3): void
@@ -106,7 +105,6 @@ final class ModelToIdPropertyTransformerTest extends TestCase
                 [$entity3, '789'],
             ]);
 
-        /** @psalm-suppress ArgumentTypeCoercion https://github.com/vimeo/psalm/issues/9503 */
         $result = $transformer->reverseTransform($params);
         static::assertInstanceOf(Collection::class, $result);
         static::assertCount(\count($expected), $result);
@@ -115,7 +113,6 @@ final class ModelToIdPropertyTransformerTest extends TestCase
 
     /**
      * @phpstan-return iterable<array-key, array{array<Foo>, array<int|string|array<string>>|null, Foo, Foo, Foo}>
-     * @psalm-return iterable<array-key, array{array<Foo>, (array{_labels?: array<string>}&array<int|string>)|null, Foo, Foo, Foo}>
      */
     public static function provideReverseTransformMultipleCases(): iterable
     {

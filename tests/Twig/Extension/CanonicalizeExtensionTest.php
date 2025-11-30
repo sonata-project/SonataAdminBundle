@@ -41,9 +41,6 @@ final class CanonicalizeExtensionTest extends TestCase
         );
     }
 
-    /**
-     * @psalm-suppress DeprecatedMethod
-     */
     #[DataProvider('provideCanonicalizedLocaleForSelect2Cases')]
     public function testCanonicalizedLocaleForSelect2(?string $expected, string $original): void
     {

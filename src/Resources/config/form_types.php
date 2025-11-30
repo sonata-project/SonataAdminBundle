@@ -37,9 +37,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
-    /**
-     * @psalm-suppress DeprecatedClass
-     */
     $containerConfigurator->services()
 
         ->set('sonata.admin.form.type.admin', AdminType::class)

@@ -161,10 +161,8 @@ abstract class AbstractTaggedAdmin implements TaggedAdminInterface
             $this->code = $code;
         }
 
-        /**
+        /*
          * NEXT_MAJOR: Remove this assignment.
-         *
-         * @psalm-suppress DeprecatedProperty
          */
         $this->class = $class;
 

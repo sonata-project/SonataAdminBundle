@@ -357,9 +357,6 @@ final class Datagrid implements DatagridInterface
                     \E_USER_DEPRECATED
                 );
 
-                /**
-                 * @psalm-suppress DeprecatedMethod
-                 */
                 [$type, $options] = $filter->getRenderSettings();
             }
 

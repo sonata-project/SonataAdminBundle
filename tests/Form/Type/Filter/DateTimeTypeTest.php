@@ -32,9 +32,6 @@ final class DateTimeTypeTest extends BaseTypeTestCase
         static::assertFalse($view->children['value']->vars['required']);
     }
 
-    /**
-     * @psalm-suppress DeprecatedClass
-     */
     protected function getTestedType(): string
     {
         return DateTimeType::class;

@@ -60,9 +60,6 @@ abstract class QuestionableCommand extends Command
         return $questionHelper->ask($input, $output, $question);
     }
 
-    /**
-     * @psalm-suppress LessSpecificReturnStatement, MoreSpecificReturnType
-     */
     final protected function getQuestionHelper(): QuestionHelper
     {
         return $this->getHelper('question');

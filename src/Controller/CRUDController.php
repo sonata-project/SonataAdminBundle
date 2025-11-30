@@ -60,8 +60,6 @@ use Twig\Environment;
  *
  * @phpstan-template T of object
  *
- * @psalm-suppress MissingConstructor
- *
  * @see ConfigureCRUDControllerListener
  */
 class CRUDController extends AbstractController
@@ -72,15 +70,12 @@ class CRUDController extends AbstractController
      * @var AdminInterface<object>
      *
      * @phpstan-var AdminInterface<T>
-     *
-     * @psalm-suppress PropertyNotSetInConstructor
      */
     protected $admin;
 
     /**
      * The template registry of the related Admin class.
      *
-     * @psalm-suppress PropertyNotSetInConstructor
      * @phpstan-ignore-next-line
      */
     private TemplateRegistryInterface $templateRegistry;
@@ -136,9 +131,6 @@ class CRUDController extends AbstractController
             $exportFormats = $exporter->getAvailableFormats($this->admin);
         }
 
-        /**
-         * @psalm-suppress DeprecatedMethod
-         */
         return $this->renderWithExtraParams($template, [
             'action' => 'list',
             'form' => $formView,
@@ -265,9 +257,6 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('delete');
 
-        /**
-         * @psalm-suppress DeprecatedMethod
-         */
         return $this->renderWithExtraParams($template, [
             'object' => $object,
             'action' => 'delete',
@@ -376,9 +365,6 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate($templateKey);
 
-        /**
-         * @psalm-suppress DeprecatedMethod
-         */
         return $this->renderWithExtraParams($template, [
             'action' => 'edit',
             'form' => $formView,
@@ -499,9 +485,6 @@ class CRUDController extends AbstractController
 
             $template = $batchAction['template'] ?? $this->templateRegistry->getTemplate('batch_confirmation');
 
-            /**
-             * @psalm-suppress DeprecatedMethod
-             */
             return $this->renderWithExtraParams($template, [
                 'action' => 'list',
                 'action_label' => $actionLabel,
@@ -557,9 +540,6 @@ class CRUDController extends AbstractController
         $class = new \ReflectionClass($this->admin->hasActiveSubClass() ? $this->admin->getActiveSubClass() : $this->admin->getClass());
 
         if ($class->isAbstract()) {
-            /**
-             * @psalm-suppress DeprecatedMethod
-             */
             return $this->renderWithExtraParams(
                 '@SonataAdmin/CRUD/select_subclass.html.twig',
                 [
@@ -648,9 +628,6 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate($templateKey);
 
-        /**
-         * @psalm-suppress DeprecatedMethod
-         */
         return $this->renderWithExtraParams($template, [
             'action' => 'create',
             'form' => $formView,
@@ -683,9 +660,6 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('show');
 
-        /**
-         * @psalm-suppress DeprecatedMethod
-         */
         return $this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $object,
@@ -724,9 +698,6 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('history');
 
-        /**
-         * @psalm-suppress DeprecatedMethod
-         */
         return $this->renderWithExtraParams($template, [
             'action' => 'history',
             'object' => $object,
@@ -778,9 +749,6 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('show');
 
-        /**
-         * @psalm-suppress DeprecatedMethod
-         */
         return $this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $object,
@@ -841,9 +809,6 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('show_compare');
 
-        /**
-         * @psalm-suppress DeprecatedMethod
-         */
         return $this->renderWithExtraParams($template, [
             'action' => 'show',
             'object' => $baseObject,
@@ -952,9 +917,6 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('acl');
 
-        /**
-         * @psalm-suppress DeprecatedMethod
-         */
         return $this->renderWithExtraParams($template, [
             'action' => 'acl',
             'permissions' => $adminObjectAclData->getUserPermissions(),
@@ -1018,9 +980,6 @@ class CRUDController extends AbstractController
      */
     final protected function renderWithExtraParams(string $view, array $parameters = [], ?Response $response = null): Response
     {
-        /**
-         * @psalm-suppress DeprecatedMethod
-         */
         return $this->render($view, $this->addRenderExtraParams($parameters), $response);
     }
 
@@ -1036,9 +995,6 @@ class CRUDController extends AbstractController
     protected function addRenderExtraParams(array $parameters = []): array
     {
         $parameters['admin'] ??= $this->admin;
-        /**
-         * @psalm-suppress DeprecatedMethod
-         */
         $parameters['base_template'] ??= $this->getBaseTemplate();
 
         return $parameters;
