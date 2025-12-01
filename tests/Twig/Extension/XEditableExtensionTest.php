@@ -30,8 +30,6 @@ final class XEditableExtensionTest extends TestCase
     /**
      * @param array<string, mixed>         $options
      * @param array<array<string, string>> $expectedChoices
-     *
-     * @psalm-suppress DeprecatedMethod
      */
     #[DataProvider('provideGetXEditableChoicesIsIdempotentCases')]
     public function testGetXEditableChoicesIsIdempotent(array $options, array $expectedChoices): void

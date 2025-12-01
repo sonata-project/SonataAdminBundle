@@ -52,9 +52,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->set('sonata.admin.assets.public_dir', '/public')
         ->set('sonata.admin.assets.base_path', '/');
 
-    /**
-     * @psalm-suppress DeprecatedClass
-     */
     $containerConfigurator->services()
 
         ->set('sonata.admin.assets.version_strategy', LastModifiedVersionStrategy::class)

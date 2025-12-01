@@ -104,9 +104,6 @@ final class ModelsToArrayTransformerTest extends TestCase
         static::assertSame([$object1, $object3, $object2], $result->toArray());
     }
 
-    /**
-     * @psalm-suppress InvalidArgument
-     */
     public function testReverseTransformUnexpectedType(): void
     {
         $value = 'unexpected';

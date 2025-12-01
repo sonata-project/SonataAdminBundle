@@ -20,8 +20,6 @@ use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @psalm-suppress PropertyNotSetInConstructor
  */
 final class AdminPoolLoader extends Loader
 {

@@ -151,7 +151,6 @@ final class FormTypeFieldExtensionTest extends TestCase
             'my_admin_reference_name_text_username',
         ];
 
-        /** @psalm-suppress TypeDoesNotContainType https://github.com/vimeo/psalm/issues/8663 */
         static::assertSame($expected, $formView->vars['block_prefixes']);
         static::assertTrue($formView->vars['sonata_admin_enabled']);
     }
@@ -210,7 +209,6 @@ final class FormTypeFieldExtensionTest extends TestCase
             'sonata_admin_code' => 'parent_code',
         ];
 
-        /** @psalm-suppress TypeDoesNotContainType https://github.com/vimeo/psalm/issues/8663 */
         static::assertSame($expected, $formView->vars);
     }
 
@@ -306,7 +304,6 @@ final class FormTypeFieldExtensionTest extends TestCase
             'admin_parent_checkbox_0__parent_collection_entry_field',
         ];
 
-        /** @psalm-suppress TypeDoesNotContainType https://github.com/vimeo/psalm/issues/8663 */
         static::assertSame($expected, $formView->vars['block_prefixes']);
     }
 }

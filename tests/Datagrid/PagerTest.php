@@ -33,9 +33,7 @@ final class PagerTest extends TestCase
     {
         self::$countResults = 0;
 
-        /**
-         * @psalm-suppress MissingTemplateParam
-         *
+        /*
          * @phpstan-ignore assign.propertyType
          */
         $this->pager = new class extends Pager {
@@ -206,9 +204,7 @@ final class PagerTest extends TestCase
         $this->pager->setMaxPerPage(10);
         static::assertFalse($this->pager->haveToPaginate());
 
-        /**
-         * @psalm-suppress UndefinedMethod
-         *
+        /*
          * @phpstan-ignore method.notFound
          */
         $this->pager->setCount(100);

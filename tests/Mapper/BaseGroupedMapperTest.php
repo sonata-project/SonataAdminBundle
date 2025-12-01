@@ -170,9 +170,7 @@ final class BaseGroupedMapperTest extends TestCase
         static::assertCount(1, $this->getTestGroups());
 
         $this->baseGroupedMapper->removeGroup('fooGroup1', 'fooTab1');
-        /**
-         * @psalm-suppress UndefinedPropertyFetch
-         *
+        /*
          * @phpstan-ignore property.notFound
          */
         static::assertSame(['field1'], $this->baseGroupedMapper->removed);
@@ -197,9 +195,7 @@ final class BaseGroupedMapperTest extends TestCase
         static::assertCount(1, $this->getTestGroups());
 
         $this->baseGroupedMapper->removeTab('fooTab1');
-        /**
-         * @psalm-suppress UndefinedPropertyFetch
-         *
+        /*
          * @phpstan-ignore property.notFound
          */
         static::assertSame(['field1'], $this->baseGroupedMapper->removed);
@@ -322,9 +318,7 @@ final class BaseGroupedMapperTest extends TestCase
      */
     private function getTabs(): array
     {
-        /**
-         * @psalm-suppress UndefinedPropertyFetch
-         *
+        /*
          * @phpstan-ignore property.notFound
          */
         return $this->baseGroupedMapper->tabs;
@@ -335,9 +329,7 @@ final class BaseGroupedMapperTest extends TestCase
      */
     private function getTestGroups(): array
     {
-        /**
-         * @psalm-suppress UndefinedPropertyFetch
-         *
+        /*
          * @phpstan-ignore property.notFound
          */
         return $this->baseGroupedMapper->groups;

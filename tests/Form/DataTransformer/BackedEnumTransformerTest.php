@@ -39,9 +39,6 @@ final class BackedEnumTransformerTest extends TestCase
         $transformer->reverseTransform('not_valid_value');
     }
 
-    /**
-     * @psalm-suppress InvalidArgument
-     */
     public function testReverseTransformNotScalar(): void
     {
         $this->expectException(TransformationFailedException::class);
@@ -60,9 +57,6 @@ final class BackedEnumTransformerTest extends TestCase
         static::assertSame(Suit::Clubs->value, $transformer->transform(Suit::Clubs));
     }
 
-    /**
-     * @psalm-suppress InvalidArgument
-     */
     public function testTransformUnexpectedType(): void
     {
         $this->expectException(UnexpectedTypeException::class);

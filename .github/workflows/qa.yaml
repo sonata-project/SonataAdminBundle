@@ -29,7 +29,7 @@ jobs:
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.4'
+                  php-version: '8.5'
                   coverage: none
                   tools: composer:v2
 
@@ -40,30 +40,6 @@ jobs:
 
             - name: PHPStan
               run: vendor/bin/phpstan --no-progress --memory-limit=1G analyse --error-format=github
-
-    psalm:
-        name: Psalm
-
-        runs-on: ubuntu-latest
-
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
-
-            - name: Install PHP with extensions
-              uses: shivammathur/setup-php@v2
-              with:
-                  php-version: '8.4'
-                  coverage: none
-                  tools: composer:v2
-
-            - name: Install Composer dependencies (highest)
-              uses: ramsey/composer-install@v3
-              with:
-                  dependency-versions: highest
-
-            - name: Psalm
-              run: vendor/bin/psalm --no-progress --show-info=false --stats --output-format=github --threads=$(nproc) --shepherd --php-version=8.4
 
     rector:
         name: Rector
@@ -77,7 +53,7 @@ jobs:
             - name: Install PHP with extensions
               uses: shivammathur/setup-php@v2
               with:
-                  php-version: '8.4'
+                  php-version: '8.5'
                   coverage: none
                   tools: composer:v2
 

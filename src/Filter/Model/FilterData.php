@@ -25,8 +25,6 @@ final class FilterData
 
     /**
      * @psalm-pure
-     *
-     * @psalm-suppress ImpureVariable https://github.com/vimeo/psalm/issues/10974
      */
     private function __construct(
         private ?int $type,

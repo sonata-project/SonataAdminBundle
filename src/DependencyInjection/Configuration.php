@@ -179,9 +179,7 @@ final class Configuration implements ConfigurationInterface
     private const DEFAULT_PACKAGE = 'sonata_admin';
 
     /**
-     * @psalm-suppress UndefinedInterfaceMethod
-     *
-     * @see https://github.com/psalm/psalm-plugin-symfony/issues/174
+     * @return TreeBuilder<'array'>
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {

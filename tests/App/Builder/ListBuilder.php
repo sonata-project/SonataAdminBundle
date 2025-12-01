@@ -18,9 +18,6 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 
-/**
- * @psalm-suppress DeprecatedInterface
- */
 final class ListBuilder implements ListBuilderInterface
 {
     public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void
@@ -51,6 +48,10 @@ final class ListBuilder implements ListBuilderInterface
 
     private function getTemplate(?string $type): ?string
     {
+        if (null === $type) {
+            return null;
+        }
+
         return TemplateRegistryInterface::LIST_TEMPLATES[$type] ?? null;
     }
 }

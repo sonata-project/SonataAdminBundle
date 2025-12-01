@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.41.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.40.0...4.41.0) - 2025-11-30
+### Added
+- [[#8363](https://github.com/sonata-project/SonataAdminBundle/pull/8363)] Support for Symfony 8 ([@dmaicher](https://github.com/dmaicher))
+
+### Removed
+- [[#8363](https://github.com/sonata-project/SonataAdminBundle/pull/8363)] Support for PHP 8.1 ([@dmaicher](https://github.com/dmaicher))
+- [[#8363](https://github.com/sonata-project/SonataAdminBundle/pull/8363)] Support for Symfony 7.1 and 7.2 ([@dmaicher](https://github.com/dmaicher))
+
 ## [4.40.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.39.0...4.40.0) - 2025-11-28
 ### Deprecated
 - [[#8350](https://github.com/sonata-project/SonataAdminBundle/pull/8350)] Method `CanonicalizeRuntime::getCanonicalizedLocaleForMoment()` is deprecated and no-op. It always returns null. ([@dmaicher](https://github.com/dmaicher))
