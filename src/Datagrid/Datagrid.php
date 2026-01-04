@@ -23,6 +23,7 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -357,6 +358,9 @@ final class Datagrid implements DatagridInterface
                     \E_USER_DEPRECATED
                 );
 
+                /**
+                 * @var class-string<FormTypeInterface> $type
+                 */
                 [$type, $options] = $filter->getRenderSettings();
             }
 
