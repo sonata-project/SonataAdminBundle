@@ -30,6 +30,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType as SymfonyEmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType as SymfonyIntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType as SymfonyTextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType as SymfonyTextType;
+use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -183,6 +184,11 @@ final class SonataAdminExtension extends Extension
         $container->setParameter('sonata.admin.configuration.security.object_permissions', $config['security']['object_permissions']);
 
         $loader->load('security.php');
+
+        if (interface_exists(ObjectIdentityInterface::class)) {
+            // only load this in case the optional symfony/security-acl package is installed
+            $loader->load('acl.php');
+        }
 
         $container->setParameter('sonata.admin.extension.map', $config['extensions']);
 
