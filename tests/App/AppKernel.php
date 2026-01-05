@@ -26,7 +26,7 @@ use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
+use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
 use Symfony\UX\StimulusBundle\StimulusBundle;
 
@@ -88,9 +88,9 @@ final class AppKernel extends Kernel
             ],
         ];
 
-        // TODO: remove once Support for Symfony < 8 is dropped
+        // TODO: remove condition and always set option once Support for Symfony 6.4 is dropped
         /* @phpstan-ignore function.alreadyNarrowedType */
-        if (method_exists(ReflectionExtractor::class, 'getReadVisibilityForMethod')) {
+        if (method_exists(PropertyTypeExtractorInterface::class, 'getType')) {
             $frameworkConfig['property_info']['with_constructor_extractor'] = true;
         }
 

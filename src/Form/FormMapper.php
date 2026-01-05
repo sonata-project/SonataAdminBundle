@@ -62,7 +62,7 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
     /**
      * @param array<string, mixed> $options
      *
-     * @phpstan-param class-string|null $type
+     * @phpstan-param class-string<FormTypeInterface>|null $type
      * @phpstan-param FieldDescriptionOptions $fieldDescriptionOptions
      */
     public function add(string $name, ?string $type = null, array $options = [], array $fieldDescriptionOptions = []): static
