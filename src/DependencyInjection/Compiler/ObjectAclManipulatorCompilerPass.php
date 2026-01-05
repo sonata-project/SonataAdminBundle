@@ -28,6 +28,10 @@ final class ObjectAclManipulatorCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
+        if (!$container->has('sonata.admin.command.generate_object_acl')) {
+            return;
+        }
+
         $availableManagers = [];
 
         foreach ($container->getServiceIds() as $id) {

@@ -1,6 +1,17 @@
 UPGRADE 4.x
 ===========
 
+UPGRADE FROM 4.41 to 4.42
+=========================
+
+## Optional Symfony ACL integration
+
+Before 4.42.0 the `symfony/security-acl` package was a hard dependency even if no ACL features were used.
+Starting with 4.42.0 the dependency is now optional and users who are using ACL features should not be impacted as they
+also need to have `symfony/acl-bundle` installed anyway (which requires `symfony/security-acl`).
+
+In case `symfony/security-acl` is not installed we are now also skipping registration of some ACL related services.
+
 UPGRADE FROM 4.18 to 4.19
 =========================
 

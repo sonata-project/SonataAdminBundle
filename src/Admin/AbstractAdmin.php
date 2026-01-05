@@ -48,14 +48,36 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGener
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
+if (interface_exists(DomainObjectInterface::class)) {
+    /**
+     * @internal
+     *
+     * @phpstan-template T of object
+     * @phpstan-extends AbstractTaggedAdmin<T>
+     */
+    abstract class BaseAbstractAdmin extends AbstractTaggedAdmin implements DomainObjectInterface
+    {
+    }
+} else {
+    /**
+     * @internal
+     *
+     * @phpstan-template T of object
+     * @phpstan-extends AbstractTaggedAdmin<T>
+     */
+    abstract class BaseAbstractAdmin extends AbstractTaggedAdmin
+    {
+    }
+}
+
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of object
- * @phpstan-extends AbstractTaggedAdmin<T>
+ * @phpstan-extends BaseAbstractAdmin<T>
  * @phpstan-implements AdminInterface<T>
  */
-abstract class AbstractAdmin extends AbstractTaggedAdmin implements AdminInterface, DomainObjectInterface, AdminTreeInterface
+abstract class AbstractAdmin extends BaseAbstractAdmin implements AdminInterface, AdminTreeInterface
 {
     // NEXT_MAJOR: Remove the CONTEXT constants.
     /** @deprecated */
