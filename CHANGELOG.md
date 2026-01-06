@@ -2,6 +2,10 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.42.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.41.0...4.42.0) - 2026-01-05
+### Changed
+- [[#8369](https://github.com/sonata-project/SonataAdminBundle/pull/8369)] The `symfony/security-acl` dependency is now optional. You need to explicitly require it as a dependency if you are using ACL. ([@dmaicher](https://github.com/dmaicher))
+
 ## [4.41.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.40.0...4.41.0) - 2025-11-30
 ### Added
 - [[#8363](https://github.com/sonata-project/SonataAdminBundle/pull/8363)] Support for Symfony 8 ([@dmaicher](https://github.com/dmaicher))

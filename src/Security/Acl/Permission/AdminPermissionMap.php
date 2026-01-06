@@ -15,6 +15,22 @@ namespace Sonata\AdminBundle\Security\Acl\Permission;
 
 use Symfony\Component\Security\Acl\Permission\PermissionMapInterface;
 
+if (interface_exists(PermissionMapInterface::class)) {
+    /**
+     * @internal
+     */
+    abstract class BaseAdminPermissionMap implements PermissionMapInterface
+    {
+    }
+} else {
+    /**
+     * @internal
+     */
+    abstract class BaseAdminPermissionMap
+    {
+    }
+}
+
 /**
  * This is basic permission map complements the masks which have been defined
  * on the standard implementation of the MaskBuilder.
@@ -22,7 +38,7 @@ use Symfony\Component\Security\Acl\Permission\PermissionMapInterface;
  * @author Johannes M. Schmitt <schmittjoh@gmail.com>
  * @author Thomas Rabaix <thomas.rabaix@gmail.com>
  */
-final class AdminPermissionMap implements PermissionMapInterface
+final class AdminPermissionMap extends BaseAdminPermissionMap
 {
     public const PERMISSION_VIEW = 'VIEW';
     public const PERMISSION_EDIT = 'EDIT';
@@ -42,80 +58,12 @@ final class AdminPermissionMap implements PermissionMapInterface
      *
      * @var array<string, int[]>
      */
-    private array $map = [
-        self::PERMISSION_VIEW => [
-            MaskBuilder::MASK_VIEW,
-            MaskBuilder::MASK_LIST,
-            MaskBuilder::MASK_EDIT,
-            MaskBuilder::MASK_OPERATOR,
-            MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER,
-        ],
+    private array $map;
 
-        self::PERMISSION_EDIT => [
-            MaskBuilder::MASK_EDIT,
-            MaskBuilder::MASK_OPERATOR,
-            MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER,
-        ],
-
-        self::PERMISSION_HISTORY => [
-            MaskBuilder::MASK_HISTORY,
-            MaskBuilder::MASK_OPERATOR,
-            MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER,
-        ],
-
-        self::PERMISSION_CREATE => [
-            MaskBuilder::MASK_CREATE,
-            MaskBuilder::MASK_OPERATOR,
-            MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER,
-        ],
-
-        self::PERMISSION_DELETE => [
-            MaskBuilder::MASK_DELETE,
-            MaskBuilder::MASK_OPERATOR,
-            MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER,
-        ],
-
-        self::PERMISSION_UNDELETE => [
-            MaskBuilder::MASK_UNDELETE,
-            MaskBuilder::MASK_OPERATOR,
-            MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER,
-        ],
-
-        self::PERMISSION_LIST => [
-            MaskBuilder::MASK_LIST,
-            MaskBuilder::MASK_OPERATOR,
-            MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER,
-        ],
-
-        self::PERMISSION_EXPORT => [
-            MaskBuilder::MASK_EXPORT,
-            MaskBuilder::MASK_OPERATOR,
-            MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER,
-        ],
-
-        self::PERMISSION_OPERATOR => [
-            MaskBuilder::MASK_OPERATOR,
-            MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER,
-        ],
-
-        self::PERMISSION_MASTER => [
-            MaskBuilder::MASK_MASTER,
-            MaskBuilder::MASK_OWNER,
-        ],
-
-        self::PERMISSION_OWNER => [
-            MaskBuilder::MASK_OWNER,
-        ],
-    ];
+    public function __construct()
+    {
+        $this->map = $this->getMap();
+    }
 
     /**
      * @param string $permission
@@ -135,5 +83,102 @@ final class AdminPermissionMap implements PermissionMapInterface
     public function contains($permission): bool
     {
         return isset($this->map[$permission]);
+    }
+
+    /**
+     * @return array<string, int[]>
+     */
+    private function getMap(): array
+    {
+        if (!class_exists(Symfony\Component\Security\Acl\Permission\MaskBuilder::class)) {
+            return [
+                self::PERMISSION_VIEW => [],
+                self::PERMISSION_EDIT => [],
+                self::PERMISSION_HISTORY => [],
+                self::PERMISSION_CREATE => [],
+                self::PERMISSION_DELETE => [],
+                self::PERMISSION_UNDELETE => [],
+                self::PERMISSION_LIST => [],
+                self::PERMISSION_EXPORT => [],
+                self::PERMISSION_OPERATOR => [],
+                self::PERMISSION_MASTER => [],
+                self::PERMISSION_OWNER => [],
+            ];
+        }
+
+        return [
+            self::PERMISSION_VIEW => [
+                MaskBuilder::MASK_VIEW,
+                MaskBuilder::MASK_LIST,
+                MaskBuilder::MASK_EDIT,
+                MaskBuilder::MASK_OPERATOR,
+                MaskBuilder::MASK_MASTER,
+                MaskBuilder::MASK_OWNER,
+            ],
+
+            self::PERMISSION_EDIT => [
+                MaskBuilder::MASK_EDIT,
+                MaskBuilder::MASK_OPERATOR,
+                MaskBuilder::MASK_MASTER,
+                MaskBuilder::MASK_OWNER,
+            ],
+
+            self::PERMISSION_HISTORY => [
+                MaskBuilder::MASK_HISTORY,
+                MaskBuilder::MASK_OPERATOR,
+                MaskBuilder::MASK_MASTER,
+                MaskBuilder::MASK_OWNER,
+            ],
+
+            self::PERMISSION_CREATE => [
+                MaskBuilder::MASK_CREATE,
+                MaskBuilder::MASK_OPERATOR,
+                MaskBuilder::MASK_MASTER,
+                MaskBuilder::MASK_OWNER,
+            ],
+
+            self::PERMISSION_DELETE => [
+                MaskBuilder::MASK_DELETE,
+                MaskBuilder::MASK_OPERATOR,
+                MaskBuilder::MASK_MASTER,
+                MaskBuilder::MASK_OWNER,
+            ],
+
+            self::PERMISSION_UNDELETE => [
+                MaskBuilder::MASK_UNDELETE,
+                MaskBuilder::MASK_OPERATOR,
+                MaskBuilder::MASK_MASTER,
+                MaskBuilder::MASK_OWNER,
+            ],
+
+            self::PERMISSION_LIST => [
+                MaskBuilder::MASK_LIST,
+                MaskBuilder::MASK_OPERATOR,
+                MaskBuilder::MASK_MASTER,
+                MaskBuilder::MASK_OWNER,
+            ],
+
+            self::PERMISSION_EXPORT => [
+                MaskBuilder::MASK_EXPORT,
+                MaskBuilder::MASK_OPERATOR,
+                MaskBuilder::MASK_MASTER,
+                MaskBuilder::MASK_OWNER,
+            ],
+
+            self::PERMISSION_OPERATOR => [
+                MaskBuilder::MASK_OPERATOR,
+                MaskBuilder::MASK_MASTER,
+                MaskBuilder::MASK_OWNER,
+            ],
+
+            self::PERMISSION_MASTER => [
+                MaskBuilder::MASK_MASTER,
+                MaskBuilder::MASK_OWNER,
+            ],
+
+            self::PERMISSION_OWNER => [
+                MaskBuilder::MASK_OWNER,
+            ],
+        ];
     }
 }
