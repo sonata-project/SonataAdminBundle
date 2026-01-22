@@ -25,7 +25,7 @@
     "homepage": "https://docs.sonata-project.org/projects/SonataAdminBundle",
     "require": {
         "php": "^8.2",
-        "doctrine/collections": "^1.6 || ^2.0",
+        "doctrine/collections": "^2.0 || ^3.0",
         "doctrine/common": "^3.0",
         "knplabs/knp-menu": "^3.6",
         "knplabs/knp-menu-bundle": "^3.0",
