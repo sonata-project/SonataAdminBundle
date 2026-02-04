@@ -20,7 +20,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-final class SonataAdminBundleTest extends TestCase
+final class SensioLabsAdminBundleTest extends TestCase
 {
     public function testBuild(): void
     {

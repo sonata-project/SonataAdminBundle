@@ -32,7 +32,7 @@ use Twig\Loader\FilesystemLoader;
  * NEXT_MAJOR: Remove this test.
  */
 #[IgnoreDeprecations]
-final class SonataAdminExtensionTest extends TestCase
+final class SensioLabsAdminExtensionTest extends TestCase
 {
     private SensioLabsAdminExtension $twigExtension;
 

@@ -21,7 +21,7 @@ use Symfony\Component\DependencyInjection\Extension\Extension;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-abstract class AbstractSonataAdminExtension extends Extension
+abstract class AbstractSensioLabsAdminExtension extends Extension
 {
     /**
      * @param array<string, mixed> $configs

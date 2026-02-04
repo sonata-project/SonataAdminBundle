@@ -34,7 +34,7 @@ use Symfony\Component\Config\Definition\Processor;
  * @phpstan-import-type SonataAdminConfiguration from Configuration
  * @phpstan-import-type SonataAdminAsset from Configuration
  */
-final class SonataAdminExtensionTest extends AbstractExtensionTestCase
+final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
 {
     /**
      * @var array<string, mixed>
