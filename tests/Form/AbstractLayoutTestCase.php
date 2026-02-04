@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Form;
+namespace SensioLabs\AdminBundle\Tests\Form;
 
-use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
-use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
+use SensioLabs\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
+use SensioLabs\AdminBundle\Tests\Fixtures\StubTranslator;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\HttpKernelExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;

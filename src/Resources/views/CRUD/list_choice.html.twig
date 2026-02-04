@@ -26,7 +26,7 @@ file that was distributed with this source code.
 
 {# NEXT_MAJOR: Remove the fallback on catalogue #}
 {% block field %}
-    {%- include '@SonataAdmin/CRUD/display_choice.html.twig' with {
+    {%- include '@SensioLabsAdmin/CRUD/display_choice.html.twig' with {
         value: value,
         choices: field_description.option('choices'),
         multiple: field_description.option('multiple'),

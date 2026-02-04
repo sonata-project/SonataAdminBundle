@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Twig;
+namespace SensioLabs\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Twig\SecurityRuntime;
+use SensioLabs\AdminBundle\Twig\SecurityRuntime;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 final class SecurityRuntimeTest extends TestCase

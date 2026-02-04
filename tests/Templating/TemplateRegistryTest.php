@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Templating;
+namespace SensioLabs\AdminBundle\Tests\Templating;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
+use SensioLabs\AdminBundle\Templating\TemplateRegistry;
 
 final class TemplateRegistryTest extends TestCase
 {

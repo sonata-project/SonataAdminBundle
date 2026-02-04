@@ -3,30 +3,30 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Form;
+namespace SensioLabs\AdminBundle\Tests\Form;
 
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Builder\FormContractorInterface;
-use Sonata\AdminBundle\FieldDescription\BaseFieldDescription;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
-use Sonata\AdminBundle\Tests\App\FieldDescription\FieldDescription;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
-use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Builder\FormContractorInterface;
+use SensioLabs\AdminBundle\FieldDescription\BaseFieldDescription;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use SensioLabs\AdminBundle\Form\FormMapper;
+use SensioLabs\AdminBundle\Model\ModelManagerInterface;
+use SensioLabs\AdminBundle\Security\Handler\SecurityHandlerInterface;
+use SensioLabs\AdminBundle\Tests\App\FieldDescription\FieldDescription;
+use SensioLabs\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
+use SensioLabs\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilder;
@@ -114,7 +114,7 @@ final class FormMapperTest extends TestCase
             'name' => 'default',
             'box_class' => 'box box-primary',
             'empty_message' => 'message_form_group_empty',
-            'empty_message_translation_domain' => 'SonataAdminBundle',
+            'empty_message_translation_domain' => 'SensioLabsAdminBundle',
             'auto_created' => true,
             'groups' => ['foobar'],
             'tab' => true,
@@ -129,7 +129,7 @@ final class FormMapperTest extends TestCase
             'name' => 'foobar',
             'box_class' => 'box box-primary',
             'empty_message' => 'message_form_group_empty',
-            'empty_message_translation_domain' => 'SonataAdminBundle',
+            'empty_message_translation_domain' => 'SensioLabsAdminBundle',
             'fields' => [],
         ]], $this->admin->getFormGroups());
     }
@@ -150,7 +150,7 @@ final class FormMapperTest extends TestCase
             'name' => 'foobar',
             'box_class' => 'box box-primary',
             'empty_message' => 'message_form_group_empty',
-            'empty_message_translation_domain' => 'SonataAdminBundle',
+            'empty_message_translation_domain' => 'SensioLabsAdminBundle',
             'fields' => [],
             'role' => self::DEFAULT_GRANTED_ROLE,
         ]], $this->admin->getFormGroups());
@@ -164,7 +164,7 @@ final class FormMapperTest extends TestCase
             'name' => 'default',
             'box_class' => 'box box-primary',
             'empty_message' => 'message_form_group_empty',
-            'empty_message_translation_domain' => 'SonataAdminBundle',
+            'empty_message_translation_domain' => 'SensioLabsAdminBundle',
             'auto_created' => true,
             'groups' => ['foobar'],
             'tab' => true,
@@ -200,7 +200,7 @@ final class FormMapperTest extends TestCase
             'name' => 'default',
             'box_class' => 'box box-primary',
             'empty_message' => 'message_form_group_empty',
-            'empty_message_translation_domain' => 'SonataAdminBundle',
+            'empty_message_translation_domain' => 'SensioLabsAdminBundle',
             'auto_created' => true,
             'groups' => ['foobar'],
             'tab' => true,
@@ -215,7 +215,7 @@ final class FormMapperTest extends TestCase
             'name' => 'foobar',
             'box_class' => 'box box-primary',
             'empty_message' => 'message_form_group_empty',
-            'empty_message_translation_domain' => 'SonataAdminBundle',
+            'empty_message_translation_domain' => 'SensioLabsAdminBundle',
             'fields' => [
                 'foo' => 'foo',
             ],
@@ -250,7 +250,7 @@ final class FormMapperTest extends TestCase
             'name' => 'default',
             'box_class' => 'box box-primary',
             'empty_message' => 'message_form_group_empty',
-            'empty_message_translation_domain' => 'SonataAdminBundle',
+            'empty_message_translation_domain' => 'SensioLabsAdminBundle',
             'auto_created' => true,
             'groups' => ['foobar'],
             'tab' => true,
@@ -265,7 +265,7 @@ final class FormMapperTest extends TestCase
             'name' => 'foobar',
             'box_class' => 'box box-primary',
             'empty_message' => 'message_form_group_empty',
-            'empty_message_translation_domain' => 'SonataAdminBundle',
+            'empty_message_translation_domain' => 'SensioLabsAdminBundle',
             'fields' => [
                 'foo' => 'foo',
             ],

@@ -3,20 +3,20 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
+namespace SensioLabs\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
-use Sonata\AdminBundle\Model\AuditManager;
-use Sonata\AdminBundle\Tests\Fixtures\Model\AuditReader;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
+use SensioLabs\AdminBundle\Model\AuditManager;
+use SensioLabs\AdminBundle\Tests\Fixtures\Model\AuditReader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\LogicException;
@@ -68,7 +68,7 @@ final class AddAuditReadersCompilerPassTest extends AbstractCompilerPassTestCase
             ->setDefinition('std_audit_reader', $auditReader);
 
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('Service "std_audit_reader" MUST implement "Sonata\AdminBundle\Model\AuditReaderInterface".');
+        $this->expectExceptionMessage('Service "std_audit_reader" MUST implement "SensioLabs\AdminBundle\Model\AuditReaderInterface".');
 
         $this->compile();
     }

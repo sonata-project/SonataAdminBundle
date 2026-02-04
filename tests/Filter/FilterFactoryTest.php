@@ -3,20 +3,20 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Filter;
+namespace SensioLabs\AdminBundle\Tests\Filter;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Filter\FilterFactory;
-use Sonata\AdminBundle\Filter\FilterInterface;
-use Sonata\AdminBundle\Form\Type\Filter\FilterDataType;
+use SensioLabs\AdminBundle\Filter\FilterFactory;
+use SensioLabs\AdminBundle\Filter\FilterInterface;
+use SensioLabs\AdminBundle\Form\Type\Filter\FilterDataType;
 use Symfony\Component\DependencyInjection\Container;
 
 final class FilterFactoryTest extends TestCase
@@ -39,7 +39,7 @@ final class FilterFactoryTest extends TestCase
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            'The service `Sonata\AdminBundle\Form\Type\Filter\FilterDataType` must implement `FilterInterface`'
+            'The service `SensioLabs\AdminBundle\Form\Type\Filter\FilterDataType` must implement `FilterInterface`'
         );
 
         $filter->create('test', FilterDataType::class);

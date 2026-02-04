@@ -3,32 +3,32 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle;
+namespace SensioLabs\AdminBundle;
 
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AdminAddInitializeCallCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AdminSearchCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\TwigStringExtensionCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\AdminAddInitializeCallCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\AdminSearchCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\TwigStringExtensionCompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-final class SonataAdminBundle extends Bundle
+final class SensioLabsAdminBundle extends Bundle
 {
     public function build(ContainerBuilder $container): void
     {

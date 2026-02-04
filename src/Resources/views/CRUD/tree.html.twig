@@ -11,7 +11,7 @@ file that was distributed with this source code.
 
 {% deprecated 'The "tree.html.twig" template is deprecated since sonata-project/admin-bundle version 4.9 and will be removed in 5.0.' %}
 
-{% extends '@SonataAdmin/CRUD/base_list.html.twig' %}
+{% extends '@SensioLabsAdmin/CRUD/base_list.html.twig' %}
 
 {% import _self as tree %}
 {% macro navigate_child(collection, admin, root) %}
@@ -36,7 +36,7 @@ file that was distributed with this source code.
 {% endmacro %}
 
 {% block tab_menu %}
-    {% include '@SonataAdmin/CRUD/list_tab_menu.html.twig' with {
+    {% include '@SensioLabsAdmin/CRUD/list_tab_menu.html.twig' with {
         'mode':   'tree',
         'action': action,
         'admin':  admin,

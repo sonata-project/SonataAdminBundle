@@ -3,25 +3,25 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Action;
+namespace SensioLabs\AdminBundle\Tests\Action;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Action\RetrieveFormFieldElementAction;
-use Sonata\AdminBundle\Admin\AdminHelper;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Request\AdminFetcherInterface;
+use SensioLabs\AdminBundle\Action\RetrieveFormFieldElementAction;
+use SensioLabs\AdminBundle\Admin\AdminHelper;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use SensioLabs\AdminBundle\Model\ModelManagerInterface;
+use SensioLabs\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormRenderer;

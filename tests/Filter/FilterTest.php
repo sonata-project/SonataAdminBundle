@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Filter;
+namespace SensioLabs\AdminBundle\Tests\Filter;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Filter\FilterFactory;
-use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
+use SensioLabs\AdminBundle\Filter\FilterFactory;
+use SensioLabs\AdminBundle\Tests\Fixtures\Filter\FooFilter;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 final class FilterTest extends TestCase

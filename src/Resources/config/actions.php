@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Sonata\AdminBundle\Action\AppendFormFieldElementAction;
-use Sonata\AdminBundle\Action\DashboardAction;
-use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
-use Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction;
-use Sonata\AdminBundle\Action\RetrieveFormFieldElementAction;
-use Sonata\AdminBundle\Action\SearchAction;
-use Sonata\AdminBundle\Action\SetObjectFieldValueAction;
+use SensioLabs\AdminBundle\Action\AppendFormFieldElementAction;
+use SensioLabs\AdminBundle\Action\DashboardAction;
+use SensioLabs\AdminBundle\Action\GetShortObjectDescriptionAction;
+use SensioLabs\AdminBundle\Action\RetrieveAutocompleteItemsAction;
+use SensioLabs\AdminBundle\Action\RetrieveFormFieldElementAction;
+use SensioLabs\AdminBundle\Action\SearchAction;
+use SensioLabs\AdminBundle\Action\SetObjectFieldValueAction;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()

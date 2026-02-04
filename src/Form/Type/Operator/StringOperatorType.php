@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Form\Type\Operator;
+namespace SensioLabs\AdminBundle\Form\Type\Operator;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as FormChoiceType;
@@ -30,7 +30,7 @@ final class StringOperatorType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'choice_translation_domain' => 'SonataAdminBundle',
+            'choice_translation_domain' => 'SensioLabsAdminBundle',
             'choices' => [
                 'label_type_contains' => self::TYPE_CONTAINS,
                 'label_type_not_contains' => self::TYPE_NOT_CONTAINS,

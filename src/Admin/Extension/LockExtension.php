@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Admin\Extension;
+namespace SensioLabs\AdminBundle\Admin\Extension;
 
-use Sonata\AdminBundle\Admin\AbstractAdminExtension;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\BCLayer\BCHelper;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Model\LockInterface;
+use SensioLabs\AdminBundle\Admin\AbstractAdminExtension;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\BCLayer\BCHelper;
+use SensioLabs\AdminBundle\Form\FormMapper;
+use SensioLabs\AdminBundle\Model\LockInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;

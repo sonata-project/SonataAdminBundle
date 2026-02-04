@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
+namespace SensioLabs\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
-use Sonata\AdminBundle\Filter\FilterFactoryInterface;
-use Sonata\AdminBundle\Tests\Fixtures\Filter\BarFilter;
-use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
+use SensioLabs\AdminBundle\Filter\FilterFactoryInterface;
+use SensioLabs\AdminBundle\Tests\Fixtures\Filter\BarFilter;
+use SensioLabs\AdminBundle\Tests\Fixtures\Filter\FooFilter;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Exception\InvalidArgumentException;
@@ -94,7 +94,7 @@ final class AddFilterTypeCompilerPassTest extends AbstractCompilerPassTestCase
             ->setDefinition('acme.demo.foo_filter', $filter);
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Service "acme.demo.foo_filter" MUST implement interface "Sonata\AdminBundle\Filter\FilterInterface".');
+        $this->expectExceptionMessage('Service "acme.demo.foo_filter" MUST implement interface "SensioLabs\AdminBundle\Filter\FilterInterface".');
 
         $this->compile();
     }

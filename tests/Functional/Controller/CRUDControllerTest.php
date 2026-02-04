@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Functional\Controller;
+namespace SensioLabs\AdminBundle\Tests\Functional\Controller;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -85,7 +85,7 @@ final class CRUDControllerTest extends WebTestCase
     }
 
     /**
-     * @see https://github.com/sonata-project/SonataAdminBundle/issues/8328
+     * @see https://github.com/sonata-project/SensioLabsAdminBundle/issues/8328
      */
     public function testImmutableArrayHelpAttributeIsDisplayed(): void
     {
@@ -100,7 +100,7 @@ final class CRUDControllerTest extends WebTestCase
     }
 
     /**
-     * @see https://github.com/sonata-project/SonataAdminBundle/issues/8328
+     * @see https://github.com/sonata-project/SensioLabsAdminBundle/issues/8328
      */
     public function testImmutableArrayKeysItemHelpAttributeAreDisplayed(): void
     {
@@ -115,7 +115,7 @@ final class CRUDControllerTest extends WebTestCase
     }
 
     /**
-     * https://github.com/sonata-project/SonataAdminBundle/issues/6904.
+     * https://github.com/sonata-project/SensioLabsAdminBundle/issues/6904.
      */
     public function testCreateModelAutoCompleteNotPassingSubclassParameter(): void
     {

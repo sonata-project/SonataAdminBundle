@@ -3,24 +3,24 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Admin;
+namespace SensioLabs\AdminBundle\Tests\Admin;
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuFactory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
-use Sonata\AdminBundle\Route\RouteGeneratorInterface;
-use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Admin\BreadcrumbsBuilder;
+use SensioLabs\AdminBundle\Route\RouteGeneratorInterface;
+use SensioLabs\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -104,7 +104,7 @@ final class BreadcrumbsBuilderTest extends TestCase
         static::assertSame('link_breadcrumb_dashboard', $dashboardMenu->getName());
         static::assertSame('/dashboard', $dashboardMenu->getUri());
         static::assertSame(
-            ['translation_domain' => 'SonataAdminBundle'],
+            ['translation_domain' => 'SensioLabsAdminBundle'],
             $dashboardMenu->getExtras()
         );
 
@@ -165,7 +165,7 @@ final class BreadcrumbsBuilderTest extends TestCase
         $menu->method('addChild')->willReturnMap([
             ['link_breadcrumb_dashboard', [
                 'uri' => '/dashboard',
-                'extras' => ['translation_domain' => 'SonataAdminBundle'],
+                'extras' => ['translation_domain' => 'SensioLabsAdminBundle'],
             ], $menu],
             ['create my object', [
                 'extras' => ['translation_domain' => 'FooBundle'],

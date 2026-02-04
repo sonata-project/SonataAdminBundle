@@ -3,39 +3,39 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Admin;
+namespace SensioLabs\AdminBundle\Admin;
 
 use Knp\Menu\ItemInterface;
-use Sonata\AdminBundle\BCLayer\BCHelper;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\DependencyInjection\Admin\AbstractTaggedAdmin;
-use Sonata\AdminBundle\Exception\AdminClassNotFoundException;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Form\Type\ModelHiddenType;
-use Sonata\AdminBundle\Manipulator\ObjectManipulator;
-use Sonata\AdminBundle\Model\ProxyResolverInterface;
-use Sonata\AdminBundle\Object\Metadata;
-use Sonata\AdminBundle\Object\MetadataInterface;
-use Sonata\AdminBundle\Route\RouteCollection;
-use Sonata\AdminBundle\Route\RouteCollectionInterface;
-use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
-use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
-use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\AdminBundle\Util\Instantiator;
-use Sonata\AdminBundle\Util\ParametersManipulator;
+use SensioLabs\AdminBundle\BCLayer\BCHelper;
+use SensioLabs\AdminBundle\Datagrid\DatagridInterface;
+use SensioLabs\AdminBundle\Datagrid\DatagridMapper;
+use SensioLabs\AdminBundle\Datagrid\ListMapper;
+use SensioLabs\AdminBundle\Datagrid\ProxyQueryInterface;
+use SensioLabs\AdminBundle\DependencyInjection\Admin\AbstractTaggedAdmin;
+use SensioLabs\AdminBundle\Exception\AdminClassNotFoundException;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionCollection;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use SensioLabs\AdminBundle\Form\FormMapper;
+use SensioLabs\AdminBundle\Form\Type\ModelHiddenType;
+use SensioLabs\AdminBundle\Manipulator\ObjectManipulator;
+use SensioLabs\AdminBundle\Model\ProxyResolverInterface;
+use SensioLabs\AdminBundle\Object\Metadata;
+use SensioLabs\AdminBundle\Object\MetadataInterface;
+use SensioLabs\AdminBundle\Route\RouteCollection;
+use SensioLabs\AdminBundle\Route\RouteCollectionInterface;
+use SensioLabs\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
+use SensioLabs\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
+use SensioLabs\AdminBundle\Show\ShowMapper;
+use SensioLabs\AdminBundle\Util\Instantiator;
+use SensioLabs\AdminBundle\Util\ParametersManipulator;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
@@ -669,7 +669,7 @@ abstract class AbstractAdmin extends BaseAbstractAdmin implements AdminInterface
         if ($this->hasRoute('delete') && $this->hasAccess('delete')) {
             $actions['delete'] = [
                 'label' => 'action_delete',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
                 'ask_confirmation' => true, // by default always true
             ];
         }
@@ -1728,7 +1728,7 @@ abstract class AbstractAdmin extends BaseAbstractAdmin implements AdminInterface
         if ($this->hasRoute('create') && $this->hasAccess('create')) {
             $actions['create'] = [
                 'label' => 'link_add',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
                 'template' => $this->getTemplateRegistry()->getTemplate('action_create'),
                 'url' => $this->generateUrl('create'),
                 'icon' => 'fas fa-plus-circle',
@@ -1738,7 +1738,7 @@ abstract class AbstractAdmin extends BaseAbstractAdmin implements AdminInterface
         if ($this->hasRoute('list') && $this->hasAccess('list')) {
             $actions['list'] = [
                 'label' => 'link_list',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
                 'url' => $this->generateUrl('list'),
                 'icon' => 'fas fa-list',
             ];

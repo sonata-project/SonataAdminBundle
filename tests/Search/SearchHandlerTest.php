@@ -3,24 +3,24 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Search;
+namespace SensioLabs\AdminBundle\Tests\Search;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\AdminBundle\Filter\FilterInterface;
-use Sonata\AdminBundle\Search\SearchableFilterInterface;
-use Sonata\AdminBundle\Search\SearchHandler;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Datagrid\DatagridInterface;
+use SensioLabs\AdminBundle\Datagrid\PagerInterface;
+use SensioLabs\AdminBundle\Filter\FilterInterface;
+use SensioLabs\AdminBundle\Search\SearchableFilterInterface;
+use SensioLabs\AdminBundle\Search\SearchHandler;
 
 final class SearchHandlerTest extends TestCase
 {

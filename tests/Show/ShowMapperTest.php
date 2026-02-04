@@ -3,29 +3,29 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Show;
+namespace SensioLabs\AdminBundle\Tests\Show;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Builder\ShowBuilderInterface;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
-use Sonata\AdminBundle\Show\ShowMapper;
-use Sonata\AdminBundle\Tests\App\Builder\ShowBuilder;
-use Sonata\AdminBundle\Tests\App\FieldDescription\FieldDescription;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
-use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Builder\ShowBuilderInterface;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionCollection;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use SensioLabs\AdminBundle\Security\Handler\SecurityHandlerInterface;
+use SensioLabs\AdminBundle\Show\ShowMapper;
+use SensioLabs\AdminBundle\Tests\App\Builder\ShowBuilder;
+use SensioLabs\AdminBundle\Tests\App\FieldDescription\FieldDescription;
+use SensioLabs\AdminBundle\Tests\Fixtures\Admin\CleanAdmin;
+use SensioLabs\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -404,7 +404,7 @@ final class ShowMapperTest extends TestCase
                 'name' => 'Group1',
                 'box_class' => 'box box-primary',
                 'empty_message' => 'message_form_group_empty',
-                'empty_message_translation_domain' => 'SonataAdminBundle',
+                'empty_message_translation_domain' => 'SensioLabsAdminBundle',
                 'fields' => ['fooName1' => 'fooName1', 'fooName2' => 'fooName2', 'fooName3' => 'fooName3', 'fooName4' => 'fooName4'],
             ], ], $this->admin->getShowGroups());
 
@@ -421,7 +421,7 @@ final class ShowMapperTest extends TestCase
                 'name' => 'Group1',
                 'box_class' => 'box box-primary',
                 'empty_message' => 'message_form_group_empty',
-                'empty_message_translation_domain' => 'SonataAdminBundle',
+                'empty_message_translation_domain' => 'SensioLabsAdminBundle',
                 'fields' => ['fooName3' => 'fooName3', 'fooName2' => 'fooName2', 'fooName1' => 'fooName1', 'fooName4' => 'fooName4'],
             ], ], true), print_r($this->admin->getShowGroups(), true));
     }

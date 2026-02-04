@@ -3,33 +3,33 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Controller;
+namespace SensioLabs\AdminBundle\Controller;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\BCLayer\BCHelper;
-use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
-use Sonata\AdminBundle\Exception\LockException;
-use Sonata\AdminBundle\Exception\ModelManagerThrowable;
-use Sonata\AdminBundle\Form\FormErrorIteratorToConstraintViolationList;
-use Sonata\AdminBundle\Model\AuditManagerInterface;
-use Sonata\AdminBundle\Request\AdminFetcherInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
-use Sonata\AdminBundle\Util\AdminObjectAclData;
-use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\BCLayer\BCHelper;
+use SensioLabs\AdminBundle\Bridge\Exporter\AdminExporter;
+use SensioLabs\AdminBundle\Datagrid\ProxyQueryInterface;
+use SensioLabs\AdminBundle\Exception\BadRequestParamHttpException;
+use SensioLabs\AdminBundle\Exception\LockException;
+use SensioLabs\AdminBundle\Exception\ModelManagerThrowable;
+use SensioLabs\AdminBundle\Form\FormErrorIteratorToConstraintViolationList;
+use SensioLabs\AdminBundle\Model\AuditManagerInterface;
+use SensioLabs\AdminBundle\Request\AdminFetcherInterface;
+use SensioLabs\AdminBundle\Templating\TemplateRegistryInterface;
+use SensioLabs\AdminBundle\Util\AdminAclUserManagerInterface;
+use SensioLabs\AdminBundle\Util\AdminObjectAclData;
+use SensioLabs\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\Exporter\ExporterInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormInterface;
@@ -38,7 +38,6 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
@@ -158,14 +157,14 @@ class CRUDController extends AbstractController
             $modelManager->batchDelete($this->admin->getClass(), $query);
             $this->addFlash(
                 'sonata_flash_success',
-                $this->trans('flash_batch_delete_success', [], 'SonataAdminBundle')
+                $this->trans('flash_batch_delete_success', [], 'SensioLabsAdminBundle')
             );
         } catch (ModelManagerThrowable $e) {
             $errorMessage = $this->handleModelManagerThrowable($e);
 
             $this->addFlash(
                 'sonata_flash_error',
-                $errorMessage ?? $this->trans('flash_batch_delete_error', [], 'SonataAdminBundle')
+                $errorMessage ?? $this->trans('flash_batch_delete_error', [], 'SensioLabsAdminBundle')
             );
         }
 
@@ -208,7 +207,7 @@ class CRUDController extends AbstractController
                     $this->trans(
                         'flash_delete_success',
                         ['%name%' => $this->escapeHtml($objectName)],
-                        'SonataAdminBundle'
+                        'SensioLabsAdminBundle'
                     )
                 );
             } catch (ModelManagerThrowable $e) {
@@ -223,7 +222,7 @@ class CRUDController extends AbstractController
                     $errorMessage ?? $this->trans(
                         'flash_delete_error',
                         ['%name%' => $this->escapeHtml($objectName)],
-                        'SonataAdminBundle'
+                        'SensioLabsAdminBundle'
                     )
                 );
             }
@@ -290,7 +289,7 @@ class CRUDController extends AbstractController
                         $this->trans(
                             'flash_edit_success',
                             ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
-                            'SonataAdminBundle'
+                            'SensioLabsAdminBundle'
                         )
                     );
 
@@ -305,7 +304,7 @@ class CRUDController extends AbstractController
                         '%name%' => $this->escapeHtml($this->admin->toString($existingObject)),
                         '%link_start%' => \sprintf('<a href="%s">', $this->admin->generateObjectUrl('edit', $existingObject)),
                         '%link_end%' => '</a>',
-                    ], 'SonataAdminBundle'));
+                    ], 'SensioLabsAdminBundle'));
                 }
             }
 
@@ -320,7 +319,7 @@ class CRUDController extends AbstractController
                     $errorMessage ?? $this->trans(
                         'flash_edit_error',
                         ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
-                        'SonataAdminBundle'
+                        'SensioLabsAdminBundle'
                     )
                 );
             } elseif ($this->isPreviewRequested($request)) {
@@ -426,7 +425,7 @@ class CRUDController extends AbstractController
         if (\is_string($nonRelevantMessage)) {
             $this->addFlash(
                 'sonata_flash_info',
-                $this->trans($nonRelevantMessage, [], 'SonataAdminBundle')
+                $this->trans($nonRelevantMessage, [], 'SensioLabsAdminBundle')
             );
 
             return $this->redirectToList();
@@ -474,7 +473,7 @@ class CRUDController extends AbstractController
             } else {
                 $this->addFlash(
                     'sonata_flash_info',
-                    $this->trans('flash_batch_no_elements_processed', [], 'SonataAdminBundle')
+                    $this->trans('flash_batch_no_elements_processed', [], 'SensioLabsAdminBundle')
                 );
 
                 return $this->redirectToList();
@@ -500,7 +499,7 @@ class CRUDController extends AbstractController
 
         if ($class->isAbstract()) {
             return $this->renderWithExtraParams(
-                '@SonataAdmin/CRUD/select_subclass.html.twig',
+                '@SensioLabsAdmin/CRUD/select_subclass.html.twig',
                 [
                     'action' => 'create',
                 ],
@@ -542,7 +541,7 @@ class CRUDController extends AbstractController
                         $this->trans(
                             'flash_create_success',
                             ['%name%' => $this->escapeHtml($this->admin->toString($newObject))],
-                            'SonataAdminBundle'
+                            'SensioLabsAdminBundle'
                         )
                     );
 
@@ -566,7 +565,7 @@ class CRUDController extends AbstractController
                     $errorMessage ?? $this->trans(
                         'flash_create_error',
                         ['%name%' => $this->escapeHtml($this->admin->toString($newObject))],
-                        'SonataAdminBundle'
+                        'SensioLabsAdminBundle'
                     )
                 );
             } elseif ($this->isPreviewRequested($request)) {
@@ -861,7 +860,7 @@ class CRUDController extends AbstractController
                     $adminObjectAclManipulator->$updateMethod($adminObjectAclData);
                     $this->addFlash(
                         'sonata_flash_success',
-                        $this->trans('flash_acl_edit_success', [], 'SonataAdminBundle')
+                        $this->trans('flash_acl_edit_success', [], 'SensioLabsAdminBundle')
                     );
 
                     return new RedirectResponse($this->admin->generateObjectUrl('acl', $object));

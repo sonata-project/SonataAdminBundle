@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,24 +13,24 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Sonata\AdminBundle\Twig\BreadcrumbsRuntime;
-use Sonata\AdminBundle\Twig\CanonicalizeRuntime;
-use Sonata\AdminBundle\Twig\Extension\BreadcrumbsExtension;
-use Sonata\AdminBundle\Twig\Extension\CanonicalizeExtension;
-use Sonata\AdminBundle\Twig\Extension\GroupExtension;
-use Sonata\AdminBundle\Twig\Extension\IconExtension;
-use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
-use Sonata\AdminBundle\Twig\Extension\SecurityExtension;
-use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
-use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
-use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
-use Sonata\AdminBundle\Twig\GroupRuntime;
-use Sonata\AdminBundle\Twig\IconRuntime;
-use Sonata\AdminBundle\Twig\RenderElementRuntime;
-use Sonata\AdminBundle\Twig\SecurityRuntime;
-use Sonata\AdminBundle\Twig\SonataAdminRuntime;
-use Sonata\AdminBundle\Twig\TemplateRegistryRuntime;
-use Sonata\AdminBundle\Twig\XEditableRuntime;
+use SensioLabs\AdminBundle\Twig\BreadcrumbsRuntime;
+use SensioLabs\AdminBundle\Twig\CanonicalizeRuntime;
+use SensioLabs\AdminBundle\Twig\Extension\BreadcrumbsExtension;
+use SensioLabs\AdminBundle\Twig\Extension\CanonicalizeExtension;
+use SensioLabs\AdminBundle\Twig\Extension\GroupExtension;
+use SensioLabs\AdminBundle\Twig\Extension\IconExtension;
+use SensioLabs\AdminBundle\Twig\Extension\RenderElementExtension;
+use SensioLabs\AdminBundle\Twig\Extension\SecurityExtension;
+use SensioLabs\AdminBundle\Twig\Extension\SensioLabsAdminExtension;
+use SensioLabs\AdminBundle\Twig\Extension\TemplateRegistryExtension;
+use SensioLabs\AdminBundle\Twig\Extension\XEditableExtension;
+use SensioLabs\AdminBundle\Twig\GroupRuntime;
+use SensioLabs\AdminBundle\Twig\IconRuntime;
+use SensioLabs\AdminBundle\Twig\RenderElementRuntime;
+use SensioLabs\AdminBundle\Twig\SecurityRuntime;
+use SensioLabs\AdminBundle\Twig\SensioLabsAdminRuntime;
+use SensioLabs\AdminBundle\Twig\TemplateRegistryRuntime;
+use SensioLabs\AdminBundle\Twig\XEditableRuntime;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->parameters()
@@ -39,10 +39,10 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
     $containerConfigurator->services()
 
-        ->set('sonata.admin.twig.sonata_admin_extension', SonataAdminExtension::class)
+        ->set('sonata.admin.twig.sonata_admin_extension', SensioLabsAdminExtension::class)
             ->tag('twig.extension')
 
-        ->set('sonata.admin.twig.sonata_admin_runtime', SonataAdminRuntime::class)
+        ->set('sonata.admin.twig.sonata_admin_runtime', SensioLabsAdminRuntime::class)
             ->tag('twig.runtime')
             ->args([
                 service('sonata.admin.pool'),

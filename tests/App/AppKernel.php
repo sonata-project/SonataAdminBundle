@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\App;
+namespace SensioLabs\AdminBundle\Tests\App;
 
 use Knp\Bundle\MenuBundle\KnpMenuBundle;
-use Sonata\AdminBundle\SonataAdminBundle;
+use SensioLabs\AdminBundle\SensioLabsAdminBundle;
 use Sonata\BlockBundle\SonataBlockBundle;
 use Sonata\Doctrine\Bridge\Symfony\SonataDoctrineBundle;
 use Sonata\Form\Bridge\Symfony\SonataFormBundle;
@@ -44,7 +44,7 @@ final class AppKernel extends Kernel
             new StimulusBundle(),
             new SonataBlockBundle(),
             new SonataDoctrineBundle(),
-            new SonataAdminBundle(),
+            new SensioLabsAdminBundle(),
             new SonataTwigBundle(),
             new SonataFormBundle(),
         ];
@@ -104,7 +104,7 @@ final class AppKernel extends Kernel
         $containerBuilder->loadFromExtension('twig', [
             'default_path' => \sprintf('%s/templates', $this->getProjectDir()),
             'strict_variables' => true,
-            'form_themes' => ['@SonataAdmin/Form/form_admin_fields.html.twig'],
+            'form_themes' => ['@SensioLabsAdmin/Form/form_admin_fields.html.twig'],
         ]);
 
         $loader->load(\sprintf('%s/config/services.yml', $this->getProjectDir()));

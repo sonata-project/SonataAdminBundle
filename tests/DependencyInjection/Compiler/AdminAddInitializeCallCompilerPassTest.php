@@ -3,20 +3,20 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
+namespace SensioLabs\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AdminAddInitializeCallCompilerPass;
-use Sonata\AdminBundle\Tests\App\Admin\FooAdmin;
+use SensioLabs\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\AdminAddInitializeCallCompilerPass;
+use SensioLabs\AdminBundle\Tests\App\Admin\FooAdmin;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 final class AdminAddInitializeCallCompilerPassTest extends TestCase

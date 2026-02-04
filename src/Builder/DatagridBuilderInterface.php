@@ -3,24 +3,24 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Builder;
+namespace SensioLabs\AdminBundle\Builder;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Datagrid\DatagridInterface;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * @phpstan-template T of \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
+ * @phpstan-template T of \SensioLabs\AdminBundle\Datagrid\ProxyQueryInterface
  */
 interface DatagridBuilderInterface
 {
@@ -28,6 +28,7 @@ interface DatagridBuilderInterface
      * Adds missing information to the given field description.
      */
     public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void;
+
     /**
      * @phpstan-param DatagridInterface<T> $datagrid
      * @phpstan-param class-string|null    $type

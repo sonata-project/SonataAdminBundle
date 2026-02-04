@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
+namespace SensioLabs\AdminBundle\Tests\Form\Type\Filter;
 
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
-use Sonata\AdminBundle\Form\Type\Filter\DateType;
+use SensioLabs\AdminBundle\Form\Type\Filter\DateType;
 
 /**
  * NEXT_MAJOR: Remove this class.

@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Menu\Provider;
+namespace SensioLabs\AdminBundle\Tests\Menu\Provider;
 
 use Knp\Menu\Integration\Symfony\RoutingExtension;
 use Knp\Menu\ItemInterface;
@@ -20,9 +20,9 @@ use Knp\Menu\MenuItem;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Menu\Provider\GroupMenuProvider;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Menu\Provider\GroupMenuProvider;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -112,7 +112,7 @@ final class GroupMenuProviderTest extends TestCase
 
         $extras = $item->getExtras();
         static::assertArrayHasKey('translation_domain', $extras);
-        static::assertSame('SonataAdminBundle', $extras['translation_domain']);
+        static::assertSame('SensioLabsAdminBundle', $extras['translation_domain']);
     }
 
     public function unanimousGrantCheckerMock(string $role): bool
@@ -236,12 +236,12 @@ final class GroupMenuProviderTest extends TestCase
 
         $extras = $item->getExtras();
         static::assertArrayHasKey('translation_domain', $extras);
-        static::assertSame('SonataAdminBundle', $extras['translation_domain']);
+        static::assertSame('SensioLabsAdminBundle', $extras['translation_domain']);
 
         static::assertInstanceOf(MenuItem::class, $menu['route_label']);
         $extras = $menu['route_label']->getExtras();
         static::assertArrayHasKey('translation_domain', $extras);
-        static::assertSame('SonataAdminBundle', $extras['translation_domain']);
+        static::assertSame('SensioLabsAdminBundle', $extras['translation_domain']);
 
         static::assertSame('http://sonata-project/FooRoute?foo=bar', $menu['route_label']->getUri());
         static::assertInstanceOf(MenuItem::class, $menu['relative_route']);
@@ -382,7 +382,7 @@ final class GroupMenuProviderTest extends TestCase
             [
                 'label' => 'foo',
                 'icon' => '<i class="fas fa-edit"></i>',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
                 'items' => [
                     [
                         'admin' => 'sonata_admin_foo_service',
@@ -426,7 +426,7 @@ final class GroupMenuProviderTest extends TestCase
             [
                 'label' => 'foo',
                 'icon' => '<i class="fas fa-edit"></i>',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
                 'items' => [
                     [
                         'admin' => '',
@@ -471,7 +471,7 @@ final class GroupMenuProviderTest extends TestCase
             [
                 'label' => 'foo',
                 'icon' => '<i class="fas fa-edit"></i>',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
                 'items' => [
                     [
                         'admin' => '',
@@ -522,7 +522,7 @@ final class GroupMenuProviderTest extends TestCase
             [
                 'label' => 'foo1',
                 'icon' => '<i class="fas fa-edit"></i>',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
                 'items' => [
                     [
                         'admin' => '',
@@ -542,7 +542,7 @@ final class GroupMenuProviderTest extends TestCase
             [
                 'label' => 'foo2',
                 'icon' => '<i class="fas fa-edit"></i>',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
                 'items' => [
                     [
                         'admin' => '',
@@ -562,7 +562,7 @@ final class GroupMenuProviderTest extends TestCase
             [
                 'label' => 'foo3',
                 'icon' => '<i class="fas fa-edit"></i>',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
                 'items' => [
                     [
                         'admin' => '',
@@ -589,7 +589,7 @@ final class GroupMenuProviderTest extends TestCase
             [
                 'label' => 'foo_on_top',
                 'icon' => '<i class="fas fa-edit"></i>',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
                 'keep_open' => false,
                 'on_top' => true,
                 'items' => [
@@ -617,7 +617,7 @@ final class GroupMenuProviderTest extends TestCase
             [
                 'label' => 'foo',
                 'icon' => '<i class="fas fa-edit"></i>',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
                 'keep_open' => false,
                 'on_top' => false,
                 'items' => [
@@ -639,7 +639,7 @@ final class GroupMenuProviderTest extends TestCase
             [
                 'label' => 'foo',
                 'icon' => '<i class="fas fa-edit"></i>',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
                 'keep_open' => false,
                 'on_top' => false,
                 'items' => [
@@ -694,7 +694,7 @@ final class GroupMenuProviderTest extends TestCase
 
         $admin
             ->method('getTranslationDomain')
-            ->willReturn('SonataAdminBundle');
+            ->willReturn('SensioLabsAdminBundle');
 
         return $admin;
     }

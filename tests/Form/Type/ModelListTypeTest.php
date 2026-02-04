@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Form\Type;
+namespace SensioLabs\AdminBundle\Tests\Form\Type;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Sonata\AdminBundle\Form\Type\ModelListType;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
+use SensioLabs\AdminBundle\Form\Type\ModelListType;
+use SensioLabs\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -49,8 +49,8 @@ final class ModelListTypeTest extends TypeTestCase
         static::assertSame('link_edit', $options['btn_edit']);
         static::assertSame('link_list', $options['btn_list']);
         static::assertSame('link_delete', $options['btn_delete']);
-        static::assertSame('SonataAdminBundle', $options['btn_catalogue']);
-        static::assertSame('SonataAdminBundle', $options['btn_translation_domain']);
+        static::assertSame('SensioLabsAdminBundle', $options['btn_catalogue']);
+        static::assertSame('SensioLabsAdminBundle', $options['btn_translation_domain']);
     }
 
     public function testSubmitValidData(): void

@@ -3,32 +3,32 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\DependencyInjection\Admin;
+namespace SensioLabs\AdminBundle\DependencyInjection\Admin;
 
 use Knp\Menu\FactoryInterface;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
-use Sonata\AdminBundle\Builder\FormContractorInterface;
-use Sonata\AdminBundle\Builder\ListBuilderInterface;
-use Sonata\AdminBundle\Builder\RouteBuilderInterface;
-use Sonata\AdminBundle\Builder\ShowBuilderInterface;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Exporter\DataSourceInterface;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
-use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Route\RouteGeneratorInterface;
-use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
-use Sonata\AdminBundle\Templating\MutableTemplateRegistryAwareInterface;
-use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Builder\DatagridBuilderInterface;
+use SensioLabs\AdminBundle\Builder\FormContractorInterface;
+use SensioLabs\AdminBundle\Builder\ListBuilderInterface;
+use SensioLabs\AdminBundle\Builder\RouteBuilderInterface;
+use SensioLabs\AdminBundle\Builder\ShowBuilderInterface;
+use SensioLabs\AdminBundle\Datagrid\ProxyQueryInterface;
+use SensioLabs\AdminBundle\Exporter\DataSourceInterface;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
+use SensioLabs\AdminBundle\Filter\Persister\FilterPersisterInterface;
+use SensioLabs\AdminBundle\Model\ModelManagerInterface;
+use SensioLabs\AdminBundle\Route\RouteGeneratorInterface;
+use SensioLabs\AdminBundle\Security\Handler\SecurityHandlerInterface;
+use SensioLabs\AdminBundle\Templating\MutableTemplateRegistryAwareInterface;
+use SensioLabs\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**

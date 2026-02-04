@@ -3,30 +3,30 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection;
+namespace SensioLabs\AdminBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Configuration;
-use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
-use Sonata\AdminBundle\Filter\FilterFactoryInterface;
-use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
-use Sonata\AdminBundle\Model\AuditManagerInterface;
-use Sonata\AdminBundle\Model\AuditReaderInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use SensioLabs\AdminBundle\Admin\BreadcrumbsBuilderInterface;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Bridge\Exporter\AdminExporter;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\Configuration;
+use SensioLabs\AdminBundle\DependencyInjection\SensioLabsAdminExtension;
+use SensioLabs\AdminBundle\Filter\FilterFactoryInterface;
+use SensioLabs\AdminBundle\Filter\Persister\FilterPersisterInterface;
+use SensioLabs\AdminBundle\Model\AuditManagerInterface;
+use SensioLabs\AdminBundle\Model\AuditReaderInterface;
+use SensioLabs\AdminBundle\Model\ModelManagerInterface;
+use SensioLabs\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
@@ -312,45 +312,45 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         $this->load();
 
         static::assertSame([
-            'user_block' => '@SonataAdmin/Core/user_block.html.twig',
-            'add_block' => '@SonataAdmin/Core/add_block.html.twig',
-            'layout' => '@SonataAdmin/standard_layout.html.twig',
-            'ajax' => '@SonataAdmin/ajax_layout.html.twig',
-            'dashboard' => '@SonataAdmin/Core/dashboard.html.twig',
-            'search' => '@SonataAdmin/Core/search.html.twig',
-            'list' => '@SonataAdmin/CRUD/list.html.twig',
-            'filter' => '@SonataAdmin/Form/filter_admin_fields.html.twig',
-            'show' => '@SonataAdmin/CRUD/show.html.twig',
-            'show_compare' => '@SonataAdmin/CRUD/show_compare.html.twig',
-            'edit' => '@SonataAdmin/CRUD/edit.html.twig',
-            'preview' => '@SonataAdmin/CRUD/preview.html.twig',
-            'history' => '@SonataAdmin/CRUD/history.html.twig',
-            'acl' => '@SonataAdmin/CRUD/acl.html.twig',
-            'history_revision_timestamp' => '@SonataAdmin/CRUD/history_revision_timestamp.html.twig',
-            'action' => '@SonataAdmin/CRUD/action.html.twig',
-            'select' => '@SonataAdmin/CRUD/list__select.html.twig',
-            'list_block' => '@SonataAdmin/Block/block_admin_list.html.twig',
-            'search_result_block' => '@SonataAdmin/Block/block_search_result.html.twig',
-            'short_object_description' => '@SonataAdmin/Helper/short-object-description.html.twig',
-            'delete' => '@SonataAdmin/CRUD/delete.html.twig',
-            'batch' => '@SonataAdmin/CRUD/list__batch.html.twig',
-            'batch_confirmation' => '@SonataAdmin/CRUD/batch_confirmation.html.twig',
-            'inner_list_row' => '@SonataAdmin/CRUD/list_inner_row.html.twig',
-            'outer_list_rows_mosaic' => '@SonataAdmin/CRUD/list_outer_rows_mosaic.html.twig',
-            'outer_list_rows_list' => '@SonataAdmin/CRUD/list_outer_rows_list.html.twig',
-            'outer_list_rows_tree' => '@SonataAdmin/CRUD/list_outer_rows_tree.html.twig',
-            'base_list_field' => '@SonataAdmin/CRUD/base_list_field.html.twig',
-            'pager_links' => '@SonataAdmin/Pager/links.html.twig',
-            'pager_results' => '@SonataAdmin/Pager/results.html.twig',
-            'tab_menu_template' => '@SonataAdmin/Core/tab_menu_template.html.twig',
-            'knp_menu_template' => '@SonataAdmin/Menu/sonata_menu.html.twig',
-            'action_create' => '@SonataAdmin/CRUD/dashboard__action_create.html.twig',
-            'button_acl' => '@SonataAdmin/Button/acl_button.html.twig',
-            'button_create' => '@SonataAdmin/Button/create_button.html.twig',
-            'button_edit' => '@SonataAdmin/Button/edit_button.html.twig',
-            'button_history' => '@SonataAdmin/Button/history_button.html.twig',
-            'button_list' => '@SonataAdmin/Button/list_button.html.twig',
-            'button_show' => '@SonataAdmin/Button/show_button.html.twig',
+            'user_block' => '@SensioLabsAdmin/Core/user_block.html.twig',
+            'add_block' => '@SensioLabsAdmin/Core/add_block.html.twig',
+            'layout' => '@SensioLabsAdmin/standard_layout.html.twig',
+            'ajax' => '@SensioLabsAdmin/ajax_layout.html.twig',
+            'dashboard' => '@SensioLabsAdmin/Core/dashboard.html.twig',
+            'search' => '@SensioLabsAdmin/Core/search.html.twig',
+            'list' => '@SensioLabsAdmin/CRUD/list.html.twig',
+            'filter' => '@SensioLabsAdmin/Form/filter_admin_fields.html.twig',
+            'show' => '@SensioLabsAdmin/CRUD/show.html.twig',
+            'show_compare' => '@SensioLabsAdmin/CRUD/show_compare.html.twig',
+            'edit' => '@SensioLabsAdmin/CRUD/edit.html.twig',
+            'preview' => '@SensioLabsAdmin/CRUD/preview.html.twig',
+            'history' => '@SensioLabsAdmin/CRUD/history.html.twig',
+            'acl' => '@SensioLabsAdmin/CRUD/acl.html.twig',
+            'history_revision_timestamp' => '@SensioLabsAdmin/CRUD/history_revision_timestamp.html.twig',
+            'action' => '@SensioLabsAdmin/CRUD/action.html.twig',
+            'select' => '@SensioLabsAdmin/CRUD/list__select.html.twig',
+            'list_block' => '@SensioLabsAdmin/Block/block_admin_list.html.twig',
+            'search_result_block' => '@SensioLabsAdmin/Block/block_search_result.html.twig',
+            'short_object_description' => '@SensioLabsAdmin/Helper/short-object-description.html.twig',
+            'delete' => '@SensioLabsAdmin/CRUD/delete.html.twig',
+            'batch' => '@SensioLabsAdmin/CRUD/list__batch.html.twig',
+            'batch_confirmation' => '@SensioLabsAdmin/CRUD/batch_confirmation.html.twig',
+            'inner_list_row' => '@SensioLabsAdmin/CRUD/list_inner_row.html.twig',
+            'outer_list_rows_mosaic' => '@SensioLabsAdmin/CRUD/list_outer_rows_mosaic.html.twig',
+            'outer_list_rows_list' => '@SensioLabsAdmin/CRUD/list_outer_rows_list.html.twig',
+            'outer_list_rows_tree' => '@SensioLabsAdmin/CRUD/list_outer_rows_tree.html.twig',
+            'base_list_field' => '@SensioLabsAdmin/CRUD/base_list_field.html.twig',
+            'pager_links' => '@SensioLabsAdmin/Pager/links.html.twig',
+            'pager_results' => '@SensioLabsAdmin/Pager/results.html.twig',
+            'tab_menu_template' => '@SensioLabsAdmin/Core/tab_menu_template.html.twig',
+            'knp_menu_template' => '@SensioLabsAdmin/Menu/sonata_menu.html.twig',
+            'action_create' => '@SensioLabsAdmin/CRUD/dashboard__action_create.html.twig',
+            'button_acl' => '@SensioLabsAdmin/Button/acl_button.html.twig',
+            'button_create' => '@SensioLabsAdmin/Button/create_button.html.twig',
+            'button_edit' => '@SensioLabsAdmin/Button/edit_button.html.twig',
+            'button_history' => '@SensioLabsAdmin/Button/history_button.html.twig',
+            'button_list' => '@SensioLabsAdmin/Button/list_button.html.twig',
+            'button_show' => '@SensioLabsAdmin/Button/show_button.html.twig',
             'form_theme' => [],
             'filter_theme' => [],
         ], $this->container->getParameter('sonata.admin.configuration.templates'));
@@ -449,7 +449,7 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
 
     protected function getContainerExtensions(): array
     {
-        return [new SonataAdminExtension()];
+        return [new SensioLabsAdminExtension()];
     }
 
     /**

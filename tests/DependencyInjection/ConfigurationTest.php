@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection;
+namespace SensioLabs\AdminBundle\Tests\DependencyInjection;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\DependencyInjection\Configuration;
-use Sonata\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
+use SensioLabs\AdminBundle\DependencyInjection\Configuration;
+use SensioLabs\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 use Symfony\Component\Config\Definition\Processor;
 
@@ -33,7 +33,7 @@ final class ConfigurationTest extends TestCase
         static::assertTrue($config['options']['use_icheck']);
         static::assertSame('bundles/sonataadmin/images/default_mosaic_image.png', $config['options']['mosaic_background']);
         static::assertSame('default', $config['options']['default_group']);
-        static::assertSame('SonataAdminBundle', $config['options']['default_label_catalogue']);
+        static::assertSame('SensioLabsAdminBundle', $config['options']['default_label_catalogue']);
         static::assertNull($config['options']['default_translation_domain']);
         static::assertSame('fas fa-folder', $config['options']['default_icon']);
     }

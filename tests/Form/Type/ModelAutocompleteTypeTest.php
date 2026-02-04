@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Form\Type;
+namespace SensioLabs\AdminBundle\Tests\Form\Type;
 
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
+use SensioLabs\AdminBundle\Datagrid\DatagridInterface;
+use SensioLabs\AdminBundle\Form\Type\ModelAutocompleteType;
+use SensioLabs\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -69,13 +69,13 @@ final class ModelAutocompleteTypeTest extends TypeTestCase
         static::assertSame('', $options['dropdown_css_class']);
         static::assertSame('', $options['dropdown_item_css_class']);
 
-        static::assertSame('@SonataAdmin/Form/Type/sonata_type_model_autocomplete.html.twig', $options['template']);
+        static::assertSame('@SensioLabsAdmin/Form/Type/sonata_type_model_autocomplete.html.twig', $options['template']);
 
         static::assertSame('', $options['context']);
 
         static::assertSame('link_add', $options['btn_add']);
-        static::assertSame('SonataAdminBundle', $options['btn_catalogue']);
-        static::assertSame('SonataAdminBundle', $options['btn_translation_domain']);
+        static::assertSame('SensioLabsAdminBundle', $options['btn_catalogue']);
+        static::assertSame('SensioLabsAdminBundle', $options['btn_translation_domain']);
     }
 
     public function testGetBlockPrefix(): void

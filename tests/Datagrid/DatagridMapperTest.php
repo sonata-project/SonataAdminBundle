@@ -3,30 +3,30 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Datagrid;
+namespace SensioLabs\AdminBundle\Tests\Datagrid;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
-use Sonata\AdminBundle\Datagrid\Datagrid;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Filter\Filter;
-use Sonata\AdminBundle\Filter\FilterInterface;
-use Sonata\AdminBundle\Tests\App\FieldDescription\FieldDescription;
-use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Builder\DatagridBuilderInterface;
+use SensioLabs\AdminBundle\Datagrid\Datagrid;
+use SensioLabs\AdminBundle\Datagrid\DatagridMapper;
+use SensioLabs\AdminBundle\Datagrid\PagerInterface;
+use SensioLabs\AdminBundle\Datagrid\ProxyQueryInterface;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionCollection;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use SensioLabs\AdminBundle\Filter\Filter;
+use SensioLabs\AdminBundle\Filter\FilterInterface;
+use SensioLabs\AdminBundle\Tests\App\FieldDescription\FieldDescription;
+use SensioLabs\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilder;
 

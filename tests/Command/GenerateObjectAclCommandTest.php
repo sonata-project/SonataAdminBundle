@@ -3,22 +3,22 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Command;
+namespace SensioLabs\AdminBundle\Tests\Command;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Command\GenerateObjectAclCommand;
-use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
-use Sonata\AdminBundle\Util\ObjectAclManipulatorInterface;
+use SensioLabs\AdminBundle\Admin\AbstractAdmin;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Command\GenerateObjectAclCommand;
+use SensioLabs\AdminBundle\Tests\Fixtures\Entity\Foo;
+use SensioLabs\AdminBundle\Util\ObjectAclManipulatorInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Tester\CommandTester;

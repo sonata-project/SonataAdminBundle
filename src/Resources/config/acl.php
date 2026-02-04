@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,12 +13,12 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Sonata\AdminBundle\Command\GenerateObjectAclCommand;
-use Sonata\AdminBundle\Command\SetupAclCommand;
-use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
-use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
-use Sonata\AdminBundle\Util\AdminAclManipulator;
-use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
+use SensioLabs\AdminBundle\Command\GenerateObjectAclCommand;
+use SensioLabs\AdminBundle\Command\SetupAclCommand;
+use SensioLabs\AdminBundle\Security\Acl\Permission\MaskBuilder;
+use SensioLabs\AdminBundle\Security\Handler\AclSecurityHandler;
+use SensioLabs\AdminBundle\Util\AdminAclManipulator;
+use SensioLabs\AdminBundle\Util\AdminObjectAclManipulator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->parameters()

@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Menu;
+namespace SensioLabs\AdminBundle\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Event\ConfigureMenuEvent;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Event\ConfigureMenuEvent;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**

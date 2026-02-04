@@ -3,20 +3,20 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\App\Builder;
+namespace SensioLabs\AdminBundle\Tests\App\Builder;
 
-use Sonata\AdminBundle\Builder\ListBuilderInterface;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use SensioLabs\AdminBundle\Builder\ListBuilderInterface;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionCollection;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use SensioLabs\AdminBundle\Templating\TemplateRegistryInterface;
 
 final class ListBuilder implements ListBuilderInterface
 {

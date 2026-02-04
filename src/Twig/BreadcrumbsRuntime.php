@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Twig;
+namespace SensioLabs\AdminBundle\Twig;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Twig\Environment;
 use Twig\Extension\RuntimeExtensionInterface;
 
@@ -39,7 +39,7 @@ final class BreadcrumbsRuntime implements RuntimeExtensionInterface
         AdminInterface $admin,
         string $action,
     ): string {
-        return $environment->render('@SonataAdmin/Breadcrumb/breadcrumb.html.twig', [
+        return $environment->render('@SensioLabsAdmin/Breadcrumb/breadcrumb.html.twig', [
             'items' => $this->breadcrumbsBuilder->getBreadcrumbs($admin, $action),
         ]);
     }
@@ -55,7 +55,7 @@ final class BreadcrumbsRuntime implements RuntimeExtensionInterface
         AdminInterface $admin,
         string $action,
     ): string {
-        return $environment->render('@SonataAdmin/Breadcrumb/breadcrumb_title.html.twig', [
+        return $environment->render('@SensioLabsAdmin/Breadcrumb/breadcrumb_title.html.twig', [
             'items' => $this->breadcrumbsBuilder->getBreadcrumbs($admin, $action),
         ]);
     }

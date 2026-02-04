@@ -3,17 +3,17 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Form\Type\Operator;
+namespace SensioLabs\AdminBundle\Tests\Form\Type\Operator;
 
-use Sonata\AdminBundle\Form\Type\Operator\StringOperatorType;
+use SensioLabs\AdminBundle\Form\Type\Operator\StringOperatorType;
 use Symfony\Component\Form\Test\TypeTestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -34,6 +34,6 @@ final class StringOperatorTypeTest extends TypeTestCase
         $formType->configureOptions($optionsResolver);
         $options = $optionsResolver->resolve([]);
         static::assertSame($expectedChoices, $options['choices']);
-        static::assertSame('SonataAdminBundle', $options['choice_translation_domain']);
+        static::assertSame('SensioLabsAdminBundle', $options['choice_translation_domain']);
     }
 }

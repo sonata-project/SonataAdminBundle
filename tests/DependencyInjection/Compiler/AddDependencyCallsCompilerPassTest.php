@@ -3,26 +3,26 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
+namespace SensioLabs\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
-use Sonata\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
+use SensioLabs\AdminBundle\Admin\AbstractAdmin;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\SensioLabsAdminExtension;
+use SensioLabs\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
@@ -37,13 +37,13 @@ use Symfony\Component\DependencyInjection\Reference;
 #[CoversMethod(AddDependencyCallsCompilerPass::class, 'process')]
 final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestCase
 {
-    private SonataAdminExtension $extension;
+    private SensioLabsAdminExtension $extension;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->extension = new SonataAdminExtension();
+        $this->extension = new SensioLabsAdminExtension();
     }
 
     public function testTranslatorDisabled(): void
@@ -84,7 +84,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         static::assertArrayHasKey('items', $dashboardGroupsSettings['sonata_group_one']);
         static::assertArrayHasKey('roles', $dashboardGroupsSettings['sonata_group_one']);
         static::assertSame('Group One Label', $dashboardGroupsSettings['sonata_group_one']['label']);
-        static::assertSame('SonataAdminBundle', $dashboardGroupsSettings['sonata_group_one']['translation_domain']);
+        static::assertSame('SensioLabsAdminBundle', $dashboardGroupsSettings['sonata_group_one']['translation_domain']);
         static::assertFalse($dashboardGroupsSettings['sonata_group_one']['on_top']);
         static::assertTrue($dashboardGroupsSettings['sonata_group_three']['on_top']);
         static::assertFalse($dashboardGroupsSettings['sonata_group_one']['keep_open']);
@@ -150,7 +150,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         static::assertArrayHasKey('items', $adminGroups['sonata_group_one']);
         static::assertArrayHasKey('roles', $adminGroups['sonata_group_one']);
         static::assertSame('Group One Label', $adminGroups['sonata_group_one']['label']);
-        static::assertSame('SonataAdminBundle', $adminGroups['sonata_group_one']['translation_domain']);
+        static::assertSame('SensioLabsAdminBundle', $adminGroups['sonata_group_one']['translation_domain']);
         static::assertFalse($adminGroups['sonata_group_one']['on_top']);
         static::assertTrue($adminGroups['sonata_group_three']['on_top']);
         static::assertFalse($adminGroups['sonata_group_one']['keep_open']);
@@ -312,8 +312,8 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $postAdminTemplates = $this->container->findDefinition('sonata_post_admin.template_registry')->getArgument(0);
 
         static::assertIsArray($postAdminTemplates);
-        static::assertSame('@SonataAdmin/Pager/simple_pager_results.html.twig', $postAdminTemplates['pager_results']);
-        static::assertSame('@SonataAdmin/Button/create_button.html.twig', $postAdminTemplates['button_create']);
+        static::assertSame('@SensioLabsAdmin/Pager/simple_pager_results.html.twig', $postAdminTemplates['pager_results']);
+        static::assertSame('@SensioLabsAdmin/Button/create_button.html.twig', $postAdminTemplates['button_create']);
     }
 
     public function testApplyShowMosaicButtonConfiguration(): void
@@ -370,7 +370,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $config = $this->getConfig();
         $config['dashboard']['groups']['sonata_group_five'] = [
             'label' => 'Group One Label',
-            'translation_domain' => 'SonataAdminBundle',
+            'translation_domain' => 'SensioLabsAdminBundle',
             'on_top' => true,
             'items' => [
                 'sonata_post_admin',
@@ -562,7 +562,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->extension->load([$config], $this->container);
 
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('The class Sonata\AdminBundle\Tests\DependencyInjection\Compiler\PostEntity has two admins sonata_post_admin and sonata_post_admin_2 with the "default" attribute set to true. Only one is allowed.');
+        $this->expectExceptionMessage('The class SensioLabs\AdminBundle\Tests\DependencyInjection\Compiler\PostEntity has two admins sonata_post_admin and sonata_post_admin_2 with the "default" attribute set to true. Only one is allowed.');
 
         $this->compile();
     }
@@ -732,7 +732,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
                 'groups' => [
                     'sonata_group_one' => [
                         'label' => 'Group One Label',
-                        'translation_domain' => 'SonataAdminBundle',
+                        'translation_domain' => 'SensioLabsAdminBundle',
                         'items' => [
                             'sonata_post_admin',
                             [
@@ -756,7 +756,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
                     'sonata_group_four' => [
                         'on_top' => true,
                         'label' => 'Group Four Label',
-                        'translation_domain' => 'SonataAdminBundle',
+                        'translation_domain' => 'SensioLabsAdminBundle',
                         'items' => [
                             'sonata_post_admin',
                         ],

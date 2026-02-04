@@ -3,20 +3,20 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Form\Type;
+namespace SensioLabs\AdminBundle\Form\Type;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
-use Sonata\AdminBundle\Manipulator\ObjectManipulator;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use SensioLabs\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
+use SensioLabs\AdminBundle\Manipulator\ObjectManipulator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -53,7 +53,7 @@ final class AdminType extends AbstractType
         }
 
         // hack to make sure the subject is correctly set
-        // https://github.com/sonata-project/SonataAdminBundle/pull/2076
+        // https://github.com/sonata-project/SensioLabsAdminBundle/pull/2076
         if (null === $builder->getData()) {
             $propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
                 ->disableMagicCall()
@@ -66,7 +66,7 @@ final class AdminType extends AbstractType
 
                 if ($parentAdmin->hasSubject() && isset($options['property_path'])) {
                     // this check is to work around duplication issue in property path
-                    // https://github.com/sonata-project/SonataAdminBundle/issues/4425
+                    // https://github.com/sonata-project/SensioLabsAdminBundle/issues/4425
                     if ($this->getFieldDescription($options)->getFieldName() === $options['property_path']) {
                         $path = $options['property_path'];
                     } else {
@@ -117,7 +117,7 @@ final class AdminType extends AbstractType
 
         // NEXT_MAJOR: Remove the btn_catalogue usage.
         $view->vars['btn_translation_domain'] =
-            'SonataAdminBundle' !== $options['btn_translation_domain']
+            'SensioLabsAdminBundle' !== $options['btn_translation_domain']
                 ? $options['btn_translation_domain']
                 : $options['btn_catalogue'];
         $view->vars['btn_catalogue'] = $options['btn_catalogue'];
@@ -138,8 +138,8 @@ final class AdminType extends AbstractType
             'btn_add' => 'link_add',
             'btn_list' => 'link_list',
             'btn_delete' => 'link_delete',
-            'btn_catalogue' => 'SonataAdminBundle', // NEXT_MAJOR: Remove this option.
-            'btn_translation_domain' => 'SonataAdminBundle',
+            'btn_catalogue' => 'SensioLabsAdminBundle', // NEXT_MAJOR: Remove this option.
+            'btn_translation_domain' => 'SensioLabsAdminBundle',
             'collection_by_reference' => true,
         ]);
 
@@ -148,7 +148,7 @@ final class AdminType extends AbstractType
             'sonata-project/admin-bundle',
             '4.9',
             static function (Options $options, mixed $value): string {
-                if ('SonataAdminBundle' !== $value) {
+                if ('SensioLabsAdminBundle' !== $value) {
                     return 'Passing a value to option "btn_catalogue" is deprecated! Use "btn_translation_domain" instead!';
                 }
 

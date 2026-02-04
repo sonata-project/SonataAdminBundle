@@ -18,7 +18,7 @@ file that was distributed with this source code.
         {%- set route = route|merge({parameters: route.parameters|default([])|merge(newParameters)}) -%}
     {%- endif -%}
 
-    {%- include '@SonataAdmin/CRUD/display_url.html.twig' with {
+    {%- include '@SensioLabsAdmin/CRUD/display_url.html.twig' with {
         value: value,
         url: field_description.option('url'),
         route: route,

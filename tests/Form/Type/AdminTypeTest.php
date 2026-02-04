@@ -3,24 +3,24 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Form\Type;
+namespace SensioLabs\AdminBundle\Tests\Form\Type;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
-use Sonata\AdminBundle\Form\Type\AdminType;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
-use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use SensioLabs\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
+use SensioLabs\AdminBundle\Form\Type\AdminType;
+use SensioLabs\AdminBundle\Model\ModelManagerInterface;
+use SensioLabs\AdminBundle\Tests\Fixtures\Entity\Foo;
+use SensioLabs\AdminBundle\Tests\Fixtures\TestExtension;
 use Symfony\Component\Form\FormExtensionInterface;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
@@ -51,8 +51,8 @@ final class AdminTypeTest extends TypeTestCase
         static::assertSame('link_add', $options['btn_add']);
         static::assertSame('link_list', $options['btn_list']);
         static::assertSame('link_delete', $options['btn_delete']);
-        static::assertSame('SonataAdminBundle', $options['btn_catalogue']);
-        static::assertSame('SonataAdminBundle', $options['btn_translation_domain']);
+        static::assertSame('SensioLabsAdminBundle', $options['btn_catalogue']);
+        static::assertSame('SensioLabsAdminBundle', $options['btn_translation_domain']);
     }
 
     public function testSubmitValidData(): void

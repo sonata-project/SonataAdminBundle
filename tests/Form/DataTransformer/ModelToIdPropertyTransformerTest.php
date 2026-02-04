@@ -3,25 +3,25 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
+namespace SensioLabs\AdminBundle\Tests\Form\DataTransformer;
 
 use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
-use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
+use SensioLabs\AdminBundle\Datagrid\ProxyQueryInterface;
+use SensioLabs\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
+use SensioLabs\AdminBundle\Model\ModelManagerInterface;
+use SensioLabs\AdminBundle\Tests\Fixtures\Entity\Foo;
+use SensioLabs\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 final class ModelToIdPropertyTransformerTest extends TestCase

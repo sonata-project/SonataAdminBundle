@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 {# NEXT_MAJOR: Remove the fallback on catalogue #}
 {% block field %}
-    {%- include '@SonataAdmin/CRUD/display_trans.html.twig' with {
+    {%- include '@SensioLabsAdmin/CRUD/display_trans.html.twig' with {
         value: value,
         value_format: field_description.option('format'),
         translation_domain: field_description.option('value_translation_domain', field_description.option('catalogue', admin.translationDomain)),

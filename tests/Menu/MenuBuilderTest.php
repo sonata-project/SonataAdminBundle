@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Menu;
+namespace SensioLabs\AdminBundle\Tests\Menu;
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuFactory;
@@ -19,9 +19,9 @@ use Knp\Menu\MenuItem;
 use Knp\Menu\Provider\MenuProviderInterface;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Event\ConfigureMenuEvent;
-use Sonata\AdminBundle\Menu\MenuBuilder;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Event\ConfigureMenuEvent;
+use SensioLabs\AdminBundle\Menu\MenuBuilder;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -136,7 +136,7 @@ final class MenuBuilderTest extends TestCase
             'bar' => [
                 'label' => 'foo',
                 'icon' => '<i class="fas fa-edit"></i>',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
                 'items' => [],
                 'roles' => [],
                 'keep_open' => false,

@@ -112,7 +112,7 @@ file that was distributed with this source code.
             {% endif %}
 
             {# include association code #}
-            {% include '@SonataAdmin/CRUD/Association/edit_one_script.html.twig' %}
+            {% include '@SensioLabsAdmin/CRUD/Association/edit_one_script.html.twig' %}
 
         {% else %}
             <span id="field_actions_{{ id }}" class="field-actions">
@@ -138,8 +138,8 @@ file that was distributed with this source code.
                             : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
                         }}
                     </a>
-                    {% include '@SonataAdmin/CRUD/Association/edit_modal.html.twig' %}
-                    {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
+                    {% include '@SensioLabsAdmin/CRUD/Association/edit_modal.html.twig' %}
+                    {% include '@SensioLabsAdmin/CRUD/Association/edit_many_script.html.twig' %}
                 {% endif %}
             </span>
         {% endif %}

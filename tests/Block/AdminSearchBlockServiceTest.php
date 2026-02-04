@@ -3,25 +3,25 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Block;
+namespace SensioLabs\AdminBundle\Tests\Block;
 
 use PHPUnit\Framework\MockObject\MockObject;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Block\AdminSearchBlockService;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\AdminBundle\Search\SearchableFilterInterface;
-use Sonata\AdminBundle\Search\SearchHandler;
-use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Block\AdminSearchBlockService;
+use SensioLabs\AdminBundle\Datagrid\DatagridInterface;
+use SensioLabs\AdminBundle\Datagrid\PagerInterface;
+use SensioLabs\AdminBundle\Search\SearchableFilterInterface;
+use SensioLabs\AdminBundle\Search\SearchHandler;
+use SensioLabs\AdminBundle\Templating\TemplateRegistryInterface;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +47,7 @@ final class AdminSearchBlockServiceTest extends BlockServiceTestCase
         $this->pool = new Pool(new Container());
         $this->searchHandler = new SearchHandler();
         $this->templateRegistry = $this->createMock(TemplateRegistryInterface::class);
-        $this->templateRegistry->method('getTemplate')->willReturn('@SonataAdmin/Block/block_search_result.html.twig');
+        $this->templateRegistry->method('getTemplate')->willReturn('@SensioLabsAdmin/Block/block_search_result.html.twig');
     }
 
     public function testDefaultSettings(): void

@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle;
+namespace SensioLabs\AdminBundle;
 
 /**
- * @phpstan-type SonataConfigurationOptions = array{
+ * @phpstan-type SensioLabsConfigurationOptions = array{
  *     confirm_exit: bool,
  *     default_admin_route: string,
  *     default_group: string,
@@ -42,12 +42,12 @@ namespace Sonata\AdminBundle;
  *     use_stickyforms: bool
  * }
  */
-final class SonataConfiguration
+final class SensioLabsConfiguration
 {
     /**
      * @param array<string, mixed> $options
      *
-     * @phpstan-param SonataConfigurationOptions $options
+     * @phpstan-param SensioLabsConfigurationOptions $options
      */
     public function __construct(
         private string $title,

@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\DependencyInjection;
+namespace SensioLabs\AdminBundle\DependencyInjection;
 
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
-use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
+use SensioLabs\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -504,45 +504,45 @@ final class Configuration implements ConfigurationInterface
                 ->arrayNode('templates')
                     ->addDefaultsIfNotSet()
                     ->children()
-                        ->scalarNode('user_block')->defaultValue('@SonataAdmin/Core/user_block.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('add_block')->defaultValue('@SonataAdmin/Core/add_block.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('layout')->defaultValue('@SonataAdmin/standard_layout.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('ajax')->defaultValue('@SonataAdmin/ajax_layout.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('dashboard')->defaultValue('@SonataAdmin/Core/dashboard.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('search')->defaultValue('@SonataAdmin/Core/search.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('list')->defaultValue('@SonataAdmin/CRUD/list.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('filter')->defaultValue('@SonataAdmin/Form/filter_admin_fields.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('show')->defaultValue('@SonataAdmin/CRUD/show.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('show_compare')->defaultValue('@SonataAdmin/CRUD/show_compare.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('edit')->defaultValue('@SonataAdmin/CRUD/edit.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('preview')->defaultValue('@SonataAdmin/CRUD/preview.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('history')->defaultValue('@SonataAdmin/CRUD/history.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('acl')->defaultValue('@SonataAdmin/CRUD/acl.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('history_revision_timestamp')->defaultValue('@SonataAdmin/CRUD/history_revision_timestamp.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('action')->defaultValue('@SonataAdmin/CRUD/action.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('select')->defaultValue('@SonataAdmin/CRUD/list__select.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('list_block')->defaultValue('@SonataAdmin/Block/block_admin_list.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('search_result_block')->defaultValue('@SonataAdmin/Block/block_search_result.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('short_object_description')->defaultValue('@SonataAdmin/Helper/short-object-description.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('delete')->defaultValue('@SonataAdmin/CRUD/delete.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('batch')->defaultValue('@SonataAdmin/CRUD/list__batch.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('batch_confirmation')->defaultValue('@SonataAdmin/CRUD/batch_confirmation.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('inner_list_row')->defaultValue('@SonataAdmin/CRUD/list_inner_row.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('outer_list_rows_mosaic')->defaultValue('@SonataAdmin/CRUD/list_outer_rows_mosaic.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('outer_list_rows_list')->defaultValue('@SonataAdmin/CRUD/list_outer_rows_list.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('outer_list_rows_tree')->defaultValue('@SonataAdmin/CRUD/list_outer_rows_tree.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('base_list_field')->defaultValue('@SonataAdmin/CRUD/base_list_field.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('pager_links')->defaultValue('@SonataAdmin/Pager/links.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('pager_results')->defaultValue('@SonataAdmin/Pager/results.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('tab_menu_template')->defaultValue('@SonataAdmin/Core/tab_menu_template.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('knp_menu_template')->defaultValue('@SonataAdmin/Menu/sonata_menu.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('action_create')->defaultValue('@SonataAdmin/CRUD/dashboard__action_create.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('button_acl')->defaultValue('@SonataAdmin/Button/acl_button.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('button_create')->defaultValue('@SonataAdmin/Button/create_button.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('button_edit')->defaultValue('@SonataAdmin/Button/edit_button.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('button_history')->defaultValue('@SonataAdmin/Button/history_button.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('button_list')->defaultValue('@SonataAdmin/Button/list_button.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('button_show')->defaultValue('@SonataAdmin/Button/show_button.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('user_block')->defaultValue('@SensioLabsAdmin/Core/user_block.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('add_block')->defaultValue('@SensioLabsAdmin/Core/add_block.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('layout')->defaultValue('@SensioLabsAdmin/standard_layout.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('ajax')->defaultValue('@SensioLabsAdmin/ajax_layout.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('dashboard')->defaultValue('@SensioLabsAdmin/Core/dashboard.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('search')->defaultValue('@SensioLabsAdmin/Core/search.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('list')->defaultValue('@SensioLabsAdmin/CRUD/list.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('filter')->defaultValue('@SensioLabsAdmin/Form/filter_admin_fields.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('show')->defaultValue('@SensioLabsAdmin/CRUD/show.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('show_compare')->defaultValue('@SensioLabsAdmin/CRUD/show_compare.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('edit')->defaultValue('@SensioLabsAdmin/CRUD/edit.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('preview')->defaultValue('@SensioLabsAdmin/CRUD/preview.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('history')->defaultValue('@SensioLabsAdmin/CRUD/history.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('acl')->defaultValue('@SensioLabsAdmin/CRUD/acl.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('history_revision_timestamp')->defaultValue('@SensioLabsAdmin/CRUD/history_revision_timestamp.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('action')->defaultValue('@SensioLabsAdmin/CRUD/action.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('select')->defaultValue('@SensioLabsAdmin/CRUD/list__select.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('list_block')->defaultValue('@SensioLabsAdmin/Block/block_admin_list.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('search_result_block')->defaultValue('@SensioLabsAdmin/Block/block_search_result.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('short_object_description')->defaultValue('@SensioLabsAdmin/Helper/short-object-description.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('delete')->defaultValue('@SensioLabsAdmin/CRUD/delete.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('batch')->defaultValue('@SensioLabsAdmin/CRUD/list__batch.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('batch_confirmation')->defaultValue('@SensioLabsAdmin/CRUD/batch_confirmation.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('inner_list_row')->defaultValue('@SensioLabsAdmin/CRUD/list_inner_row.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('outer_list_rows_mosaic')->defaultValue('@SensioLabsAdmin/CRUD/list_outer_rows_mosaic.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('outer_list_rows_list')->defaultValue('@SensioLabsAdmin/CRUD/list_outer_rows_list.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('outer_list_rows_tree')->defaultValue('@SensioLabsAdmin/CRUD/list_outer_rows_tree.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('base_list_field')->defaultValue('@SensioLabsAdmin/CRUD/base_list_field.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('pager_links')->defaultValue('@SensioLabsAdmin/Pager/links.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('pager_results')->defaultValue('@SensioLabsAdmin/Pager/results.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('tab_menu_template')->defaultValue('@SensioLabsAdmin/Core/tab_menu_template.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('knp_menu_template')->defaultValue('@SensioLabsAdmin/Menu/sonata_menu.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('action_create')->defaultValue('@SensioLabsAdmin/CRUD/dashboard__action_create.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('button_acl')->defaultValue('@SensioLabsAdmin/Button/acl_button.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('button_create')->defaultValue('@SensioLabsAdmin/Button/create_button.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('button_edit')->defaultValue('@SensioLabsAdmin/Button/edit_button.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('button_history')->defaultValue('@SensioLabsAdmin/Button/history_button.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('button_list')->defaultValue('@SensioLabsAdmin/Button/list_button.html.twig')->cannotBeEmpty()->end()
+                        ->scalarNode('button_show')->defaultValue('@SensioLabsAdmin/Button/show_button.html.twig')->cannotBeEmpty()->end()
                         ->arrayNode('form_theme')
                             ->prototype('scalar')->end()
                         ->end()

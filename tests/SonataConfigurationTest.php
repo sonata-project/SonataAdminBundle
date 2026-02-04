@@ -3,31 +3,31 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests;
+namespace SensioLabs\AdminBundle\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\SonataConfiguration;
+use SensioLabs\AdminBundle\SensioLabsConfiguration;
 
-final class SonataConfigurationTest extends TestCase
+final class SensioLabsConfigurationTest extends TestCase
 {
-    private SonataConfiguration $configuration;
+    private SensioLabsConfiguration $configuration;
 
     protected function setUp(): void
     {
-        $this->configuration = new SonataConfiguration('title', '/path/to/logo.png', [
+        $this->configuration = new SensioLabsConfiguration('title', '/path/to/logo.png', [
             'confirm_exit' => true,
             'default_admin_route' => 'show',
             'default_group' => 'default',
             'default_icon' => '<i class="fas fa-folder"></i>',
-            'default_translation_domain' => 'SonataAdminBundle',
+            'default_translation_domain' => 'SensioLabsAdminBundle',
             'dropdown_number_groups_per_colums' => 2,
             'form_type' => 'standard',
             'html5_validate' => true,

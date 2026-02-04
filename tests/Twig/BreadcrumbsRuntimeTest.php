@@ -3,24 +3,24 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Twig;
+namespace SensioLabs\AdminBundle\Tests\Twig;
 
 use Knp\Menu\ItemInterface;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
-use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
-use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
-use Sonata\AdminBundle\Twig\BreadcrumbsRuntime;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Admin\BreadcrumbsBuilderInterface;
+use SensioLabs\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
+use SensioLabs\AdminBundle\Tests\Fixtures\StubTranslator;
+use SensioLabs\AdminBundle\Twig\BreadcrumbsRuntime;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Twig\Environment;
 use Twig\Extra\String\StringExtension;

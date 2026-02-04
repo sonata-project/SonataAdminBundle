@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Controller;
+namespace SensioLabs\AdminBundle\Tests\Controller;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
@@ -19,30 +19,30 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\BCLayer\BCHelper;
-use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
-use Sonata\AdminBundle\Controller\CRUDController;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Exception\LockException;
-use Sonata\AdminBundle\Exception\ModelManagerException;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
-use Sonata\AdminBundle\Model\AuditManagerInterface;
-use Sonata\AdminBundle\Model\AuditReaderInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Request\AdminFetcherInterface;
-use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
-use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Sonata\AdminBundle\Tests\App\Controller\CustomModelManagerExceptionMessageController;
-use Sonata\AdminBundle\Tests\App\Controller\CustomModelManagerThrowableMessageController;
-use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
-use Sonata\AdminBundle\Tests\Fixtures\Controller\BatchOtherController;
-use Sonata\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
-use Sonata\AdminBundle\Tests\Fixtures\Entity\Entity;
-use Sonata\AdminBundle\Tests\Fixtures\Util\DummyDomainObject;
-use Sonata\AdminBundle\Util\AdminObjectAclManipulator;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\BCLayer\BCHelper;
+use SensioLabs\AdminBundle\Bridge\Exporter\AdminExporter;
+use SensioLabs\AdminBundle\Controller\CRUDController;
+use SensioLabs\AdminBundle\Datagrid\DatagridInterface;
+use SensioLabs\AdminBundle\Datagrid\ProxyQueryInterface;
+use SensioLabs\AdminBundle\Exception\LockException;
+use SensioLabs\AdminBundle\Exception\ModelManagerException;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionCollection;
+use SensioLabs\AdminBundle\Model\AuditManagerInterface;
+use SensioLabs\AdminBundle\Model\AuditReaderInterface;
+use SensioLabs\AdminBundle\Model\ModelManagerInterface;
+use SensioLabs\AdminBundle\Request\AdminFetcherInterface;
+use SensioLabs\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
+use SensioLabs\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use SensioLabs\AdminBundle\Tests\App\Controller\CustomModelManagerExceptionMessageController;
+use SensioLabs\AdminBundle\Tests\App\Controller\CustomModelManagerThrowableMessageController;
+use SensioLabs\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
+use SensioLabs\AdminBundle\Tests\Fixtures\Controller\BatchOtherController;
+use SensioLabs\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
+use SensioLabs\AdminBundle\Tests\Fixtures\Entity\Entity;
+use SensioLabs\AdminBundle\Tests\Fixtures\Util\DummyDomainObject;
+use SensioLabs\AdminBundle\Util\AdminObjectAclManipulator;
 use Sonata\Exporter\Exporter;
 use Sonata\Exporter\Writer\JsonWriter;
 use Symfony\Component\DependencyInjection\Container;
@@ -239,20 +239,20 @@ final class CRUDControllerTest extends TestCase
         $this->parameterBag->set('kernel.debug', false);
 
         $this->templateRegistry->method('getTemplate')->willReturnMap([
-            ['ajax', '@SonataAdmin/ajax_layout.html.twig'],
-            ['layout', '@SonataAdmin/standard_layout.html.twig'],
-            ['show', '@SonataAdmin/CRUD/show.html.twig'],
-            ['show_compare', '@SonataAdmin/CRUD/show_compare.html.twig'],
-            ['edit', '@SonataAdmin/CRUD/edit.html.twig'],
-            ['dashboard', '@SonataAdmin/Core/dashboard.html.twig'],
-            ['search', '@SonataAdmin/Core/search.html.twig'],
-            ['list', '@SonataAdmin/CRUD/list.html.twig'],
-            ['preview', '@SonataAdmin/CRUD/preview.html.twig'],
-            ['history', '@SonataAdmin/CRUD/history.html.twig'],
-            ['acl', '@SonataAdmin/CRUD/acl.html.twig'],
-            ['delete', '@SonataAdmin/CRUD/delete.html.twig'],
-            ['batch', '@SonataAdmin/CRUD/list__batch.html.twig'],
-            ['batch_confirmation', '@SonataAdmin/CRUD/batch_confirmation.html.twig'],
+            ['ajax', '@SensioLabsAdmin/ajax_layout.html.twig'],
+            ['layout', '@SensioLabsAdmin/standard_layout.html.twig'],
+            ['show', '@SensioLabsAdmin/CRUD/show.html.twig'],
+            ['show_compare', '@SensioLabsAdmin/CRUD/show_compare.html.twig'],
+            ['edit', '@SensioLabsAdmin/CRUD/edit.html.twig'],
+            ['dashboard', '@SensioLabsAdmin/Core/dashboard.html.twig'],
+            ['search', '@SensioLabsAdmin/Core/search.html.twig'],
+            ['list', '@SensioLabsAdmin/CRUD/list.html.twig'],
+            ['preview', '@SensioLabsAdmin/CRUD/preview.html.twig'],
+            ['history', '@SensioLabsAdmin/CRUD/history.html.twig'],
+            ['acl', '@SensioLabsAdmin/CRUD/acl.html.twig'],
+            ['delete', '@SensioLabsAdmin/CRUD/delete.html.twig'],
+            ['batch', '@SensioLabsAdmin/CRUD/list__batch.html.twig'],
+            ['batch_confirmation', '@SensioLabsAdmin/CRUD/batch_confirmation.html.twig'],
         ]);
 
         $this->admin->method('getIdParameter')->willReturn('id');
@@ -396,7 +396,7 @@ final class CRUDControllerTest extends TestCase
 
         $globals = $twig->getGlobals();
         static::assertSame($this->admin, $globals['admin']);
-        static::assertSame('@SonataAdmin/standard_layout.html.twig', $globals['base_template']);
+        static::assertSame('@SensioLabsAdmin/standard_layout.html.twig', $globals['base_template']);
     }
 
     public function testSetTwigGlobalsWithAjaxRequest(): void
@@ -410,31 +410,31 @@ final class CRUDControllerTest extends TestCase
 
         $globals = $twig->getGlobals();
         static::assertSame($this->admin, $globals['admin']);
-        static::assertSame('@SonataAdmin/ajax_layout.html.twig', $globals['base_template']);
+        static::assertSame('@SensioLabsAdmin/ajax_layout.html.twig', $globals['base_template']);
     }
 
     public function testGetBaseTemplate(): void
     {
         static::assertSame(
-            '@SonataAdmin/standard_layout.html.twig',
+            '@SensioLabsAdmin/standard_layout.html.twig',
             $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
         );
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
         static::assertSame(
-            '@SonataAdmin/ajax_layout.html.twig',
+            '@SensioLabsAdmin/ajax_layout.html.twig',
             $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
         );
 
         $this->request->headers->remove('X-Requested-With');
         static::assertSame(
-            '@SonataAdmin/standard_layout.html.twig',
+            '@SensioLabsAdmin/standard_layout.html.twig',
             $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
         );
 
         $this->request->request->set('_xml_http_request', true);
         static::assertSame(
-            '@SonataAdmin/ajax_layout.html.twig',
+            '@SensioLabsAdmin/ajax_layout.html.twig',
             $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
         );
     }
@@ -446,7 +446,7 @@ final class CRUDControllerTest extends TestCase
             ->method('render')
             ->with('@FooAdmin/foo.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
             ]);
 
         static::assertInstanceOf(
@@ -467,7 +467,7 @@ final class CRUDControllerTest extends TestCase
             ->method('render')
             ->with('@FooAdmin/foo.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
             ]);
 
         $response = new Response();
@@ -490,7 +490,7 @@ final class CRUDControllerTest extends TestCase
             ->method('render')
             ->with('@FooAdmin/foo.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'foo' => 'bar',
             ]);
 
@@ -512,7 +512,7 @@ final class CRUDControllerTest extends TestCase
             ->method('render')
             ->with('@FooAdmin/foo.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/ajax_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/ajax_layout.html.twig',
                 'foo' => 'bar',
             ]);
 
@@ -593,9 +593,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/list.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/list.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'list',
                 'csrf_token' => 'csrf-token-123_sonata.batch',
                 'export_formats' => ['json'],
@@ -635,7 +635,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getFilterParameters')
             ->willReturn(['foo' => 'bar']);
 
-        $this->expectTranslate('flash_batch_delete_success', [], 'SonataAdminBundle');
+        $this->expectTranslate('flash_batch_delete_success', [], 'SensioLabsAdminBundle');
 
         $result = $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
 
@@ -657,7 +657,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getFilterParameters')
             ->willReturn(['foo' => 'bar']);
 
-        $this->expectTranslate('flash_batch_delete_error', [], 'SonataAdminBundle');
+        $this->expectTranslate('flash_batch_delete_error', [], 'SensioLabsAdminBundle');
 
         $result = $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
 
@@ -841,9 +841,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/show.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/show.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'show',
                 'object' => $object,
                 'elements' => $show,
@@ -1050,9 +1050,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/delete.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/delete.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'delete',
                 'object' => $object,
                 'csrf_token' => 'csrf-token-123_sonata.delete',
@@ -1132,9 +1132,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/delete.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/delete.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'delete',
                 'object' => $object,
                 'csrf_token' => null,
@@ -1274,7 +1274,7 @@ final class CRUDControllerTest extends TestCase
             ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
-        $this->expectTranslate('flash_delete_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
+        $this->expectTranslate('flash_delete_success', ['%name%' => $expectedToStringValue], 'SensioLabsAdminBundle');
 
         $this->admin->expects(static::once())
             ->method('checkAccess')
@@ -1311,7 +1311,7 @@ final class CRUDControllerTest extends TestCase
             ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
-        $this->expectTranslate('flash_delete_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
+        $this->expectTranslate('flash_delete_success', ['%name%' => $expectedToStringValue], 'SensioLabsAdminBundle');
 
         $this->request->setMethod(Request::METHOD_POST);
 
@@ -1346,7 +1346,7 @@ final class CRUDControllerTest extends TestCase
             ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
-        $this->expectTranslate('flash_delete_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
+        $this->expectTranslate('flash_delete_success', ['%name%' => $expectedToStringValue], 'SensioLabsAdminBundle');
 
         $this->request->setMethod(Request::METHOD_POST);
 
@@ -1374,9 +1374,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/delete.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/delete.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'delete',
                 'object' => $object,
                 'csrf_token' => 'csrf-token-123_sonata.delete',
@@ -1408,7 +1408,7 @@ final class CRUDControllerTest extends TestCase
             ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
-        $this->expectTranslate('flash_delete_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
+        $this->expectTranslate('flash_delete_error', ['%name%' => $expectedToStringValue], 'SensioLabsAdminBundle');
 
         self::assertLoggerLogsModelManagerException($this->admin, 'delete');
 
@@ -1647,9 +1647,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/edit.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
@@ -1717,7 +1717,7 @@ final class CRUDControllerTest extends TestCase
             ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
-        $this->expectTranslate('flash_edit_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
+        $this->expectTranslate('flash_edit_success', ['%name%' => $expectedToStringValue], 'SensioLabsAdminBundle');
 
         $this->request->setMethod(Request::METHOD_POST);
 
@@ -1767,7 +1767,7 @@ final class CRUDControllerTest extends TestCase
             ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
-        $this->expectTranslate('flash_edit_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
+        $this->expectTranslate('flash_edit_error', ['%name%' => $expectedToStringValue], 'SensioLabsAdminBundle');
 
         $this->request->setMethod(Request::METHOD_POST);
 
@@ -1780,9 +1780,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/edit.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
@@ -1844,9 +1844,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/edit.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
@@ -1929,9 +1929,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/edit.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
@@ -2169,7 +2169,7 @@ final class CRUDControllerTest extends TestCase
             ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
-        $this->expectTranslate('flash_edit_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
+        $this->expectTranslate('flash_edit_error', ['%name%' => $expectedToStringValue], 'SensioLabsAdminBundle');
 
         $form->expects(static::once())
             ->method('isSubmitted')
@@ -2187,9 +2187,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/edit.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
@@ -2251,9 +2251,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/preview.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/preview.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
@@ -2326,7 +2326,7 @@ final class CRUDControllerTest extends TestCase
             '%name%' => $class,
             '%link_start%' => '<a href="stdClass_edit">',
             '%link_end%' => '</a>',
-        ], 'SonataAdminBundle');
+        ], 'SensioLabsAdminBundle');
 
         static::assertInstanceOf(Response::class, $this->controller->editAction($this->request));
     }
@@ -2399,9 +2399,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/edit.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'create',
                 'form' => $formView,
                 'object' => $object,
@@ -2482,7 +2482,7 @@ final class CRUDControllerTest extends TestCase
             ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
-        $this->expectTranslate('flash_create_success', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
+        $this->expectTranslate('flash_create_success', ['%name%' => $expectedToStringValue], 'SensioLabsAdminBundle');
 
         $this->request->setMethod(Request::METHOD_POST);
 
@@ -2529,7 +2529,7 @@ final class CRUDControllerTest extends TestCase
             ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
-        $this->expectTranslate('flash_create_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
+        $this->expectTranslate('flash_create_error', ['%name%' => $expectedToStringValue], 'SensioLabsAdminBundle');
 
         $this->request->setMethod(Request::METHOD_POST);
 
@@ -2542,9 +2542,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/edit.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'create',
                 'form' => $formView,
                 'object' => $object,
@@ -2587,7 +2587,7 @@ final class CRUDControllerTest extends TestCase
             ->with(static::equalTo($object))
             ->willReturn($toStringValue);
 
-        $this->expectTranslate('flash_create_error', ['%name%' => $expectedToStringValue], 'SonataAdminBundle');
+        $this->expectTranslate('flash_create_error', ['%name%' => $expectedToStringValue], 'SensioLabsAdminBundle');
 
         $form->expects(static::once())
             ->method('isSubmitted')
@@ -2610,9 +2610,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/edit.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'create',
                 'form' => $formView,
                 'object' => $object,
@@ -2670,9 +2670,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/edit.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'create',
                 'form' => $formView,
                 'object' => $object,
@@ -2751,9 +2751,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/edit.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'create',
                 'form' => $formView,
                 'object' => $object,
@@ -3004,9 +3004,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/preview.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/preview.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'create',
                 'form' => $formView,
                 'object' => $object,
@@ -3186,9 +3186,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/history.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/history.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'history',
                 'revisions' => [],
                 'object' => $object,
@@ -3317,9 +3317,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/acl.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/acl.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'acl',
                 'permissions' => [],
                 'object' => $object,
@@ -3406,9 +3406,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/acl.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/acl.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'acl',
                 'permissions' => [],
                 'object' => $object,
@@ -3490,7 +3490,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getSecurityHandler')
             ->willReturn($aclSecurityHandler);
 
-        $this->expectTranslate('flash_acl_edit_success', [], 'SonataAdminBundle');
+        $this->expectTranslate('flash_acl_edit_success', [], 'SensioLabsAdminBundle');
 
         $this->request->setMethod(Request::METHOD_POST);
 
@@ -3675,9 +3675,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/show.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/show.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'show',
                 'object' => $objectRevision,
                 'elements' => $fieldDescriptionCollection,
@@ -3916,9 +3916,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/show_compare.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/show_compare.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'show',
                 'object' => $objectRevision,
                 'object_compare' => $compareObjectRevision,
@@ -4194,9 +4194,9 @@ final class CRUDControllerTest extends TestCase
         $this->twig
             ->expects(static::once())
             ->method('render')
-            ->with('@SonataAdmin/CRUD/batch_confirmation.html.twig', [
+            ->with('@SensioLabsAdmin/CRUD/batch_confirmation.html.twig', [
                 'admin' => $this->admin,
-                'base_template' => '@SonataAdmin/standard_layout.html.twig',
+                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'list',
                 'datagrid' => $datagrid,
                 'form' => $formView,
@@ -4235,7 +4235,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
-        $this->expectTranslate('flash_batch_empty', [], 'SonataAdminBundle');
+        $this->expectTranslate('flash_batch_empty', [], 'SensioLabsAdminBundle');
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', $actionName);
@@ -4324,7 +4324,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
-        $this->expectTranslate('flash_foo_error', [], 'SonataAdminBundle');
+        $this->expectTranslate('flash_foo_error', [], 'SensioLabsAdminBundle');
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', 'foo');
@@ -4354,7 +4354,7 @@ final class CRUDControllerTest extends TestCase
             ->method('getDatagrid')
             ->willReturn($datagrid);
 
-        $this->expectTranslate('flash_batch_empty', [], 'SonataAdminBundle');
+        $this->expectTranslate('flash_batch_empty', [], 'SensioLabsAdminBundle');
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', 'delete');
@@ -4409,7 +4409,7 @@ final class CRUDControllerTest extends TestCase
         $this->request->request->set('idx', []);
         $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
 
-        $this->expectTranslate('flash_batch_no_elements_processed', [], 'SonataAdminBundle');
+        $this->expectTranslate('flash_batch_no_elements_processed', [], 'SensioLabsAdminBundle');
         $result = $controller->batchAction($this->request);
 
         static::assertInstanceOf(Response::class, $result);

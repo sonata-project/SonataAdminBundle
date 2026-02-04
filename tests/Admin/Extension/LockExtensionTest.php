@@ -3,25 +3,25 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Admin\Extension;
+namespace SensioLabs\AdminBundle\Tests\Admin\Extension;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Extension\LockExtension;
-use Sonata\AdminBundle\Builder\FormContractorInterface;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Model\LockInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Admin\Extension\LockExtension;
+use SensioLabs\AdminBundle\Builder\FormContractorInterface;
+use SensioLabs\AdminBundle\Form\FormMapper;
+use SensioLabs\AdminBundle\Model\LockInterface;
+use SensioLabs\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilder;

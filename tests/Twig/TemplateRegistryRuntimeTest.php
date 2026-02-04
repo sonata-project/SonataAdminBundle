@@ -3,23 +3,23 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Twig;
+namespace SensioLabs\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
-use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Sonata\AdminBundle\Twig\TemplateRegistryRuntime;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Exception\AdminCodeNotFoundException;
+use SensioLabs\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use SensioLabs\AdminBundle\Templating\TemplateRegistryInterface;
+use SensioLabs\AdminBundle\Twig\TemplateRegistryRuntime;
 use Symfony\Component\DependencyInjection\Container;
 
 final class TemplateRegistryRuntimeTest extends TestCase
@@ -29,10 +29,10 @@ final class TemplateRegistryRuntimeTest extends TestCase
     protected function setUp(): void
     {
         $templateRegistry = $this->createMock(TemplateRegistryInterface::class);
-        $templateRegistry->method('getTemplate')->with('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
+        $templateRegistry->method('getTemplate')->with('edit')->willReturn('@SensioLabsAdmin/CRUD/edit.html.twig');
 
         $adminTemplateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
-        $adminTemplateRegistry->method('getTemplate')->with('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
+        $adminTemplateRegistry->method('getTemplate')->with('edit')->willReturn('@SensioLabsAdmin/CRUD/edit.html.twig');
 
         $admin = static::createStub(AdminInterface::class);
         $admin
@@ -52,7 +52,7 @@ final class TemplateRegistryRuntimeTest extends TestCase
     public function testGetAdminTemplate(): void
     {
         static::assertSame(
-            '@SonataAdmin/CRUD/edit.html.twig',
+            '@SensioLabsAdmin/CRUD/edit.html.twig',
             $this->templateRegistryRuntime->getAdminTemplate('edit', 'admin.post')
         );
     }
@@ -64,7 +64,7 @@ final class TemplateRegistryRuntimeTest extends TestCase
         $this->expectExceptionMessage('Admin service "admin.non-existing" not found in admin pool. Did you mean "admin.post" or one of those: []?');
 
         static::assertSame(
-            '@SonataAdmin/CRUD/edit.html.twig',
+            '@SensioLabsAdmin/CRUD/edit.html.twig',
             $this->templateRegistryRuntime->getAdminTemplate('edit', 'admin.non-existing')
         );
     }
@@ -72,7 +72,7 @@ final class TemplateRegistryRuntimeTest extends TestCase
     public function testGetGlobalTemplate(): void
     {
         static::assertSame(
-            '@SonataAdmin/CRUD/edit.html.twig',
+            '@SensioLabsAdmin/CRUD/edit.html.twig',
             $this->templateRegistryRuntime->getGlobalTemplate('edit')
         );
     }

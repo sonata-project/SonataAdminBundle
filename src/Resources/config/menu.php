@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Knp\Menu\MenuItem;
-use Sonata\AdminBundle\Menu\Matcher\Voter\ActiveVoter;
-use Sonata\AdminBundle\Menu\Matcher\Voter\AdminVoter;
-use Sonata\AdminBundle\Menu\MenuBuilder;
-use Sonata\AdminBundle\Menu\Provider\GroupMenuProvider;
+use SensioLabs\AdminBundle\Menu\Matcher\Voter\ActiveVoter;
+use SensioLabs\AdminBundle\Menu\Matcher\Voter\AdminVoter;
+use SensioLabs\AdminBundle\Menu\MenuBuilder;
+use SensioLabs\AdminBundle\Menu\Provider\GroupMenuProvider;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()

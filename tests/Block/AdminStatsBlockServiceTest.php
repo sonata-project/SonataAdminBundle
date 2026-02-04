@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Block;
+namespace SensioLabs\AdminBundle\Tests\Block;
 
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Block\AdminStatsBlockService;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Block\AdminStatsBlockService;
 use Sonata\BlockBundle\Test\BlockServiceTestCase;
 use Symfony\Component\DependencyInjection\Container;
 
@@ -45,7 +45,7 @@ final class AdminStatsBlockServiceTest extends BlockServiceTestCase
             'code' => false,
             'filters' => [],
             'limit' => 1000,
-            'template' => '@SonataAdmin/Block/block_stats.html.twig',
+            'template' => '@SensioLabsAdmin/Block/block_stats.html.twig',
         ], $blockContext);
     }
 }

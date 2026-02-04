@@ -3,23 +3,23 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Admin;
+namespace SensioLabs\AdminBundle\Tests\Admin;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
-use Sonata\AdminBundle\Exception\TooManyAdminClassException;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Exception\AdminCodeNotFoundException;
+use SensioLabs\AdminBundle\Exception\TooManyAdminClassException;
 use Symfony\Component\DependencyInjection\Container;
 
 /**
@@ -211,7 +211,7 @@ final class PoolTest extends TestCase
         $pool = new Pool($this->container, ['sonata.news.admin.post']);
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Argument 1 passed to Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() must contain a valid admin reference, "sonata.news.admin.invalid" found at "sonata.news.admin.post|sonata.news.admin.invalid".');
+        $this->expectExceptionMessage('Argument 1 passed to SensioLabs\AdminBundle\Admin\Pool::getAdminByAdminCode() must contain a valid admin reference, "sonata.news.admin.invalid" found at "sonata.news.admin.post|sonata.news.admin.invalid".');
 
         $pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.invalid');
     }
@@ -230,7 +230,7 @@ final class PoolTest extends TestCase
         $pool = new Pool($this->container, ['sonata.news.admin.post', 'sonata.news.admin.valid']);
 
         $this->expectException(AdminCodeNotFoundException::class);
-        $this->expectExceptionMessage('Argument 1 passed to Sonata\AdminBundle\Admin\Pool::getAdminByAdminCode() must contain a valid admin hierarchy, "sonata.news.admin.valid" is not a valid child for "sonata.news.admin.post"');
+        $this->expectExceptionMessage('Argument 1 passed to SensioLabs\AdminBundle\Admin\Pool::getAdminByAdminCode() must contain a valid admin hierarchy, "sonata.news.admin.valid" is not a valid child for "sonata.news.admin.post"');
 
         $pool->getAdminByAdminCode('sonata.news.admin.post|sonata.news.admin.valid');
     }

@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Sonata\AdminBundle\Block\AdminListBlockService;
-use Sonata\AdminBundle\Block\AdminPreviewBlockService;
-use Sonata\AdminBundle\Block\AdminSearchBlockService;
-use Sonata\AdminBundle\Block\AdminStatsBlockService;
+use SensioLabs\AdminBundle\Block\AdminListBlockService;
+use SensioLabs\AdminBundle\Block\AdminPreviewBlockService;
+use SensioLabs\AdminBundle\Block\AdminSearchBlockService;
+use SensioLabs\AdminBundle\Block\AdminStatsBlockService;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()

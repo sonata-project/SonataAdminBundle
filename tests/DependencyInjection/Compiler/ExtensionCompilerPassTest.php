@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
+namespace SensioLabs\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\Matcher\MatcherInterface;
@@ -19,12 +19,12 @@ use Knp\Menu\Provider\MenuProviderInterface;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\AdminExtensionInterface;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
-use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\SonataAdminExtension;
+use SensioLabs\AdminBundle\Admin\AbstractAdmin;
+use SensioLabs\AdminBundle\Admin\AdminExtensionInterface;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\SensioLabsAdminExtension;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
 use Symfony\Component\Config\FileLocatorInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -43,12 +43,12 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
 
-#[CoversMethod(SonataAdminExtension::class, 'load')]
+#[CoversMethod(SensioLabsAdminExtension::class, 'load')]
 #[CoversMethod(ExtensionCompilerPass::class, 'flattenExtensionConfiguration')]
 #[CoversMethod(ExtensionCompilerPass::class, 'process')]
 final class ExtensionCompilerPassTest extends TestCase
 {
-    private SonataAdminExtension $extension;
+    private SensioLabsAdminExtension $extension;
 
     /**
      * @var array<string, mixed>
@@ -62,7 +62,7 @@ final class ExtensionCompilerPassTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->extension = new SonataAdminExtension();
+        $this->extension = new SensioLabsAdminExtension();
         $this->config = $this->getConfig();
         $this->root = TaggedAdminInterface::ADMIN_TAG;
     }
@@ -394,7 +394,7 @@ final class ExtensionCompilerPassTest extends TestCase
         $container->setParameter('kernel.cache_dir', '/tmp');
         $container->setParameter('kernel.debug', true);
 
-        // Add dependencies for SonataAdminBundle (these services will never get called so dummy classes will do)
+        // Add dependencies for SensioLabsAdminBundle (these services will never get called so dummy classes will do)
         $container
             ->register('twig')
             ->setClass(Environment::class);

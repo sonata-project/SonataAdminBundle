@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Model;
+namespace SensioLabs\AdminBundle\Tests\Model;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Model\AuditManager;
-use Sonata\AdminBundle\Model\AuditReaderInterface;
+use SensioLabs\AdminBundle\Model\AuditManager;
+use SensioLabs\AdminBundle\Model\AuditReaderInterface;
 use Symfony\Component\DependencyInjection\Container;
 
 /**

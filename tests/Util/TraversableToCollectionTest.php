@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Util;
+namespace SensioLabs\AdminBundle\Tests\Util;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Util\TraversableToCollection;
+use SensioLabs\AdminBundle\Util\TraversableToCollection;
 
 /**
  * @author Javier Spagnoletti <phansys@gmail.com>
@@ -55,7 +55,7 @@ final class TraversableToCollectionTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $this->expectExceptionMessage(\sprintf(
-            'Argument 1 passed to "Sonata\AdminBundle\Util\TraversableToCollection::transform()" must be an iterable, %s given.',
+            'Argument 1 passed to "SensioLabs\AdminBundle\Util\TraversableToCollection::transform()" must be an iterable, %s given.',
             $invalidType
         ));
 

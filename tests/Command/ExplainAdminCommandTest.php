@@ -3,27 +3,27 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Command;
+namespace SensioLabs\AdminBundle\Tests\Command;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
-use Sonata\AdminBundle\Builder\ListBuilderInterface;
-use Sonata\AdminBundle\Command\ExplainAdminCommand;
-use Sonata\AdminBundle\Controller\CRUDController;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Route\RouteCollection;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Builder\DatagridBuilderInterface;
+use SensioLabs\AdminBundle\Builder\ListBuilderInterface;
+use SensioLabs\AdminBundle\Command\ExplainAdminCommand;
+use SensioLabs\AdminBundle\Controller\CRUDController;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use SensioLabs\AdminBundle\Model\ModelManagerInterface;
+use SensioLabs\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\DependencyInjection\Container;
@@ -77,7 +77,7 @@ final class ExplainAdminCommandTest extends TestCase
 
         $fieldDescription1
             ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/foo_text.html.twig');
+            ->willReturn('@SensioLabsAdmin/CRUD/foo_text.html.twig');
 
         $fieldDescription2 = $this->createMock(FieldDescriptionInterface::class);
 
@@ -87,7 +87,7 @@ final class ExplainAdminCommandTest extends TestCase
 
         $fieldDescription2
             ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/bar_datetime.html.twig');
+            ->willReturn('@SensioLabsAdmin/CRUD/bar_datetime.html.twig');
 
         $this->admin
             ->method('getListFieldDescriptions')

@@ -3,21 +3,21 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\DependencyInjection;
+namespace SensioLabs\AdminBundle\DependencyInjection;
 
-use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
-use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
-use Sonata\AdminBundle\Model\AuditReaderInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Util\AdminAclUserManagerInterface;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
+use SensioLabs\AdminBundle\Model\AuditReaderInterface;
+use SensioLabs\AdminBundle\Model\ModelManagerInterface;
+use SensioLabs\AdminBundle\Util\AdminAclUserManagerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
@@ -39,7 +39,7 @@ use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
  * @phpstan-import-type SonataAdminConfiguration from Configuration
  * @phpstan-import-type SonataAdminAsset from Configuration
  */
-final class SonataAdminExtension extends Extension
+final class SensioLabsAdminExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {

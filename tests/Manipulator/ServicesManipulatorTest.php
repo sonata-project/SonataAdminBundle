@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Manipulator;
+namespace SensioLabs\AdminBundle\Tests\Manipulator;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Manipulator\ServicesManipulator;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Manipulator\ServicesManipulator;
 
 /**
  * @author Marek Stipek <mario.dweller@seznam.cz>
@@ -49,7 +49,7 @@ final class ServicesManipulatorTest extends TestCase
         static::assertSame(
             "services:
     service_id:
-        class: Sonata\AdminBundle\Admin\AdminInterface
+        class: SensioLabs\AdminBundle\Admin\AdminInterface
         tags:
             - { name: sonata.admin, model_class: stdClass, controller: controller_name, manager_type: manager_type, group: admin, label: stdClass }\n",
             file_get_contents($this->file)
@@ -64,12 +64,12 @@ final class ServicesManipulatorTest extends TestCase
         static::assertSame(
             "services:
     service_id:
-        class: Sonata\AdminBundle\Admin\AdminInterface
+        class: SensioLabs\AdminBundle\Admin\AdminInterface
         tags:
             - { name: sonata.admin, model_class: stdClass, controller: controller_name, manager_type: manager_type, group: admin, label: stdClass }
 
     another_service_id:
-        class: Sonata\AdminBundle\Admin\AdminInterface
+        class: SensioLabs\AdminBundle\Admin\AdminInterface
         tags:
             - { name: sonata.admin, model_class: stdClass, controller: another_controller_name, manager_type: another_manager_type, group: admin, label: stdClass }\n",
             file_get_contents($this->file)
@@ -110,7 +110,7 @@ final class ServicesManipulatorTest extends TestCase
         static::assertSame(
             "services:
     service_id:
-        class: Sonata\AdminBundle\Admin\AdminInterface
+        class: SensioLabs\AdminBundle\Admin\AdminInterface
         tags:
             - { name: sonata.admin, model_class: stdClass, controller: controller_name, manager_type: manager_type, group: admin, label: stdClass }\n",
             file_get_contents($this->file)

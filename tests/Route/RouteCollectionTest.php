@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Route;
+namespace SensioLabs\AdminBundle\Tests\Route;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Controller\CRUDController;
-use Sonata\AdminBundle\Route\RouteCollection;
+use SensioLabs\AdminBundle\Controller\CRUDController;
+use SensioLabs\AdminBundle\Route\RouteCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Route;
 
@@ -201,7 +201,7 @@ final class RouteCollectionTest extends TestCase
         $routeCollection->add('view');
         $route = $routeCollection->get('view');
 
-        static::assertSame('Sonata\AdminBundle\Controller\CRUDController::viewAction', $route->getDefault('_controller'));
+        static::assertSame('SensioLabs\AdminBundle\Controller\CRUDController::viewAction', $route->getDefault('_controller'));
     }
 
     public function testControllerWithBundleSubFolder(): void

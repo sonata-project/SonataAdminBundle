@@ -3,34 +3,34 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Event;
+namespace SensioLabs\AdminBundle\Tests\Event;
 
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
-use Sonata\AdminBundle\Builder\FormContractorInterface;
-use Sonata\AdminBundle\Builder\ListBuilderInterface;
-use Sonata\AdminBundle\Builder\ShowBuilderInterface;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\Datagrid\DatagridMapper;
-use Sonata\AdminBundle\Datagrid\ListMapper;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Event\AdminEventExtension;
-use Sonata\AdminBundle\Event\BatchActionEvent;
-use Sonata\AdminBundle\Event\ConfigureEvent;
-use Sonata\AdminBundle\Event\ConfigureQueryEvent;
-use Sonata\AdminBundle\Event\PersistenceEvent;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
-use Sonata\AdminBundle\Form\FormMapper;
-use Sonata\AdminBundle\Show\ShowMapper;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Builder\DatagridBuilderInterface;
+use SensioLabs\AdminBundle\Builder\FormContractorInterface;
+use SensioLabs\AdminBundle\Builder\ListBuilderInterface;
+use SensioLabs\AdminBundle\Builder\ShowBuilderInterface;
+use SensioLabs\AdminBundle\Datagrid\DatagridInterface;
+use SensioLabs\AdminBundle\Datagrid\DatagridMapper;
+use SensioLabs\AdminBundle\Datagrid\ListMapper;
+use SensioLabs\AdminBundle\Datagrid\ProxyQueryInterface;
+use SensioLabs\AdminBundle\Event\AdminEventExtension;
+use SensioLabs\AdminBundle\Event\BatchActionEvent;
+use SensioLabs\AdminBundle\Event\ConfigureEvent;
+use SensioLabs\AdminBundle\Event\ConfigureQueryEvent;
+use SensioLabs\AdminBundle\Event\PersistenceEvent;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionCollection;
+use SensioLabs\AdminBundle\Form\FormMapper;
+use SensioLabs\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;

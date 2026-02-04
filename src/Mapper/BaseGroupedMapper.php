@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Mapper;
+namespace SensioLabs\AdminBundle\Mapper;
 
 /**
  * This class is used to simulate the Form API.
@@ -82,7 +82,7 @@ abstract class BaseGroupedMapper implements MapperInterface
             'name' => $name,
             'box_class' => 'box box-primary',
             'empty_message' => 'message_form_group_empty',
-            'empty_message_translation_domain' => 'SonataAdminBundle',
+            'empty_message_translation_domain' => 'SensioLabsAdminBundle',
         ];
 
         $code = $name;
@@ -347,7 +347,7 @@ abstract class BaseGroupedMapper implements MapperInterface
     final protected function addFieldToCurrentGroup(string $fieldName, ?string $name = null): array
     {
         // Note this line must happen before the next line.
-        // See https://github.com/sonata-project/SonataAdminBundle/pull/1351
+        // See https://github.com/sonata-project/SensioLabsAdminBundle/pull/1351
         $currentGroup = $this->getCurrentGroupName();
         $groups = $this->getGroups();
         $groups[$currentGroup]['fields'][$fieldName] = $name ?? $fieldName;

@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,35 +14,35 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Psr\Container\ContainerInterface;
-use Sonata\AdminBundle\Admin\AdminHelper;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilder;
-use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
-use Sonata\AdminBundle\Admin\Extension\LockExtension;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\ArgumentResolver\AdminValueResolver;
-use Sonata\AdminBundle\ArgumentResolver\ProxyQueryResolver;
-use Sonata\AdminBundle\Asset\LastModifiedVersionStrategy;
-use Sonata\AdminBundle\Controller\CRUDController;
-use Sonata\AdminBundle\Event\AdminEventExtension;
-use Sonata\AdminBundle\Filter\FilterFactory;
-use Sonata\AdminBundle\Filter\FilterFactoryInterface;
-use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
-use Sonata\AdminBundle\Filter\Persister\SessionFilterPersister;
-use Sonata\AdminBundle\Model\AuditManager;
-use Sonata\AdminBundle\Model\AuditManagerInterface;
-use Sonata\AdminBundle\Request\AdminFetcher;
-use Sonata\AdminBundle\Request\AdminFetcherInterface;
-use Sonata\AdminBundle\Route\AdminPoolLoader;
-use Sonata\AdminBundle\Search\SearchHandler;
-use Sonata\AdminBundle\Search\SearchHandlerInterface;
-use Sonata\AdminBundle\SonataConfiguration;
-use Sonata\AdminBundle\Templating\TemplateRegistry;
-use Sonata\AdminBundle\Translator\Extractor\AdminExtractor;
-use Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy;
-use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Sonata\AdminBundle\Translator\NativeLabelTranslatorStrategy;
-use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
-use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
+use SensioLabs\AdminBundle\Admin\AdminHelper;
+use SensioLabs\AdminBundle\Admin\BreadcrumbsBuilder;
+use SensioLabs\AdminBundle\Admin\BreadcrumbsBuilderInterface;
+use SensioLabs\AdminBundle\Admin\Extension\LockExtension;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\ArgumentResolver\AdminValueResolver;
+use SensioLabs\AdminBundle\ArgumentResolver\ProxyQueryResolver;
+use SensioLabs\AdminBundle\Asset\LastModifiedVersionStrategy;
+use SensioLabs\AdminBundle\Controller\CRUDController;
+use SensioLabs\AdminBundle\Event\AdminEventExtension;
+use SensioLabs\AdminBundle\Filter\FilterFactory;
+use SensioLabs\AdminBundle\Filter\FilterFactoryInterface;
+use SensioLabs\AdminBundle\Filter\Persister\FilterPersisterInterface;
+use SensioLabs\AdminBundle\Filter\Persister\SessionFilterPersister;
+use SensioLabs\AdminBundle\Model\AuditManager;
+use SensioLabs\AdminBundle\Model\AuditManagerInterface;
+use SensioLabs\AdminBundle\Request\AdminFetcher;
+use SensioLabs\AdminBundle\Request\AdminFetcherInterface;
+use SensioLabs\AdminBundle\Route\AdminPoolLoader;
+use SensioLabs\AdminBundle\Search\SearchHandler;
+use SensioLabs\AdminBundle\Search\SearchHandlerInterface;
+use SensioLabs\AdminBundle\SensioLabsConfiguration;
+use SensioLabs\AdminBundle\Templating\TemplateRegistry;
+use SensioLabs\AdminBundle\Translator\Extractor\AdminExtractor;
+use SensioLabs\AdminBundle\Translator\FormLabelTranslatorStrategy;
+use SensioLabs\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use SensioLabs\AdminBundle\Translator\NativeLabelTranslatorStrategy;
+use SensioLabs\AdminBundle\Translator\NoopLabelTranslatorStrategy;
+use SensioLabs\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Symfony\Component\Asset\PathPackage;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -77,7 +77,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         ->alias(Pool::class, 'sonata.admin.pool')
 
-        ->set('sonata.admin.configuration', SonataConfiguration::class)
+        ->set('sonata.admin.configuration', SensioLabsConfiguration::class)
             ->args([
                 abstract_arg('title'),
                 abstract_arg('logo'),

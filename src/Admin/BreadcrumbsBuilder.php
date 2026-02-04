@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Admin;
+namespace SensioLabs\AdminBundle\Admin;
 
 use Knp\Menu\ItemInterface;
-use Sonata\AdminBundle\BCLayer\BCHelper;
+use SensioLabs\AdminBundle\BCLayer\BCHelper;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -86,7 +86,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
                 'link_breadcrumb_dashboard',
                 [
                     'uri' => $admin->getRouteGenerator()->generate('sonata_admin_dashboard'),
-                    'extras' => ['translation_domain' => 'SonataAdminBundle'],
+                    'extras' => ['translation_domain' => 'SensioLabsAdminBundle'],
                 ]
             );
         }

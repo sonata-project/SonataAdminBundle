@@ -3,22 +3,22 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Mapper;
+namespace SensioLabs\AdminBundle\Tests\Mapper;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Tests\Fixtures\Mapper\AbstractDummyGroupedMapper;
-use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use SensioLabs\AdminBundle\Admin\AbstractAdmin;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Tests\Fixtures\Mapper\AbstractDummyGroupedMapper;
+use SensioLabs\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\DependencyInjection\Container;
 
 /**

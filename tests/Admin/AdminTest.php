@@ -3,15 +3,15 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Admin;
+namespace SensioLabs\AdminBundle\Tests\Admin;
 
 use Doctrine\Common\Collections\Collection;
 use Knp\Menu\FactoryInterface;
@@ -21,61 +21,61 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\AbstractAdminExtension;
-use Sonata\AdminBundle\Admin\AdminExtensionInterface;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
-use Sonata\AdminBundle\Builder\FormContractorInterface;
-use Sonata\AdminBundle\Builder\ListBuilderInterface;
-use Sonata\AdminBundle\Builder\RouteBuilderInterface;
-use Sonata\AdminBundle\Builder\ShowBuilderInterface;
-use Sonata\AdminBundle\Datagrid\DatagridInterface;
-use Sonata\AdminBundle\Datagrid\PagerInterface;
-use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Exporter\DataSourceInterface;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\Filter\Persister\FilterPersisterInterface;
-use Sonata\AdminBundle\Model\AuditManagerInterface;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Sonata\AdminBundle\Route\DefaultRouteGenerator;
-use Sonata\AdminBundle\Route\PathInfoBuilder;
-use Sonata\AdminBundle\Route\RouteGeneratorInterface;
-use Sonata\AdminBundle\Route\RoutesCache;
-use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
-use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
-use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Sonata\AdminBundle\Tests\App\Builder\DatagridBuilder;
-use Sonata\AdminBundle\Tests\App\Builder\FormContractor;
-use Sonata\AdminBundle\Tests\App\Builder\ListBuilder;
-use Sonata\AdminBundle\Tests\App\Builder\ShowBuilder;
-use Sonata\AdminBundle\Tests\App\Model\Foo;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\AvoidInfiniteLoopAdmin;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentVoteAdmin;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\CommentWithCustomRouteAdmin;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\FilteredAdmin;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\ModelAdmin;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\PostCategoryAdmin;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\PostWithCustomRouteAdmin;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\PostWithoutBatchRouteAdmin;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\TagAdmin;
-use Sonata\AdminBundle\Tests\Fixtures\Admin\TagWithoutPostAdmin;
-use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost;
-use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
-use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\CommentVote;
-use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\NewsPost;
-use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
-use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\PostCategory;
-use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
-use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
-use Sonata\AdminBundle\Tests\Fixtures\FieldDescription\FieldDescription;
-use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Sonata\AdminBundle\Translator\NoopLabelTranslatorStrategy;
-use Sonata\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
+use SensioLabs\AdminBundle\Admin\AbstractAdmin;
+use SensioLabs\AdminBundle\Admin\AbstractAdminExtension;
+use SensioLabs\AdminBundle\Admin\AdminExtensionInterface;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Builder\DatagridBuilderInterface;
+use SensioLabs\AdminBundle\Builder\FormContractorInterface;
+use SensioLabs\AdminBundle\Builder\ListBuilderInterface;
+use SensioLabs\AdminBundle\Builder\RouteBuilderInterface;
+use SensioLabs\AdminBundle\Builder\ShowBuilderInterface;
+use SensioLabs\AdminBundle\Datagrid\DatagridInterface;
+use SensioLabs\AdminBundle\Datagrid\PagerInterface;
+use SensioLabs\AdminBundle\Datagrid\ProxyQueryInterface;
+use SensioLabs\AdminBundle\Exporter\DataSourceInterface;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionFactoryInterface;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use SensioLabs\AdminBundle\Filter\Persister\FilterPersisterInterface;
+use SensioLabs\AdminBundle\Model\AuditManagerInterface;
+use SensioLabs\AdminBundle\Model\ModelManagerInterface;
+use SensioLabs\AdminBundle\Route\DefaultRouteGenerator;
+use SensioLabs\AdminBundle\Route\PathInfoBuilder;
+use SensioLabs\AdminBundle\Route\RouteGeneratorInterface;
+use SensioLabs\AdminBundle\Route\RoutesCache;
+use SensioLabs\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
+use SensioLabs\AdminBundle\Security\Handler\SecurityHandlerInterface;
+use SensioLabs\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use SensioLabs\AdminBundle\Tests\App\Builder\DatagridBuilder;
+use SensioLabs\AdminBundle\Tests\App\Builder\FormContractor;
+use SensioLabs\AdminBundle\Tests\App\Builder\ListBuilder;
+use SensioLabs\AdminBundle\Tests\App\Builder\ShowBuilder;
+use SensioLabs\AdminBundle\Tests\App\Model\Foo;
+use SensioLabs\AdminBundle\Tests\Fixtures\Admin\AvoidInfiniteLoopAdmin;
+use SensioLabs\AdminBundle\Tests\Fixtures\Admin\CommentAdmin;
+use SensioLabs\AdminBundle\Tests\Fixtures\Admin\CommentVoteAdmin;
+use SensioLabs\AdminBundle\Tests\Fixtures\Admin\CommentWithCustomRouteAdmin;
+use SensioLabs\AdminBundle\Tests\Fixtures\Admin\FilteredAdmin;
+use SensioLabs\AdminBundle\Tests\Fixtures\Admin\ModelAdmin;
+use SensioLabs\AdminBundle\Tests\Fixtures\Admin\PostAdmin;
+use SensioLabs\AdminBundle\Tests\Fixtures\Admin\PostCategoryAdmin;
+use SensioLabs\AdminBundle\Tests\Fixtures\Admin\PostWithCustomRouteAdmin;
+use SensioLabs\AdminBundle\Tests\Fixtures\Admin\PostWithoutBatchRouteAdmin;
+use SensioLabs\AdminBundle\Tests\Fixtures\Admin\TagAdmin;
+use SensioLabs\AdminBundle\Tests\Fixtures\Admin\TagWithoutPostAdmin;
+use SensioLabs\AdminBundle\Tests\Fixtures\Bundle\Entity\BlogPost;
+use SensioLabs\AdminBundle\Tests\Fixtures\Bundle\Entity\Comment;
+use SensioLabs\AdminBundle\Tests\Fixtures\Bundle\Entity\CommentVote;
+use SensioLabs\AdminBundle\Tests\Fixtures\Bundle\Entity\NewsPost;
+use SensioLabs\AdminBundle\Tests\Fixtures\Bundle\Entity\Post;
+use SensioLabs\AdminBundle\Tests\Fixtures\Bundle\Entity\PostCategory;
+use SensioLabs\AdminBundle\Tests\Fixtures\Bundle\Entity\Tag;
+use SensioLabs\AdminBundle\Tests\Fixtures\Entity\FooToString;
+use SensioLabs\AdminBundle\Tests\Fixtures\FieldDescription\FieldDescription;
+use SensioLabs\AdminBundle\Translator\LabelTranslatorStrategyInterface;
+use SensioLabs\AdminBundle\Translator\NoopLabelTranslatorStrategy;
+use SensioLabs\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\ExpressionLanguage\Expression;
@@ -1822,16 +1822,16 @@ final class AdminTest extends TestCase
         $expected = [
             'delete' => [
                 'label' => 'action_delete',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
                 'ask_confirmation' => true, // by default always true
             ],
             'foo' => [
                 'label' => 'action_foo',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
             ],
             'bar' => [
                 'label' => 'batch.label_bar',
-                'translation_domain' => 'SonataAdminBundle',
+                'translation_domain' => 'SensioLabsAdminBundle',
             ],
             'baz' => [
                 'label' => 'action_baz',
@@ -1848,7 +1848,7 @@ final class AdminTest extends TestCase
 
         $admin = new PostAdmin();
         $admin->setRouteBuilder($pathInfo);
-        $admin->setTranslationDomain('SonataAdminBundle');
+        $admin->setTranslationDomain('SensioLabsAdminBundle');
         $admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
 
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);

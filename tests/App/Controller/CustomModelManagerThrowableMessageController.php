@@ -3,18 +3,18 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\App\Controller;
+namespace SensioLabs\AdminBundle\Tests\App\Controller;
 
-use Sonata\AdminBundle\Controller\CRUDController;
-use Sonata\AdminBundle\Exception\ModelManagerThrowable;
+use SensioLabs\AdminBundle\Controller\CRUDController;
+use SensioLabs\AdminBundle\Exception\ModelManagerThrowable;
 
 /**
  * @phpstan-extends CRUDController<object>

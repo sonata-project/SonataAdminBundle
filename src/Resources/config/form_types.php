@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -13,19 +13,19 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Sonata\AdminBundle\Form\DataTransformer\BooleanToStringTransformer;
-use Sonata\AdminBundle\Form\DataTransformerResolver;
-use Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension;
-use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
-use Sonata\AdminBundle\Form\Extension\Field\Type\MopaCompatibilityTypeFieldExtension;
-use Sonata\AdminBundle\Form\Type\AdminType;
-use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
-use Sonata\AdminBundle\Form\Type\CollectionType;
-use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-use Sonata\AdminBundle\Form\Type\ModelHiddenType;
-use Sonata\AdminBundle\Form\Type\ModelListType;
-use Sonata\AdminBundle\Form\Type\ModelReferenceType;
-use Sonata\AdminBundle\Form\Type\ModelType;
+use SensioLabs\AdminBundle\Form\DataTransformer\BooleanToStringTransformer;
+use SensioLabs\AdminBundle\Form\DataTransformerResolver;
+use SensioLabs\AdminBundle\Form\Extension\ChoiceTypeExtension;
+use SensioLabs\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
+use SensioLabs\AdminBundle\Form\Extension\Field\Type\MopaCompatibilityTypeFieldExtension;
+use SensioLabs\AdminBundle\Form\Type\AdminType;
+use SensioLabs\AdminBundle\Form\Type\ChoiceFieldMaskType;
+use SensioLabs\AdminBundle\Form\Type\CollectionType;
+use SensioLabs\AdminBundle\Form\Type\ModelAutocompleteType;
+use SensioLabs\AdminBundle\Form\Type\ModelHiddenType;
+use SensioLabs\AdminBundle\Form\Type\ModelListType;
+use SensioLabs\AdminBundle\Form\Type\ModelReferenceType;
+use SensioLabs\AdminBundle\Form\Type\ModelType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 

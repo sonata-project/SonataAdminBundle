@@ -3,20 +3,20 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\DependencyInjection\Compiler;
+namespace SensioLabs\AdminBundle\DependencyInjection\Compiler;
 
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Datagrid\Pager;
-use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
-use Sonata\AdminBundle\Templating\MutableTemplateRegistry;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Datagrid\Pager;
+use SensioLabs\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
+use SensioLabs\AdminBundle\Templating\MutableTemplateRegistry;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
@@ -434,10 +434,10 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 && Pager::TYPE_SIMPLE === $args[0]
                 && (
                     !isset($definedTemplates['pager_results'])
-                    || '@SonataAdmin/Pager/results.html.twig' === $definedTemplates['pager_results']
+                    || '@SensioLabsAdmin/Pager/results.html.twig' === $definedTemplates['pager_results']
                 )
             ) {
-                $definedTemplates['pager_results'] = '@SonataAdmin/Pager/simple_pager_results.html.twig';
+                $definedTemplates['pager_results'] = '@SensioLabsAdmin/Pager/simple_pager_results.html.twig';
             }
 
             $methods[$pos] = [$method, $args];

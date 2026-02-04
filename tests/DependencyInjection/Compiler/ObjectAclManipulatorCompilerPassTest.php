@@ -3,22 +3,22 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
+namespace SensioLabs\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Command\GenerateObjectAclCommand;
-use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
-use Sonata\AdminBundle\Util\ObjectAclManipulator;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Command\GenerateObjectAclCommand;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
+use SensioLabs\AdminBundle\Util\ObjectAclManipulator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

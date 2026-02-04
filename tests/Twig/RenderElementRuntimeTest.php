@@ -3,32 +3,32 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Twig;
+namespace SensioLabs\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
-use Sonata\AdminBundle\SonataConfiguration;
-use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
-use Sonata\AdminBundle\Tests\Fixtures\Entity\FooToString;
-use Sonata\AdminBundle\Tests\Fixtures\Enum\Suit;
-use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
-use Sonata\AdminBundle\Tests\Twig\Extension\FakeTemplateRegistryExtension;
-use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
-use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
-use Sonata\AdminBundle\Twig\RenderElementRuntime;
-use Sonata\AdminBundle\Twig\XEditableRuntime;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use SensioLabs\AdminBundle\SensioLabsConfiguration;
+use SensioLabs\AdminBundle\Templating\MutableTemplateRegistryInterface;
+use SensioLabs\AdminBundle\Templating\TemplateRegistryInterface;
+use SensioLabs\AdminBundle\Tests\Fixtures\Entity\FooToString;
+use SensioLabs\AdminBundle\Tests\Fixtures\Enum\Suit;
+use SensioLabs\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
+use SensioLabs\AdminBundle\Tests\Twig\Extension\FakeTemplateRegistryExtension;
+use SensioLabs\AdminBundle\Twig\Extension\RenderElementExtension;
+use SensioLabs\AdminBundle\Twig\Extension\XEditableExtension;
+use SensioLabs\AdminBundle\Twig\RenderElementRuntime;
+use SensioLabs\AdminBundle\Twig\XEditableRuntime;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Component\Config\FileLocator;
@@ -79,9 +79,9 @@ final class RenderElementRuntimeTest extends TestCase
         $translator->addLoader('xlf', new XliffFileLoader());
         $translator->addResource(
             'xlf',
-            \sprintf('%s/../../src/Resources/translations/SonataAdminBundle.en.xliff', __DIR__),
+            \sprintf('%s/../../src/Resources/translations/SensioLabsAdminBundle.en.xliff', __DIR__),
             'en',
-            'SonataAdminBundle'
+            'SensioLabsAdminBundle'
         );
 
         $this->translator = $translator;
@@ -103,12 +103,12 @@ final class RenderElementRuntimeTest extends TestCase
             'optimizations' => 0,
         ]);
         $this->environment->addExtension(new StimulusTwigExtension(new StimulusHelper(null)));
-        $this->environment->addGlobal('sonata_config', new SonataConfiguration('title', '/path/to/logo.png', [
+        $this->environment->addGlobal('sonata_config', new SensioLabsConfiguration('title', '/path/to/logo.png', [
             'confirm_exit' => true,
             'default_admin_route' => 'show',
             'default_group' => 'default',
             'default_icon' => '<i class="fas fa-folder"></i>',
-            'default_translation_domain' => 'SonataAdminBundle',
+            'default_translation_domain' => 'SensioLabsAdminBundle',
             'dropdown_number_groups_per_colums' => 2,
             'form_type' => 'standard',
             'html5_validate' => true,
@@ -195,7 +195,7 @@ final class RenderElementRuntimeTest extends TestCase
             ->willReturn(true);
 
         $this->templateRegistry->method('getTemplate')->with('base_list_field')
-            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+            ->willReturn('@SensioLabsAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription
             ->method('getValue')
@@ -230,11 +230,11 @@ final class RenderElementRuntimeTest extends TestCase
     public function testRenderListElementWithAdditionalValuesInArray(): void
     {
         $this->templateRegistry->method('getTemplate')->with('base_list_field')
-            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+            ->willReturn('@SensioLabsAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription
             ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/list_string.html.twig');
+            ->willReturn('@SensioLabsAdmin/CRUD/list_string.html.twig');
 
         static::assertSame(
             static::removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> Extra value </td>'),
@@ -250,7 +250,7 @@ final class RenderElementRuntimeTest extends TestCase
     {
         $this->fieldDescription
             ->method('getTemplate')
-            ->willReturn('@SonataAdmin/CRUD/base_list_field.html.twig');
+            ->willReturn('@SensioLabsAdmin/CRUD/base_list_field.html.twig');
 
         $this->fieldDescription
             ->method('getFieldName')
@@ -871,19 +871,19 @@ final class RenderElementRuntimeTest extends TestCase
                 '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> Delete </td>',
                 FieldDescriptionInterface::TYPE_TRANS,
                 'action_delete',
-                ['value_translation_domain' => 'SonataAdminBundle'],
+                ['value_translation_domain' => 'SensioLabsAdminBundle'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> </td>',
                 FieldDescriptionInterface::TYPE_TRANS,
                 null,
-                ['value_translation_domain' => 'SonataAdminBundle'],
+                ['value_translation_domain' => 'SensioLabsAdminBundle'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> Delete </td>',
                 FieldDescriptionInterface::TYPE_TRANS,
                 'action_delete',
-                ['format' => '%s', 'value_translation_domain' => 'SonataAdminBundle'],
+                ['format' => '%s', 'value_translation_domain' => 'SensioLabsAdminBundle'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345">
@@ -899,7 +899,7 @@ final class RenderElementRuntimeTest extends TestCase
                 </td>',
                 FieldDescriptionInterface::TYPE_TRANS,
                 'action_delete',
-                ['format' => 'action.%s', 'value_translation_domain' => 'SonataAdminBundle'],
+                ['format' => 'action.%s', 'value_translation_domain' => 'SensioLabsAdminBundle'],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Status1 </td>',
@@ -937,7 +937,7 @@ final class RenderElementRuntimeTest extends TestCase
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Delete </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'Foo',
-                ['choice_translation_domain' => 'SonataAdminBundle', 'choices' => [
+                ['choice_translation_domain' => 'SensioLabsAdminBundle', 'choices' => [
                     'Foo' => 'action_delete',
                     'Status2' => 'Alias2',
                     'Status3' => 'Alias3',
@@ -999,7 +999,7 @@ final class RenderElementRuntimeTest extends TestCase
                 '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Delete, Alias3 </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
                 ['Foo', 'Status3'],
-                ['choice_translation_domain' => 'SonataAdminBundle', 'choices' => [
+                ['choice_translation_domain' => 'SensioLabsAdminBundle', 'choices' => [
                     'Foo' => 'action_delete',
                     'Status2' => 'Alias2',
                     'Status3' => 'Alias3',
@@ -1131,7 +1131,7 @@ final class RenderElementRuntimeTest extends TestCase
                 'Foo',
                 [
                     'editable' => true,
-                    'choice_translation_domain' => 'SonataAdminBundle',
+                    'choice_translation_domain' => 'SensioLabsAdminBundle',
                     'choices' => [
                         'Foo' => 'action_delete',
                         'Status2' => 'Alias2',
@@ -1461,7 +1461,7 @@ final class RenderElementRuntimeTest extends TestCase
                 [
                     'editable' => true,
                     'multiple' => true,
-                    'choice_translation_domain' => 'SonataAdminBundle',
+                    'choice_translation_domain' => 'SensioLabsAdminBundle',
                     'choices' => [
                         'Status1' => 'action_delete',
                         'Status2' => 'Alias2',
@@ -1572,13 +1572,13 @@ final class RenderElementRuntimeTest extends TestCase
             '<th>Data</th> <td>Delete</td>',
             FieldDescriptionInterface::TYPE_TRANS,
             'action_delete',
-            ['safe' => false, 'value_translation_domain' => 'SonataAdminBundle'],
+            ['safe' => false, 'value_translation_domain' => 'SensioLabsAdminBundle'],
         ];
         yield [
             '<th>Data</th> <td>Delete</td>',
             FieldDescriptionInterface::TYPE_TRANS,
             'delete',
-            ['safe' => false, 'value_translation_domain' => 'SonataAdminBundle', 'format' => 'action_%s'],
+            ['safe' => false, 'value_translation_domain' => 'SensioLabsAdminBundle', 'format' => 'action_%s'],
         ];
         yield ['<th>Data</th> <td>Status1</td>', FieldDescriptionInterface::TYPE_CHOICE, 'Status1', ['safe' => false]];
         yield [
@@ -1605,7 +1605,7 @@ final class RenderElementRuntimeTest extends TestCase
             '<th>Data</th> <td>Delete</td>',
             FieldDescriptionInterface::TYPE_CHOICE,
             'Foo',
-            ['safe' => false, 'choice_translation_domain' => 'SonataAdminBundle', 'choices' => [
+            ['safe' => false, 'choice_translation_domain' => 'SensioLabsAdminBundle', 'choices' => [
                 'Foo' => 'action_delete',
                 'Status2' => 'Alias2',
                 'Status3' => 'Alias3',
@@ -1654,7 +1654,7 @@ final class RenderElementRuntimeTest extends TestCase
             '<th>Data</th> <td>Delete, Alias3</td>',
             FieldDescriptionInterface::TYPE_CHOICE,
             ['Foo', 'Status3'],
-            ['safe' => false, 'choice_translation_domain' => 'SonataAdminBundle', 'choices' => [
+            ['safe' => false, 'choice_translation_domain' => 'SensioLabsAdminBundle', 'choices' => [
                 'Foo' => 'action_delete',
                 'Status2' => 'Alias2',
                 'Status3' => 'Alias3',

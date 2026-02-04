@@ -3,19 +3,19 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Maker;
+namespace SensioLabs\AdminBundle\Maker;
 
-use Sonata\AdminBundle\Command\Validators;
-use Sonata\AdminBundle\Manipulator\ServicesManipulator;
-use Sonata\AdminBundle\Model\ModelManagerInterface;
+use SensioLabs\AdminBundle\Command\Validators;
+use SensioLabs\AdminBundle\Manipulator\ServicesManipulator;
+use SensioLabs\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Bundle\MakerBundle\ConsoleStyle;
 use Symfony\Bundle\MakerBundle\DependencyBuilder;
 use Symfony\Bundle\MakerBundle\Generator;

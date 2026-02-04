@@ -3,24 +3,24 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the Sonata Project package.
+ * This file is part of sensiolabs-de/admin-bundle.
  *
- * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ * (c) SensioLabs Deutschland <info@sensiolabs.de>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Twig;
+namespace SensioLabs\AdminBundle\Tests\Twig;
 
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Tests\App\Model\Foo;
-use Sonata\AdminBundle\Tests\Twig\Extension\FakeTemplateRegistryExtension;
-use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
-use Sonata\AdminBundle\Twig\SonataAdminRuntime;
+use SensioLabs\AdminBundle\Admin\AdminInterface;
+use SensioLabs\AdminBundle\Admin\Pool;
+use SensioLabs\AdminBundle\Tests\App\Model\Foo;
+use SensioLabs\AdminBundle\Tests\Twig\Extension\FakeTemplateRegistryExtension;
+use SensioLabs\AdminBundle\Twig\Extension\SensioLabsAdminExtension;
+use SensioLabs\AdminBundle\Twig\SensioLabsAdminRuntime;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Loader\PhpFileLoader;
@@ -28,9 +28,9 @@ use Twig\Environment;
 use Twig\Extra\String\StringExtension;
 use Twig\Loader\FilesystemLoader;
 
-final class SonataAdminRuntimeTest extends TestCase
+final class SensioLabsAdminRuntimeTest extends TestCase
 {
-    private SonataAdminRuntime $sonataAdminRuntime;
+    private SensioLabsAdminRuntime $sonataAdminRuntime;
 
     private Environment $environment;
 
@@ -58,7 +58,7 @@ final class SonataAdminRuntimeTest extends TestCase
 
         $this->pool = new Pool($this->container, ['sonata_admin_foo_service'], [], [Foo::class => ['sonata_admin_foo_service']]);
 
-        $this->sonataAdminRuntime = new SonataAdminRuntime($this->pool);
+        $this->sonataAdminRuntime = new SensioLabsAdminRuntime($this->pool);
 
         $loader = new FilesystemLoader([
             __DIR__.'/../../src/Resources/views/CRUD',
@@ -73,7 +73,7 @@ final class SonataAdminRuntimeTest extends TestCase
             'autoescape' => 'html',
             'optimizations' => 0,
         ]);
-        $this->environment->addExtension(new SonataAdminExtension($this->sonataAdminRuntime));
+        $this->environment->addExtension(new SensioLabsAdminExtension($this->sonataAdminRuntime));
         $this->environment->addExtension(new FakeTemplateRegistryExtension());
 
         // routing extension
@@ -137,7 +137,7 @@ final class SonataAdminRuntimeTest extends TestCase
 
         $this->container->set('sonata_admin_foo_service', $this->admin);
 
-        $sonataAdminRuntime = new SonataAdminRuntime($pool);
+        $sonataAdminRuntime = new SensioLabsAdminRuntime($pool);
 
         static::assertSame('1234567', $sonataAdminRuntime->getUrlSafeIdentifier($model));
     }
@@ -167,7 +167,7 @@ final class SonataAdminRuntimeTest extends TestCase
         $this->adminBar->expects(static::never())
             ->method('getUrlSafeIdentifier');
 
-        $sonataAdminRuntime = new SonataAdminRuntime($pool);
+        $sonataAdminRuntime = new SensioLabsAdminRuntime($pool);
 
         static::assertSame('1234567', $sonataAdminRuntime->getUrlSafeIdentifier($model, $this->admin));
     }
@@ -194,7 +194,7 @@ final class SonataAdminRuntimeTest extends TestCase
             ->with(static::equalTo($model))
             ->willReturn('1234567');
 
-        $sonataAdminRuntime = new SonataAdminRuntime($pool);
+        $sonataAdminRuntime = new SensioLabsAdminRuntime($pool);
 
         static::assertSame('1234567', $sonataAdminRuntime->getUrlSafeIdentifier($model, $this->adminBar));
     }
