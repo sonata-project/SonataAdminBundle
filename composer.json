@@ -1,6 +1,6 @@
 {
-    "name": "sonata-project/admin-bundle",
-    "description": "The missing Symfony Admin Generator",
+    "name": "sensiolabs-de/admin-bundle",
+    "description": "Based on Sonata Admin Bundle: The missing Symfony Admin Generator",
     "license": "MIT",
     "type": "symfony-bundle",
     "keywords": [
@@ -12,11 +12,6 @@
         "symfony"
     ],
     "authors": [
-        {
-            "name": "Thomas Rabaix",
-            "email": "thomas.rabaix@sonata-project.org",
-            "homepage": "https://sonata-project.org"
-        },
         {
             "name": "Sonata Community",
             "homepage": "https://github.com/sonata-project/SonataAdminBundle/contributors"
@@ -97,12 +92,12 @@
     "prefer-stable": true,
     "autoload": {
         "psr-4": {
-            "Sonata\\AdminBundle\\": "src/"
+            "SensioLabs\\AdminBundle\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Sonata\\AdminBundle\\Tests\\": "tests/"
+            "SensioLabs\\AdminBundle\\Tests\\": "tests/"
         }
     },
     "config": {

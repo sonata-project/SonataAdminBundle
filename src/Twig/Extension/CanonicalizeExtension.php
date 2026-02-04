@@ -20,16 +20,6 @@ use Twig\TwigFunction;
 final class CanonicalizeExtension extends AbstractExtension
 {
     /**
-     * NEXT_MAJOR: Remove this constructor.
-     *
-     * @internal This class should only be used through Twig
-     */
-    public function __construct(
-        private CanonicalizeRuntime $canonicalizeRuntime,
-    ) {
-    }
-
-    /**
      * @return TwigFunction[]
      */
     public function getFunctions(): array
@@ -38,45 +28,5 @@ final class CanonicalizeExtension extends AbstractExtension
             new TwigFunction('canonicalize_locale_for_moment', [CanonicalizeRuntime::class, 'getCanonicalizedLocaleForMoment']),
             new TwigFunction('canonicalize_locale_for_select2', [CanonicalizeRuntime::class, 'getCanonicalizedLocaleForSelect2']),
         ];
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle version 4.7
-     *
-     * @phpstan-ignore return.unusedType
-     */
-    public function getCanonicalizedLocaleForMoment(): ?string
-    {
-        trigger_deprecation(
-            'sonata-project/admin-bundle',
-            '4.7.0',
-            'Method "%s" is deprecated and no-op. It always returns null and will be removed in 5.0.',
-            __METHOD__,
-        );
-
-        return null;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle version 4.7 use CanonicalizeRuntime::getCanonicalizedLocaleForSelect2() instead
-     *
-     * Returns a canonicalized locale for "select2" NPM library,
-     * or `null` if the locale's language is "en", which doesn't require localization.
-     */
-    public function getCanonicalizedLocaleForSelect2(): ?string
-    {
-        @trigger_error(\sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 4.7 and will be removed in 5.0.'
-            .'  Use "%s::%s()" instead.',
-            __METHOD__,
-            CanonicalizeRuntime::class,
-            __FUNCTION__
-        ), \E_USER_DEPRECATED);
-
-        return $this->canonicalizeRuntime->getCanonicalizedLocaleForSelect2();
     }
 }

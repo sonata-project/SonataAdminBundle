@@ -28,13 +28,6 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
- * NEXT_MAJOR: Add all these methods to the interface by uncommenting them.
- *
- * @method bool showInDashboard()
- * @method void removeExtension(AdminExtensionInterface $extension)
- *
- * @phpstan-method void removeExtension(AdminExtensionInterface<T> $extension)
- *
  * @phpstan-import-type FieldDescriptionOptions from FieldDescriptionInterface
  *
  * @phpstan-template T of object
@@ -120,13 +113,9 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function hasRoute(string $name): bool;
 
     /**
-     * NEXT_MAJOR: Restrict $name typehint to string.
-     *
-     * @param string|string[] $name
-     *
      * @phpstan-param T|null $object
      */
-    public function isGranted($name, ?object $object = null): bool;
+    public function isGranted(string $name, ?object $object = null): bool;
 
     /**
      * Returns a string representation of the identifiers for this instance.
@@ -177,11 +166,10 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function addExtension(AdminExtensionInterface $extension): void;
 
-    // NEXT_MAJOR: Uncomment this for Sonata 5
     /**
      * @phpstan-param AdminExtensionInterface<T> $extension
      */
-    // public function removeExtension(AdminExtensionInterface $extension): void;
+    public function removeExtension(AdminExtensionInterface $extension): void;
 
     /**
      * Returns an array of extension related to the current Admin.
@@ -279,15 +267,7 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
      */
     public function getFilterParameters(): array;
 
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle version 4.7 use showInDashboard instead
-     */
-    public function showIn(string $context): bool;
-
-    // NEXT_MAJOR: Uncomment this for Sonata 5
-    // public function showInDashboard(): bool;
+    public function showInDashboard(): bool;
 
     /**
      * Add object security, fe. make the current user owner of the object.
@@ -302,11 +282,9 @@ interface AdminInterface extends TaggedAdminInterface, AccessRegistryInterface, 
     public function getParent(): self;
 
     /**
-     * NEXT_MAJOR: Change to ?string $parentAssociationMapping = null.
-     *
      * @param AdminInterface<object> $parent
      */
-    public function setParent(self $parent, string $parentAssociationMapping): void;
+    public function setParent(self $parent, ?string $parentAssociationMapping = null): void;
 
     /**
      * Returns true if the Admin class has a Parent Admin defined.

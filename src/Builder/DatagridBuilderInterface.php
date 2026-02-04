@@ -18,14 +18,16 @@ use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 /**
- * NEXT_MAJOR: Avoid extending deprecated BuilderInterface.
- *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * @phpstan-template T of \Sonata\AdminBundle\Datagrid\ProxyQueryInterface
  */
-interface DatagridBuilderInterface extends BuilderInterface
+interface DatagridBuilderInterface
 {
+    /**
+     * Adds missing information to the given field description.
+     */
+    public function fixFieldDescription(FieldDescriptionInterface $fieldDescription): void;
     /**
      * @phpstan-param DatagridInterface<T> $datagrid
      * @phpstan-param class-string|null    $type

@@ -326,43 +326,16 @@ final class Datagrid implements DatagridInterface
         }
 
         foreach ($this->getFilters() as $filter) {
-            // NEXT_MAJOR: Keep the if part.
-            if (method_exists($filter, 'getFormOptions')) {
-                $type = FilterDataType::class;
+            $type = FilterDataType::class;
 
-                // NEXT_MAJOR: Keep the if part.
-                if (method_exists($filter, 'getLabelTranslationParameters')) {
-                    $labelTranslationParameters = $filter->getLabelTranslationParameters();
-                } else {
-                    @trigger_error(
-                        'Not implementing "getLabelTranslationParameters()" is deprecated since sonata-project/admin-bundle 4.30'
-                        .' and will throw an error in 5.0.',
-                        \E_USER_DEPRECATED
-                    );
-
-                    $labelTranslationParameters = $filter->getOption('label_translation_parameters');
-                }
-
-                $defaultFormOptions = [
-                    'label' => $filter->getLabel(),
-                    'label_translation_parameters' => $labelTranslationParameters,
-                    'translation_domain' => $filter->getTranslationDomain(),
-                    'field_type' => $filter->getFieldType(),
-                    'field_options' => $filter->getFieldOptions(),
-                ];
-                $options = array_merge($defaultFormOptions, $filter->getFormOptions());
-            } else {
-                @trigger_error(
-                    'Not implementing "getFormOptions()" is deprecated since sonata-project/admin-bundle 4.15'
-                    .' and will throw an error in 5.0.',
-                    \E_USER_DEPRECATED
-                );
-
-                /**
-                 * @var class-string<FormTypeInterface> $type
-                 */
-                [$type, $options] = $filter->getRenderSettings();
-            }
+            $defaultFormOptions = [
+                'label' => $filter->getLabel(),
+                'label_translation_parameters' => $filter->getLabelTranslationParameters(),
+                'translation_domain' => $filter->getTranslationDomain(),
+                'field_type' => $filter->getFieldType(),
+                'field_options' => $filter->getFieldOptions(),
+            ];
+            $options = array_merge($defaultFormOptions, $filter->getFormOptions());
 
             $this->formBuilder->add($filter->getFormName(), $type, $options);
         }

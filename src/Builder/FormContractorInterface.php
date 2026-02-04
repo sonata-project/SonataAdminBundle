@@ -17,13 +17,11 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
- * NEXT_MAJOR: Avoid extending deprecated BuilderInterface.
- *
  * This interface should be implemented in persistence bundles.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
-interface FormContractorInterface extends BuilderInterface
+interface FormContractorInterface
 {
     /**
      * Adds missing information to the given field description and the given admin.

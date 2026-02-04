@@ -26,60 +26,25 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
     /**
      * @var string[]
      */
-    private array $superAdminRoles = [];
+    private array $superAdminRoles;
 
-    /**
-     * @param string|string[] $superAdminRoles
-     */
     public function __construct(
         private AuthorizationCheckerInterface $authorizationChecker,
-        $superAdminRoles,
+        string $superAdminRole,
     ) {
-        // NEXT_MAJOR: Keep only the elseif part and add typehint.
-        if (\is_array($superAdminRoles)) {
-            @trigger_error(\sprintf(
-                'Passing an array as argument 1 of "%s()" is deprecated since sonata-project/admin-bundle 4.6'
-                .' and will throw an error in 5.0. You MUST pass a string instead.',
-                __METHOD__
-            ), \E_USER_DEPRECATED);
-
-            $this->superAdminRoles = $superAdminRoles;
-        } elseif (\is_string($superAdminRoles)) {
-            $this->superAdminRoles = [$superAdminRoles];
-        } else {
-            throw new \TypeError(\sprintf(
-                'Argument 1 passed to "%s()" must be of type "array" or "string", "%s" given.',
-                __METHOD__,
-                \gettype($superAdminRoles)
-            ));
-        }
+        $this->superAdminRoles = [$superAdminRole];
     }
 
-    public function isGranted(AdminInterface $admin, $attributes, ?object $object = null): bool
+    public function isGranted(AdminInterface $admin, string $attribute, ?object $object = null): bool
     {
-        // NEXT_MAJOR: Remove this and add string typehint to $attributes and rename it $attribute.
-        if (\is_array($attributes)) {
-            @trigger_error(\sprintf(
-                'Passing an array as argument 1 of "%s()" is deprecated since sonata-project/admin-bundle 4.6'
-                .' and will throw an error in 5.0. You MUST pass a string instead.',
-                __METHOD__
-            ), \E_USER_DEPRECATED);
-        }
-
-        // NEXT_MAJOR: Remove this check.
-        if (!\is_array($attributes)) {
-            $attributes = [$attributes];
-        }
-
-        $useAll = $this->hasOnlyAdminRoles($attributes);
-        $attributes = $this->mapAttributes($attributes, $admin);
+        $useAll = $this->hasOnlyAdminRole($attribute);
+        $mappedAttributes = $this->mapAttribute($attribute, $admin);
         $allRole = \sprintf($this->getBaseRole($admin), 'ALL');
 
         try {
-            // NEXT_MAJOR: Remove the method isAnyGranted and use $this->authorizationChecker->isGranted instead.
             return $this->isAnyGranted($this->superAdminRoles)
-                || $this->isAnyGranted($attributes, $object)
-                || $useAll && $this->isAnyGranted([$allRole], $object);
+                || $this->isAnyGranted($mappedAttributes, $object)
+                || $useAll && $this->authorizationChecker->isGranted($allRole, $object);
         } catch (AuthenticationCredentialsNotFoundException) {
             return false;
         }
@@ -117,47 +82,31 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
         return false;
     }
 
-    /**
-     * @param array<string|Expression> $attributes
-     */
-    private function hasOnlyAdminRoles(array $attributes): bool
+    private function hasOnlyAdminRole(string $attribute): bool
     {
-        // NEXT_MAJOR: Change the foreach to a single check.
-        foreach ($attributes as $attribute) {
-            // If the attribute is not already a ROLE_ we generate the related role.
-            if (\is_string($attribute) && !str_starts_with($attribute, 'ROLE_')) {
-                return true;
-            }
-        }
-
-        return false;
+        // If the attribute is not already a ROLE_ we generate the related role.
+        return !str_starts_with($attribute, 'ROLE_');
     }
 
     /**
-     * @param array<string|Expression> $attributes
-     * @param AdminInterface<object>   $admin
+     * @param AdminInterface<object> $admin
      *
      * @return array<string|Expression>
      */
-    private function mapAttributes(array $attributes, AdminInterface $admin): array
+    private function mapAttribute(string $attribute, AdminInterface $admin): array
     {
+        if (str_starts_with($attribute, 'ROLE_')) {
+            return [$attribute];
+        }
+
         $mappedAttributes = [];
+        $baseRole = $this->getBaseRole($admin);
 
-        foreach ($attributes as $attribute) {
-            if (!\is_string($attribute) || str_starts_with($attribute, 'ROLE_')) {
-                $mappedAttributes[] = $attribute;
+        $mappedAttributes[] = \sprintf($baseRole, $attribute);
 
-                continue;
-            }
-
-            $baseRole = $this->getBaseRole($admin);
-
-            $mappedAttributes[] = \sprintf($baseRole, $attribute);
-
-            foreach ($admin->getSecurityInformation() as $role => $permissions) {
-                if (\in_array($attribute, $permissions, true)) {
-                    $mappedAttributes[] = \sprintf($baseRole, $role);
-                }
+        foreach ($admin->getSecurityInformation() as $role => $permissions) {
+            if (\in_array($attribute, $permissions, true)) {
+                $mappedAttributes[] = \sprintf($baseRole, $role);
             }
         }
 

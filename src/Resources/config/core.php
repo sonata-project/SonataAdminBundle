@@ -37,7 +37,6 @@ use Sonata\AdminBundle\Search\SearchHandler;
 use Sonata\AdminBundle\Search\SearchHandlerInterface;
 use Sonata\AdminBundle\SonataConfiguration;
 use Sonata\AdminBundle\Templating\TemplateRegistry;
-use Sonata\AdminBundle\Translator\BCLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\Extractor\AdminExtractor;
 use Sonata\AdminBundle\Translator\FormLabelTranslatorStrategy;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
@@ -112,9 +111,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
         ->alias(BreadcrumbsBuilderInterface::class, 'sonata.admin.breadcrumbs_builder')
 
         // Services used to format the label, default is sonata.admin.label.strategy.noop
-
-        // NEXT_MAJOR: Remove this line.
-        ->set('sonata.admin.label.strategy.bc', BCLabelTranslatorStrategy::class)
 
         ->set('sonata.admin.label.strategy.native', NativeLabelTranslatorStrategy::class)
 

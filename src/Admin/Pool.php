@@ -34,11 +34,9 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  *     route_absolute: bool,
  *     route_params: array<string, string>
  * }
- * NEXT_MAJOR: Remove the label_catalogue key.
  * @phpstan-type Group = array{
  *     label: string,
  *     translation_domain: string,
- *     label_catalogue?: string,
  *     icon: string,
  *     items: list<Item>,
  *     keep_open: bool,
@@ -67,11 +65,8 @@ final class Pool
     }
 
     /**
-     * NEXT_MAJOR: Remove the label_catalogue key.
-     *
      * @phpstan-return array<string, array{
      *  label: string,
-     *  label_catalogue?: string,
      *  translation_domain: string,
      *  icon: string,
      *  items: list<AdminInterface<object>>,
@@ -88,29 +83,14 @@ final class Pool
         foreach ($this->adminGroups as $name => $adminGroup) {
             $items = [];
             foreach ($adminGroup['items'] as $item) {
-                // NEXT_MAJOR: Remove the '' check
-                if (!isset($item['admin']) || '' === $item['admin']) {
+                if (!isset($item['admin'])) {
                     continue;
                 }
 
                 $admin = $this->getInstance($item['admin']);
 
-                // NEXT_MAJOR: Keep the "if" part.
-                // @phpstan-ignore-next-line
-                if (method_exists($admin, 'showInDashboard')) {
-                    if (!$admin->showInDashboard()) {
-                        continue;
-                    }
-                } else {
-                    @trigger_error(\sprintf(
-                        'Not implementing "%s::showInDashboard()" is deprecated since sonata-project/admin-bundle 4.7'
-                        .' and will fail in 5.0.',
-                        AdminInterface::class
-                    ), \E_USER_DEPRECATED);
-
-                    if (!$admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD)) {
-                        continue;
-                    }
+                if (!$admin->showInDashboard()) {
+                    continue;
                 }
 
                 $items[] = $admin;
@@ -309,18 +289,6 @@ final class Pool
      * @return string[]
      */
     public function getAdminServiceCodes(): array
-    {
-        return $this->adminServiceCodes;
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 4.20 will be removed in 5.0 use getAdminServiceCodes() instead.
-     *
-     * @return string[]
-     */
-    public function getAdminServiceIds(): array
     {
         return $this->adminServiceCodes;
     }

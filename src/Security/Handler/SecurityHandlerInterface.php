@@ -22,12 +22,9 @@ use Symfony\Component\ExpressionLanguage\Expression;
 interface SecurityHandlerInterface
 {
     /**
-     * NEXT_MAJOR: Restrict $attributes typehint to string|Expression and rename it $attribute.
-     *
-     * @param AdminInterface<object>                     $admin
-     * @param string|Expression|array<string|Expression> $attributes
+     * @param AdminInterface<object> $admin
      */
-    public function isGranted(AdminInterface $admin, $attributes, ?object $object = null): bool;
+    public function isGranted(AdminInterface $admin, string|Expression $attribute, ?object $object = null): bool;
 
     /**
      * Get a sprintf template to get the role.

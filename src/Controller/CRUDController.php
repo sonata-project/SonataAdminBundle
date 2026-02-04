@@ -22,7 +22,6 @@ use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\Exception\LockException;
-use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Exception\ModelManagerThrowable;
 use Sonata\AdminBundle\Form\FormErrorIteratorToConstraintViolationList;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
@@ -161,13 +160,6 @@ class CRUDController extends AbstractController
                 'sonata_flash_success',
                 $this->trans('flash_batch_delete_success', [], 'SonataAdminBundle')
             );
-        } catch (ModelManagerException $e) {
-            // NEXT_MAJOR: Remove this catch.
-            $errorMessage = $this->handleModelManagerException($e);
-            $this->addFlash(
-                'sonata_flash_error',
-                $errorMessage ?? $this->trans('flash_batch_delete_error', [], 'SonataAdminBundle')
-            );
         } catch (ModelManagerThrowable $e) {
             $errorMessage = $this->handleModelManagerThrowable($e);
 
@@ -215,22 +207,6 @@ class CRUDController extends AbstractController
                     'sonata_flash_success',
                     $this->trans(
                         'flash_delete_success',
-                        ['%name%' => $this->escapeHtml($objectName)],
-                        'SonataAdminBundle'
-                    )
-                );
-            } catch (ModelManagerException $e) {
-                // NEXT_MAJOR: Remove this catch.
-                $errorMessage = $this->handleModelManagerException($e);
-
-                if ($this->isXmlHttpRequest($request)) {
-                    return $this->renderJson(['result' => 'error']);
-                }
-
-                $this->addFlash(
-                    'sonata_flash_error',
-                    $errorMessage ?? $this->trans(
-                        'flash_delete_error',
                         ['%name%' => $this->escapeHtml($objectName)],
                         'SonataAdminBundle'
                     )
@@ -320,11 +296,6 @@ class CRUDController extends AbstractController
 
                     // redirect to edit mode
                     return $this->redirectTo($request, $existingObject);
-                } catch (ModelManagerException $e) {
-                    // NEXT_MAJOR: Remove this catch.
-                    $errorMessage = $this->handleModelManagerException($e);
-
-                    $isFormValid = false;
                 } catch (ModelManagerThrowable $e) {
                     $errorMessage = $this->handleModelManagerThrowable($e);
 
@@ -443,19 +414,7 @@ class CRUDController extends AbstractController
 
         $batchAction = $this->admin->getBatchActions()[$action];
 
-        $isRelevantAction = \sprintf('batchAction%sIsRelevant', $camelizedAction);
-
-        if (method_exists($this, $isRelevantAction)) {
-            // NEXT_MAJOR: Remove if above in sonata-project/admin-bundle 5.0
-            @trigger_error(\sprintf(
-                'The is relevant hook via "%s()" is deprecated since sonata-project/admin-bundle 4.12'
-                .' and will not be call in 5.0. Move the logic to your controller.',
-                $isRelevantAction,
-            ), \E_USER_DEPRECATED);
-            $nonRelevantMessage = $this->$isRelevantAction($idx, $allElements, $forwardedRequest);
-        } else {
-            $nonRelevantMessage = 0 !== \count($idx) || $allElements; // at least one item is selected
-        }
+        $nonRelevantMessage = 0 !== \count($idx) || $allElements; // at least one item is selected
 
         if (!\is_string($nonRelevantMessage) && true !== $nonRelevantMessage) { // default non relevant message
             $nonRelevantMessage = 'flash_batch_empty';
@@ -589,11 +548,6 @@ class CRUDController extends AbstractController
 
                     // redirect to edit mode
                     return $this->redirectTo($request, $newObject);
-                } catch (ModelManagerException $e) {
-                    // NEXT_MAJOR: Remove this catch.
-                    $errorMessage = $this->handleModelManagerException($e);
-
-                    $isFormValid = false;
                 } catch (ModelManagerThrowable $e) {
                     $errorMessage = $this->handleModelManagerThrowable($e);
 
@@ -973,31 +927,10 @@ class CRUDController extends AbstractController
      *
      * @param string               $view       The view name
      * @param array<string, mixed> $parameters An array of parameters to pass to the view
-     *
-     * @deprecated since sonata-project/admin-bundle version 4.x
-     *
-     *  NEXT_MAJOR: Remove this method
      */
     final protected function renderWithExtraParams(string $view, array $parameters = [], ?Response $response = null): Response
     {
-        return $this->render($view, $this->addRenderExtraParams($parameters), $response);
-    }
-
-    /**
-     * @param array<string, mixed> $parameters
-     *
-     * @return array<string, mixed>
-     *
-     * @deprecated since sonata-project/admin-bundle version 4.x
-     *
-     * NEXT_MAJOR: Remove this method
-     */
-    protected function addRenderExtraParams(array $parameters = []): array
-    {
-        $parameters['admin'] ??= $this->admin;
-        $parameters['base_template'] ??= $this->getBaseTemplate();
-
-        return $parameters;
+        return $this->render($view, $parameters, $response);
     }
 
     /**
@@ -1037,67 +970,11 @@ class CRUDController extends AbstractController
     }
 
     /**
-     * Returns the base template name.
-     *
-     * @return string The template name
-     *
-     * @deprecated since sonata-project/admin-bundle version 4.x
-     *
-     *  NEXT_MAJOR: Remove this method
-     */
-    protected function getBaseTemplate(): string
-    {
-        $requestStack = $this->container->get('request_stack');
-        \assert($requestStack instanceof RequestStack);
-        $request = $requestStack->getCurrentRequest();
-        \assert(null !== $request);
-
-        if ($this->isXmlHttpRequest($request)) {
-            return $this->templateRegistry->getTemplate('ajax');
-        }
-
-        return $this->templateRegistry->getTemplate('layout');
-    }
-
-    /**
-     * @throws \Exception
-     *
-     * @return string|null A custom error message to display in the flag bag instead of the generic one
-     */
-    protected function handleModelManagerException(\Exception $exception)
-    {
-        if ($exception instanceof ModelManagerThrowable) {
-            return $this->handleModelManagerThrowable($exception);
-        }
-
-        @trigger_error(\sprintf(
-            'The method "%s()" is deprecated since sonata-project/admin-bundle 3.107 and will be removed in 5.0.',
-            __METHOD__
-        ), \E_USER_DEPRECATED);
-
-        $debug = $this->getParameter('kernel.debug');
-        \assert(\is_bool($debug));
-        if ($debug) {
-            throw $exception;
-        }
-
-        $context = ['exception' => $exception];
-        if (null !== $exception->getPrevious()) {
-            $context['previous_exception_message'] = $exception->getPrevious()->getMessage();
-        }
-        $this->getLogger()->error($exception->getMessage(), $context);
-
-        return null;
-    }
-
-    /**
-     * NEXT_MAJOR: Add typehint.
-     *
      * @throws ModelManagerThrowable
      *
      * @return string|null A custom error message to display in the flag bag instead of the generic one
      */
-    protected function handleModelManagerThrowable(ModelManagerThrowable $exception)
+    protected function handleModelManagerThrowable(ModelManagerThrowable $exception): ?string
     {
         $debug = $this->getParameter('kernel.debug');
         \assert(\is_bool($debug));

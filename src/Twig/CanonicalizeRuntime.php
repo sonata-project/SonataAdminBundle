@@ -26,21 +26,11 @@ final class CanonicalizeRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle 4.40.0
-     *
-     * @phpstan-ignore return.unusedType
+     * No-op method that always returns null.
+     * Moment.js localization is handled differently now.
      */
     public function getCanonicalizedLocaleForMoment(): ?string
     {
-        trigger_deprecation(
-            'sonata-project/admin-bundle',
-            '4.40.0',
-            'Method "%s" is deprecated and no-op. It always returns null and will be removed in 5.0.',
-            __METHOD__,
-        );
-
         return null;
     }
 
