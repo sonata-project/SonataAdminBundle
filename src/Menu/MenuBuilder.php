@@ -47,7 +47,6 @@ final class MenuBuilder
             $extras = [
                 'icon' => $group['icon'],
                 'translation_domain' => $group['translation_domain'],
-                'label_catalogue' => $group['label_catalogue'] ?? '', // NEXT_MAJOR: Remove this line.
                 'roles' => $group['roles'],
                 'sonata_admin' => true,
             ];

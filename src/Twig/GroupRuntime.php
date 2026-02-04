@@ -31,11 +31,8 @@ final class GroupRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * NEXT_MAJOR: Remove the label_catalogue key.
-     *
      * @phpstan-return array<array{
      *     label: string,
-     *     label_catalogue?: string,
      *     translation_domain: string,
      *     icon: string,
      *     items: list<AdminInterface<object>>,

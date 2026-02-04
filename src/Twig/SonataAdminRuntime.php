@@ -15,7 +15,6 @@ namespace Sonata\AdminBundle\Twig;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\BCLayer\BCHelper;
 use Twig\Extension\RuntimeExtensionInterface;
 
 final class SonataAdminRuntime implements RuntimeExtensionInterface
@@ -40,8 +39,7 @@ final class SonataAdminRuntime implements RuntimeExtensionInterface
     public function getUrlSafeIdentifier(object $model, ?AdminInterface $admin = null): ?string
     {
         if (null === $admin) {
-            // NEXT_MAJOR: Change to `\get_class($model)`
-            $class = BCHelper::getClass($model);
+            $class = $model::class;
             if (!$this->pool->hasAdminByClass($class)) {
                 throw new \InvalidArgumentException('You must pass an admin.');
             }

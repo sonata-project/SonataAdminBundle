@@ -18,14 +18,6 @@ use Sonata\AdminBundle\Filter\Model\FilterData;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @method array getFormOptions();
- * @method bool|null showFilter();
- * @method array getLabelTranslationParameters();
- * @method bool withAdvancedFilter();
- *
- * @phpstan-method array<string, mixed> getFormOptions();
- * @phpstan-method array<string, mixed> getLabelTranslationParameters();
  */
 interface FilterInterface
 {
@@ -122,20 +114,23 @@ interface FilterInterface
     public function getFieldType(): string;
 
     /**
-     * NEXT_MAJOR: Remove this method.
-     *
-     * @deprecated since sonata-project/admin-bundle version 4.15 use getFormOptions() instead.
-     *
-     * Returns the main widget used to render the filter.
-     *
-     * @return array{string, array<string, mixed>}
-     */
-    public function getRenderSettings(): array;
-
-    /**
      * Returns true if filter is active.
      */
     public function isActive(): bool;
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getFormOptions(): array;
+
+    public function showFilter(): ?bool;
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function getLabelTranslationParameters(): array;
+
+    public function withAdvancedFilter(): bool;
 
     /**
      * Set the condition to use with the left side of the query : OR or AND.

@@ -593,8 +593,7 @@ abstract class AbstractAdmin extends BaseAbstractAdmin implements AdminInterface
             /** @phpstan-var class-string<T> $class */
             $class = $modelManager instanceof ProxyResolverInterface
                 ? $modelManager->getRealClass($this->subject)
-                // NEXT_MAJOR: Change to `\get_class($this->subject)` instead
-                : BCHelper::getClass($this->subject);
+                : $this->subject::class;
 
             return $class;
         }
@@ -1596,8 +1595,7 @@ abstract class AbstractAdmin extends BaseAbstractAdmin implements AdminInterface
         if ($modelManager instanceof ProxyResolverInterface) {
             $class = $modelManager->getRealClass($object);
         } else {
-            // NEXT_MAJOR: Change to `\get_class($object)`
-            $class = BCHelper::getClass($object);
+            $class = $object::class;
         }
 
         return \sprintf('%s:%s', $class, spl_object_hash($object));
@@ -2410,7 +2408,7 @@ abstract class AbstractAdmin extends BaseAbstractAdmin implements AdminInterface
 
         if ($this->hasRequest()
             && $this->getRequest()->isXmlHttpRequest()
-            && $this->getRequest()->query->getBoolean('select', true) // NEXT_MAJOR: Change the default value to `false` in version 5
+            && $this->getRequest()->query->getBoolean('select', false)
         ) {
             $mapper->add(ListMapper::NAME_SELECT, ListMapper::TYPE_SELECT, [
                 'label' => false,
