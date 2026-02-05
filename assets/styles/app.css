@@ -445,7 +445,7 @@ body.sidebar-open .admin-sidebar-overlay {
 }
 
 .admin-sidebar-user-avatar {
-    @apply flex items-center justify-center w-9 h-9 rounded-full bg-primary-500/20 text-primary-400;
+    @apply flex items-center justify-center w-10 h-10 rounded-full bg-primary-500/20 text-primary-400 flex-shrink-0;
 }
 
 .admin-sidebar-user-info {
@@ -456,8 +456,13 @@ body.sidebar-open .admin-sidebar-overlay {
     @apply block text-sm font-medium text-sidebar-text truncate;
 }
 
-.admin-sidebar-user-menu-btn {
-    @apply flex items-center justify-center w-8 h-8 rounded-lg text-sidebar-text-muted hover:text-sidebar-text hover:bg-sidebar-hover transition-colors;
+.admin-sidebar-user-logout {
+    @apply flex items-center justify-center w-8 h-8 rounded-lg text-sidebar-text-muted hover:text-error-400 hover:bg-error-500/10 transition-colors;
+}
+
+/* Hidden by default, shown only when collapsed */
+.admin-sidebar-user-logout-collapsed {
+    @apply hidden;
 }
 
 .admin-dropdown-menu-top {
@@ -611,15 +616,33 @@ html.sidebar-collapsed .admin-sidebar-toggles {
 }
 
 html.sidebar-collapsed .admin-sidebar-user {
-    @apply justify-center p-2;
+    @apply justify-center p-0 bg-transparent relative;
+}
+
+html.sidebar-collapsed .admin-sidebar-user-avatar {
+    @apply w-10 h-10 flex-shrink-0;
 }
 
 html.sidebar-collapsed .admin-sidebar-user-info {
     @apply hidden;
 }
 
-html.sidebar-collapsed .admin-sidebar-user-menu-btn {
+/* Hide expanded elements when collapsed */
+html.sidebar-collapsed .admin-sidebar-user-avatar {
     @apply hidden;
+}
+
+html.sidebar-collapsed .admin-sidebar-user-logout {
+    @apply hidden;
+}
+
+/* Show collapsed logout link */
+html.sidebar-collapsed .admin-sidebar-user-logout-collapsed {
+    @apply flex items-center justify-center w-10 h-10 rounded-full bg-sidebar-hover text-sidebar-text-muted transition-colors;
+}
+
+html.sidebar-collapsed .admin-sidebar-user-logout-collapsed:hover {
+    @apply bg-error-500/20 text-error-400;
 }
 
 /* Adjust main content when sidebar is collapsed */
@@ -2504,13 +2527,23 @@ html.sidebar-collapsed .admin-main {
     color: var(--color-primary-600);
 }
 
-[data-theme="light"] .admin-sidebar-user-menu-btn {
+[data-theme="light"] .admin-sidebar-user-logout {
     color: #94a3b8;
 }
 
-[data-theme="light"] .admin-sidebar-user-menu-btn:hover {
-    color: #475569;
+[data-theme="light"] .admin-sidebar-user-logout:hover {
+    color: var(--color-error-600);
+    background-color: var(--color-error-50);
+}
+
+[data-theme="light"] .admin-sidebar-user-logout-collapsed {
     background-color: #e2e8f0;
+    color: #64748b;
+}
+
+[data-theme="light"] .admin-sidebar-user-logout-collapsed:hover {
+    color: var(--color-error-600);
+    background-color: var(--color-error-50);
 }
 
 [data-theme="light"] .admin-theme-toggle-btn {

@@ -15,6 +15,10 @@ namespace SensioLabs\AdminBundle\Dashboard;
 
 final class MenuItem
 {
+    /**
+     * @param string[] $roles
+     * @param MenuItem[] $children
+     */
     private function __construct(
         private string $type,
         private string $label,
@@ -23,18 +27,22 @@ final class MenuItem
         private ?string $routeName = null,
         private array $routeParameters = [],
         private ?string $adminCode = null,
-        /** @var MenuItem[] */
+        private array $roles = [],
         private array $children = [],
     ) {
     }
 
-    public static function linkToDashboard(string $label, ?string $icon = null): self
+    /**
+     * @param string[] $roles Roles required to view this menu item
+     */
+    public static function linkToDashboard(string $label, ?string $icon = null, array $roles = []): self
     {
         return new self(
             type: 'dashboard',
             label: $label,
             icon: $icon,
             routeName: 'sensiolabs_admin_dashboard',
+            roles: $roles,
         );
     }
 
@@ -48,7 +56,10 @@ final class MenuItem
         );
     }
 
-    public static function linkToRoute(string $label, ?string $icon = null, string $routeName = '', array $routeParameters = []): self
+    /**
+     * @param string[] $roles Roles required to view this menu item
+     */
+    public static function linkToRoute(string $label, ?string $icon = null, string $routeName = '', array $routeParameters = [], array $roles = []): self
     {
         return new self(
             type: 'route',
@@ -56,16 +67,21 @@ final class MenuItem
             icon: $icon,
             routeName: $routeName,
             routeParameters: $routeParameters,
+            roles: $roles,
         );
     }
 
-    public static function linkToUrl(string $label, ?string $icon = null, string $url = ''): self
+    /**
+     * @param string[] $roles Roles required to view this menu item
+     */
+    public static function linkToUrl(string $label, ?string $icon = null, string $url = '', array $roles = []): self
     {
         return new self(
             type: 'url',
             label: $label,
             icon: $icon,
             url: $url,
+            roles: $roles,
         );
     }
 
@@ -121,6 +137,14 @@ final class MenuItem
     public function getAdminCode(): ?string
     {
         return $this->adminCode;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRoles(): array
+    {
+        return $this->roles;
     }
 
     /**

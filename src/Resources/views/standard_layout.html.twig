@@ -144,6 +144,8 @@ file that was distributed with this source code.
                                     </div>
                                     <ul class="admin-sidebar-menu">
                             {% elseif item.isSubMenu() %}
+                                {# Only show submenu if it has at least one granted child #}
+                                {% if sensiolabs_admin_menu_has_granted_children(item) %}
                                         {% set submenu_label = item.label|trans({}, 'SensioLabsAdminBundle') %}
                                         <li class="treeview" data-sensiolabs-de--admin-bundle--treeview-target="item">
                                             <a href="#" class="admin-sidebar-item group" data-action="click->sensiolabs-de--admin-bundle--treeview#toggle" data-tooltip="{{ submenu_label }}">
@@ -159,7 +161,7 @@ file that was distributed with this source code.
                                             </a>
                                             <ul class="admin-sidebar-submenu hidden" data-sensiolabs-de--admin-bundle--treeview-target="submenu">
                                                 <li class="admin-sidebar-submenu-header">{{ submenu_label }}</li>
-                                                {% for child in item.children %}
+                                                {% for child in sensiolabs_admin_menu_granted_children(item) %}
                                                     {% set is_child_active = _self.is_menu_item_active(child, current_admin_code, current_route)|trim == 'true' %}
                                                     <li>
                                                         <a href="{{ sensiolabs_admin_menu_item_url(child) }}" class="admin-sidebar-submenu-item{% if is_child_active %} active{% endif %}">
@@ -169,7 +171,10 @@ file that was distributed with this source code.
                                                 {% endfor %}
                                             </ul>
                                         </li>
+                                {% endif %}
                             {% else %}
+                                {# Only show menu item if user is granted access #}
+                                {% if sensiolabs_admin_menu_item_granted(item) %}
                                         {% set is_item_active = _self.is_menu_item_active(item, current_admin_code, current_route)|trim == 'true' %}
                                         {% set item_label = item.label|trans({}, 'SensioLabsAdminBundle') %}
                                         <li>
@@ -182,6 +187,7 @@ file that was distributed with this source code.
                                                 <span class="admin-sidebar-item-label">{{ item_label }}</span>
                                             </a>
                                         </li>
+                                {% endif %}
                             {% endif %}
                         {% endfor %}
                                     </ul>
@@ -193,6 +199,31 @@ file that was distributed with this source code.
 
             {% block sensiolabs_sidebar_footer %}
                 <div class="admin-sidebar-footer" data-controller="sensiolabs-de--admin-bundle--theme sensiolabs-de--admin-bundle--sidebar-collapse">
+                    {# User profile first #}
+                    {% if app.user %}
+                        {% block sensiolabs_sidebar_user_block %}
+                            {% set user_name = app.user.userIdentifier|default(app.user.username|default('User')) %}
+                            <div class="admin-sidebar-user">
+                                {# Avatar - visible when expanded #}
+                                <div class="admin-sidebar-user-avatar">
+                                    {{ ux_icon('lucide:user', {class: 'w-5 h-5'}) }}
+                                </div>
+                                {# User info - visible when expanded #}
+                                <div class="admin-sidebar-user-info">
+                                    <span class="admin-sidebar-user-name">{{ user_name }}</span>
+                                </div>
+                                {# Logout button - visible when expanded #}
+                                <a href="{{ logout_path() }}" class="admin-sidebar-user-logout" title="{{ 'logout'|trans({}, 'SensioLabsAdminBundle') }}">
+                                    {{ ux_icon('lucide:log-out', {class: 'w-4 h-4'}) }}
+                                </a>
+                                {# Logout link - visible when collapsed #}
+                                <a href="{{ logout_path() }}" class="admin-sidebar-user-logout-collapsed" title="{{ 'logout'|trans({}, 'SensioLabsAdminBundle') }}">
+                                    {{ ux_icon('lucide:log-out', {class: 'w-5 h-5'}) }}
+                                </a>
+                            </div>
+                        {% endblock %}
+                    {% endif %}
+
                     {# Theme and collapse toggles #}
                     <div class="admin-sidebar-toggles">
                         <button type="button"
@@ -215,32 +246,6 @@ file that was distributed with this source code.
                             </span>
                         </button>
                     </div>
-
-                    {% if app.user %}
-                        {% block sensiolabs_sidebar_user_block %}
-                            {% set userBlock = include(get_global_template('user_block')) %}
-                            <div class="admin-sidebar-user">
-                                <div class="admin-sidebar-user-avatar">
-                                    {{ ux_icon('lucide:user', {class: 'w-5 h-5'}) }}
-                                </div>
-                                <div class="admin-sidebar-user-info">
-                                    <span class="admin-sidebar-user-name">{{ app.user.userIdentifier|default(app.user.username|default('User')) }}</span>
-                                </div>
-                                {% if userBlock|trim is not empty %}
-                                    <div class="admin-dropdown" data-controller="sensiolabs-de--admin-bundle--dropdown">
-                                        <button type="button" data-action="click->sensiolabs-de--admin-bundle--dropdown#toggle" data-sensiolabs-de--admin-bundle--dropdown-target="button" class="admin-sidebar-user-menu-btn">
-                                            {{ ux_icon('lucide:more-vertical', {class: 'w-4 h-4'}) }}
-                                        </button>
-                                        <div class="admin-dropdown-menu admin-dropdown-menu-top hidden" data-sensiolabs-de--admin-bundle--dropdown-target="menu">
-                                            <div class="admin-dropdown-menu-body">
-                                                {{ userBlock|raw }}
-                                            </div>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            </div>
-                        {% endblock %}
-                    {% endif %}
                     {% block side_bar_after_nav_content %}{% endblock %}
                 </div>
             {% endblock %}

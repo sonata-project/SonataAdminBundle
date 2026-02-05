@@ -17,6 +17,7 @@ use SensioLabs\AdminBundle\Admin\Pool;
 use SensioLabs\AdminBundle\Dashboard\DashboardControllerInterface;
 use SensioLabs\AdminBundle\Dashboard\MenuItem;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Extension\RuntimeExtensionInterface;
 
 final class DashboardRuntime implements RuntimeExtensionInterface
@@ -25,6 +26,7 @@ final class DashboardRuntime implements RuntimeExtensionInterface
         private DashboardControllerInterface $dashboardController,
         private Pool $pool,
         private UrlGeneratorInterface $urlGenerator,
+        private AuthorizationCheckerInterface $authorizationChecker,
     ) {
     }
 
@@ -34,6 +36,77 @@ final class DashboardRuntime implements RuntimeExtensionInterface
     public function getMenuItems(): array
     {
         return $this->dashboardController->getMenuItems();
+    }
+
+    /**
+     * Check if the current user is granted access to view the menu item.
+     * For CRUD items, checks if the admin exists and user has list access.
+     * For route/url/dashboard items, checks if the user has all required roles.
+     */
+    public function isMenuItemGranted(MenuItem $item): bool
+    {
+        // For CRUD items, check admin access
+        if ('crud' === $item->getType()) {
+            $adminCode = $item->getAdminCode();
+            if (null === $adminCode) {
+                return true;
+            }
+
+            try {
+                $admin = $this->pool->getInstance($adminCode);
+
+                // Check if admin has list route and user can view it
+                if (!$admin->hasRoute('list')) {
+                    return false;
+                }
+
+                return $admin->showInDashboard();
+            } catch (\Exception $e) {
+                // If we can't determine access, show the item and let the controller handle it
+                // This prevents hiding menu items due to configuration issues
+                return true;
+            }
+        }
+
+        // For route, url, and dashboard items, check roles if specified
+        $roles = $item->getRoles();
+        if ([] === $roles) {
+            return true;
+        }
+
+        // User must have ALL specified roles
+        foreach ($roles as $role) {
+            if (!$this->authorizationChecker->isGranted($role)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Filter children of a submenu to only include granted items.
+     *
+     * @return MenuItem[]
+     */
+    public function getGrantedChildren(MenuItem $item): array
+    {
+        if (!$item->isSubMenu()) {
+            return [];
+        }
+
+        return array_filter(
+            $item->getChildren(),
+            fn (MenuItem $child): bool => $this->isMenuItemGranted($child)
+        );
+    }
+
+    /**
+     * Check if a submenu has any granted children.
+     */
+    public function hasGrantedChildren(MenuItem $item): bool
+    {
+        return [] !== $this->getGrantedChildren($item);
     }
 
     public function getMenuItemUrl(MenuItem $item): ?string

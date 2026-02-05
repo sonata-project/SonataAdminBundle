@@ -35,6 +35,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 service(DashboardControllerInterface::class),
                 service('sensiolabs.admin.pool'),
                 service('router'),
+                service('security.authorization_checker'),
             ])
 
         // Twig extension

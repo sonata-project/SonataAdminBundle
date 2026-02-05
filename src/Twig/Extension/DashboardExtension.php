@@ -24,6 +24,9 @@ final class DashboardExtension extends AbstractExtension
         return [
             new TwigFunction('sensiolabs_admin_menu_items', [DashboardRuntime::class, 'getMenuItems']),
             new TwigFunction('sensiolabs_admin_menu_item_url', [DashboardRuntime::class, 'getMenuItemUrl']),
+            new TwigFunction('sensiolabs_admin_menu_item_granted', [DashboardRuntime::class, 'isMenuItemGranted']),
+            new TwigFunction('sensiolabs_admin_menu_granted_children', [DashboardRuntime::class, 'getGrantedChildren']),
+            new TwigFunction('sensiolabs_admin_menu_has_granted_children', [DashboardRuntime::class, 'hasGrantedChildren']),
         ];
     }
 }
