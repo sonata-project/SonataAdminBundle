@@ -420,7 +420,24 @@ body.sidebar-open .admin-sidebar-overlay {
 }
 
 .admin-sidebar-footer {
-    @apply px-3 py-3 border-t border-sidebar-border shrink-0;
+    @apply px-3 py-3 border-t border-sidebar-border shrink-0 space-y-3;
+}
+
+.admin-sidebar-toggles {
+    @apply flex items-center justify-center gap-2;
+}
+
+.admin-sidebar-toggle-btn {
+    @apply flex items-center justify-center w-9 h-9 rounded-lg text-sidebar-text-muted hover:text-sidebar-text hover:bg-sidebar-hover transition-colors;
+}
+
+/* Legacy support */
+.admin-sidebar-theme-toggle {
+    @apply flex justify-center;
+}
+
+.admin-theme-toggle-btn {
+    @apply flex items-center justify-center w-full h-9 rounded-lg text-sidebar-text-muted hover:text-sidebar-text hover:bg-sidebar-hover transition-colors gap-2 text-sm;
 }
 
 .admin-sidebar-user {
@@ -445,6 +462,169 @@ body.sidebar-open .admin-sidebar-overlay {
 
 .admin-dropdown-menu-top {
     @apply bottom-full top-auto mb-2;
+}
+
+/* ============================================
+   COLLAPSED SIDEBAR
+   ============================================ */
+/* Only apply when html has sidebar-collapsed class */
+html.sidebar-collapsed .admin-sidebar {
+    width: var(--admin-sidebar-collapsed-width);
+    overflow: visible;
+}
+
+html.sidebar-collapsed .admin-sidebar-nav {
+    overflow: visible;
+}
+
+html.sidebar-collapsed .admin-sidebar-brand span {
+    @apply hidden;
+}
+
+html.sidebar-collapsed .admin-sidebar-section-title {
+    @apply hidden;
+}
+
+html.sidebar-collapsed .admin-sidebar-item .admin-sidebar-item-label {
+    @apply hidden;
+}
+
+html.sidebar-collapsed .admin-sidebar-item span:not(.admin-sidebar-item-icon):not(.admin-sidebar-item-label) {
+    @apply hidden;
+}
+
+html.sidebar-collapsed .admin-sidebar-item {
+    @apply justify-center px-0;
+}
+
+html.sidebar-collapsed .admin-sidebar-item-icon {
+    @apply mx-auto;
+}
+
+/* Hide submenu parent text and chevron */
+html.sidebar-collapsed .treeview > a .admin-sidebar-item-label {
+    @apply hidden;
+}
+
+html.sidebar-collapsed .treeview > a .admin-sidebar-chevron {
+    @apply hidden;
+}
+
+/* Submenu flyout in collapsed state */
+html.sidebar-collapsed .treeview {
+    @apply relative;
+}
+
+html.sidebar-collapsed .admin-sidebar-submenu {
+    @apply absolute hidden;
+    left: 100%;
+    top: 0;
+    min-width: 200px;
+    background-color: var(--color-sidebar-bg);
+    border: 1px solid var(--color-sidebar-border);
+    border-radius: var(--admin-radius);
+    box-shadow: var(--admin-shadow-lg);
+    padding: 0.5rem;
+    margin-left: 0.5rem;
+    z-index: var(--z-tooltip);
+}
+
+html.sidebar-collapsed .treeview:hover > .admin-sidebar-submenu,
+html.sidebar-collapsed .treeview.flyout-open > .admin-sidebar-submenu {
+    @apply block;
+}
+
+/* Bridge element to maintain hover when moving to submenu */
+html.sidebar-collapsed .admin-sidebar-submenu::before {
+    content: '';
+    @apply absolute;
+    left: -0.5rem;
+    top: 0;
+    bottom: 0;
+    width: 0.5rem;
+}
+
+/* Show submenu header in collapsed state */
+html.sidebar-collapsed .admin-sidebar-submenu-header {
+    @apply block px-3 py-2 mb-1 text-xs font-semibold uppercase tracking-wider border-b;
+    color: var(--color-sidebar-text-muted);
+    border-color: var(--color-sidebar-border);
+}
+
+/* Hide submenu header when expanded */
+.admin-sidebar-submenu-header {
+    @apply hidden;
+}
+
+/* Light theme flyout */
+[data-theme="light"] html.sidebar-collapsed .admin-sidebar-submenu,
+html.sidebar-collapsed[data-theme="light"] .admin-sidebar-submenu {
+    background-color: #ffffff;
+    border-color: #e2e8f0;
+}
+
+[data-theme="light"] html.sidebar-collapsed .admin-sidebar-submenu-header,
+html.sidebar-collapsed[data-theme="light"] .admin-sidebar-submenu-header {
+    color: #64748b;
+    border-color: #e2e8f0;
+}
+
+/* Hide items without icons in collapsed state */
+html.sidebar-collapsed .admin-sidebar-item:not(:has(.admin-sidebar-item-icon)) {
+    @apply hidden;
+}
+
+/* Tooltip for regular menu items when collapsed */
+html.sidebar-collapsed .admin-sidebar-menu > li:not(.treeview) {
+    @apply relative;
+}
+
+html.sidebar-collapsed .admin-sidebar-menu > li:not(.treeview) > .admin-sidebar-item::after {
+    content: attr(data-tooltip);
+    @apply absolute hidden px-3 py-2 text-sm font-medium whitespace-nowrap rounded-lg;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0.75rem;
+    background-color: var(--color-sidebar-bg);
+    color: var(--color-sidebar-text);
+    border: 1px solid var(--color-sidebar-border);
+    box-shadow: var(--admin-shadow-md);
+    z-index: var(--z-tooltip);
+}
+
+html.sidebar-collapsed .admin-sidebar-menu > li:not(.treeview) > .admin-sidebar-item:hover::after {
+    @apply block;
+}
+
+/* Light theme tooltip */
+[data-theme="light"] html.sidebar-collapsed .admin-sidebar-menu > li:not(.treeview) > .admin-sidebar-item::after,
+html.sidebar-collapsed[data-theme="light"] .admin-sidebar-menu > li:not(.treeview) > .admin-sidebar-item::after {
+    background-color: #ffffff;
+    color: #334155;
+    border-color: #e2e8f0;
+}
+
+/* Footer adjustments for collapsed sidebar */
+html.sidebar-collapsed .admin-sidebar-toggles {
+    @apply flex-col;
+}
+
+html.sidebar-collapsed .admin-sidebar-user {
+    @apply justify-center p-2;
+}
+
+html.sidebar-collapsed .admin-sidebar-user-info {
+    @apply hidden;
+}
+
+html.sidebar-collapsed .admin-sidebar-user-menu-btn {
+    @apply hidden;
+}
+
+/* Adjust main content when sidebar is collapsed */
+html.sidebar-collapsed .admin-main {
+    margin-left: var(--admin-sidebar-collapsed-width);
 }
 
 /* Main Content Area */
@@ -2232,4 +2412,121 @@ body.sidebar-open .admin-sidebar-overlay {
 .admin-shell label.required::after {
     content: " *";
     @apply text-error-500;
+}
+
+/* ============================================
+   SIDEBAR LIGHT THEME
+   Only affects the sidebar navigation
+   ============================================ */
+[data-theme="light"] {
+    --color-sidebar-bg: #ffffff;
+    --color-sidebar-surface: #f8fafc;
+    --color-sidebar-text: #334155;
+    --color-sidebar-text-muted: #64748b;
+    --color-sidebar-hover: #f1f5f9;
+    --color-sidebar-active: var(--color-primary-500);
+    --color-sidebar-border: #e2e8f0;
+}
+
+[data-theme="light"] .admin-sidebar {
+    background-color: #ffffff;
+    border-right: 1px solid #e2e8f0;
+    box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .admin-sidebar-header {
+    border-color: #e2e8f0;
+}
+
+[data-theme="light"] .admin-sidebar-brand {
+    color: #0f172a;
+}
+
+[data-theme="light"] .admin-sidebar-item {
+    color: #475569;
+}
+
+[data-theme="light"] .admin-sidebar-item:hover {
+    color: #0f172a;
+    background-color: #f1f5f9;
+}
+
+[data-theme="light"] .admin-sidebar-item.active {
+    background-color: var(--color-primary-50);
+    color: var(--color-primary-700);
+    box-shadow: inset 3px 0 0 var(--color-primary-500);
+}
+
+[data-theme="light"] .admin-sidebar-item.active .admin-sidebar-item-icon {
+    color: var(--color-primary-600);
+    opacity: 1;
+}
+
+[data-theme="light"] .admin-sidebar-submenu {
+    background-color: #f8fafc;
+}
+
+[data-theme="light"] .admin-sidebar-submenu-item {
+    color: #64748b;
+}
+
+[data-theme="light"] .admin-sidebar-submenu-item:hover {
+    color: #0f172a;
+    background-color: #e2e8f0;
+}
+
+[data-theme="light"] .admin-sidebar-submenu-item.active {
+    color: var(--color-primary-700);
+    background-color: var(--color-primary-50);
+    font-weight: 500;
+    box-shadow: inset 3px 0 0 var(--color-primary-500);
+}
+
+[data-theme="light"] .admin-sidebar-section-title {
+    color: #94a3b8;
+}
+
+[data-theme="light"] .admin-sidebar-footer {
+    border-color: #e2e8f0;
+    background-color: #f8fafc;
+}
+
+[data-theme="light"] .admin-sidebar-user {
+    background-color: #f1f5f9;
+}
+
+[data-theme="light"] .admin-sidebar-user-name {
+    color: #0f172a;
+}
+
+[data-theme="light"] .admin-sidebar-user-avatar {
+    background-color: var(--color-primary-100);
+    color: var(--color-primary-600);
+}
+
+[data-theme="light"] .admin-sidebar-user-menu-btn {
+    color: #94a3b8;
+}
+
+[data-theme="light"] .admin-sidebar-user-menu-btn:hover {
+    color: #475569;
+    background-color: #e2e8f0;
+}
+
+[data-theme="light"] .admin-theme-toggle-btn {
+    color: #64748b;
+}
+
+[data-theme="light"] .admin-theme-toggle-btn:hover {
+    color: #0f172a;
+    background-color: #e2e8f0;
+}
+
+[data-theme="light"] .admin-sidebar-toggle-btn {
+    color: #64748b;
+}
+
+[data-theme="light"] .admin-sidebar-toggle-btn:hover {
+    color: #0f172a;
+    background-color: #e2e8f0;
 }

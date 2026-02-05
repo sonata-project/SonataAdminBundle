@@ -26,6 +26,21 @@ file that was distributed with this source code.
 <!DOCTYPE html>
 <html {% block html_attributes %}lang="en" class="no-js"{% endblock %}>
     <head>
+        {# Prevent theme and sidebar flickering by setting state before any rendering #}
+        <script>
+            (function() {
+                var theme = localStorage.getItem('sensiolabs-admin-theme');
+                if (!theme) {
+                    theme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+                }
+                document.documentElement.setAttribute('data-theme', theme);
+
+                // Sidebar collapsed state - add to html element for CSS to work before body exists
+                if (localStorage.getItem('sensiolabs-admin-sidebar-collapsed') === 'true') {
+                    document.documentElement.classList.add('sidebar-collapsed');
+                }
+            })();
+        </script>
         {% block meta_tags %}
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -129,19 +144,21 @@ file that was distributed with this source code.
                                     </div>
                                     <ul class="admin-sidebar-menu">
                             {% elseif item.isSubMenu() %}
+                                        {% set submenu_label = item.label|trans({}, 'SensioLabsAdminBundle') %}
                                         <li class="treeview" data-sensiolabs-de--admin-bundle--treeview-target="item">
-                                            <a href="#" class="admin-sidebar-item group" data-action="click->sensiolabs-de--admin-bundle--treeview#toggle">
+                                            <a href="#" class="admin-sidebar-item group" data-action="click->sensiolabs-de--admin-bundle--treeview#toggle" data-tooltip="{{ submenu_label }}">
                                                 {% if item.icon %}
                                                     <span class="admin-sidebar-item-icon">{{ ux_icon(item.icon, {class: 'w-5 h-5'}) }}</span>
                                                 {% else %}
                                                     <span class="admin-sidebar-item-icon">{{ ux_icon('lucide:folder', {class: 'w-5 h-5'}) }}</span>
                                                 {% endif %}
-                                                <span class="flex-1">{{ item.label|trans({}, 'SensioLabsAdminBundle') }}</span>
-                                                <svg class="w-4 h-4 transition-transform duration-200 treeview-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <span class="admin-sidebar-item-label flex-1">{{ submenu_label }}</span>
+                                                <svg class="w-4 h-4 transition-transform duration-200 treeview-chevron admin-sidebar-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                                                 </svg>
                                             </a>
                                             <ul class="admin-sidebar-submenu hidden" data-sensiolabs-de--admin-bundle--treeview-target="submenu">
+                                                <li class="admin-sidebar-submenu-header">{{ submenu_label }}</li>
                                                 {% for child in item.children %}
                                                     {% set is_child_active = _self.is_menu_item_active(child, current_admin_code, current_route)|trim == 'true' %}
                                                     <li>
@@ -154,14 +171,15 @@ file that was distributed with this source code.
                                         </li>
                             {% else %}
                                         {% set is_item_active = _self.is_menu_item_active(item, current_admin_code, current_route)|trim == 'true' %}
+                                        {% set item_label = item.label|trans({}, 'SensioLabsAdminBundle') %}
                                         <li>
-                                            <a href="{{ sensiolabs_admin_menu_item_url(item) }}" class="admin-sidebar-item{% if is_item_active %} active{% endif %}">
+                                            <a href="{{ sensiolabs_admin_menu_item_url(item) }}" class="admin-sidebar-item{% if is_item_active %} active{% endif %}" data-tooltip="{{ item_label }}">
                                                 {% if item.icon %}
                                                     <span class="admin-sidebar-item-icon">{{ ux_icon(item.icon, {class: 'w-5 h-5'}) }}</span>
                                                 {% else %}
                                                     <span class="admin-sidebar-item-icon">{{ ux_icon('lucide:file', {class: 'w-5 h-5'}) }}</span>
                                                 {% endif %}
-                                                <span>{{ item.label|trans({}, 'SensioLabsAdminBundle') }}</span>
+                                                <span class="admin-sidebar-item-label">{{ item_label }}</span>
                                             </a>
                                         </li>
                             {% endif %}
@@ -174,7 +192,30 @@ file that was distributed with this source code.
             </nav>
 
             {% block sensiolabs_sidebar_footer %}
-                <div class="admin-sidebar-footer">
+                <div class="admin-sidebar-footer" data-controller="sensiolabs-de--admin-bundle--theme sensiolabs-de--admin-bundle--sidebar-collapse">
+                    {# Theme and collapse toggles #}
+                    <div class="admin-sidebar-toggles">
+                        <button type="button"
+                                class="admin-sidebar-toggle-btn"
+                                data-action="click->sensiolabs-de--admin-bundle--theme#toggle"
+                                title="{{ 'toggle_theme'|trans({}, 'SensioLabsAdminBundle') }}">
+                            <span data-sensiolabs-de--admin-bundle--theme-target="lightIcon">
+                                {{ ux_icon('lucide:sun', {class: 'w-4 h-4'}) }}
+                            </span>
+                            <span data-sensiolabs-de--admin-bundle--theme-target="darkIcon" class="hidden">
+                                {{ ux_icon('lucide:moon', {class: 'w-4 h-4'}) }}
+                            </span>
+                        </button>
+                        <button type="button"
+                                class="admin-sidebar-toggle-btn hidden lg:flex"
+                                data-action="click->sensiolabs-de--admin-bundle--sidebar-collapse#toggle"
+                                title="{{ 'toggle_sidebar'|trans({}, 'SensioLabsAdminBundle') }}">
+                            <span data-sensiolabs-de--admin-bundle--sidebar-collapse-target="icon" class="transition-transform duration-200">
+                                {{ ux_icon('lucide:panel-left-close', {class: 'w-4 h-4'}) }}
+                            </span>
+                        </button>
+                    </div>
+
                     {% if app.user %}
                         {% block sensiolabs_sidebar_user_block %}
                             {% set userBlock = include(get_global_template('user_block')) %}

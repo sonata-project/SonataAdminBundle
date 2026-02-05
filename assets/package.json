@@ -66,6 +66,16 @@
                 "main": "./js/controllers/treeview_controller.js",
                 "fetch": "eager",
                 "enabled": true
+            },
+            "theme": {
+                "main": "./js/controllers/theme_controller.js",
+                "fetch": "eager",
+                "enabled": true
+            },
+            "sidebar-collapse": {
+                "main": "./js/controllers/sidebar_collapse_controller.js",
+                "fetch": "eager",
+                "enabled": true
             }
         },
         "importmap": {
