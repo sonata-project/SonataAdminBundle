@@ -36,9 +36,9 @@ final class AdminFetcherTest extends TestCase
         $this->admin = $this->createMock(AdminInterface::class);
 
         $container = new Container();
-        $container->set('sonata.admin.post', $this->admin);
+        $container->set('sensiolabs.admin.post', $this->admin);
 
-        $this->adminFetcher = new AdminFetcher(new Pool($container, ['sonata.admin.post']));
+        $this->adminFetcher = new AdminFetcher(new Pool($container, ['sensiolabs.admin.post']));
     }
 
     public function testGetItThrowsAnExceptionWithoutAdminCode(): void
@@ -53,7 +53,7 @@ final class AdminFetcherTest extends TestCase
     public function testGetItThrowsAnExceptionIfThereIsNoAdminWithAdminCodeGiven(): void
     {
         $request = new Request();
-        $request->attributes->set('_sonata_admin', 'non_existing_admin_code');
+        $request->attributes->set('_sensiolabs_admin', 'non_existing_admin_code');
 
         $this->expectException(AdminCodeNotFoundException::class);
 
@@ -63,7 +63,7 @@ final class AdminFetcherTest extends TestCase
     public function testSetsUniqIdToAdmin(): void
     {
         $request = new Request();
-        $request->attributes->set('_sonata_admin', 'sonata.admin.post');
+        $request->attributes->set('_sensiolabs_admin', 'sensiolabs.admin.post');
         $uniqueId = 'uniqid_post_id';
         $request->query->set('uniqid', $uniqueId);
 
@@ -78,7 +78,7 @@ final class AdminFetcherTest extends TestCase
     public function testSetsRequestToRootAdmin(): void
     {
         $request = new Request();
-        $request->attributes->set('_sonata_admin', 'sonata.admin.post');
+        $request->attributes->set('_sensiolabs_admin', 'sensiolabs.admin.post');
 
         $this->admin
             ->expects(static::once())

@@ -101,7 +101,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
 
     /**
      * NEXT_MAJOR: Change array shape to array{labels: array<string>, ids: array<int|string>}
-     * and update the sonata_type_model_autocomplete.html.twig template.
+     * and update the sensiolabs_type_model_autocomplete.html.twig template.
      *
      * @param object|array<object>|\Traversable<object>|null $value
      *

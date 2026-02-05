@@ -23,22 +23,22 @@ final class AdminMakerCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->hasDefinition('sonata.admin.maker')) {
+        if (!$container->hasDefinition('sensiolabs.admin.maker')) {
             return;
         }
 
-        if (!$container->hasParameter('sonata.admin.configuration.default_controller')) {
+        if (!$container->hasParameter('sensiolabs.admin.configuration.default_controller')) {
             return;
         }
 
-        $defaultController = $container->getParameter('sonata.admin.configuration.default_controller');
+        $defaultController = $container->getParameter('sensiolabs.admin.configuration.default_controller');
         \assert(\is_string($defaultController));
 
         if (!$container->hasDefinition($defaultController)) {
             return;
         }
 
-        $adminMaker = $container->getDefinition('sonata.admin.maker');
+        $adminMaker = $container->getDefinition('sensiolabs.admin.maker');
         $controllerDefinition = $container->getDefinition($defaultController);
 
         $adminMaker->replaceArgument(2, $controllerDefinition->getClass());

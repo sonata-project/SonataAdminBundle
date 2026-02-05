@@ -36,7 +36,7 @@ final class AdminVoterTest extends TestCase
             ->willReturn($itemData);
 
         $request = new Request();
-        $request->request->set('_sonata_admin', $voterData);
+        $request->request->set('_sensiolabs_admin', $voterData);
         $request->request->set('_route', $route);
 
         $requestStack = new RequestStack();
@@ -53,16 +53,16 @@ final class AdminVoterTest extends TestCase
     public static function provideMatchingCases(): iterable
     {
         yield 'no data' => [null, null, null, null];
-        yield 'no route and granted' => [static::getAdmin('_sonata_admin'), '_sonata_admin', null, null];
-        yield 'no granted' => [static::getAdmin('_sonata_admin', true), '_sonata_admin', null, null];
-        yield 'no code' => [static::getAdmin('_sonata_admin_code', true, true), '_sonata_admin', null, null];
-        yield 'no code request' => [static::getAdmin('_sonata_admin', true, true), '_sonata_admin_unexpected', null, null];
-        yield 'no route' => [static::getAdmin('_sonata_admin', false, true), '_sonata_admin', null, null];
-        yield 'has admin' => [static::getAdmin('_sonata_admin', true, true), '_sonata_admin', null, true];
-        yield 'has child admin' => [static::getChildAdmin('_sonata_admin', '_sonata_child_admin', true, true), '_sonata_admin|_sonata_child_admin', null, true];
-        yield 'has bad child admin' => [static::getChildAdmin('_sonata_admin', '_sonata_child_admin', true, true), '_sonata_admin|_sonata_child_admin_unexpected', null, null];
-        yield 'has nested child admin' => [static::getNestedChildAdmin('_sonata_admin', '_sonata_child_admin', '_sonata_nested_child_admin', true, true), '_sonata_admin|_sonata_child_admin|_sonata_nested_child_admin', null, true];
-        yield 'has bad nested child admin' => [static::getNestedChildAdmin('_sonata_admin', '_sonata_child_admin', '_sonata_nested_child_admin', true, true), '_sonata_admin|_sonata_child_admin|_sonata_nested_child_admin_unexpected', null, null];
+        yield 'no route and granted' => [static::getAdmin('_sensiolabs_admin'), '_sensiolabs_admin', null, null];
+        yield 'no granted' => [static::getAdmin('_sensiolabs_admin', true), '_sensiolabs_admin', null, null];
+        yield 'no code' => [static::getAdmin('_sensiolabs_admin_code', true, true), '_sensiolabs_admin', null, null];
+        yield 'no code request' => [static::getAdmin('_sensiolabs_admin', true, true), '_sensiolabs_admin_unexpected', null, null];
+        yield 'no route' => [static::getAdmin('_sensiolabs_admin', false, true), '_sensiolabs_admin', null, null];
+        yield 'has admin' => [static::getAdmin('_sensiolabs_admin', true, true), '_sensiolabs_admin', null, true];
+        yield 'has child admin' => [static::getChildAdmin('_sensiolabs_admin', '_sonata_child_admin', true, true), '_sensiolabs_admin|_sonata_child_admin', null, true];
+        yield 'has bad child admin' => [static::getChildAdmin('_sensiolabs_admin', '_sonata_child_admin', true, true), '_sensiolabs_admin|_sonata_child_admin_unexpected', null, null];
+        yield 'has nested child admin' => [static::getNestedChildAdmin('_sensiolabs_admin', '_sonata_child_admin', '_sonata_nested_child_admin', true, true), '_sensiolabs_admin|_sonata_child_admin|_sonata_nested_child_admin', null, true];
+        yield 'has bad nested child admin' => [static::getNestedChildAdmin('_sensiolabs_admin', '_sonata_child_admin', '_sonata_nested_child_admin', true, true), '_sensiolabs_admin|_sonata_child_admin|_sonata_nested_child_admin_unexpected', null, null];
         yield 'direct link' => ['admin_post', null, 'admin_post', true];
         yield 'no direct link' => ['admin_post', null, 'admin_blog', null];
     }

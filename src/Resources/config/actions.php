@@ -14,69 +14,51 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use SensioLabs\AdminBundle\Action\AppendFormFieldElementAction;
-use SensioLabs\AdminBundle\Action\DashboardAction;
 use SensioLabs\AdminBundle\Action\GetShortObjectDescriptionAction;
 use SensioLabs\AdminBundle\Action\RetrieveAutocompleteItemsAction;
 use SensioLabs\AdminBundle\Action\RetrieveFormFieldElementAction;
-use SensioLabs\AdminBundle\Action\SearchAction;
 use SensioLabs\AdminBundle\Action\SetObjectFieldValueAction;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
-        ->set('sonata.admin.action.dashboard', DashboardAction::class)
+        ->set('sensiolabs.admin.action.append_form_field_element', AppendFormFieldElementAction::class)
             ->public()
             ->args([
-                param('sonata.admin.configuration.dashboard_blocks'),
-                service('sonata.admin.global_template_registry'),
                 service('twig'),
+                service('sensiolabs.admin.request.fetcher'),
+                service('sensiolabs.admin.helper'),
             ])
 
-        ->set('sonata.admin.action.search', SearchAction::class)
+        ->set('sensiolabs.admin.action.retrieve_form_field_element', RetrieveFormFieldElementAction::class)
             ->public()
             ->args([
-                service('sonata.admin.pool'),
-                service('sonata.admin.global_template_registry'),
                 service('twig'),
+                service('sensiolabs.admin.request.fetcher'),
+                service('sensiolabs.admin.helper'),
             ])
 
-        ->set('sonata.admin.action.append_form_field_element', AppendFormFieldElementAction::class)
+        ->set('sensiolabs.admin.action.get_short_object_description', GetShortObjectDescriptionAction::class)
             ->public()
             ->args([
                 service('twig'),
-                service('sonata.admin.request.fetcher'),
-                service('sonata.admin.helper'),
+                service('sensiolabs.admin.request.fetcher'),
             ])
 
-        ->set('sonata.admin.action.retrieve_form_field_element', RetrieveFormFieldElementAction::class)
+        ->set('sensiolabs.admin.action.set_object_field_value', SetObjectFieldValueAction::class)
             ->public()
             ->args([
                 service('twig'),
-                service('sonata.admin.request.fetcher'),
-                service('sonata.admin.helper'),
-            ])
-
-        ->set('sonata.admin.action.get_short_object_description', GetShortObjectDescriptionAction::class)
-            ->public()
-            ->args([
-                service('twig'),
-                service('sonata.admin.request.fetcher'),
-            ])
-
-        ->set('sonata.admin.action.set_object_field_value', SetObjectFieldValueAction::class)
-            ->public()
-            ->args([
-                service('twig'),
-                service('sonata.admin.request.fetcher'),
+                service('sensiolabs.admin.request.fetcher'),
                 service('validator'),
-                service('sonata.admin.form.data_transformer_resolver'),
+                service('sensiolabs.admin.form.data_transformer_resolver'),
                 service('property_accessor'),
-                service('sonata.admin.twig.render_element_runtime'),
+                service('sensiolabs.admin.twig.render_element_runtime'),
             ])
 
-        ->set('sonata.admin.action.retrieve_autocomplete_items', RetrieveAutocompleteItemsAction::class)
+        ->set('sensiolabs.admin.action.retrieve_autocomplete_items', RetrieveAutocompleteItemsAction::class)
             ->public()
             ->args([
-                service('sonata.admin.request.fetcher'),
+                service('sensiolabs.admin.request.fetcher'),
             ]);
 };

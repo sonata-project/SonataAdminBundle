@@ -1,0 +1,241 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+<select id="{{ id }}_autocomplete_input" data-sensiolabs-select2="false"
+    {%- if disabled %} disabled="disabled"{% endif %}
+    {%- if multiple %} multiple="multiple"{% endif %}
+    {%- for attribute, value in attr %} {{ attribute }}="{{ value }}" {% endfor -%}
+>
+    {%- for idx, val in value|filter((val, idx) => idx~'' != '_labels') -%}
+        <option value="{{ val }}" selected>{{ value['_labels'][idx] }}</option>
+    {%- endfor -%}
+</select>
+
+<div id="{{ id }}_hidden_inputs_wrap">
+    {% if multiple -%}
+        {%- for idx, val in value|filter((val, idx) => idx~'' != '_labels') -%}
+            <input type="hidden" name="{{ full_name }}[]" {%- if disabled %} disabled="disabled"{% endif %} value="{{ val }}">
+        {%- endfor -%}
+    {% else -%}
+        <input type="hidden" name="{{ full_name }}" {%- if disabled %} disabled="disabled"{% endif %} value="{{ value[0]|default('') }}">
+    {% endif -%}
+</div>
+
+{% if sensiolabs_admin.field_description and sensiolabs_admin.field_description.hasAssociationAdmin %}
+    <div id="field_actions_{{ id }}" class="field-actions">
+        {% set display_btn_add = sensiolabs_admin.edit != 'admin' and sensiolabs_admin.field_description.associationadmin.hasRoute('create')
+                                 and sensiolabs_admin.field_description.associationadmin.isGranted('CREATE') and btn_add %}
+        {% if display_btn_add %}
+            <a  href="{{ sensiolabs_admin.field_description.associationadmin.generateUrl('create',
+                         sensiolabs_admin.field_description.getOption('link_parameters', {}))
+                      }}"
+                onclick="return start_field_dialog_form_add_{{ id }}(this);"
+                class="btn-success btn-sm sonata-ba-action"
+                {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
+                title="{{
+                    btn_translation_domain|default(null) is same as(false)
+                    ? btn_add
+                    : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
+                }}"
+                >
+                {{ ux_icon('lucide:plus-circle', {class: 'w-4 h-4'}) }}
+                {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
+                {{
+                    btn_translation_domain|default(null) is same as(false)
+                    ? btn_add
+                    : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
+                }}
+            </a>
+            {% include '@SensioLabsAdmin/CRUD/Association/edit_modal.html.twig' %}
+            {% include '@SensioLabsAdmin/CRUD/Association/edit_many_script.html.twig' %}
+        {% endif %}
+    </div>
+{% endif %}
+
+<script>
+{% autoescape 'js' %}
+(function() {
+    var autocompleteInput = document.getElementById('{{ id }}_autocomplete_input');
+
+    // Check if TomSelect is available
+    if (typeof TomSelect === 'undefined') {
+        console.warn('TomSelect is not available. Autocomplete will not work.');
+        return;
+    }
+
+    var tomSelectOptions = {
+        valueField: 'id',
+        labelField: 'label',
+        searchField: ['label'],
+        {%- set allowClearPlaceholder = (not multiple and not required) ? ' ' : '' -%}
+        placeholder: '{{ placeholder ?: allowClearPlaceholder }}',
+        maxItems: {{ multiple ? 'null' : '1' }},
+        plugins: [
+            {% if multiple %}'remove_button',{% endif %}
+            {% if not required %}'clear_button',{% endif %}
+            'dropdown_input'
+        ],
+        load: function(query, callback) {
+            if (!query.length) return callback();
+
+            var params = new URLSearchParams({
+                '{{ req_param_name_search }}': query,
+                '{{ req_param_name_items_per_page }}': {{ items_per_page }},
+                '{{ req_param_name_page_number }}': 1,
+                {% if sensiolabs_admin.admin %}
+                    'uniqid': '{{ sensiolabs_admin.admin.uniqid }}',
+                    '_sensiolabs_admin': '{{ sensiolabs_admin.admin.baseCodeRoute|e('js') }}',
+                {% elseif admin_code %}
+                    '_sensiolabs_admin': '{{ admin_code|e('js') }}',
+                {% endif %}
+                {% if context == 'filter' %}
+                    'field': '{{ full_name|replace({'filter[': '', '][value]': '', '__':'.'}) }}',
+                    '_context': 'filter'
+                {% else %}
+                    'field': '{{ name }}'
+                {% endif %}
+                {% if req_params is not empty %}
+                    {%- for key, value in req_params -%}
+                        ,'{{ key }}': '{{ value }}'
+                    {%- endfor -%}
+                {% endif %}
+            });
+
+            fetch('{{ url ?: path(route.name, route.parameters|default([])) }}?' + params.toString(), {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(function(response) { return response.json(); })
+            .then(function(data) {
+                callback(data.items.map(function(item) {
+                    return {
+                        id: item.id,
+                        label: item.label
+                    };
+                }));
+            })
+            .catch(function(error) {
+                console.error('Autocomplete error:', error);
+                callback();
+            });
+        },
+        render: {
+            option: function(data, escape) {
+                {% if safe_label|default(false) %}
+                    return '<div class="{{ dropdown_item_css_class }}">' + data.label + '</div>';
+                {% else %}
+                    var div = document.createElement('div');
+                    div.className = '{{ dropdown_item_css_class }}';
+                    div.textContent = data.label;
+                    return div.outerHTML;
+                {% endif %}
+            },
+            item: function(data, escape) {
+                {% if safe_label|default(false) %}
+                    return '<div>' + data.label + '</div>';
+                {% else %}
+                    var div = document.createElement('div');
+                    div.textContent = data.label;
+                    return div.outerHTML;
+                {% endif %}
+            }
+        },
+        onItemAdd: function(value, item) {
+            var hiddenWrap = document.getElementById('{{ id }}_hidden_inputs_wrap');
+
+            {% if multiple %}
+                var hidden = document.createElement('input');
+                hidden.type = 'hidden';
+                hidden.name = '{{ full_name }}[]';
+                hidden.value = value;
+                hiddenWrap.appendChild(hidden);
+            {% else %}
+                var hidden = hiddenWrap.querySelector('input[type="hidden"]');
+                if (hidden) {
+                    hidden.value = value;
+                }
+            {% endif %}
+        },
+        onItemRemove: function(value) {
+            var hiddenWrap = document.getElementById('{{ id }}_hidden_inputs_wrap');
+
+            {% if multiple %}
+                var hidden = hiddenWrap.querySelector('input[type="hidden"][value="' + value + '"]');
+                if (hidden) {
+                    hidden.remove();
+                }
+            {% else %}
+                var hidden = hiddenWrap.querySelector('input[type="hidden"]');
+                if (hidden) {
+                    hidden.value = '';
+                }
+            {% endif %}
+        }
+    };
+
+    var ts = new TomSelect(autocompleteInput, tomSelectOptions);
+
+    // Remove autocomplete input before form submit (to avoid duplicate values)
+    var form = autocompleteInput.closest('form');
+    if (form) {
+        form.addEventListener('submit', function() {
+            ts.destroy();
+            autocompleteInput.remove();
+            return true;
+        });
+    }
+
+    // Auto-select created record after closing popup
+    {% if sensiolabs_admin.field_description
+        and sensiolabs_admin.field_description.hasAssociationAdmin
+        and btn_add
+        and sensiolabs_admin.field_description.associationadmin.hasRoute('create')
+        and sensiolabs_admin.field_description.associationadmin.hasAccess('create') %}
+
+        {% set create_url = sensiolabs_admin.field_description.associationadmin.generateUrl('create', sensiolabs_admin.field_description.getOption('link_parameters', {})) %}
+
+        // Listen for successful AJAX responses
+        var originalFetch = window.fetch;
+        window.fetch = function() {
+            return originalFetch.apply(this, arguments).then(function(response) {
+                var url = arguments[0];
+                if (typeof url === 'string' && '{{ create_url }}'.indexOf(url) !== -1) {
+                    response.clone().json().then(function(data) {
+                        if (data && data.result === 'ok') {
+                            // Add new option and select it
+                            var parser = new DOMParser();
+                            var doc = parser.parseFromString(data.objectName, 'text/html');
+                            var label = doc.documentElement.textContent;
+
+                            ts.addOption({ id: data.objectId, label: label });
+                            ts.addItem(data.objectId);
+
+                            // Update hidden input
+                            var hiddenWrap = document.getElementById('{{ id }}_hidden_inputs_wrap');
+                            {% if multiple %}
+                                var hidden = document.createElement('input');
+                                hidden.type = 'hidden';
+                                hidden.name = '{{ full_name }}[]';
+                                hidden.value = data.objectId;
+                                hiddenWrap.appendChild(hidden);
+                            {% else %}
+                                hiddenWrap.innerHTML = '<input type="hidden" name="{{ full_name }}" value="' + data.objectId + '" />';
+                            {% endif %}
+                        }
+                    }).catch(function() {});
+                }
+                return response;
+            });
+        };
+    {% endif %}
+})();
+{% endautoescape %}
+</script>

@@ -22,8 +22,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  *   - configureQuery.
  *
  * You can register the listener to the event dispatcher by using:
- *   - sonata.admin.event.configure.query
- *   - sonata.admin.event.configure.[admin_code].query  (not implemented yet)
+ *   - sensiolabs.admin.event.configure.query
+ *   - sensiolabs.admin.event.configure.[admin_code].query  (not implemented yet)
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */

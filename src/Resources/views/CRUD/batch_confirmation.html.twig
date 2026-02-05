@@ -1,8 +1,8 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
@@ -23,43 +23,52 @@ file that was distributed with this source code.
 {%- endblock -%}
 
 {% block content %}
-    <div class="sonata-ba-delete">
-        <div class="box box-danger">
-            <div class="box-header">
+    <div class="sensiolabs-ba-delete max-w-2xl mx-auto py-8">
+        <div class="admin-card border-warning-200">
+            <div class="admin-card-header bg-warning-50 border-b border-warning-200">
                 {% if batch_translation_domain is not same as(false) %}
                     {% set action_label = action_label|trans({}, batch_translation_domain) %}
                 {% endif %}
-                <h4 class="box-title">{% trans with {'%action%': action_label} from 'SonataAdminBundle' %}title_batch_confirmation{% endtrans %}</h4>
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-warning-100 flex items-center justify-center">
+                        {{ ux_icon('lucide:alert-circle', {class: 'w-5 h-5 text-warning-600'}) }}
+                    </div>
+                    <h4 class="text-lg font-semibold text-warning-800">{% trans with {'%action%': action_label} from 'SensioLabsAdminBundle' %}title_batch_confirmation{% endtrans %}</h4>
+                </div>
             </div>
-            <div class="box-body">
-                {% if data.all_elements %}
-                    {{ 'message_batch_all_confirmation'|trans({}, 'SonataAdminBundle') }}
-                {% else %}
-                    {% trans with {'%count%': data.idx|length} from 'SonataAdminBundle' %}message_batch_confirmation{% endtrans %}
-                {% endif %}
+            <div class="admin-card-body">
+                <p class="text-gray-600">
+                    {% if data.all_elements %}
+                        {{ 'message_batch_all_confirmation'|trans({}, 'SensioLabsAdminBundle') }}
+                    {% else %}
+                        {% trans with {'%count%': data.idx|length} from 'SensioLabsAdminBundle' %}message_batch_confirmation{% endtrans %}
+                    {% endif %}
+                </p>
             </div>
-            <div class="box-footer clearfix">
-                <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST">
+            <div class="admin-card-footer bg-gray-50 flex flex-wrap gap-3 items-center">
+                <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST" class="inline">
                     <input type="hidden" name="confirmation" value="ok">
                     <input type="hidden" name="data" value="{{ data|json_encode }}">
-                    <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
+                    <input type="hidden" name="_sensiolabs_csrf_token" value="{{ csrf_token }}">
 
-                    <div style="display: none">
+                    <div class="hidden">
                         {{ form_rest(form) }}
                     </div>
 
-                    <button type="submit" class="btn btn-danger">
-                        {{ 'btn_execute_batch_action'|trans({}, 'SonataAdminBundle') }}
+                    <button type="submit" class="admin-btn-warning">
+                        {{ ux_icon('lucide:check', {class: 'w-4 h-4'}) }}
+                        {{ 'btn_execute_batch_action'|trans({}, 'SensioLabsAdminBundle') }}
                     </button>
-
-                    {% if admin.hasRoute('list') and admin.hasAccess('list') %}
-                        {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
-
-                        <a class="btn btn-success" href="{{ admin.generateUrl('list') }}">
-                            <i class="fas fa-list" aria-hidden="true"></i> {{ 'link_action_list'|trans({}, 'SonataAdminBundle') }}
-                        </a>
-                    {% endif %}
                 </form>
+
+                {% if admin.hasRoute('list') and admin.hasAccess('list') %}
+                    <span class="text-gray-400">{{ 'delete_or'|trans({}, 'SensioLabsAdminBundle') }}</span>
+
+                    <a class="admin-btn-outline" href="{{ admin.generateUrl('list') }}">
+                        {{ ux_icon('lucide:arrow-left', {class: 'w-4 h-4'}) }}
+                        {{ 'link_action_list'|trans({}, 'SensioLabsAdminBundle') }}
+                    </a>
+                {% endif %}
             </div>
         </div>
     </div>

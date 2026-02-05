@@ -21,6 +21,7 @@ use SensioLabs\AdminBundle\Util\AdminAclUserManagerInterface;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\Extension;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType as SymfonyChoiceType;
@@ -30,6 +31,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType as SymfonyEmailType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType as SymfonyIntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType as SymfonyTextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType as SymfonyTextType;
+use Symfony\Component\AssetMapper\AssetMapperInterface;
 use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
 
 /**
@@ -39,8 +41,45 @@ use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
  * @phpstan-import-type SonataAdminConfiguration from Configuration
  * @phpstan-import-type SonataAdminAsset from Configuration
  */
-final class SensioLabsAdminExtension extends Extension
+final class SensioLabsAdminExtension extends Extension implements PrependExtensionInterface
 {
+    public function prepend(ContainerBuilder $container): void
+    {
+        // Register the bundle's assets with AssetMapper for importmap support
+        if (!$this->isAssetMapperAvailable($container)) {
+            return;
+        }
+
+        // Go up from src/DependencyInjection to bundle root, then into assets/
+        $bundleAssetsPath = \dirname(__DIR__, 2).'/assets';
+
+        $container->prependExtensionConfig('framework', [
+            'asset_mapper' => [
+                'paths' => [
+                    // The namespace must match the package name in assets/package.json
+                    $bundleAssetsPath => '@sensiolabs-de/admin-bundle',
+                ],
+            ],
+        ]);
+    }
+
+    private function isAssetMapperAvailable(ContainerBuilder $container): bool
+    {
+        if (!interface_exists(AssetMapperInterface::class)) {
+            return false;
+        }
+
+        // Check if FrameworkBundle has AssetMapper support
+        $dependencies = $container->getParameter('kernel.bundles_metadata');
+        \assert(\is_array($dependencies));
+
+        if (!isset($dependencies['FrameworkBundle'])) {
+            return false;
+        }
+
+        return is_file($dependencies['FrameworkBundle']['path'].'/Resources/config/asset_mapper.php');
+    }
+
     public function load(array $configs, ContainerBuilder $container): void
     {
         $bundles = $container->getParameter('kernel.bundles');
@@ -66,12 +105,11 @@ final class SensioLabsAdminExtension extends Extension
 
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('actions.php');
-        $loader->load('block.php');
         $loader->load('commands.php');
         $loader->load('core.php');
+        $loader->load('dashboard.php');
         $loader->load('event_listener.php');
         $loader->load('form_types.php');
-        $loader->load('menu.php');
         $loader->load('route.php');
         $loader->load('twig.php');
 
@@ -90,58 +128,45 @@ final class SensioLabsAdminExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $javascript = $this->buildJavascripts($config);
-
-        $config['assets']['stylesheets'][] = [
-            'path' => \sprintf(
-                'bundles/sonataadmin/admin-lte-skins/%s.min.css',
-                $config['options']['skin']
-            ),
-            'package_name' => 'sonata_admin',
-        ];
-
         $stylesheet = $this->buildStylesheets($config);
 
         $config['options']['javascripts'] = $javascript;
         $config['options']['stylesheets'] = $stylesheet;
         $config['options']['role_admin'] = $config['security']['role_admin'];
         $config['options']['role_super_admin'] = $config['security']['role_super_admin'];
-        $config['options']['search'] = $config['search'];
 
-        $sonataConfiguration = $container->getDefinition('sonata.admin.configuration');
+        $sonataConfiguration = $container->getDefinition('sensiolabs.admin.configuration');
         $sonataConfiguration->replaceArgument(0, $config['title']);
         $sonataConfiguration->replaceArgument(1, $config['title_logo']);
         $sonataConfiguration->replaceArgument(2, $config['options']);
 
         if (false === $config['options']['lock_protection']) {
-            $container->removeDefinition('sonata.admin.lock.extension');
+            $container->removeDefinition('sensiolabs.admin.lock.extension');
         }
 
-        $container->setParameter('sonata.admin.configuration.global_search.empty_boxes', $config['global_search']['empty_boxes']);
-        $container->setParameter('sonata.admin.configuration.global_search.admin_route', $config['global_search']['admin_route']);
-        $container->setParameter('sonata.admin.configuration.templates', $config['templates']);
-        $container->setParameter('sonata.admin.configuration.default_admin_services', $config['default_admin_services']);
-        $container->setParameter('sonata.admin.configuration.default_controller', $config['default_controller']);
-        $container->setParameter('sonata.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
-        $container->setParameter('sonata.admin.configuration.dashboard_blocks', $config['dashboard']['blocks']);
-        $container->setParameter('sonata.admin.configuration.sort_admins', $config['options']['sort_admins']);
+        $container->setParameter('sensiolabs.admin.configuration.templates', $config['templates']);
+        $container->setParameter('sensiolabs.admin.configuration.default_admin_services', $config['default_admin_services']);
+        $container->setParameter('sensiolabs.admin.configuration.default_controller', $config['default_controller']);
+        $container->setParameter('sensiolabs.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
+        $container->setParameter('sensiolabs.admin.configuration.sort_admins', $config['options']['sort_admins']);
         $container->setParameter(
-            'sonata.admin.configuration.mosaic_background',
+            'sensiolabs.admin.configuration.mosaic_background',
             $config['options']['mosaic_background']
         );
-        $container->setParameter('sonata.admin.configuration.default_group', $config['options']['default_group']);
-        $container->setParameter('sonata.admin.configuration.default_translation_domain', $config['options']['default_translation_domain']);
-        $container->setParameter('sonata.admin.configuration.default_icon', $config['options']['default_icon']);
-        $container->setParameter('sonata.admin.configuration.breadcrumbs', $config['breadcrumbs']);
+        $container->setParameter('sensiolabs.admin.configuration.default_group', $config['options']['default_group']);
+        $container->setParameter('sensiolabs.admin.configuration.default_translation_domain', $config['options']['default_translation_domain']);
+        $container->setParameter('sensiolabs.admin.configuration.default_icon', $config['options']['default_icon']);
+        $container->setParameter('sensiolabs.admin.configuration.breadcrumbs', $config['breadcrumbs']);
 
         if (null !== $config['security']['acl_user_manager']) {
-            $container->setAlias('sonata.admin.security.acl_user_manager', $config['security']['acl_user_manager']);
-            $container->setAlias(AdminAclUserManagerInterface::class, 'sonata.admin.security.acl_user_manager');
+            $container->setAlias('sensiolabs.admin.security.acl_user_manager', $config['security']['acl_user_manager']);
+            $container->setAlias(AdminAclUserManagerInterface::class, 'sensiolabs.admin.security.acl_user_manager');
         }
 
-        $container->setAlias('sonata.admin.security.handler', $config['security']['handler']);
+        $container->setAlias('sensiolabs.admin.security.handler', $config['security']['handler']);
 
         switch ($config['security']['handler']) {
-            case 'sonata.admin.security.handler.role':
+            case 'sensiolabs.admin.security.handler.role':
                 if (0 === \count($config['security']['information'])) {
                     $config['security']['information'] = [
                         'EDIT' => ['EDIT'],
@@ -155,7 +180,7 @@ final class SensioLabsAdminExtension extends Extension
                 }
 
                 break;
-            case 'sonata.admin.security.handler.acl':
+            case 'sensiolabs.admin.security.handler.acl':
                 if (!isset($bundles['AclBundle'])) {
                     throw new \RuntimeException(
                         'The "symfony/acl-bundle" is needed to use ACL as security handler.'
@@ -175,11 +200,11 @@ final class SensioLabsAdminExtension extends Extension
                 break;
         }
 
-        $container->setParameter('sonata.admin.configuration.security.role_admin', $config['security']['role_admin']);
-        $container->setParameter('sonata.admin.configuration.security.role_super_admin', $config['security']['role_super_admin']);
-        $container->setParameter('sonata.admin.configuration.security.information', $config['security']['information']);
-        $container->setParameter('sonata.admin.configuration.security.admin_permissions', $config['security']['admin_permissions']);
-        $container->setParameter('sonata.admin.configuration.security.object_permissions', $config['security']['object_permissions']);
+        $container->setParameter('sensiolabs.admin.configuration.security.role_admin', $config['security']['role_admin']);
+        $container->setParameter('sensiolabs.admin.configuration.security.role_super_admin', $config['security']['role_super_admin']);
+        $container->setParameter('sensiolabs.admin.configuration.security.information', $config['security']['information']);
+        $container->setParameter('sensiolabs.admin.configuration.security.admin_permissions', $config['security']['admin_permissions']);
+        $container->setParameter('sensiolabs.admin.configuration.security.object_permissions', $config['security']['object_permissions']);
 
         $loader->load('security.php');
 
@@ -188,7 +213,7 @@ final class SensioLabsAdminExtension extends Extension
             $loader->load('acl.php');
         }
 
-        $container->setParameter('sonata.admin.extension.map', $config['extensions']);
+        $container->setParameter('sensiolabs.admin.extension.map', $config['extensions']);
 
         /*
          * This is a work in progress, so for now it is hardcoded
@@ -203,20 +228,20 @@ final class SensioLabsAdminExtension extends Extension
             SymfonyTextType::class => '',
         ];
 
-        $container->getDefinition('sonata.admin.form.extension.field')
+        $container->getDefinition('sensiolabs.admin.form.extension.field')
             ->replaceArgument(0, $classes)
             ->replaceArgument(1, $config['options']);
 
         // remove non-Mopa compatibility layer
         if (isset($bundles['MopaBootstrapBundle'])) {
-            $container->removeDefinition('sonata.admin.form.extension.field.mopa');
+            $container->removeDefinition('sensiolabs.admin.form.extension.field.mopa');
         }
 
         // set filter persistence
-        $container->setParameter('sonata.admin.configuration.filters.persist', $config['persist_filters']);
-        $container->setParameter('sonata.admin.configuration.filters.persister', $config['filter_persister']);
+        $container->setParameter('sensiolabs.admin.configuration.filters.persist', $config['persist_filters']);
+        $container->setParameter('sensiolabs.admin.configuration.filters.persister', $config['filter_persister']);
 
-        $container->setParameter('sonata.admin.configuration.show.mosaic.button', $config['show_mosaic_button']);
+        $container->setParameter('sensiolabs.admin.configuration.show.mosaic.button', $config['show_mosaic_button']);
 
         $this->replacePropertyAccessor($container);
 
@@ -227,11 +252,54 @@ final class SensioLabsAdminExtension extends Extension
         $container
             ->registerForAutoconfiguration(AuditReaderInterface::class)
             ->addTag(AddAuditReadersCompilerPass::AUDIT_READER_TAG);
+
+        // Load ORM configuration
+        $this->loadORMConfiguration($configs, $container, $bundles);
+    }
+
+    /**
+     * @param array<mixed> $configs
+     * @param array<string, class-string> $bundles
+     */
+    private function loadORMConfiguration(array $configs, ContainerBuilder $container, array $bundles): void
+    {
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config/orm'));
+        $loader->load('doctrine_orm.php');
+        $loader->load('doctrine_orm_filter_types.php');
+
+        if (isset($bundles['SimpleThingsEntityAuditBundle'])) {
+            $loader->load('audit.php');
+            $container->setParameter('sensiolabs_doctrine_orm_admin.audit.force', true);
+        }
+
+        if (interface_exists(ObjectIdentityInterface::class)) {
+            $loader->load('security.php');
+        }
+
+        $container->setParameter('sensiolabs_doctrine_orm_admin.entity_manager', null);
+        $container->setParameter('sensiolabs_doctrine_orm_admin.templates', [
+            'types' => [
+                'list' => [],
+                'show' => [],
+            ],
+        ]);
+
+        // Define the templates (empty by default, can be overridden)
+        $container->getDefinition('sensiolabs.admin.builder.orm_list')
+            ->replaceArgument(1, []);
+
+        $container->getDefinition('sensiolabs.admin.builder.orm_show')
+            ->replaceArgument(1, []);
     }
 
     public function getNamespace(): string
     {
         return 'https://sonata-project.org/schema/dic/admin';
+    }
+
+    public function getAlias(): string
+    {
+        return 'sensiolabs_admin';
     }
 
     /**
@@ -299,10 +367,10 @@ final class SensioLabsAdminExtension extends Extension
             return;
         }
 
-        $pool = $container->getDefinition('sonata.admin.pool');
+        $pool = $container->getDefinition('sensiolabs.admin.pool');
         $pool->replaceArgument(4, new Reference('form.property_accessor'));
 
-        $modelChoice = $container->getDefinition('sonata.admin.form.type.model_choice');
+        $modelChoice = $container->getDefinition('sensiolabs.admin.form.type.model_choice');
         $modelChoice->replaceArgument(0, new Reference('form.property_accessor'));
     }
 }

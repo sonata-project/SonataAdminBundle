@@ -1,8 +1,8 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
@@ -10,20 +10,20 @@ file that was distributed with this source code.
 #}
 
 {% if admin.hasAccess('edit', object) and admin.hasRoute('edit') %}
-    {% set button_content = sonata_config.getOption('list_action_button_content') %}
+    {% set button_content = sensiolabs_config.getOption('list_action_button_content') %}
     <a
         href="{{ admin.generateObjectUrl('edit', object, actions.link_parameters|default([])) }}"
-        class="btn btn-sm btn-default edit_link"
-        title="{{ 'action_edit'|trans({}, 'SonataAdminBundle') }}"
+        class="inline-flex items-center justify-center gap-1.5 p-2 rounded-lg text-primary-600 hover:text-primary-700 hover:bg-primary-50 transition-colors edit_link"
+        title="{{ 'action_edit'|trans({}, 'SensioLabsAdminBundle') }}"
     >
         {% if button_content == 'icon' or button_content == 'all' %}
-            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
+            {{ ux_icon('lucide:pencil', {class: 'w-4 h-4'}) }}
         {% endif %}
         {% if button_content == 'text' or button_content == 'all' %}
-            {{ 'action_edit'|trans({}, 'SonataAdminBundle') }}
+            <span class="text-sm font-medium">{{ 'action_edit'|trans({}, 'SensioLabsAdminBundle') }}</span>
         {% else %}
             <span class="sr-only">
-                {{ 'action_edit'|trans({}, 'SonataAdminBundle') }}
+                {{ 'action_edit'|trans({}, 'SensioLabsAdminBundle') }}
             </span>
         {% endif %}
     </a>

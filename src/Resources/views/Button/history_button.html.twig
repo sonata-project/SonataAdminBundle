@@ -1,8 +1,8 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
@@ -14,10 +14,8 @@ file that was distributed with this source code.
     and admin.hasAccess('history', object)
     and admin.hasRoute('history')
 %}
-    <li>
-        <a class="sonata-action-element" href="{{ admin.generateObjectUrl('history', object) }}">
-            <i class="fas fa-archive" aria-hidden="true"></i>
-            {{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}
-        </a>
-    </li>
+    <a class="admin-btn-ghost" href="{{ admin.generateObjectUrl('history', object) }}">
+        {{ ux_icon('lucide:clock', {class: 'w-4 h-4'}) }}
+        {{ 'link_action_history'|trans({}, 'SensioLabsAdminBundle') }}
+    </a>
 {% endif %}

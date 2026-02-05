@@ -22,50 +22,50 @@ use SensioLabs\AdminBundle\Util\AdminObjectAclManipulator;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->parameters()
-        ->set('sonata.admin.security.handler.acl.class', AclSecurityHandler::class)
+        ->set('sensiolabs.admin.security.handler.acl.class', AclSecurityHandler::class)
 
-        ->set('sonata.admin.security.mask.builder.class', MaskBuilder::class)
+        ->set('sensiolabs.admin.security.mask.builder.class', MaskBuilder::class)
 
-        ->set('sonata.admin.manipulator.acl.admin.class', AdminAclManipulator::class)
+        ->set('sensiolabs.admin.manipulator.acl.admin.class', AdminAclManipulator::class)
 
-        ->set('sonata.admin.object.manipulator.acl.admin.class', AdminObjectAclManipulator::class);
+        ->set('sensiolabs.admin.object.manipulator.acl.admin.class', AdminObjectAclManipulator::class);
 
     $containerConfigurator->services()
-        ->set('sonata.admin.command.generate_object_acl', GenerateObjectAclCommand::class)
+        ->set('sensiolabs.admin.command.generate_object_acl', GenerateObjectAclCommand::class)
             ->tag('console.command')
             ->args([
-                service('sonata.admin.pool'),
+                service('sensiolabs.admin.pool'),
                 abstract_arg('acl object manipulators'),
             ])
 
-        ->set('sonata.admin.command.setup_acl', SetupAclCommand::class)
+        ->set('sensiolabs.admin.command.setup_acl', SetupAclCommand::class)
             ->tag('console.command')
             ->args([
-                service('sonata.admin.pool'),
-                service('sonata.admin.manipulator.acl.admin'),
+                service('sensiolabs.admin.pool'),
+                service('sensiolabs.admin.manipulator.acl.admin'),
             ])
 
-        ->set('sonata.admin.security.handler.acl', (string) param('sonata.admin.security.handler.acl.class'))
+        ->set('sensiolabs.admin.security.handler.acl', (string) param('sensiolabs.admin.security.handler.acl.class'))
             ->args([
                 service('security.token_storage'),
                 service('security.authorization_checker'),
                 service('security.acl.provider')->nullOnInvalid(),
-                param('sonata.admin.security.mask.builder.class'),
-                param('sonata.admin.configuration.security.role_super_admin'),
+                param('sensiolabs.admin.security.mask.builder.class'),
+                param('sensiolabs.admin.configuration.security.role_super_admin'),
             ])
-            ->call('setAdminPermissions', [param('sonata.admin.configuration.security.admin_permissions')])
-            ->call('setObjectPermissions', [param('sonata.admin.configuration.security.object_permissions')])
+            ->call('setAdminPermissions', [param('sensiolabs.admin.configuration.security.admin_permissions')])
+            ->call('setObjectPermissions', [param('sensiolabs.admin.configuration.security.object_permissions')])
 
-        ->set('sonata.admin.manipulator.acl.admin', (string) param('sonata.admin.manipulator.acl.admin.class'))
+        ->set('sensiolabs.admin.manipulator.acl.admin', (string) param('sensiolabs.admin.manipulator.acl.admin.class'))
             ->args([
-                param('sonata.admin.security.mask.builder.class'),
+                param('sensiolabs.admin.security.mask.builder.class'),
             ])
 
-        ->set('sonata.admin.object.manipulator.acl.admin', (string) param('sonata.admin.object.manipulator.acl.admin.class'))
+        ->set('sensiolabs.admin.object.manipulator.acl.admin', (string) param('sensiolabs.admin.object.manipulator.acl.admin.class'))
             ->args([
                 service('form.factory'),
-                param('sonata.admin.security.mask.builder.class'),
+                param('sensiolabs.admin.security.mask.builder.class'),
             ])
 
-        ->alias(AdminObjectAclManipulator::class, 'sonata.admin.object.manipulator.acl.admin');
+        ->alias(AdminObjectAclManipulator::class, 'sensiolabs.admin.object.manipulator.acl.admin');
 };

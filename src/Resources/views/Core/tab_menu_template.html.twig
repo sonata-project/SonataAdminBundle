@@ -1,4 +1,20 @@
+{#
+
+This file is part of the SensioLabs Admin Bundle package.
+
+(c) SensioLabs
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
 {% extends 'knp_menu.html.twig' %}
+
+{% block root %}
+{% set listAttributes = item.childrenAttributes|merge({'class': 'tabs flex border-b border-gray-200'}) %}
+{{ block('list') }}
+{% endblock %}
 
 {% block item %}
 {% import "knp_menu.html.twig" as macros %}
@@ -8,54 +24,41 @@
     {%- set divider_prepend = attributes.divider_prepend|default(false) %}
     {%- set divider_append = attributes.divider_append|default(false) %}
 
-{# unset bootstrap specific attributes #}
     {%- set attributes = attributes|merge({'dropdown': null, 'divider_prepend': null, 'divider_append': null }) %}
 
     {%- if divider_prepend %}
         {{ block('dividerElement') }}
     {%- endif %}
 
-{# building the class of the item #}
     {%- set classes = item.attribute('class') is not empty ? [item.attribute('class')] : [] %}
 
-    {%- if matcher is defined %} {# KnpMenu 2.0#}
+    {%- if matcher is defined %}
         {%- if matcher.isCurrent(item) %}
-            {%- set classes = classes|merge([options.currentClass]) %}
+            {%- set classes = classes|merge(['tab-active']) %}
         {%- elseif matcher.isAncestor(item, options.depth) %}
-            {%- set classes = classes|merge([options.ancestorClass]) %}
+            {%- set classes = classes|merge(['tab-ancestor']) %}
         {%- endif %}
-    {%- else %} {# KnpMenu 1.X #}
+    {%- else %}
         {%- if item.current %}
-        {%- set classes = classes|merge([options.currentClass]) %}
+            {%- set classes = classes|merge(['tab-active']) %}
         {%- elseif item.currentAncestor %}
-        {%- set classes = classes|merge([options.ancestorClass]) %}
+            {%- set classes = classes|merge(['tab-ancestor']) %}
         {%- endif %}
     {%- endif %}
 
-    {%- if item.actsLikeFirst %}
-        {%- set classes = classes|merge([options.firstClass]) %}
-    {%- endif %}
-    {%- if item.actsLikeLast %}
-        {%- set classes = classes|merge([options.lastClass]) %}
-    {%- endif %}
-
-{# building the class of the children #}
     {%- set childrenClasses = item.childrenAttribute('class') is not empty ? [item.childrenAttribute('class')] : [] %}
     {%- set childrenClasses = childrenClasses|merge(['menu_level_' ~ item.level]) %}
 
-{# adding classes for dropdown #}
     {%- if is_dropdown %}
-        {%- set classes = classes|merge(['dropdown']) %}
+        {%- set classes = classes|merge(['relative']) %}
         {%- set childrenClasses = childrenClasses|merge(['dropdown-menu']) %}
     {%- endif %}
 
-{# putting classes together #}
     {%- if classes is not empty %}
         {%- set attributes = attributes|merge({'class': classes|join(' ')}) %}
     {%- endif %}
     {%- set listAttributes = item.childrenAttributes|merge({'class': childrenClasses|join(' ') }) %}
 
-{# displaying the item #}
     <li{{ macros.attributes(attributes) }}>
         {%- if is_dropdown %}
             {{ block('dropdownElement') }}
@@ -64,7 +67,6 @@
         {%- else %}
             {{ block('spanElement') }}
         {%- endif %}
-{# render the list of children#}
         {{ block('list') }}
     </li>
 
@@ -76,17 +78,22 @@
 
 {% block dividerElement %}
 {% if item.level == 1 %}
-    <li class="divider-vertical"></li>
+    <li class="w-px bg-gray-200 mx-2"></li>
 {% else %}
-    <li class="divider"></li>
+    <li class="border-t border-gray-200 my-1"></li>
 {% endif %}
 {% endblock %}
 
 {% block linkElement %}
     {% import "knp_menu.html.twig" as macros %}
-    <a href="{{ item.uri }}"{{ macros.attributes(item.linkAttributes) }}>
+    {%- set linkClasses = ['tab', 'flex', 'items-center', 'gap-2'] %}
+    {%- if item.linkAttribute('class') is not empty %}
+        {%- set linkClasses = linkClasses|merge([item.linkAttribute('class')]) %}
+    {%- endif %}
+    {%- set linkAttributes = item.linkAttributes|merge({'class': linkClasses|join(' ')}) %}
+    <a href="{{ item.uri }}"{{ macros.attributes(linkAttributes) }}>
         {% if item.attribute('icon') is not empty %}
-            {{ item.attribute('icon')|parse_icon }}
+            <span class="icon-sm">{{ item.attribute('icon')|parse_icon }}</span>
         {% endif %}
         {{ block('label') }}
     </a>
@@ -94,9 +101,14 @@
 
 {% block spanElement %}
     {% import "knp_menu.html.twig" as macros %}
-    <span {{ macros.attributes(item.labelAttributes) }}>
+    {%- set spanClasses = ['tab', 'flex', 'items-center', 'gap-2'] %}
+    {%- if item.labelAttribute('class') is not empty %}
+        {%- set spanClasses = spanClasses|merge([item.labelAttribute('class')]) %}
+    {%- endif %}
+    {%- set labelAttributes = item.labelAttributes|merge({'class': spanClasses|join(' ')}) %}
+    <span {{ macros.attributes(labelAttributes) }}>
         {% if item.attribute('icon') is not empty %}
-            {{ item.attribute('icon')|parse_icon }}
+            <span class="icon-sm">{{ item.attribute('icon')|parse_icon }}</span>
         {% endif %}
         {{ block('label') }}
     </span>
@@ -105,21 +117,20 @@
 {% block dropdownElement %}
     {% import "knp_menu.html.twig" as macros %}
     {%- set classes = item.linkAttribute('class') is not empty ? [item.linkAttribute('class')] : [] %}
-    {%- set classes = classes|merge(['dropdown-toggle']) %}
+    {%- set classes = classes|merge(['tab', 'flex', 'items-center', 'gap-2', 'cursor-pointer']) %}
     {%- set attributes = item.linkAttributes %}
     {%- set attributes = attributes|merge({'class': classes|join(' ')}) %}
-    {%- set attributes = attributes|merge({'data-toggle': 'dropdown'}) %}
-    <a href="#"{{ macros.attributes(attributes) }}>
+    {%- set attributes = attributes|merge({'data-dropdown-toggle': true}) %}
+    <button type="button" {{ macros.attributes(attributes) }}>
         {% if item.attribute('icon') is not empty %}
-            {{ item.attribute('icon')|parse_icon }}
+            <span class="icon-sm">{{ item.attribute('icon')|parse_icon }}</span>
         {% endif %}
         {{ block('label') }}
-        <b class="caret"></b>
-    </a>
+        {{ ux_icon('lucide:chevron-down', {class: 'w-4 h-4 ml-1'}) }}
+    </button>
 {% endblock %}
 
 {% block label %}
-{# We use method accessor instead of ".label" since `item` implements `ArrayAccess` and could have a property called "label". #}
 {{-
     item.getLabel()|trans(
         item.getExtra('translation_params', {}),

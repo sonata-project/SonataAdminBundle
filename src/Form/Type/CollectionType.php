@@ -35,6 +35,6 @@ final class CollectionType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'sonata_type_native_collection';
+        return 'sensiolabs_type_native_collection';
     }
 }

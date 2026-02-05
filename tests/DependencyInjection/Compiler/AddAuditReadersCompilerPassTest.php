@@ -31,7 +31,7 @@ final class AddAuditReadersCompilerPassTest extends AbstractCompilerPassTestCase
         ]);
 
         $this->container
-            ->setDefinition('sonata.admin.audit.manager', $auditManagerDefinition);
+            ->setDefinition('sensiolabs.admin.audit.manager', $auditManagerDefinition);
 
         $auditReader = new Definition(AuditReader::class);
         $auditReader
@@ -42,7 +42,7 @@ final class AddAuditReadersCompilerPassTest extends AbstractCompilerPassTestCase
 
         $this->compile();
 
-        $serviceLocator = $this->container->getDefinition('sonata.admin.audit.manager')->getArgument(0);
+        $serviceLocator = $this->container->getDefinition('sensiolabs.admin.audit.manager')->getArgument(0);
         static::assertInstanceOf(Reference::class, $serviceLocator);
 
         self::assertContainerBuilderHasServiceLocator(
@@ -58,7 +58,7 @@ final class AddAuditReadersCompilerPassTest extends AbstractCompilerPassTestCase
         $auditManagerDefinition = new Definition(AuditManager::class);
 
         $this->container
-            ->setDefinition('sonata.admin.audit.manager', $auditManagerDefinition);
+            ->setDefinition('sensiolabs.admin.audit.manager', $auditManagerDefinition);
 
         $auditReader = new Definition(\stdClass::class);
         $auditReader

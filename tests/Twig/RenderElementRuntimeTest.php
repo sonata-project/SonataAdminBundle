@@ -103,7 +103,7 @@ final class RenderElementRuntimeTest extends TestCase
             'optimizations' => 0,
         ]);
         $this->environment->addExtension(new StimulusTwigExtension(new StimulusHelper(null)));
-        $this->environment->addGlobal('sonata_config', new SensioLabsConfiguration('title', '/path/to/logo.png', [
+        $this->environment->addGlobal('sensiolabs_config', new SensioLabsConfiguration('title', '/path/to/logo.png', [
             'confirm_exit' => true,
             'default_admin_route' => 'show',
             'default_group' => 'default',
@@ -147,7 +147,7 @@ final class RenderElementRuntimeTest extends TestCase
 
         $this->admin
             ->method('getBaseCodeRoute')
-            ->willReturn('sonata_admin_foo_service');
+            ->willReturn('sensiolabs_admin_foo_service');
 
         $this->admin
             ->method('id')
@@ -819,7 +819,7 @@ final class RenderElementRuntimeTest extends TestCase
                             data-value="1"
                             data-title="Data"
                             data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-url="/core/set-object-field-value?_sensiolabs_admin=sensiolabs_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
                             data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]"
                         >
                             <span class="label label-success">yes</span>
@@ -839,7 +839,7 @@ final class RenderElementRuntimeTest extends TestCase
                             data-value="0"
                             data-title="Data"
                             data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-url="/core/set-object-field-value?_sensiolabs_admin=sensiolabs_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
                             data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]"
                         >
                         <span class="label label-danger">no</span> </span>
@@ -858,7 +858,7 @@ final class RenderElementRuntimeTest extends TestCase
                             data-value="0"
                             data-title="Data"
                             data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-url="/core/set-object-field-value?_sensiolabs_admin=sensiolabs_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
                             data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]" >
                             <span class="label label-danger">no</span> </span>
                     </td>
@@ -1025,7 +1025,7 @@ final class RenderElementRuntimeTest extends TestCase
                             data-value="Status1"
                             data-title="Data"
                             data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-url="/core/set-object-field-value?_sensiolabs_admin=sensiolabs_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
                             data-source="[]"
                         >
                             Status1
@@ -1045,7 +1045,7 @@ final class RenderElementRuntimeTest extends TestCase
                             data-value="Status1"
                             data-title="Data"
                             data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-url="/core/set-object-field-value?_sensiolabs_admin=sensiolabs_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
                             data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
                             Alias1 </span>
                     </td>
@@ -1070,7 +1070,7 @@ final class RenderElementRuntimeTest extends TestCase
                             data-value=""
                             data-title="Data"
                             data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-url="/core/set-object-field-value?_sensiolabs_admin=sensiolabs_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
                             data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
 
                         </span>
@@ -1095,7 +1095,7 @@ final class RenderElementRuntimeTest extends TestCase
                             data-type="select"
                             data-value="NoValidKeyInChoices"
                             data-title="Data" data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-url="/core/set-object-field-value?_sensiolabs_admin=sensiolabs_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
                             data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Alias1&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
                             NoValidKeyInChoices
                         </span>
@@ -1121,7 +1121,7 @@ final class RenderElementRuntimeTest extends TestCase
                             data-value="Foo"
                             data-title="Data"
                             data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-url="/core/set-object-field-value?_sensiolabs_admin=sensiolabs_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
                             data-source="[{&quot;value&quot;:&quot;Foo&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
                              Delete
                         </span>
@@ -1155,7 +1155,7 @@ final class RenderElementRuntimeTest extends TestCase
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> &nbsp; </td>',
                 FieldDescriptionInterface::TYPE_URL,
                 null,
-                ['route' => ['name' => 'sonata_admin_foo']],
+                ['route' => ['name' => 'sensiolabs_admin_foo']],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
@@ -1243,7 +1243,7 @@ final class RenderElementRuntimeTest extends TestCase
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
                 'Foo',
-                ['route' => ['name' => 'sonata_admin_foo']],
+                ['route' => ['name' => 'sensiolabs_admin_foo']],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
@@ -1259,7 +1259,7 @@ final class RenderElementRuntimeTest extends TestCase
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
                 'Foo',
-                ['route' => ['name' => 'sonata_admin_foo', 'absolute' => true]],
+                ['route' => ['name' => 'sensiolabs_admin_foo', 'absolute' => true]],
             ],
             [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
@@ -1267,7 +1267,7 @@ final class RenderElementRuntimeTest extends TestCase
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
                 'http://foo/bar?a=b&c=123456789',
-                ['route' => ['name' => 'sonata_admin_foo'],
+                ['route' => ['name' => 'sensiolabs_admin_foo'],
                     'hide_protocol' => true, ],
             ],
             [
@@ -1277,7 +1277,7 @@ final class RenderElementRuntimeTest extends TestCase
                 FieldDescriptionInterface::TYPE_URL,
                 'http://foo/bar?a=b&c=123456789',
                 [
-                    'route' => ['name' => 'sonata_admin_foo', 'absolute' => true],
+                    'route' => ['name' => 'sensiolabs_admin_foo', 'absolute' => true],
                     'hide_protocol' => true,
                 ],
             ],
@@ -1288,7 +1288,7 @@ final class RenderElementRuntimeTest extends TestCase
                 FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 [
-                    'route' => ['name' => 'sonata_admin_foo_param',
+                    'route' => ['name' => 'sensiolabs_admin_foo_param',
                         'parameters' => ['param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'], ],
                 ],
             ],
@@ -1299,7 +1299,7 @@ final class RenderElementRuntimeTest extends TestCase
                 FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 [
-                    'route' => ['name' => 'sonata_admin_foo_param',
+                    'route' => ['name' => 'sensiolabs_admin_foo_param',
                         'absolute' => true,
                         'parameters' => ['param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'], ],
                 ],
@@ -1311,7 +1311,7 @@ final class RenderElementRuntimeTest extends TestCase
                 FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 [
-                    'route' => ['name' => 'sonata_admin_foo_object',
+                    'route' => ['name' => 'sensiolabs_admin_foo_object',
                         'parameters' => ['param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'],
                         'identifier_parameter_name' => 'barId', ],
                 ],
@@ -1323,7 +1323,7 @@ final class RenderElementRuntimeTest extends TestCase
                 FieldDescriptionInterface::TYPE_URL,
                 'Foo',
                 [
-                    'route' => ['name' => 'sonata_admin_foo_object',
+                    'route' => ['name' => 'sensiolabs_admin_foo_object',
                         'absolute' => true,
                         'parameters' => ['param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'],
                         'identifier_parameter_name' => 'barId', ],
@@ -1447,7 +1447,7 @@ final class RenderElementRuntimeTest extends TestCase
                             data-value="[&quot;Status1&quot;,&quot;Status2&quot;]"
                             data-title="Data"
                             data-pk="12345"
-                            data-url="/core/set-object-field-value?_sonata_admin=sonata_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
+                            data-url="/core/set-object-field-value?_sensiolabs_admin=sensiolabs_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
                             data-source="[{&quot;value&quot;:&quot;Status1&quot;,&quot;text&quot;:&quot;Delete&quot;},{&quot;value&quot;:&quot;Status2&quot;,&quot;text&quot;:&quot;Alias2&quot;},{&quot;value&quot;:&quot;Status3&quot;,&quot;text&quot;:&quot;Alias3&quot;}]" >
                              Delete, Alias2
                         </span>
@@ -1751,14 +1751,14 @@ final class RenderElementRuntimeTest extends TestCase
             '<th>Data</th> <td><a href="/foo">Foo</a></td>',
             FieldDescriptionInterface::TYPE_URL,
             'Foo',
-            ['safe' => false, 'route' => ['name' => 'sonata_admin_foo']],
+            ['safe' => false, 'route' => ['name' => 'sensiolabs_admin_foo']],
         ];
         yield [
             '<th>Data</th> <td><a href="http://localhost/foo">Foo</a></td>',
             FieldDescriptionInterface::TYPE_URL,
             'Foo',
             ['safe' => false, 'route' => [
-                'name' => 'sonata_admin_foo',
+                'name' => 'sensiolabs_admin_foo',
                 'absolute' => true,
             ]],
         ];
@@ -1768,7 +1768,7 @@ final class RenderElementRuntimeTest extends TestCase
             'http://foo/bar?a=b&c=123456789',
             [
                 'safe' => false,
-                'route' => ['name' => 'sonata_admin_foo'],
+                'route' => ['name' => 'sensiolabs_admin_foo'],
                 'hide_protocol' => true,
             ],
         ];
@@ -1777,7 +1777,7 @@ final class RenderElementRuntimeTest extends TestCase
             FieldDescriptionInterface::TYPE_URL,
             'http://foo/bar?a=b&c=123456789',
             ['safe' => false, 'route' => [
-                'name' => 'sonata_admin_foo',
+                'name' => 'sensiolabs_admin_foo',
                 'absolute' => true,
             ], 'hide_protocol' => true],
         ];
@@ -1786,7 +1786,7 @@ final class RenderElementRuntimeTest extends TestCase
             FieldDescriptionInterface::TYPE_URL,
             'Foo',
             ['safe' => false, 'route' => [
-                'name' => 'sonata_admin_foo_param',
+                'name' => 'sensiolabs_admin_foo_param',
                 'parameters' => ['param1' => 'abcd', 'param2' => 'efgh', 'param3' => 'ijkl'],
             ]],
         ];
@@ -1795,7 +1795,7 @@ final class RenderElementRuntimeTest extends TestCase
             FieldDescriptionInterface::TYPE_URL,
             'Foo',
             ['safe' => false, 'route' => [
-                'name' => 'sonata_admin_foo_param',
+                'name' => 'sensiolabs_admin_foo_param',
                 'absolute' => true,
                 'parameters' => [
                     'param1' => 'abcd',
@@ -1809,7 +1809,7 @@ final class RenderElementRuntimeTest extends TestCase
             FieldDescriptionInterface::TYPE_URL,
             'Foo',
             ['safe' => false, 'route' => [
-                'name' => 'sonata_admin_foo_object',
+                'name' => 'sensiolabs_admin_foo_object',
                 'parameters' => [
                     'param1' => 'abcd',
                     'param2' => 'efgh',
@@ -1823,7 +1823,7 @@ final class RenderElementRuntimeTest extends TestCase
             FieldDescriptionInterface::TYPE_URL,
             'Foo',
             ['safe' => false, 'route' => [
-                'name' => 'sonata_admin_foo_object',
+                'name' => 'sensiolabs_admin_foo_object',
                 'absolute' => true,
                 'parameters' => [
                     'param1' => 'abcd',
@@ -2072,7 +2072,7 @@ final class RenderElementRuntimeTest extends TestCase
         $phpFileLoader = new PhpFileLoader(new FileLocator([
             \sprintf('%s/../../src/Resources/config/routing', __DIR__),
         ]));
-        $routeCollection = $phpFileLoader->load('sonata_admin.php');
+        $routeCollection = $phpFileLoader->load('sensiolabs_admin.php');
 
         $phpFileLoader = new PhpFileLoader(new FileLocator([
             \sprintf('%s/../Fixtures/Resources/config/routing', __DIR__),

@@ -6,10 +6,11 @@
     "keywords": [
         "admin",
         "admin-generator",
-        "admin-lte",
         "bundle",
         "sonata",
-        "symfony"
+        "symfony",
+        "symfony-ux",
+        "tailwind"
     ],
     "authors": [
         {
@@ -26,7 +27,6 @@
         "knplabs/knp-menu-bundle": "^3.0",
         "psr/container": "^1.0 || ^2.0",
         "psr/log": "^2.0 || ^3.0",
-        "sonata-project/block-bundle": "^5.0",
         "sonata-project/doctrine-extensions": "^2.0",
         "sonata-project/exporter": "^3.1.1",
         "sonata-project/form-extensions": "^2.0",
@@ -51,13 +51,16 @@
         "symfony/security-core": "^6.4 || ^7.3 || ^8.0",
         "symfony/security-csrf": "^6.4 || ^7.3 || ^8.0",
         "symfony/serializer": "^6.4 || ^7.3 || ^8.0",
-        "symfony/stimulus-bundle": "^2.22",
+        "symfony/stimulus-bundle": "^2.32",
         "symfony/string": "^6.4 || ^7.3 || ^8.0",
         "symfony/translation": "^6.4 || ^7.3 || ^8.0",
         "symfony/translation-contracts": "^2.3 || ^3.0",
         "symfony/twig-bridge": "^6.4 || ^7.3 || ^8.0",
         "symfony/twig-bundle": "^6.4 || ^7.3 || ^8.0",
+        "symfony/ux-icons": "^2.32",
+        "symfony/ux-live-component": "^2.32",
         "symfony/validator": "^6.4 || ^7.3 || ^8.0",
+        "symfonycasts/tailwind-bundle": "^0.12.0",
         "twig/string-extra": "^3.0",
         "twig/twig": "^3.15"
     },

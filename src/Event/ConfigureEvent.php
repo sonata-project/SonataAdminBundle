@@ -25,8 +25,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  *   - configureShowFields.
  *
  * You can register the listener to the event dispatcher by using:
- *   - sonata.admin.event.configure.[form|list|datagrid|show]
- *   - sonata.admin.event.configure.[admin_code].[form|list|datagrid|show] (not implemented yet)
+ *   - sensiolabs.admin.event.configure.[form|list|datagrid|show]
+ *   - sensiolabs.admin.event.configure.[admin_code].[form|list|datagrid|show] (not implemented yet)
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *

@@ -45,10 +45,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *     logo_content: 'text'|'icon'|'all',
  *     mosaic_background: string,
  *     pager_links: int|null,
- *     skin: 'skin-black'|'skin-black-light'|'skin-blue'|'skin-blue-light'|'skin-green'|'skin-green-light'|'skin-purple'|'skin-purple-light'|'skin-red'|'skin-red-light'|'skin-yellow'|'skin-yellow-light',
  *     sort_admins: bool,
- *     use_bootlint: bool,
- *     use_icheck: bool,
  *     use_select2: bool,
  *     use_stickyforms: bool,
  * }
@@ -107,10 +104,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *     default_controller: string,
  *     extensions: array<string, ExtensionMap>,
  *     filter_persister: string,
- *     global_search: array{
- *         admin_route: string,
- *         empty_boxes: 'show'|'fade'|'hide',
- *     },
  *     options: SonataAdminConfigurationOptions,
  *     persist_filters: bool,
  *     security: array{
@@ -122,7 +115,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *         role_admin: string,
  *         role_super_admin: string,
  *     },
- *     search: bool,
  *     show_mosaic_button: bool,
  *     templates: array{
  *         acl: string,
@@ -158,8 +150,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *         pager_links: string,
  *         pager_results: string,
  *         preview: string,
- *         search: string,
- *         search_result_block: string,
  *         select: string,
  *         short_object_description: string,
  *         show: string,
@@ -173,14 +163,14 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  */
 final class Configuration implements ConfigurationInterface
 {
-    private const DEFAULT_PACKAGE = 'sonata_admin';
+    private const DEFAULT_PACKAGE = 'sensiolabs_admin';
 
     /**
      * @return TreeBuilder<'array'>
      */
     public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder('sonata_admin');
+        $treeBuilder = new TreeBuilder('sensiolabs_admin');
         $rootNode = $treeBuilder->getRootNode();
 
         $rootNode
@@ -194,7 +184,7 @@ final class Configuration implements ConfigurationInterface
                     ->fixXmlConfig('admin_permission')
                     ->fixXmlConfig('object_permission')
                     ->children()
-                        ->scalarNode('handler')->defaultValue('sonata.admin.security.handler.noop')->end()
+                        ->scalarNode('handler')->defaultValue('sensiolabs.admin.security.handler.noop')->end()
                         ->arrayNode('information')
                             ->useAttributeAsKey('id')
                             ->prototype('array')
@@ -226,7 +216,7 @@ final class Configuration implements ConfigurationInterface
                             ->scalarNode('role_super_admin')
                             ->cannotBeEmpty()
                             ->defaultValue('ROLE_SUPER_ADMIN')
-                            ->info('Role which will perform all admin actions, see dashboard, menu and search groups regardless of its configuration')
+                            ->info('Role which will perform all admin actions, see dashboard and menu groups regardless of its configuration')
                         ->end()
                         ->arrayNode('object_permissions')
                             ->defaultValue([
@@ -245,30 +235,11 @@ final class Configuration implements ConfigurationInterface
                     ->end()
                 ->end()
 
-                ->scalarNode('title')->defaultValue('Sonata Admin')->cannotBeEmpty()->end()
+                ->scalarNode('title')->defaultValue('SensioLabs Admin')->cannotBeEmpty()->end()
                 ->scalarNode('title_logo')->defaultValue('bundles/sonataadmin/images/logo_title.png')->cannotBeEmpty()->end()
-                ->booleanNode('search')->defaultTrue()->info('Enable/disable the search form in the sidebar')->end()
-
-                ->arrayNode('global_search')
-                    ->addDefaultsIfNotSet()
-                    ->children()
-                        ->scalarNode('empty_boxes')
-                            ->defaultValue('show')
-                            ->info('Perhaps one of the three options: show, fade, hide.')
-                            ->validate()
-                                ->ifTrue(static fn (string $v): bool => !\in_array($v, ['show', 'fade', 'hide'], true))
-                                ->thenInvalid('Configuration value of "global_search.empty_boxes" must be one of show, fade or hide.')
-                            ->end()
-                        ->end()
-                        ->scalarNode('admin_route')
-                            ->defaultValue('show')
-                            ->info('Change the default route used to generate the link to the object')
-                        ->end()
-                    ->end()
-                ->end()
 
                 ->scalarNode('default_controller')
-                    ->defaultValue('sonata.admin.controller.crud')
+                    ->defaultValue('sensiolabs.admin.controller.crud')
                     ->cannotBeEmpty()
                     ->info('Name of the controller class to be used as a default in admin definitions')
                 ->end()
@@ -289,26 +260,7 @@ final class Configuration implements ConfigurationInterface
                         ->booleanNode('sort_admins')->defaultFalse()->info('Auto order groups and admins by label or id')->end()
                         ->booleanNode('confirm_exit')->defaultTrue()->end()
                         ->booleanNode('js_debug')->defaultFalse()->end()
-                        ->enumNode('skin')
-                            ->defaultValue('skin-black')
-                            ->values([
-                                'skin-black',
-                                'skin-black-light',
-                                'skin-blue',
-                                'skin-blue-light',
-                                'skin-green',
-                                'skin-green-light',
-                                'skin-purple',
-                                'skin-purple-light',
-                                'skin-red',
-                                'skin-red-light',
-                                'skin-yellow',
-                                'skin-yellow-light',
-                            ])
-                        ->end()
                         ->booleanNode('use_select2')->defaultTrue()->end()
-                        ->booleanNode('use_icheck')->defaultTrue()->end()
-                        ->booleanNode('use_bootlint')->defaultFalse()->end()
                         ->booleanNode('use_stickyforms')->defaultTrue()->end()
                         ->integerNode('pager_links')->defaultNull()->end()
                         ->enumNode('form_type')
@@ -454,30 +406,6 @@ final class Configuration implements ConfigurationInterface
                                 ->end()
                             ->end()
                         ->end()
-                        ->arrayNode('blocks')
-                            ->defaultValue([[
-                                'position' => 'left',
-                                'settings' => [],
-                                'type' => 'sonata.admin.block.admin_list',
-                                'roles' => [],
-                            ]])
-                            ->prototype('array')
-                                ->fixXmlConfig('setting')
-                                ->children()
-                                    ->scalarNode('type')->cannotBeEmpty()->end()
-                                    ->arrayNode('roles')
-                                        ->defaultValue([])
-                                        ->prototype('scalar')->end()
-                                    ->end()
-                                    ->arrayNode('settings')
-                                        ->useAttributeAsKey('id')
-                                        ->prototype('variable')->defaultValue([])->end()
-                                    ->end()
-                                    ->scalarNode('position')->defaultValue('right')->end()
-                                    ->scalarNode('class')->defaultValue('col-md-4')->end()
-                                ->end()
-                            ->end()
-                        ->end()
                     ->end()
                 ->end()
                 ->arrayNode('default_admin_services')
@@ -509,7 +437,6 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('layout')->defaultValue('@SensioLabsAdmin/standard_layout.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('ajax')->defaultValue('@SensioLabsAdmin/ajax_layout.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('dashboard')->defaultValue('@SensioLabsAdmin/Core/dashboard.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('search')->defaultValue('@SensioLabsAdmin/Core/search.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('list')->defaultValue('@SensioLabsAdmin/CRUD/list.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('filter')->defaultValue('@SensioLabsAdmin/Form/filter_admin_fields.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('show')->defaultValue('@SensioLabsAdmin/CRUD/show.html.twig')->cannotBeEmpty()->end()
@@ -521,8 +448,6 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('history_revision_timestamp')->defaultValue('@SensioLabsAdmin/CRUD/history_revision_timestamp.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('action')->defaultValue('@SensioLabsAdmin/CRUD/action.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('select')->defaultValue('@SensioLabsAdmin/CRUD/list__select.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('list_block')->defaultValue('@SensioLabsAdmin/Block/block_admin_list.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('search_result_block')->defaultValue('@SensioLabsAdmin/Block/block_search_result.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('short_object_description')->defaultValue('@SensioLabsAdmin/Helper/short-object-description.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('delete')->defaultValue('@SensioLabsAdmin/CRUD/delete.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('batch')->defaultValue('@SensioLabsAdmin/CRUD/list__batch.html.twig')->cannotBeEmpty()->end()
@@ -535,7 +460,6 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('pager_links')->defaultValue('@SensioLabsAdmin/Pager/links.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('pager_results')->defaultValue('@SensioLabsAdmin/Pager/results.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('tab_menu_template')->defaultValue('@SensioLabsAdmin/Core/tab_menu_template.html.twig')->cannotBeEmpty()->end()
-                        ->scalarNode('knp_menu_template')->defaultValue('@SensioLabsAdmin/Menu/sonata_menu.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('action_create')->defaultValue('@SensioLabsAdmin/CRUD/dashboard__action_create.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('button_acl')->defaultValue('@SensioLabsAdmin/Button/acl_button.html.twig')->cannotBeEmpty()->end()
                         ->scalarNode('button_create')->defaultValue('@SensioLabsAdmin/Button/create_button.html.twig')->cannotBeEmpty()->end()
@@ -565,10 +489,7 @@ final class Configuration implements ConfigurationInterface
                                     ->scalarNode('package_name')->defaultValue(self::DEFAULT_PACKAGE)->end()
                                 ->end()
                             ->end()
-                            ->defaultValue(self::normalizeDefaultAssets([
-                                'bundles/sonataadmin/app.css',
-                                'bundles/sonataform/app.css',
-                            ]))
+                            ->defaultValue([])
                         ->end()
                         ->arrayNode('extra_stylesheets')
                             ->info('stylesheets to add to the page')
@@ -600,10 +521,7 @@ final class Configuration implements ConfigurationInterface
                             ->beforeNormalization()
                                 ->always(static fn (array $value) => self::normalizeAssetList($value, 'javascripts'))
                             ->end()
-                            ->defaultValue(self::normalizeDefaultAssets([
-                                'bundles/sonataadmin/app.js',
-                                'bundles/sonataform/app.js',
-                            ]))
+                            ->defaultValue([])
                             ->arrayPrototype()
                                 ->children()
                                     ->scalarNode('path')->isRequired()->cannotBeEmpty()->end()
@@ -690,7 +608,7 @@ final class Configuration implements ConfigurationInterface
                 ->end()
 
                 ->scalarNode('persist_filters')->defaultFalse()->end()
-                ->scalarNode('filter_persister')->defaultValue('sonata.admin.filter_persister.session')->end()
+                ->scalarNode('filter_persister')->defaultValue('sensiolabs.admin.filter_persister.session')->end()
 
                 ->booleanNode('show_mosaic_button')
                     ->defaultTrue()

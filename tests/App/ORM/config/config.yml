@@ -1,0 +1,43 @@
+framework:
+    assets:
+        enabled: true
+    form:
+        enabled: true
+    secret: secret
+    http_method_override: false
+    test: true
+    translator:
+        enabled: true
+    session:
+        storage_factory_id: session.storage.factory.mock_file
+    router:
+        utf8: true
+
+security:
+    firewalls:
+        main:
+            lazy: true
+
+twig:
+    strict_variables: true
+
+parameters:
+    env(DATABASE_URL): 'sqlite:////%app.base_dir%database.db'
+
+doctrine:
+    dbal:
+        url: "%env(resolve:DATABASE_URL)%"
+    orm:
+        auto_mapping: true
+        validate_xml_mapping: true
+        mappings:
+            SensioLabsORMTest:
+                type: attribute
+                dir: "%kernel.project_dir%/Entity"
+                is_bundle: false
+                prefix: SensioLabs\AdminBundle\Tests\App\ORM\Entity
+
+sensiolabs_admin:
+    options:
+        html5_validate: false
+        use_stickyforms: false

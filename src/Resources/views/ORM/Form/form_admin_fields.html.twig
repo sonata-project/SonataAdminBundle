@@ -1,0 +1,80 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends '@SensioLabsAdmin/Form/form_admin_fields.html.twig' %}
+
+
+{# Custom Sonata Admin Extension #}
+{% block sensiolabs_admin_orm_one_to_one_widget %}
+    {% include '@SensioLabsAdmin/CRUD/Association/edit_one_to_one.html.twig' %}
+{% endblock %}
+
+{% block sensiolabs_admin_orm_many_to_many_widget %}
+    {% include '@SensioLabsAdmin/CRUD/Association/edit_many_to_many.html.twig' %}
+{% endblock %}
+
+{% block sensiolabs_admin_orm_many_to_one_widget %}
+    {% include '@SensioLabsAdmin/CRUD/Association/edit_many_to_one.html.twig' %}
+{% endblock %}
+
+{% block sensiolabs_admin_orm_one_to_many_widget %}
+    {% include '@SensioLabsAdmin/CRUD/Association/edit_one_to_many.html.twig' %}
+{% endblock %}
+
+{% block sensiolabs_type_model_widget %}
+    {#
+        This is not the best way to do if
+        TODO : improve this part
+    #}
+
+    {#model {{ sensiolabs_admin.field_description.mappingtype }}#}
+
+    {% if sensiolabs_admin.field_description is empty %}
+        {{ block('choice_widget') }}
+    {% elseif sensiolabs_admin.field_description.mappingtype == constant('Doctrine\\ORM\\Mapping\\ClassMetadata::ONE_TO_ONE') %}
+        {{ block('sensiolabs_admin_orm_one_to_one_widget') }}
+    {% elseif sensiolabs_admin.field_description.mappingtype == constant('Doctrine\\ORM\\Mapping\\ClassMetadata::MANY_TO_ONE') %}
+        {{ block('sensiolabs_admin_orm_many_to_one_widget') }}
+    {% elseif sensiolabs_admin.field_description.mappingtype == constant('Doctrine\\ORM\\Mapping\\ClassMetadata::MANY_TO_MANY') %}
+        {{ block('sensiolabs_admin_orm_many_to_many_widget') }}
+    {% elseif sensiolabs_admin.field_description.mappingtype == constant('Doctrine\\ORM\\Mapping\\ClassMetadata::ONE_TO_MANY') %}
+        {{ block('sensiolabs_admin_orm_one_to_many_widget') }}
+    {% else %}
+        {#INVALID MODE : {{ id }}#}
+        {{ block('choice_widget') }}
+    {% endif %}
+{% endblock %}
+
+{% block sensiolabs_type_admin_widget %}
+    {#admin {{ sensiolabs_admin.field_description.mappingtype }}#}
+    {% if sensiolabs_admin.field_description.mappingtype == constant('Doctrine\\ORM\\Mapping\\ClassMetadata::ONE_TO_ONE') %}
+        {{ block('sensiolabs_admin_orm_one_to_one_widget') }}
+    {% elseif sensiolabs_admin.field_description.mappingtype == constant('Doctrine\\ORM\\Mapping\\ClassMetadata::MANY_TO_ONE') %}
+        {{ block('sensiolabs_admin_orm_many_to_one_widget') }}
+    {% elseif sensiolabs_admin.field_description.mappingtype == constant('Doctrine\\ORM\\Mapping\\ClassMetadata::MANY_TO_MANY') %}
+        {{ block('sensiolabs_admin_orm_many_to_many_widget') }}
+    {% elseif sensiolabs_admin.field_description.mappingtype == constant('Doctrine\\ORM\\Mapping\\ClassMetadata::ONE_TO_MANY') %}
+        {{ block('sensiolabs_admin_orm_one_to_many_widget') }}
+    {% else %}
+        INVALID MODE : {{ id }}
+    {% endif %}
+{% endblock %}
+
+{% block sensiolabs_type_collection_widget %}
+    {% if sensiolabs_admin.field_description.mappingtype == constant('Doctrine\\ORM\\Mapping\\ClassMetadata::ONE_TO_MANY') %}
+        {{ block('sensiolabs_admin_orm_one_to_many_widget') }}
+    {% elseif sensiolabs_admin.field_description.mappingtype == constant('Doctrine\\ORM\\Mapping\\ClassMetadata::MANY_TO_MANY') %}
+        {{ block('sensiolabs_admin_orm_many_to_many_widget') }}
+    {% else %}
+        INVALID MODE : {{ id }} - type : CollectionType - mapping : {{ sensiolabs_admin.field_description.mappingtype }}
+    {% endif %}
+{% endblock %}
+

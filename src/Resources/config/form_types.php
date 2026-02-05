@@ -32,37 +32,37 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
-        ->set('sonata.admin.form.type.admin', AdminType::class)
-            ->tag('form.type', ['alias' => 'sonata_type_admin'])
+        ->set('sensiolabs.admin.form.type.admin', AdminType::class)
+            ->tag('form.type', ['alias' => 'sensiolabs_type_admin'])
             ->args([
-                service('sonata.admin.helper'),
+                service('sensiolabs.admin.helper'),
             ])
 
-        ->set('sonata.admin.form.type.model_choice', ModelType::class)
-            ->tag('form.type', ['alias' => 'sonata_type_model'])
+        ->set('sensiolabs.admin.form.type.model_choice', ModelType::class)
+            ->tag('form.type', ['alias' => 'sensiolabs_type_model'])
             ->args([
                 service('property_accessor'),
             ])
 
-        ->set('sonata.admin.form.type.model_list', ModelListType::class)
-            ->tag('form.type', ['alias' => 'sonata_type_model_list'])
+        ->set('sensiolabs.admin.form.type.model_list', ModelListType::class)
+            ->tag('form.type', ['alias' => 'sensiolabs_type_model_list'])
 
-        ->set('sonata.admin.form.type.model_reference', ModelReferenceType::class)
-            ->tag('form.type', ['alias' => 'sonata_type_model_reference'])
+        ->set('sensiolabs.admin.form.type.model_reference', ModelReferenceType::class)
+            ->tag('form.type', ['alias' => 'sensiolabs_type_model_reference'])
 
-        ->set('sonata.admin.form.type.model_hidden', ModelHiddenType::class)
-            ->tag('form.type', ['alias' => 'sonata_type_model_hidden'])
+        ->set('sensiolabs.admin.form.type.model_hidden', ModelHiddenType::class)
+            ->tag('form.type', ['alias' => 'sensiolabs_type_model_hidden'])
 
-        ->set('sonata.admin.form.type.model_autocomplete', ModelAutocompleteType::class)
-            ->tag('form.type', ['alias' => 'sonata_type_model_autocomplete'])
+        ->set('sensiolabs.admin.form.type.model_autocomplete', ModelAutocompleteType::class)
+            ->tag('form.type', ['alias' => 'sensiolabs_type_model_autocomplete'])
 
-        ->set('sonata.admin.form.type.collection', CollectionType::class)
-            ->tag('form.type', ['alias' => 'sonata_type_native_collection'])
+        ->set('sensiolabs.admin.form.type.collection', CollectionType::class)
+            ->tag('form.type', ['alias' => 'sensiolabs_type_native_collection'])
 
-        ->set('sonata.admin.doctrine_orm.form.type.choice_field_mask', ChoiceFieldMaskType::class)
-            ->tag('form.type', ['alias' => 'sonata_type_choice_field_mask'])
+        ->set('sensiolabs.admin.doctrine_orm.form.type.choice_field_mask', ChoiceFieldMaskType::class)
+            ->tag('form.type', ['alias' => 'sensiolabs_type_choice_field_mask'])
 
-        ->set('sonata.admin.form.extension.field', FormTypeFieldExtension::class)
+        ->set('sensiolabs.admin.form.extension.field', FormTypeFieldExtension::class)
             ->tag('form.type_extension', [
                 'alias' => 'form',
                 'extended_type' => FormType::class,
@@ -72,26 +72,26 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 abstract_arg('default options'),
             ])
 
-        ->set('sonata.admin.form.extension.field.mopa', MopaCompatibilityTypeFieldExtension::class)
+        ->set('sensiolabs.admin.form.extension.field.mopa', MopaCompatibilityTypeFieldExtension::class)
             ->tag('form.type_extension', [
                 'alias' => 'form',
                 'extended_type' => FormType::class,
             ])
 
-        ->set('sonata.admin.form.extension.choice', ChoiceTypeExtension::class)
+        ->set('sensiolabs.admin.form.extension.choice', ChoiceTypeExtension::class)
             ->tag('form.type_extension', [
                 'alias' => 'choice',
                 'extended_type' => SymfonyChoiceType::class,
             ])
 
-        ->set('sonata.admin.form.data_transformer.boolean_to_string', BooleanToStringTransformer::class)
+        ->set('sensiolabs.admin.form.data_transformer.boolean_to_string', BooleanToStringTransformer::class)
             ->args([
                 1,
             ])
 
-        ->set('sonata.admin.form.data_transformer_resolver', DataTransformerResolver::class)
+        ->set('sensiolabs.admin.form.data_transformer_resolver', DataTransformerResolver::class)
             ->call('addCustomGlobalTransformer', [
                 'boolean',
-                service('sonata.admin.form.data_transformer.boolean_to_string'),
+                service('sensiolabs.admin.form.data_transformer.boolean_to_string'),
             ]);
 };

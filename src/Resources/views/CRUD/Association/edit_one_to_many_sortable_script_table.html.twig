@@ -9,32 +9,67 @@ file that was distributed with this source code.
 
 #}
 <script type="text/javascript">
-    jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody').first().sortable({
-        axis: 'y',
-        opacity: 0.6,
-        items: '> tr',
-        stop: apply_position_value_{{ id }}
-    });
+(function() {
+    var container = document.querySelector('div#field_container_{{ id }} tbody.sonata-ba-tbody');
+
+    if (!container) return;
+
+    // Check if Sortable is available
+    if (typeof Sortable !== 'undefined') {
+        var sortable = Sortable.create(container, {
+            animation: 150,
+            handle: '.sonata-ba-sortable-handler',
+            draggable: '> tr',
+            ghostClass: 'opacity-50',
+            onEnd: apply_position_value_{{ id }}
+        });
+    } else {
+        console.warn('SortableJS not available. Drag-and-drop sorting will not work.');
+    }
 
     function apply_position_value_{{ id }}() {
-        // update the input value position
-        jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ id }}-{{ sonata_admin.field_description.option('sortable') }}').each(function(index, element) {
-            // remove the sortable handler and put it back
-            jQuery('span.sonata-ba-sortable-handler', element).remove();
-            jQuery(element).append('<span class="sonata-ba-sortable-handler"><i class="fas fa-grip-lines"></i></span>');
-            jQuery('input', element).hide();
+        // Update the input value position
+        var cells = document.querySelectorAll('div#field_container_{{ id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ id }}-{{ sensiolabs_admin.field_description.option('sortable') }}');
+
+        cells.forEach(function(element, index) {
+            // Remove the sortable handler and put it back
+            var handler = element.querySelector('.sonata-ba-sortable-handler');
+            if (handler) {
+                handler.remove();
+            }
+
+            var newHandler = document.createElement('span');
+            newHandler.className = 'sonata-ba-sortable-handler cursor-move';
+            newHandler.innerHTML = '{{ ux_icon('lucide:grip-horizontal', {class: 'w-4 h-4'})|e('js') }}';
+            element.appendChild(newHandler);
+
+            // Hide the input
+            var input = element.querySelector('input');
+            if (input) {
+                input.style.display = 'none';
+            }
         });
 
-        jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ id }}-{{ sonata_admin.field_description.option('sortable') }} input').each(function(index, value) {
-            jQuery(value).val(index + 1);
+        // Update position values
+        var inputs = document.querySelectorAll('div#field_container_{{ id }} tbody.sonata-ba-tbody td.sonata-ba-td-{{ id }}-{{ sensiolabs_admin.field_description.option('sortable') }} input');
+        inputs.forEach(function(input, index) {
+            input.value = index + 1;
         });
     }
 
-    // refresh the sortable option when a new element is added
-    jQuery('#sonata-ba-field-container-{{ id }}').bind('sonata.add_element', function() {
-        apply_position_value_{{ id }}();
-        jQuery('div#field_container_{{ id }} tbody.sonata-ba-tbody').sortable('refresh');
-    });
+    // Refresh the sortable option when a new element is added
+    var fieldContainer = document.getElementById('sonata-ba-field-container-{{ id }}');
+    if (fieldContainer) {
+        fieldContainer.addEventListener('sensiolabs.add_element', function() {
+            apply_position_value_{{ id }}();
+
+            // Re-initialize sortable if needed
+            if (typeof Sortable !== 'undefined' && sortable) {
+                // Sortable automatically handles new elements
+            }
+        });
+    }
 
     apply_position_value_{{ id }}();
+})();
 </script>

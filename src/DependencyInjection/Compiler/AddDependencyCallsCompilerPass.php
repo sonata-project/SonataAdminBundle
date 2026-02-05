@@ -38,7 +38,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->has('sonata.admin.pool')) {
+        if (!$container->has('sensiolabs.admin.pool')) {
             return;
         }
 
@@ -54,15 +54,15 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $parameterBag = $container->getParameterBag();
         $groupDefaults = $admins = $adminServices = $classes = [];
 
-        $pool = $container->getDefinition('sonata.admin.pool');
-        $defaultController = $container->getParameter('sonata.admin.configuration.default_controller');
+        $pool = $container->getDefinition('sensiolabs.admin.pool');
+        $defaultController = $container->getParameter('sensiolabs.admin.configuration.default_controller');
         \assert(\is_string($defaultController));
 
-        $defaultGroup = $container->getParameter('sonata.admin.configuration.default_group');
+        $defaultGroup = $container->getParameter('sensiolabs.admin.configuration.default_group');
         \assert(\is_string($defaultGroup));
-        $defaultTranslationDomain = $container->getParameter('sonata.admin.configuration.default_translation_domain');
+        $defaultTranslationDomain = $container->getParameter('sensiolabs.admin.configuration.default_translation_domain');
         \assert(\is_string($defaultTranslationDomain));
-        $defaultIcon = $container->getParameter('sonata.admin.configuration.default_icon');
+        $defaultIcon = $container->getParameter('sensiolabs.admin.configuration.default_icon');
         \assert(\is_string($defaultIcon));
 
         $defaultValues = [
@@ -74,7 +74,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
             if (\count($tags) > 1) {
                 throw new \RuntimeException(\sprintf(
-                    'Found multiple sonata.admin tags in service %s. Tagging a service with sonata.admin more than once is not supported. Consider defining multiple services with different sonata.admin tag parameters if this is really needed.',
+                    'Found multiple sensiolabs.admin tags in service %s. Tagging a service with sensiolabs.admin more than once is not supported. Consider defining multiple services with different sensiolabs.admin tag parameters if this is really needed.',
                     $id
                 ));
             }
@@ -93,7 +93,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 if (!isset($attributes['model_class'])) {
                     throw new \RuntimeException(\sprintf(
-                        'The admin service "%s" must define the "model_class" attribute on its "sonata.admin" tag.',
+                        'The admin service "%s" must define the "model_class" attribute on its "sensiolabs.admin" tag.',
                         $id
                     ));
                 }
@@ -177,9 +177,9 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             }
         }
 
-        $dashboardGroupsSettings = $container->getParameter('sonata.admin.configuration.dashboard_groups');
+        $dashboardGroupsSettings = $container->getParameter('sensiolabs.admin.configuration.dashboard_groups');
         \assert(\is_array($dashboardGroupsSettings));
-        $sortAdmins = $container->getParameter('sonata.admin.configuration.sort_admins');
+        $sortAdmins = $container->getParameter('sensiolabs.admin.configuration.sort_admins');
         \assert(\is_bool($sortAdmins));
 
         $sortAdminsByPriority = true;
@@ -305,24 +305,24 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             throw new InvalidArgumentException(\sprintf('Missing tag information "manager_type" on service "%s".', $serviceId));
         }
 
-        $overwriteAdminConfiguration = $container->getParameter('sonata.admin.configuration.default_admin_services');
+        $overwriteAdminConfiguration = $container->getParameter('sensiolabs.admin.configuration.default_admin_services');
         \assert(\is_array($overwriteAdminConfiguration));
 
         $defaultAddServices = [
-            'model_manager' => \sprintf('sonata.admin.manager.%s', $managerType),
-            'data_source' => \sprintf('sonata.admin.data_source.%s', $managerType),
-            'field_description_factory' => \sprintf('sonata.admin.field_description_factory.%s', $managerType),
-            'form_contractor' => \sprintf('sonata.admin.builder.%s_form', $managerType),
-            'show_builder' => \sprintf('sonata.admin.builder.%s_show', $managerType),
-            'list_builder' => \sprintf('sonata.admin.builder.%s_list', $managerType),
-            'datagrid_builder' => \sprintf('sonata.admin.builder.%s_datagrid', $managerType),
+            'model_manager' => \sprintf('sensiolabs.admin.manager.%s', $managerType),
+            'data_source' => \sprintf('sensiolabs.admin.data_source.%s', $managerType),
+            'field_description_factory' => \sprintf('sensiolabs.admin.field_description_factory.%s', $managerType),
+            'form_contractor' => \sprintf('sensiolabs.admin.builder.%s_form', $managerType),
+            'show_builder' => \sprintf('sensiolabs.admin.builder.%s_show', $managerType),
+            'list_builder' => \sprintf('sensiolabs.admin.builder.%s_list', $managerType),
+            'datagrid_builder' => \sprintf('sensiolabs.admin.builder.%s_datagrid', $managerType),
             'translator' => 'translator',
-            'configuration_pool' => 'sonata.admin.pool',
-            'route_generator' => 'sonata.admin.route.default_generator',
-            'security_handler' => 'sonata.admin.security.handler',
+            'configuration_pool' => 'sensiolabs.admin.pool',
+            'route_generator' => 'sensiolabs.admin.route.default_generator',
+            'security_handler' => 'sensiolabs.admin.security.handler',
             'menu_factory' => 'knp_menu.factory',
-            'route_builder' => 'sonata.admin.route.path_info',
-            'label_translator_strategy' => 'sonata.admin.label.strategy.native',
+            'route_builder' => 'sensiolabs.admin.route.path_info',
+            'label_translator_strategy' => 'sensiolabs.admin.label.strategy.native',
         ];
 
         $methodCalls[] = ['setManagerType', [$managerType]];
@@ -341,7 +341,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $methodCalls[] = [$method, $args];
         }
 
-        $defaultController = $container->getParameter('sonata.admin.configuration.default_controller');
+        $defaultController = $container->getParameter('sensiolabs.admin.configuration.default_controller');
         \assert(\is_string($defaultController));
 
         $modelClass = $attributes['model_class'];
@@ -359,17 +359,17 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $label = $attributes['label'] ?? null;
         $methodCalls[] = ['setLabel', [$label]];
 
-        $defaultTranslationDomain = $container->getParameter('sonata.admin.configuration.default_translation_domain');
+        $defaultTranslationDomain = $container->getParameter('sensiolabs.admin.configuration.default_translation_domain');
         \assert(\is_string($defaultTranslationDomain));
 
         $translationDomain = $attributes['translation_domain'] ?? $defaultTranslationDomain;
         $methodCalls[] = ['setTranslationDomain', [$translationDomain]];
 
         $persistFilters = $attributes['persist_filters']
-            ?? $container->getParameter('sonata.admin.configuration.filters.persist');
+            ?? $container->getParameter('sensiolabs.admin.configuration.filters.persist');
         \assert(\is_bool($persistFilters));
         $filtersPersister = $attributes['filter_persister']
-            ?? $container->getParameter('sonata.admin.configuration.filters.persister');
+            ?? $container->getParameter('sensiolabs.admin.configuration.filters.persister');
         \assert(\is_string($filtersPersister));
 
         // configure filters persistence, if configured to
@@ -378,7 +378,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         }
 
         $showMosaicButton = $attributes['show_mosaic_button']
-            ?? $container->getParameter('sonata.admin.configuration.show.mosaic.button');
+            ?? $container->getParameter('sensiolabs.admin.configuration.show.mosaic.button');
         \assert(\is_bool($showMosaicButton));
 
         $listModes = TaggedAdminInterface::DEFAULT_LIST_MODES;
@@ -387,11 +387,11 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         }
         $methodCalls[] = ['setListModes', [$listModes]];
 
-        if ($container->hasParameter('sonata.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
-            $methodCalls[] = ['setSecurityInformation', ['%sonata.admin.configuration.security.information%']];
+        if ($container->hasParameter('sensiolabs.admin.configuration.security.information') && !$definition->hasMethodCall('setSecurityInformation')) {
+            $methodCalls[] = ['setSecurityInformation', ['%sensiolabs.admin.configuration.security.information%']];
         }
 
-        $defaultTemplates = $container->getParameter('sonata.admin.configuration.templates');
+        $defaultTemplates = $container->getParameter('sensiolabs.admin.configuration.templates');
         \assert(\is_array($defaultTemplates));
 
         if (!$definition->hasMethodCall('setFormTheme')) {
@@ -411,7 +411,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         ContainerBuilder $container,
         Definition $definition,
     ): void {
-        $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
+        $definedTemplates = $container->getParameter('sensiolabs.admin.configuration.templates');
         \assert(\is_array($definedTemplates));
 
         $methods = [];
@@ -449,13 +449,13 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $templateRegistryId = \sprintf('%s.template_registry', $serviceId);
         $templateRegistryDefinition = $container
             ->register($templateRegistryId, MutableTemplateRegistry::class)
-            ->addTag('sonata.admin.template_registry')
+            ->addTag('sensiolabs.admin.template_registry')
             ->setPublic(true); // Temporary fix until we can support service locators
 
-        if ($container->getParameter('sonata.admin.configuration.templates') !== $definedTemplates) {
+        if ($container->getParameter('sensiolabs.admin.configuration.templates') !== $definedTemplates) {
             $templateRegistryDefinition->addArgument($definedTemplates);
         } else {
-            $templateRegistryDefinition->addArgument('%sonata.admin.configuration.templates%');
+            $templateRegistryDefinition->addArgument('%sensiolabs.admin.configuration.templates%');
         }
 
         $definition->addMethodCall('setTemplateRegistry', [new Reference($templateRegistryId)]);

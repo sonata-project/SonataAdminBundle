@@ -60,7 +60,7 @@ final class SensioLabsAdminExtensionTest extends TestCase
 
         $this->container = new Container();
 
-        $this->pool = new Pool($this->container, ['sonata_admin_foo_service'], [], [Foo::class => ['sonata_admin_foo_service']]);
+        $this->pool = new Pool($this->container, ['sensiolabs_admin_foo_service'], [], [Foo::class => ['sensiolabs_admin_foo_service']]);
 
         $this->twigExtension = new SensioLabsAdminExtension(new SensioLabsAdminRuntime($this->pool));
 
@@ -82,7 +82,7 @@ final class SensioLabsAdminExtensionTest extends TestCase
 
         // routing extension
         $phpFileLoader = new PhpFileLoader(new FileLocator([\sprintf('%s/../../../src/Resources/config/routing', __DIR__)]));
-        $routeCollection = $phpFileLoader->load('sonata_admin.php');
+        $routeCollection = $phpFileLoader->load('sensiolabs_admin.php');
 
         $phpFileLoader = new PhpFileLoader(new FileLocator([\sprintf('%s/../../Fixtures/Resources/config/routing', __DIR__)]));
         $testRouteCollection = $phpFileLoader->load('routing.php');
@@ -98,7 +98,7 @@ final class SensioLabsAdminExtensionTest extends TestCase
 
         $this->admin
             ->method('getCode')
-            ->willReturn('sonata_admin_foo_service');
+            ->willReturn('sensiolabs_admin_foo_service');
 
         $this->admin
             ->method('id')
@@ -119,8 +119,8 @@ final class SensioLabsAdminExtensionTest extends TestCase
             ->with(static::equalTo($this->object))
             ->willReturn('12345');
 
-        $this->container->set('sonata_admin_foo_service', $this->admin);
-        $this->container->set('sonata_admin_bar_service', $this->adminBar);
+        $this->container->set('sensiolabs_admin_foo_service', $this->admin);
+        $this->container->set('sensiolabs_admin_bar_service', $this->adminBar);
     }
 
     public function testGetUrlsafeIdentifier(): void
@@ -129,9 +129,9 @@ final class SensioLabsAdminExtensionTest extends TestCase
 
         $pool = new Pool(
             $this->container,
-            ['sonata_admin_foo_service'],
+            ['sensiolabs_admin_foo_service'],
             [],
-            [\stdClass::class => ['sonata_admin_foo_service']]
+            [\stdClass::class => ['sensiolabs_admin_foo_service']]
         );
 
         $this->admin->expects(static::once())
@@ -139,7 +139,7 @@ final class SensioLabsAdminExtensionTest extends TestCase
             ->with(static::equalTo($model))
             ->willReturn('1234567');
 
-        $this->container->set('sonata_admin_foo_service', $this->admin);
+        $this->container->set('sensiolabs_admin_foo_service', $this->admin);
 
         $twigExtension = new SensioLabsAdminExtension(new SensioLabsAdminRuntime($pool));
 
@@ -153,13 +153,13 @@ final class SensioLabsAdminExtensionTest extends TestCase
         $pool = new Pool(
             $this->container,
             [
-                'sonata_admin_foo_service',
-                'sonata_admin_bar_service',
+                'sensiolabs_admin_foo_service',
+                'sensiolabs_admin_bar_service',
             ],
             [],
             [\stdClass::class => [
-                'sonata_admin_foo_service',
-                'sonata_admin_bar_service',
+                'sensiolabs_admin_foo_service',
+                'sensiolabs_admin_bar_service',
             ]]
         );
 
@@ -182,11 +182,11 @@ final class SensioLabsAdminExtensionTest extends TestCase
 
         $pool = new Pool(
             $this->container,
-            ['sonata_admin_foo_service', 'sonata_admin_bar_service'],
+            ['sensiolabs_admin_foo_service', 'sensiolabs_admin_bar_service'],
             [],
             [\stdClass::class => [
-                'sonata_admin_foo_service',
-                'sonata_admin_bar_service',
+                'sensiolabs_admin_foo_service',
+                'sensiolabs_admin_bar_service',
             ]]
         );
 

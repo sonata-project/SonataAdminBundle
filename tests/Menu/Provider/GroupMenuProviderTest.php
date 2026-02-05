@@ -48,7 +48,7 @@ final class GroupMenuProviderTest extends TestCase
     protected function setUp(): void
     {
         $this->container = new Container();
-        $this->pool = new Pool($this->container, ['sonata_admin_foo_service', 'sonata_admin_absolute_url']);
+        $this->pool = new Pool($this->container, ['sensiolabs_admin_foo_service', 'sensiolabs_admin_absolute_url']);
         $this->checker = static::createStub(AuthorizationCheckerInterface::class);
 
         $this->factory = new MenuFactory();
@@ -74,7 +74,7 @@ final class GroupMenuProviderTest extends TestCase
 
     public function testGroupMenuProviderName(): void
     {
-        static::assertTrue($this->provider->has('sonata_group_menu'));
+        static::assertTrue($this->provider->has('sensiolabs_group_menu'));
     }
 
     /**
@@ -83,7 +83,7 @@ final class GroupMenuProviderTest extends TestCase
     #[DataProvider('getAdminGroups')]
     public function testGetMenuProviderWithCheckerGrantedGroupRoles(array $adminGroups): void
     {
-        $this->container->set('sonata_admin_foo_service', $this->getAdminMock());
+        $this->container->set('sensiolabs_admin_foo_service', $this->getAdminMock());
 
         $this->checker
             ->method('isGranted')
@@ -207,7 +207,7 @@ final class GroupMenuProviderTest extends TestCase
     #[DataProvider('getAdminGroups')]
     public function testGetMenuProviderWithAdmin(array $adminGroups): void
     {
-        $this->container->set('sonata_admin_foo_service', $this->getAdminMock());
+        $this->container->set('sensiolabs_admin_foo_service', $this->getAdminMock());
 
         $this->checker
             ->method('isGranted')
@@ -254,7 +254,7 @@ final class GroupMenuProviderTest extends TestCase
     #[DataProvider('getAdminGroups')]
     public function testGetKnpMenuWithListRoute(array $adminGroups): void
     {
-        $this->container->set('sonata_admin_foo_service', $this->getAdminMock(false));
+        $this->container->set('sensiolabs_admin_foo_service', $this->getAdminMock(false));
 
         $this->checker
             ->method('isGranted')
@@ -280,7 +280,7 @@ final class GroupMenuProviderTest extends TestCase
     #[DataProvider('getAdminGroups')]
     public function testGetKnpMenuWithGrantedList(array $adminGroups): void
     {
-        $this->container->set('sonata_admin_foo_service', $this->getAdminMock(true, false));
+        $this->container->set('sensiolabs_admin_foo_service', $this->getAdminMock(true, false));
 
         $this->checker
             ->method('isGranted')
@@ -306,7 +306,7 @@ final class GroupMenuProviderTest extends TestCase
     #[DataProvider('provideGetMenuProviderOnTopOptionsCases')]
     public function testGetMenuProviderOnTopOptions(array $adminGroupsOnTopOption): void
     {
-        $this->container->set('sonata_admin_foo_service', $this->getAdminMock(true, false));
+        $this->container->set('sensiolabs_admin_foo_service', $this->getAdminMock(true, false));
 
         $menu = $this->provider->get(
             'providerFoo',
@@ -326,7 +326,7 @@ final class GroupMenuProviderTest extends TestCase
     #[DataProvider('getAdminGroups')]
     public function testGetMenuProviderKeepOpenOption(array $adminGroups): void
     {
-        $this->container->set('sonata_admin_foo_service', $this->getAdminMock());
+        $this->container->set('sensiolabs_admin_foo_service', $this->getAdminMock());
 
         $this->checker
             ->method('isGranted')
@@ -353,7 +353,7 @@ final class GroupMenuProviderTest extends TestCase
     #[DataProvider('provideRootMenuItemUrlCases')]
     public function testRootMenuItemUrl(string $expectedUrl, array $item): void
     {
-        $this->container->set('sonata_admin_absolute_url', $this->getAdminMock());
+        $this->container->set('sensiolabs_admin_absolute_url', $this->getAdminMock());
 
         $this->checker
             ->method('isGranted')
@@ -385,7 +385,7 @@ final class GroupMenuProviderTest extends TestCase
                 'translation_domain' => 'SensioLabsAdminBundle',
                 'items' => [
                     [
-                        'admin' => 'sonata_admin_foo_service',
+                        'admin' => 'sensiolabs_admin_foo_service',
                         'label' => 'fooLabel',
                         'route' => 'FooServiceRoute',
                         'route_params' => [],
@@ -594,7 +594,7 @@ final class GroupMenuProviderTest extends TestCase
                 'on_top' => true,
                 'items' => [
                     [
-                        'admin' => 'sonata_admin_foo_service',
+                        'admin' => 'sensiolabs_admin_foo_service',
                         'label' => 'fooLabel',
                         'route' => 'fakeRoute',
                         'route_absolute' => true,
@@ -622,7 +622,7 @@ final class GroupMenuProviderTest extends TestCase
                 'on_top' => false,
                 'items' => [
                     [
-                        'admin' => 'sonata_admin_absolute_url',
+                        'admin' => 'sensiolabs_admin_absolute_url',
                         'label' => 'fooLabel',
                         'roles' => ['foo'],
                         'route' => 'FooAbsoulteRoute',
@@ -644,7 +644,7 @@ final class GroupMenuProviderTest extends TestCase
                 'on_top' => false,
                 'items' => [
                     [
-                        'admin' => 'sonata_admin_absolute_url',
+                        'admin' => 'sensiolabs_admin_absolute_url',
                         'label' => 'fooLabel',
                         'roles' => ['foo'],
                         'route' => 'FooAbsolutePath',

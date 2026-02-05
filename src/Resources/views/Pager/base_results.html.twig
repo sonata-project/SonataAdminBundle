@@ -1,33 +1,40 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 
 #}
 
-{% block num_pages %}
-    {{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }}
-    &nbsp;-&nbsp;
-{% endblock %}
+<div class="flex flex-wrap items-center gap-3 text-sm text-gray-500">
+    {% block num_pages %}
+        <span class="font-medium text-gray-700">{{ admin.datagrid.pager.page }} / {{ admin.datagrid.pager.lastpage }}</span>
+        <span class="text-gray-300">|</span>
+    {% endblock %}
 
-{% block num_results %}
-    {% trans with {'%count%': admin.datagrid.pager.countResults()} from 'SonataAdminBundle' %}list_results_count{% endtrans %}
-    &nbsp;-&nbsp;
-{% endblock %}
+    {% block num_results %}
+        <span>{% trans with {'%count%': admin.datagrid.pager.countResults()} from 'SensioLabsAdminBundle' %}list_results_count{% endtrans %}</span>
+        <span class="text-gray-300">|</span>
+    {% endblock %}
 
-{% block max_per_page %}
-    <label class="control-label" for="{{ admin.uniqid }}_per_page">{% trans from 'SonataAdminBundle' %}label_per_page{% endtrans %}</label>
-    <select class="per-page small form-control" id="{{ admin.uniqid }}_per_page" style="width: auto" {{ stimulus_controller('sonata-per-page') }} {{ stimulus_action('sonata-per-page', 'reload', 'change') }}>
-        {% for per_page in admin.getperpageoptions %}
-            <option {% if per_page == admin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ admin.generateUrl(action, {'filter': admin.datagrid.getPaginationParameters(1).filter|merge({
-                (constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::PER_PAGE')): per_page})
-            }) }}">
-                {{- per_page -}}
-            </option>
-        {% endfor %}
-    </select>
-{% endblock %}
+    {% block max_per_page %}
+        <div class="flex items-center gap-2">
+            <label class="text-gray-500" for="{{ admin.uniqid }}_per_page">{% trans from 'SensioLabsAdminBundle' %}label_per_page{% endtrans %}</label>
+            <select class="admin-form-select w-auto py-1.5 text-sm"
+                    id="{{ admin.uniqid }}_per_page"
+                    data-controller="sensiolabs-de--admin-bundle--per-page"
+                    data-action="change->sensiolabs-de--admin-bundle--per-page#reload">
+                {% for per_page in admin.getperpageoptions %}
+                    <option {% if per_page == admin.datagrid.pager.maxperpage %}selected="selected"{% endif %} value="{{ admin.generateUrl(action, {'filter': admin.datagrid.getPaginationParameters(1).filter|merge({
+                        (constant('SensioLabs\\AdminBundle\\Datagrid\\DatagridInterface::PER_PAGE')): per_page})
+                    }) }}">
+                        {{- per_page -}}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    {% endblock %}
+</div>

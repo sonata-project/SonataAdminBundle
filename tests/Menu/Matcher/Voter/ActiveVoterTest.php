@@ -28,7 +28,7 @@ final class ActiveVoterTest extends TestCase
             ->method('getExtra')
             ->with(static::logicalOr(
                 static::equalTo('active'),
-                static::equalTo('sonata_admin')
+                static::equalTo('sensiolabs_admin')
             ))
             ->willReturnCallback(static function (string $name) use ($itemData) {
                 if ('active' === $name) {

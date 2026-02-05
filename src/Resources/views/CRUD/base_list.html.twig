@@ -1,8 +1,8 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
@@ -23,46 +23,42 @@ file that was distributed with this source code.
 {%- endblock -%}
 
 {% block title %}
-    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject)|u.truncate(15, '...') }, 'SonataAdminBundle') : '' }}
+    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject)|u.truncate(15, '...') }, 'SensioLabsAdminBundle') : '' }}
 {% endblock %}
 
 {% block navbar_title %}
-    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject)|u.truncate(100, '...') }, 'SonataAdminBundle') : '' }}
+    {{ admin.isChild and admin.parent.subject ? 'title_edit'|trans({'%name%': admin.parent.toString(admin.parent.subject)|u.truncate(100, '...') }, 'SensioLabsAdminBundle') : '' }}
 {% endblock %}
 
 {# Define the variable out of the block to prevent error if someone is overriding the list_table and not the list_footer #}
 {% set datagrid_has_results = admin.datagrid.results|length > 0 %}
 
 {% block list_table %}
-    <div class="col-xs-12 col-md-12">
+    <div class="w-full">
         {% set batchactions = admin.batchactions %}
         {% if admin.hasRoute('batch') and batchactions|length %}
-            <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST" >
-            <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
+            <form action="{{ admin.generateUrl('batch', {'filter': admin.filterParameters}) }}" method="POST">
+            <input type="hidden" name="_sensiolabs_csrf_token" value="{{ csrf_token }}">
         {% endif %}
 
-        {# Add a margin if no pager to prevent dropdown cropping on window #}
-        <div class="box box-primary"{% if admin.datagrid.pager.lastPage == 1 %} style="margin-bottom: 100px;"{% endif %}>
-            <div class="box-body{% if datagrid_has_results %} table-responsive no-padding{% endif %}">
-                {{ sonata_block_render_event('sonata.admin.list.table.top', { 'admin': admin }) }}
+        <div class="admin-card {% if admin.datagrid.pager.lastPage == 1 %}mb-24{% endif %}">
+            {% block list_header %}{% endblock %}
 
-                {% block list_header %}{% endblock %}
-
+            <div class="{% if datagrid_has_results %}admin-table-wrapper{% else %}admin-card-body{% endif %}">
                 {% if datagrid_has_results %}
                     {% block table %}
-                        <table class="table table-bordered table-striped table-hover sonata-ba-list">
+                        <table class="admin-table">
                         {% block table_header %}
-                            <thead>
-                                <tr class="sonata-ba-list-field-header">
+                            <thead class="admin-table-header">
+                                <tr>
                                     {% for field_description in admin.list.getElements() %}
-                                        {% if admin.hasRoute('batch') and field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH') and batchactions|length > 0 %}
-                                            <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
-                                              <input type="checkbox" id="list_batch_checkbox">
+                                        {% if admin.hasRoute('batch') and field_description.name == constant('SensioLabs\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH') and batchactions|length > 0 %}
+                                            <th class="admin-table-header-cell w-12">
+                                              <input type="checkbox" id="list_batch_checkbox" class="admin-form-checkbox">
                                             </th>
-                                        {% elseif field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_SELECT') %}
-                                            <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
-                                        {% elseif field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS') and app.request.isXmlHttpRequest %}
-                                            {# NEXT_MAJOR: Remove this case in version 5 and recommend using the option `ajax_hidden` instead. #}
+                                        {% elseif field_description.name == constant('SensioLabs\\AdminBundle\\Datagrid\\ListMapper::NAME_SELECT') %}
+                                            <th class="admin-table-header-cell w-12"></th>
+                                        {% elseif field_description.name == constant('SensioLabs\\AdminBundle\\Datagrid\\ListMapper::NAME_ACTIONS') and app.request.isXmlHttpRequest %}
                                             {# Action buttons disabled in ajax view! #}
                                         {% elseif field_description.getOption('ajax_hidden') == true and app.request.isXmlHttpRequest %}
                                             {# Disable fields with 'ajax_hidden' option set to true #}
@@ -71,19 +67,18 @@ file that was distributed with this source code.
                                             {% if field_description.option('sortable', false) %}
                                                 {% set sortable             = true %}
                                                 {% set sort_parameters      = admin.datagrid.sortparameters(field_description) %}
-                                                {% set current              = admin.datagrid.values[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')] is defined
-                                                    and (admin.datagrid.values[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')] == field_description
-                                                        or admin.datagrid.values[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')].name == sort_parameters.filter[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')]) %}
-                                                {% set sort_active_class    = current ? 'sonata-ba-list-field-order-active' : '' %}
-                                                {% set sort_by              = current ? admin.datagrid.values[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_ORDER')] : field_description.option(constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_ORDER'), sort_parameters.filter[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::SORT_ORDER')]) %}
+                                                {% set current              = admin.datagrid.values[constant('SensioLabs\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')] is defined
+                                                    and (admin.datagrid.values[constant('SensioLabs\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')] == field_description
+                                                        or admin.datagrid.values[constant('SensioLabs\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')].name == sort_parameters.filter[constant('SensioLabs\\AdminBundle\\Datagrid\\DatagridInterface::SORT_BY')]) %}
+                                                {% set sort_by              = current ? admin.datagrid.values[constant('SensioLabs\\AdminBundle\\Datagrid\\DatagridInterface::SORT_ORDER')] : field_description.option(constant('SensioLabs\\AdminBundle\\Datagrid\\DatagridInterface::SORT_ORDER'), sort_parameters.filter[constant('SensioLabs\\AdminBundle\\Datagrid\\DatagridInterface::SORT_ORDER')]) %}
                                             {% endif %}
 
-                                            <th class="sonata-ba-list-field-header-{{ field_description.type }}{% if sortable %} sonata-ba-list-field-header-order-{{ sort_by|lower }} {{ sort_active_class }}{% endif %}{% if field_description.option('header_class') %} {{ field_description.option('header_class') }}{% endif %}"{% if field_description.option('header_style') %} style="{{ field_description.option('header_style') }}"{% endif %}>
+                                            <th class="admin-table-header-cell{% if sortable %} admin-table-header-cell-sortable{% endif %}{% if current|default(false) %} admin-table-header-cell-sorted{% endif %}{% if field_description.option('header_class') %} {{ field_description.option('header_class') }}{% endif %}"{% if field_description.option('header_style') %} style="{{ field_description.option('header_style') }}"{% endif %}>
                                                 {% if sortable %}
-                                                    <a href="{{ admin.generateUrl(action|default('list'), sort_parameters|merge({_list_mode: admin.getListMode()})) }}">
+                                                    <a href="{{ admin.generateUrl(action|default('list'), sort_parameters|merge({_list_mode: admin.getListMode()})) }}" class="flex items-center gap-2 hover:text-gray-900">
                                                 {% endif %}
                                                 {% if field_description.getOption('label_icon') %}
-                                                    <span class="sonata-ba-list-field-header-label-icon">
+                                                    <span class="w-4 h-4 opacity-60">
                                                         {{ field_description.getOption('label_icon')|parse_icon }}
                                                     </span>
                                                 {% endif %}
@@ -94,7 +89,16 @@ file that was distributed with this source code.
                                                         {{ field_description.label|trans({}, field_description.translationDomain) }}
                                                     {% endif %}
                                                 {% endif %}
-                                                {% if sortable %}</a>{% endif %}
+                                                {% if sortable %}
+                                                    {% if current %}
+                                                        {% if sort_by|lower == 'asc' %}
+                                                            {{ ux_icon('lucide:chevron-up', {class: 'w-4 h-4 text-primary-500'}) }}
+                                                        {% else %}
+                                                            {{ ux_icon('lucide:chevron-down', {class: 'w-4 h-4 text-primary-500'}) }}
+                                                        {% endif %}
+                                                    {% endif %}
+                                                    </a>
+                                                {% endif %}
                                             </th>
                                         {% endif %}
                                     {% endfor %}
@@ -103,7 +107,7 @@ file that was distributed with this source code.
                         {% endblock %}
 
                         {% block table_body %}
-                            <tbody>
+                            <tbody class="admin-table-body">
                                 {% include get_admin_template('outer_list_rows_' ~ admin.getListMode(), admin.code) %}
                             </tbody>
                         {% endblock %}
@@ -114,120 +118,111 @@ file that was distributed with this source code.
                     {% endblock %}
                 {% else %}
                     {% block no_result_content %}
-                        <div class="info-box">
-                            <span class="info-box-icon bg-aqua"><i class="fas fa-arrow-circle-right" aria-hidden="true"></i></span>
-                            <div class="info-box-content">
-                                <span class="info-box-text">{{ 'no_result'|trans({}, 'SonataAdminBundle') }}</span>
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: 0%"></div>
-                                </div>
-                                <div class="progress-description">
-                                    <ul class="list-unstyled">
-                                        {%- if admin.datagrid.pager.countResults() > 0 -%}
-                                            <li>
-                                                <a href="{{ admin.generateUrl(action|default('list'), admin.datagrid.getPaginationParameters(1)) }}">
-                                                    {{- 'go_to_the_first_page'|trans({}, 'SonataAdminBundle') -}}
-                                                </a>
-                                            </li>
-                                        {%- elseif not app.request.xmlHttpRequest -%}
-                                            {%- include get_admin_template('button_create', admin.code) -%}
-                                        {%- endif -%}
-                                    </ul>
-                                </div>
-                            </div><!-- /.info-box-content -->
+                        <div class="admin-empty-state">
+                            <div class="admin-empty-state-icon">
+                                {{ ux_icon('lucide:inbox', {class: 'w-16 h-16'}) }}
+                            </div>
+                            <h3 class="admin-empty-state-title">{{ 'no_result'|trans({}, 'SensioLabsAdminBundle') }}</h3>
+                            <p class="admin-empty-state-description">
+                                {% trans from 'SensioLabsAdminBundle' %}no_results_found_message{% endtrans %}
+                            </p>
+                            <div class="mt-4">
+                                {%- if admin.datagrid.pager.countResults() > 0 -%}
+                                    <a href="{{ admin.generateUrl(action|default('list'), admin.datagrid.getPaginationParameters(1)) }}" class="admin-btn-outline-primary">
+                                        {{ ux_icon('lucide:arrow-left', {class: 'w-4 h-4'}) }}
+                                        {{- 'go_to_the_first_page'|trans({}, 'SensioLabsAdminBundle') -}}
+                                    </a>
+                                {%- elseif not app.request.xmlHttpRequest -%}
+                                    {%- include get_admin_template('button_create', admin.code) -%}
+                                {%- endif -%}
+                            </div>
                         </div>
                     {% endblock %}
                 {% endif %}
 
-                {{ sonata_block_render_event('sonata.admin.list.table.bottom', { 'admin': admin }) }}
             </div>
             {% block list_footer %}
                 {% if datagrid_has_results %}
-                    <div class="box-footer">
-                        <div class="form-inline clearfix">
+                    <div class="admin-card-footer">
+                        <div class="flex flex-wrap items-center justify-between gap-4">
                             {% if not app.request.isXmlHttpRequest %}
-                                <div class="pull-left">
+                                <div class="flex flex-wrap items-center gap-4">
                                     {% if admin.hasRoute('batch') and batchactions|length > 0 %}
                                         {% block batch %}
                                             <script>
                                                 {% block batch_javascript %}
-                                                    jQuery(document).ready(function ($) {
-                                                        // Toggle individual checkboxes when the batch checkbox is changed
-                                                        $('#list_batch_checkbox').on('ifChanged change', function () {
-                                                            var checkboxes = $(this)
-                                                                .closest('table')
-                                                                .find('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
-                                                            ;
+                                                    document.addEventListener('DOMContentLoaded', function() {
+                                                        const batchCheckbox = document.getElementById('list_batch_checkbox');
+                                                        if (batchCheckbox) {
+                                                            batchCheckbox.addEventListener('change', function() {
+                                                                const checkboxes = this.closest('table').querySelectorAll('td.sensiolabs-ba-list-field-batch input[type="checkbox"], div.sensiolabs-ba-list-field-batch input[type="checkbox"]');
+                                                                checkboxes.forEach(function(cb) {
+                                                                    cb.checked = batchCheckbox.checked;
+                                                                    cb.closest('tr, div.sensiolabs-ba-list-field-batch')?.classList.toggle('bg-primary-50', batchCheckbox.checked);
+                                                                });
+                                                            });
+                                                        }
 
-                                                            if (Admin.get_config('USE_ICHECK')) {
-                                                                checkboxes.iCheck($(this).is(':checked') ? 'check' : 'uncheck');
-                                                            } else {
-                                                                checkboxes.prop('checked', this.checked);
-                                                            }
+                                                        document.querySelectorAll('td.sensiolabs-ba-list-field-batch input[type="checkbox"], div.sensiolabs-ba-list-field-batch input[type="checkbox"]').forEach(function(cb) {
+                                                            cb.addEventListener('change', function() {
+                                                                this.closest('tr, div.sensiolabs-ba-list-field-batch')?.classList.toggle('bg-primary-50', this.checked);
+                                                            });
                                                         });
-
-                                                        // Add a CSS class to rows when they are selected
-                                                        $('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
-                                                            .on('ifChanged change', function () {
-                                                                $(this)
-                                                                    .closest('tr, div.sonata-ba-list-field-batch')
-                                                                    .toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'))
-                                                                ;
-                                                            })
-                                                            .trigger('ifChanged')
-                                                        ;
                                                     });
                                                 {% endblock %}
                                             </script>
 
                                         {% block batch_actions %}
-                                            <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
-                                                <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements">
-                                                {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
-                                                ({{ admin.datagrid.pager.countResults() }})
-                                            </label>
+                                            <div class="admin-batch-actions">
+                                                <label class="admin-batch-select-all" for="{{ admin.uniqid }}_all_elements">
+                                                    <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements" class="admin-form-checkbox">
+                                                    <span class="admin-batch-select-all-label">{{ 'all_elements'|trans({}, 'SensioLabsAdminBundle') }}</span>
+                                                    <span class="admin-batch-select-all-count">{{ admin.datagrid.pager.countResults() }}</span>
+                                                </label>
 
-                                            <select name="action" style="width: auto; height: auto" class="form-control">
-                                                {% for action, options in batchactions %}
-                                                    <option value="{{ action }}">
-                                                        {% if options.translation_domain is defined and options.translation_domain is same as(false) %}
-                                                            {{ options.label }}
-                                                        {% else %}
-                                                            {{ options.label|trans({}, options.translation_domain ?? admin.translationDomain) }}
-                                                        {% endif %}
-                                                    </option>
-                                                {% endfor %}
-                                            </select>
+                                                <div class="admin-batch-action-select">
+                                                    <select name="action" class="admin-batch-dropdown">
+                                                        {% for action, options in batchactions %}
+                                                            <option value="{{ action }}">
+                                                                {% if options.translation_domain is defined and options.translation_domain is same as(false) %}
+                                                                    {{ options.label }}
+                                                                {% else %}
+                                                                    {{ options.label|trans({}, options.translation_domain ?? admin.translationDomain) }}
+                                                                {% endif %}
+                                                            </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+
+                                                <button type="submit" class="admin-batch-submit">
+                                                    {{ ux_icon('lucide:play', {class: 'w-4 h-4'}) }}
+                                                    {{ 'btn_batch'|trans({}, 'SensioLabsAdminBundle') }}
+                                                </button>
+                                            </div>
                                         {% endblock %}
-
-                                            <input type="submit" class="btn btn-small btn-primary" value="{{ 'btn_batch'|trans({}, 'SonataAdminBundle') }}">
                                         {% endblock %}
                                     {% endif %}
                                 </div>
 
-                                <div class="pull-right">
+                                <div class="flex flex-wrap items-center gap-3">
                                     {% if admin.hasRoute('export') and admin.hasAccess('export') and export_formats|length %}
-                                        <div class="btn-group">
-                                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                                <i class="fas fa-share-square" aria-hidden="true"></i>
-                                                {{ "label_export_download"|trans({}, "SonataAdminBundle") }}
-                                                <span class="caret"></span>
+                                        <div class="admin-dropdown" data-controller="sensiolabs-de--admin-bundle--dropdown">
+                                            <button type="button" data-action="click->sensiolabs-de--admin-bundle--dropdown#toggle" data-sensiolabs-de--admin-bundle--dropdown-target="button" class="admin-export-btn">
+                                                {{ ux_icon('lucide:download', {class: 'w-4 h-4'}) }}
+                                                <span>{{ "label_export_download"|trans({}, "SensioLabsAdminBundle") }}</span>
+                                                {{ ux_icon('lucide:chevron-down', {class: 'w-3.5 h-3.5 opacity-50'}) }}
                                             </button>
-                                            <ul class="dropdown-menu">
-                                                {% for format in export_formats %}
-                                                <li>
-                                                    <a href="{{ admin.generateUrl('export', admin.datagrid.paginationparameters(0) + {'format' : format}) }}">
-                                                        <i class="fas fa-arrow-circle-o-down" aria-hidden="true"></i>
-                                                        {{ ("export_format_" ~ format)|trans({}, 'SonataAdminBundle') }}
-                                                    </a>
-                                                </li>
-                                                {% endfor %}
-                                            </ul>
+                                            <div class="admin-dropdown-menu hidden" data-sensiolabs-de--admin-bundle--dropdown-target="menu">
+                                                <div class="admin-dropdown-menu-body">
+                                                    {% for format in export_formats %}
+                                                        <a href="{{ admin.generateUrl('export', admin.datagrid.paginationparameters(0) + {'format' : format}) }}" class="admin-dropdown-item">
+                                                            {{ ux_icon('lucide:file-down', {class: 'w-4 h-4 text-gray-400'}) }}
+                                                            {{ ("export_format_" ~ format)|trans({}, 'SensioLabsAdminBundle') }}
+                                                        </a>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
                                         </div>
-
-                                        {% if block('pager_results') is not empty %}
-                                            &nbsp;-&nbsp;
-                                        {% endif %}
                                     {% endif %}
 
                                     {% block pager_results %}
@@ -239,8 +234,9 @@ file that was distributed with this source code.
 
                         {% block pager_links %}
                             {% if admin.datagrid.pager.haveToPaginate() %}
-                                <hr/>
-                                {% include get_admin_template('pager_links', admin.code) %}
+                                <div class="mt-4 pt-4 border-t border-gray-200">
+                                    {% include get_admin_template('pager_links', admin.code) %}
+                                </div>
                             {% endif %}
                         {% endblock %}
                     </div>
@@ -254,41 +250,68 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block list_filters_actions %}
-    {# NEXT_MAJOR: Remove |default(filter.option('show_filter')) #}
     {% set displayableFilters = admin.datagrid.filters|filter(filter => filter.showFilter|default(filter.option('show_filter')) is not same as (false)) %}
+    {% set activeFilterCount = admin.datagrid.filters|filter(filter => filter.isActive())|length %}
     {%- if displayableFilters|length %}
-        <ul class="nav navbar-nav navbar-right" id="filter-list-{{ admin.uniqid() }}" {{ stimulus_controller('sonata-filter-list', {}, { 'active': 'active' }, { 'sonata-filter': '#filter-container-' ~ admin.uniqid() }) }}>
+        <div class="admin-dropdown" id="filter-list-{{ admin.uniqid() }}" data-controller="sensiolabs-de--admin-bundle--filter-list sensiolabs-de--admin-bundle--dropdown" data-sensiolabs-de--admin-bundle--filter-list-active-class="active" data-sensiolabs-de--admin-bundle--filter-list-sensiolabs-de--admin-bundle--filter-outlet="#filter-container-{{ admin.uniqid() }}">
+            <button type="button" data-action="click->sensiolabs-de--admin-bundle--dropdown#toggle" data-sensiolabs-de--admin-bundle--dropdown-target="button" class="inline-flex items-center justify-center gap-2 h-10 px-4 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm">
+                {{ ux_icon('lucide:filter', {class: 'w-4 h-4'}) }}
+                <span>{{ 'link_filters'|trans({}, 'SensioLabsAdminBundle') }}</span>
+                {% if activeFilterCount > 0 %}
+                    <span class="inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-semibold bg-primary-500 text-white" data-sensiolabs-de--admin-bundle--filter-list-target="counter">{{ activeFilterCount }}</span>
+                {% else %}
+                    <span class="hidden" data-sensiolabs-de--admin-bundle--filter-list-target="counter"></span>
+                {% endif %}
+            </button>
 
-            <li class="dropdown sonata-actions">
-                <a href="#" class="dropdown-toggle sonata-ba-action" data-toggle="dropdown">
-                    <i class="fas fa-filter" aria-hidden="true"></i>
-                    {{ 'link_filters'|trans({}, 'SonataAdminBundle') }}
-                    <span class="badge" {{ stimulus_target('sonata-filter-list', 'counter') }}></span>
-                    <b class="caret"></b>
-                </a>
-
-                <ul class="dropdown-menu dropdown-menu-scrollable" role="menu">
+            <div class="admin-dropdown-menu w-72 hidden" data-sensiolabs-de--admin-bundle--dropdown-target="menu">
+                <div class="px-4 py-3 border-b border-gray-100 bg-gray-50/50">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm font-semibold text-gray-900">{{ 'link_filters'|trans({}, 'SensioLabsAdminBundle') }}</span>
+                        {% if activeFilterCount > 0 %}
+                            <a href="{{ admin.generateUrl(action|default('list'), {filters: 'reset'}) }}" class="inline-flex items-center gap-1 text-xs font-medium text-gray-500 hover:text-error-600 transition-colors">
+                                {{ ux_icon('lucide:x', {class: 'w-3 h-3'}) }}
+                                {{ 'link_reset_filter'|trans({}, 'SensioLabsAdminBundle') }}
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="py-2 max-h-80 overflow-y-auto">
                     {% for filter in displayableFilters %}
-                        {# NEXT_MAJOR: Remove |default(filter.option('show_filter')) #}
                         {% set filterDisplayed = filter.isActive() or filter.showFilter|default(filter.option('show_filter')) is same as (true) %}
-                        <li>
-                            <a href="#" class="sonata-toggle-filter sonata-ba-action{% if filterDisplayed %} active{% endif %}" data-filter="filter-{{ admin.uniqid }}-{{ filter.name }}" {{ stimulus_target('sonata-filter-list', 'field') }} {{ stimulus_action('sonata-filter-list', 'toggle:prevent:stop', 'click') }}>
-                                <i class="far"></i>
+                        {% set filterActive = filter.isActive() %}
+                        <a href="#"
+                           class="admin-filter-item group flex items-center gap-3 px-4 py-2.5 text-sm transition-all hover:bg-gray-50 {% if filterDisplayed %}active{% endif %}"
+                           data-filter="filter-{{ admin.uniqid }}-{{ filter.name }}"
+                           data-sensiolabs-de--admin-bundle--filter-list-target="field"
+                           data-action="click->sensiolabs-de--admin-bundle--filter-list#toggle:prevent:stop">
+                            {# Toggle switch style checkbox #}
+                            <span class="admin-filter-toggle relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-200 transition-colors group-hover:bg-gray-300">
+                                <span class="admin-filter-toggle-dot pointer-events-none relative inline-block h-4 w-4 transform rounded-full bg-white shadow ring-0 transition-transform translate-x-0"></span>
+                            </span>
+                            {# Label #}
+                            <span class="flex-1 text-gray-700 group-hover:text-gray-900">
                                 {% if filter.label is not same as(false) %}
                                     {% if filter.translationDomain is same as(false) %}
                                         {{ filter.label }}
                                     {% elseif filter.labelTranslationParameters is defined %}
                                         {{ filter.label|trans(filter.labelTranslationParameters, filter.translationDomain ?? admin.translationDomain) }}
-                                    {% else %} {# NEXT_MAJOR: remove the else part and change elseif to else #}
+                                    {% else %}
                                         {{ filter.label|trans(filter.option('label_translation_parameters', {}), filter.translationDomain ?? admin.translationDomain) }}
                                     {% endif %}
                                 {% endif %}
-                            </a>
-                        </li>
+                            </span>
+                            {# Active indicator (has value) #}
+                            {% if filterActive %}
+                                <span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs font-medium bg-success-100 text-success-700">
+                                    {{ ux_icon('lucide:check', {class: 'w-3 h-3'}) }}
+                                </span>
+                            {% endif %}
+                        </a>
                     {% endfor %}
-                </ul>
-            </li>
-        </ul>
+                </div>
+            </div>
+        </div>
     {% endif -%}
 {% endblock %}
 
@@ -296,95 +319,78 @@ file that was distributed with this source code.
     {% if admin.datagrid.filters %}
         {% form_theme form get_admin_template('filter', admin.code) %}
 
-        <div class="col-xs-12 col-md-12 sonata-filters-box"
-             id="filter-container-{{ admin.uniqid() }}" {{ stimulus_controller('sonata-filter', { 'defaultValues': admin.defaultFilterParameters|json_encode }, {}, { 'sonata-filter-list': '#filter-list-' ~ admin.uniqid() }) }} {% if not admin.datagrid.hasDisplayableFilters %}hidden{% endif %}>
-            <div class="box box-primary" >
-                <div class="box-body">
-                    <form
-                        class="sonata-filter-form form-horizontal {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hide' : '' }}"
-                        action="{{ admin.generateUrl(action|default('list')) }}"
-                        method="GET"
-                        role="form"
-                        {{ stimulus_target('sonata-filter', 'form') }}
-                        {{ stimulus_action('sonata-filter', 'prepareSubmit', 'submit') }}>
-                        {{ form_errors(form) }}
+        <div class="admin-filters-bar"
+             id="filter-container-{{ admin.uniqid() }}" data-controller="sensiolabs-de--admin-bundle--filter" data-sensiolabs-de--admin-bundle--filter-default-values-value="{{ admin.defaultFilterParameters|json_encode }}" data-sensiolabs-de--admin-bundle--filter-sensiolabs-de--admin-bundle--filter-list-outlet="#filter-list-{{ admin.uniqid() }}" {% if not admin.datagrid.hasDisplayableFilters %}hidden{% endif %}>
+            <form
+                class="sensiolabs-filter-form {{ admin.isChild and 1 == admin.datagrid.filters|length ? 'hidden' : '' }}"
+                action="{{ admin.generateUrl(action|default('list')) }}"
+                method="GET"
+                role="form"
+                data-sensiolabs-de--admin-bundle--filter-target="form"
+                data-action="submit->sensiolabs-de--admin-bundle--filter#prepareSubmit">
+                {{ form_errors(form) }}
 
-                        <div class="row">
-                            <div class="col-sm-9">
-                                {% set withAdvancedFilter = false %}
-                                {% for filter in admin.datagrid.filters %}
-                                    {# NEXT_MAJOR: Remove |default(filter.option('show_filter')) #}
-                                    {% set filterDisplayed = filter.isActive() or filter.showFilter|default(filter.option('show_filter')) is same as (true) %}
-                                    {% set filterCanBeDisplayed = filter.option('show_filter') is not same as(false) %}
-                                    <div class="form-group {% block sonata_list_filter_group_class %}{% endblock %}" id="filter-{{ admin.uniqid }}-{{ filter.name }}" {{ stimulus_target('sonata-filter', 'group') }} {% if not filterDisplayed %}hidden{% endif %}>
-                                        {% if filter.label is not same as(false) %}
-                                            <label for="{{ form[filter.formName].children['value'].vars.id }}" class="col-sm-3 control-label">
-                                                {% if filter.translationDomain is same as(false) %}
-                                                    {{ filter.label }}
-                                                {% else %}
-                                                    {{ filter.label|trans(filter.option('label_translation_parameters', {}), filter.translationDomain ?? admin.translationDomain) }}
-                                                {% endif %}
-                                            </label>
-                                        {% endif %}
-                                        {% set attr = form[filter.formName].children['type'].vars.attr|default({}) %}
-                                        <div class="col-sm-4 advanced-filter" {{ stimulus_target('sonata-filter', 'advanced') }} {% if not field_value(form[filter.formName].children['type']) %}hidden{% endif %}>
-                                            {{ form_widget(form[filter.formName].children['type'], {'attr':  attr}) }}
-                                        </div>
-
-                                        <div class="col-sm-4">
-                                            {{ form_widget(form[filter.formName].children['value']) }}
-                                        </div>
-
-                                        {% if filterCanBeDisplayed %}
-                                            <div class="col-sm-1">
-                                                <label class="control-label">
-                                                    <a href="#" class="sonata-ba-action" {{ stimulus_action('sonata-filter', 'hideFilter', 'click', { 'id': 'filter-' ~ admin.uniqid ~ '-' ~ filter.name }) }}>
-                                                        <i class="fas fa-minus-circle" aria-hidden="true"></i>
-                                                    </a>
-                                                </label>
-                                            </div>
-                                        {% endif %}
-                                    </div>
-
-                                    {# NEXT_MAJOR: Remove |default(filter.option('advanced_filter')) #}
-                                    {% if filter.withAdvancedFilter|default(filter.option('advanced_filter')) %}
-                                        {% set withAdvancedFilter = true %}
+                <div class="admin-filters-chips">
+                    {% set withAdvancedFilter = false %}
+                    {% for filter in admin.datagrid.filters %}
+                        {% set filterDisplayed = filter.isActive() or filter.showFilter|default(filter.option('show_filter')) is same as (true) %}
+                        {% set filterCanBeDisplayed = filter.option('show_filter') is not same as(false) %}
+                        <div class="admin-filter-chip {% block sensiolabs_list_filter_group_class %}{% endblock %}" id="filter-{{ admin.uniqid }}-{{ filter.name }}" data-sensiolabs-de--admin-bundle--filter-target="group" {% if not filterDisplayed %}hidden{% endif %}>
+                            {% if filter.label is not same as(false) %}
+                                <label for="{{ form[filter.formName].children['value'].vars.id }}" class="admin-filter-chip-label">
+                                    {% if filter.translationDomain is same as(false) %}
+                                        {{ filter.label }}
+                                    {% else %}
+                                        {{ filter.label|trans(filter.option('label_translation_parameters', {}), filter.translationDomain ?? admin.translationDomain) }}
                                     {% endif %}
-                                {% endfor %}
+                                </label>
+                            {% endif %}
+                            {% set attr = form[filter.formName].children['type'].vars.attr|default({}) %}
+                            <div data-sensiolabs-de--admin-bundle--filter-target="advanced" {% if not field_value(form[filter.formName].children['type']) %}hidden{% endif %} class="admin-filter-chip-type">
+                                {{ form_widget(form[filter.formName].children['type'], {'attr':  attr}) }}
                             </div>
-                            <div class="col-sm-3 text-center">
-                                <input type="hidden" name="filter[{{ constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::PAGE') }}]" id="filter__page" value="1">
-
-                                {% set foo = form[constant('Sonata\\AdminBundle\\Datagrid\\DatagridInterface::PAGE')].setRendered() %}
-                                {{ form_rest(form) }}
-
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-primary" {{ stimulus_target('sonata-filter', 'submitter') }}>
-                                        <i class="fas fa-filter" aria-hidden="true"></i> {{ 'btn_filter'|trans({}, 'SonataAdminBundle') }}
-                                    </button>
-
-                                    <a class="btn btn-default" href="{{ admin.generateUrl(action|default('list'), {filters: 'reset'}) }}">
-                                        {{ 'link_reset_filter'|trans({}, 'SonataAdminBundle') }}
-                                    </a>
-                                </div>
-
-                                {% if withAdvancedFilter %}
-                                    <div class="form-group">
-                                        <a href="#" {{ stimulus_action('sonata-filter', 'toggleAdvanced', 'click') }}>
-                                            <i class="fas fa-cogs" aria-hidden="true"></i>
-                                            {{ 'btn_advanced_filters'|trans({}, 'SonataAdminBundle') }}
-                                        </a>
-                                    </div>
-                                {% endif %}
+                            <div class="admin-filter-chip-value">
+                                {{ form_widget(form[filter.formName].children['value']) }}
                             </div>
+                            {% if filterCanBeDisplayed %}
+                                <button type="button" class="admin-filter-chip-remove" data-action="click->sensiolabs-de--admin-bundle--filter#hideFilter" data-sensiolabs-de--admin-bundle--filter-id-param="filter-{{ admin.uniqid }}-{{ filter.name }}" title="{{ 'label_remove_filter'|trans({}, 'SensioLabsAdminBundle') }}">
+                                    {{ ux_icon('lucide:x', {class: 'w-3.5 h-3.5'}) }}
+                                </button>
+                            {% endif %}
                         </div>
 
-                        {% for paramKey, paramValue in admin.persistentParameters %}
-                            <input type="hidden" name="{{ paramKey }}" value="{{ paramValue }}">
-                        {% endfor %}
-                    </form>
+                        {% if filter.withAdvancedFilter|default(filter.option('advanced_filter')) %}
+                            {% set withAdvancedFilter = true %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {# Action buttons inline with filters #}
+                    <div class="admin-filters-actions-inline">
+                        <button type="submit" class="admin-filter-apply-btn" data-sensiolabs-de--admin-bundle--filter-target="submitter">
+                            {{ ux_icon('lucide:search', {class: 'w-4 h-4'}) }}
+                            {{ 'btn_filter'|trans({}, 'SensioLabsAdminBundle') }}
+                        </button>
+
+                        <a class="admin-filter-reset-btn" href="{{ admin.generateUrl(action|default('list'), {filters: 'reset'}) }}">
+                            {{ ux_icon('lucide:rotate-ccw', {class: 'w-3.5 h-3.5'}) }}
+                        </a>
+
+                        {% if withAdvancedFilter %}
+                            <a href="#" class="admin-filter-advanced-btn" data-action="click->sensiolabs-de--admin-bundle--filter#toggleAdvanced" title="{{ 'btn_advanced_filters'|trans({}, 'SensioLabsAdminBundle') }}">
+                                {{ ux_icon('lucide:sliders-horizontal', {class: 'w-3.5 h-3.5'}) }}
+                            </a>
+                        {% endif %}
+                    </div>
                 </div>
-            </div>
+
+                <input type="hidden" name="filter[{{ constant('SensioLabs\\AdminBundle\\Datagrid\\DatagridInterface::PAGE') }}]" id="filter__page" value="1">
+                {% set foo = form[constant('SensioLabs\\AdminBundle\\Datagrid\\DatagridInterface::PAGE')].setRendered() %}
+                {{ form_rest(form) }}
+
+                {% for paramKey, paramValue in admin.persistentParameters %}
+                    <input type="hidden" name="{{ paramKey }}" value="{{ paramValue }}">
+                {% endfor %}
+            </form>
         </div>
     {% endif %}
 {% endblock %}

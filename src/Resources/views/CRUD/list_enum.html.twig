@@ -15,12 +15,12 @@ file that was distributed with this source code.
     field_description.option('editable', false) and
     admin.hasAccess('edit', object)
 %}
-{% set x_editable_type = field_description.type|sonata_xeditable_type %}
+{% set x_editable_type = field_description.type|sensiolabs_xeditable_type %}
 
 {% block field_span_attributes %}
     {% if is_editable and x_editable_type %}
         {{ parent() }}
-        data-source="{{ field_description|sonata_xeditable_choices|json_encode }}"
+        data-source="{{ field_description|sensiolabs_xeditable_choices|json_encode }}"
     {% endif %}
 {% endblock %}
 

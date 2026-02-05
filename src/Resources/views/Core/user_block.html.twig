@@ -1,1 +1,29 @@
-{# Customize this value #}
+{#
+
+This file is part of the SensioLabs Admin Bundle package.
+
+(c) SensioLabs
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{# Customize this block to add user menu items #}
+{% if app.user %}
+<div class="py-1">
+    <div class="px-4 py-2 text-sm text-gray-900 border-b border-gray-200">
+        <div class="font-medium">{{ app.user.userIdentifier|default(app.user.username|default('User')) }}</div>
+    </div>
+    {# Add custom menu items here, for example:
+    <a href="#" class="dropdown-item">
+        {{ ux_icon('lucide:settings', {class: 'icon-sm text-gray-400'}) }}
+        <span>{{ 'user_settings'|trans({}, 'SensioLabsAdminBundle') }}</span>
+    </a>
+    <a href="{{ path('app_logout') }}" class="dropdown-item text-error-600">
+        {{ ux_icon('lucide:log-out', {class: 'icon-sm'}) }}
+        <span>{{ 'logout'|trans({}, 'SensioLabsAdminBundle') }}</span>
+    </a>
+    #}
+</div>
+{% endif %}

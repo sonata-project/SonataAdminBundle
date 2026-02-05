@@ -2,8 +2,8 @@
 <xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" version="1.2">
   <file source-language="en" datatype="plaintext" original="file.ext">
     <body>
-      <trans-unit id="sonata_administration">
-        <source>sonata_administration</source>
+      <trans-unit id="sensiolabs_administration">
+        <source>sensiolabs_administration</source>
         <target>Administration</target>
       </trans-unit>
       <trans-unit id="action_delete">
@@ -98,6 +98,22 @@
         <source>title_dashboard</source>
         <target>Dashboard</target>
       </trans-unit>
+      <trans-unit id="welcome_back">
+        <source>welcome_back</source>
+        <target>Welcome back, %name%</target>
+      </trans-unit>
+      <trans-unit id="dashboard_subtitle">
+        <source>dashboard_subtitle</source>
+        <target>Here's what's happening with your application today.</target>
+      </trans-unit>
+      <trans-unit id="quick_access">
+        <source>quick_access</source>
+        <target>Quick Access</target>
+      </trans-unit>
+      <trans-unit id="manage">
+        <source>manage</source>
+        <target>Manage</target>
+      </trans-unit>
       <trans-unit id="title_edit">
         <source>title_edit</source>
         <target>Edit "%name%"</target>
@@ -133,6 +149,10 @@
       <trans-unit id="no_result">
         <source>no_result</source>
         <target>No result</target>
+      </trans-unit>
+      <trans-unit id="no_results_found_message">
+        <source>no_results_found_message</source>
+        <target>There are no items matching your criteria. Try adjusting your filters or create a new item.</target>
       </trans-unit>
       <trans-unit id="confirm_msg">
         <source>confirm_msg</source>

@@ -69,7 +69,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
         array $formOptions = [],
     ): array {
         $options = [];
-        $options['sonata_field_description'] = $fieldDescription;
+        $options['sensiolabs_field_description'] = $fieldDescription;
 
         if ($this->isAnyInstanceOf($type, [
             ModelType::class,
@@ -179,7 +179,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
     private function getDefaultAdminTypeOptions(FieldDescriptionInterface $fieldDescription, array $formOptions): array
     {
         $typeOptions = [
-            'sonata_field_description' => $fieldDescription,
+            'sensiolabs_field_description' => $fieldDescription,
             'data_class' => $fieldDescription->getAssociationAdmin()->getClass(),
             'empty_data' => static fn (): object => $fieldDescription->getAssociationAdmin()->getNewInstance(),
         ];

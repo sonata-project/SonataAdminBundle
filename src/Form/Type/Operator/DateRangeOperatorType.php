@@ -44,6 +44,6 @@ final class DateRangeOperatorType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'sonata_type_operator_date_range';
+        return 'sensiolabs_type_operator_date_range';
     }
 }

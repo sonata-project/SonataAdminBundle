@@ -50,6 +50,6 @@ final class DateOperatorType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'sonata_type_operator_date';
+        return 'sensiolabs_type_operator_date';
     }
 }

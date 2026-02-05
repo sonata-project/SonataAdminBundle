@@ -230,7 +230,7 @@ final class AdminMaker extends AbstractMaker
                 $this->modelClass,
                 $adminClassFullName,
                 $controllerName,
-                substr($this->managerType, \strlen('sonata.admin.manager.'))
+                substr($this->managerType, \strlen('sensiolabs.admin.manager.'))
             );
 
             $io->writeln(\sprintf(

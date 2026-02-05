@@ -29,14 +29,14 @@ final class AddFilterTypeCompilerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->has('sonata.admin.builder.filter.factory')) {
+        if (!$container->has('sensiolabs.admin.builder.filter.factory')) {
             return;
         }
 
-        $definition = $container->getDefinition('sonata.admin.builder.filter.factory');
+        $definition = $container->getDefinition('sensiolabs.admin.builder.filter.factory');
         $services = [];
 
-        foreach ($container->findTaggedServiceIds('sonata.admin.filter.type') as $id => $tags) {
+        foreach ($container->findTaggedServiceIds('sensiolabs.admin.filter.type') as $id => $tags) {
             $serviceDefinition = $container->getDefinition($id);
 
             $serviceDefinition->setShared(false);

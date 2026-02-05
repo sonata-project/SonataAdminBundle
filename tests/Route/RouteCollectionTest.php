@@ -135,8 +135,8 @@ final class RouteCollectionTest extends TestCase
         $route = $routeCollection->get('view');
 
         static::assertSame('BundleName:ControllerName:view', $route->getDefault('_controller'));
-        static::assertSame('baseCodeRoute', $route->getDefault('_sonata_admin'));
-        static::assertSame('baseRouteName_view', $route->getDefault('_sonata_name'));
+        static::assertSame('baseCodeRoute', $route->getDefault('_sensiolabs_admin'));
+        static::assertSame('baseRouteName_view', $route->getDefault('_sensiolabs_name'));
     }
 
     public function testRouteWithAllConstructorParameters(): void
@@ -191,8 +191,8 @@ final class RouteCollectionTest extends TestCase
         $route = $routeCollection->get('view');
 
         static::assertSame('baseControllerServiceName::viewAction', $route->getDefault('_controller'));
-        static::assertSame('baseCodeRoute', $route->getDefault('_sonata_admin'));
-        static::assertSame('baseRouteName_view', $route->getDefault('_sonata_name'));
+        static::assertSame('baseCodeRoute', $route->getDefault('_sensiolabs_admin'));
+        static::assertSame('baseRouteName_view', $route->getDefault('_sensiolabs_name'));
     }
 
     public function testControllerWithFQCN(): void

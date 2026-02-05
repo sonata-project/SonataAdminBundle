@@ -31,12 +31,12 @@ final class AdminValueResolverTest extends TestCase
     public function testWithInvalidData(Request $request, ArgumentMetadata $argumentMetadata): void
     {
         $admin = new PostAdmin();
-        $admin->setCode('sonata.admin.post');
+        $admin->setCode('sensiolabs.admin.post');
 
         $container = new Container();
-        $container->set('sonata.admin.post', $admin);
+        $container->set('sensiolabs.admin.post', $admin);
 
-        $adminFetcher = new AdminFetcher(new Pool($container, ['sonata.admin.post']));
+        $adminFetcher = new AdminFetcher(new Pool($container, ['sensiolabs.admin.post']));
         $adminValueResolver = new AdminValueResolver($adminFetcher);
 
         static::assertFalse($adminValueResolver->supports($request, $argumentMetadata));
@@ -53,43 +53,43 @@ final class AdminValueResolverTest extends TestCase
     {
         yield 'Object with no type' => [
             static::createRequest(),
-            static::createArgumentMetadata('_sonata_admin'),
+            static::createArgumentMetadata('_sensiolabs_admin'),
         ];
 
         yield 'Object must implement AdminInterface' => [
             static::createRequest(),
-            static::createArgumentMetadata('_sonata_admin', self::class),
+            static::createArgumentMetadata('_sensiolabs_admin', self::class),
         ];
 
         yield 'Admin code must be passed' => [
             static::createRequest(),
-            static::createArgumentMetadata('_sonata_admin', PostAdmin::class),
+            static::createArgumentMetadata('_sensiolabs_admin', PostAdmin::class),
         ];
 
         yield 'Admin code must exist' => [
-            static::createRequest(['_sonata_admin' => 'non_existing']),
-            static::createArgumentMetadata('_sonata_admin', PostAdmin::class),
+            static::createRequest(['_sensiolabs_admin' => 'non_existing']),
+            static::createArgumentMetadata('_sensiolabs_admin', PostAdmin::class),
         ];
 
         yield 'Admin fetched must be of the type specified in the action' => [
-            static::createRequest(['_sonata_admin' => 'sonata.admin.post']),
-            static::createArgumentMetadata('_sonata_admin', CommentAdmin::class),
+            static::createRequest(['_sensiolabs_admin' => 'sensiolabs.admin.post']),
+            static::createArgumentMetadata('_sensiolabs_admin', CommentAdmin::class),
         ];
     }
 
     public function testResolvesAdminClass(): void
     {
         $admin = new PostAdmin();
-        $admin->setCode('sonata.admin.post');
+        $admin->setCode('sensiolabs.admin.post');
 
         $container = new Container();
-        $container->set('sonata.admin.post', $admin);
+        $container->set('sensiolabs.admin.post', $admin);
 
-        $adminFetcher = new AdminFetcher(new Pool($container, ['sonata.admin.post']));
+        $adminFetcher = new AdminFetcher(new Pool($container, ['sensiolabs.admin.post']));
         $adminValueResolver = new AdminValueResolver($adminFetcher);
 
-        $request = static::createRequest(['_sonata_admin' => 'sonata.admin.post']);
-        $argumentMetadata = static::createArgumentMetadata('_sonata_admin', PostAdmin::class);
+        $request = static::createRequest(['_sensiolabs_admin' => 'sensiolabs.admin.post']);
+        $argumentMetadata = static::createArgumentMetadata('_sensiolabs_admin', PostAdmin::class);
 
         static::assertTrue($adminValueResolver->supports($request, $argumentMetadata));
         static::assertSame(
@@ -101,16 +101,16 @@ final class AdminValueResolverTest extends TestCase
     public function testResolvesAdminInterface(): void
     {
         $admin = new PostAdmin();
-        $admin->setCode('sonata.admin.post');
+        $admin->setCode('sensiolabs.admin.post');
 
         $container = new Container();
-        $container->set('sonata.admin.post', $admin);
+        $container->set('sensiolabs.admin.post', $admin);
 
-        $adminFetcher = new AdminFetcher(new Pool($container, ['sonata.admin.post']));
+        $adminFetcher = new AdminFetcher(new Pool($container, ['sensiolabs.admin.post']));
         $adminValueResolver = new AdminValueResolver($adminFetcher);
 
-        $request = static::createRequest(['_sonata_admin' => 'sonata.admin.post']);
-        $argumentMetadata = static::createArgumentMetadata('_sonata_admin', AdminInterface::class);
+        $request = static::createRequest(['_sensiolabs_admin' => 'sensiolabs.admin.post']);
+        $argumentMetadata = static::createArgumentMetadata('_sensiolabs_admin', AdminInterface::class);
 
         static::assertTrue($adminValueResolver->supports($request, $argumentMetadata));
         static::assertSame(

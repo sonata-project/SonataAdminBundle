@@ -38,7 +38,7 @@ final class AdminEventExtension extends AbstractAdminExtension
     {
         $this->eventDispatcher->dispatch(
             new ConfigureEvent($form->getAdmin(), $form, ConfigureEvent::TYPE_FORM),
-            'sonata.admin.event.configure.form'
+            'sensiolabs.admin.event.configure.form'
         );
     }
 
@@ -46,7 +46,7 @@ final class AdminEventExtension extends AbstractAdminExtension
     {
         $this->eventDispatcher->dispatch(
             new ConfigureEvent($list->getAdmin(), $list, ConfigureEvent::TYPE_LIST),
-            'sonata.admin.event.configure.list'
+            'sensiolabs.admin.event.configure.list'
         );
     }
 
@@ -54,7 +54,7 @@ final class AdminEventExtension extends AbstractAdminExtension
     {
         $this->eventDispatcher->dispatch(
             new ConfigureEvent($filter->getAdmin(), $filter, ConfigureEvent::TYPE_DATAGRID),
-            'sonata.admin.event.configure.datagrid'
+            'sensiolabs.admin.event.configure.datagrid'
         );
     }
 
@@ -62,7 +62,7 @@ final class AdminEventExtension extends AbstractAdminExtension
     {
         $this->eventDispatcher->dispatch(
             new ConfigureEvent($show->getAdmin(), $show, ConfigureEvent::TYPE_SHOW),
-            'sonata.admin.event.configure.show'
+            'sensiolabs.admin.event.configure.show'
         );
     }
 
@@ -70,7 +70,7 @@ final class AdminEventExtension extends AbstractAdminExtension
     {
         $this->eventDispatcher->dispatch(
             new ConfigureQueryEvent($admin, $query, $context),
-            'sonata.admin.event.configure.query'
+            'sensiolabs.admin.event.configure.query'
         );
     }
 
@@ -78,7 +78,7 @@ final class AdminEventExtension extends AbstractAdminExtension
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_PRE_UPDATE),
-            'sonata.admin.event.persistence.pre_update'
+            'sensiolabs.admin.event.persistence.pre_update'
         );
     }
 
@@ -86,7 +86,7 @@ final class AdminEventExtension extends AbstractAdminExtension
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_UPDATE),
-            'sonata.admin.event.persistence.post_update'
+            'sensiolabs.admin.event.persistence.post_update'
         );
     }
 
@@ -94,7 +94,7 @@ final class AdminEventExtension extends AbstractAdminExtension
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_PRE_PERSIST),
-            'sonata.admin.event.persistence.pre_persist'
+            'sensiolabs.admin.event.persistence.pre_persist'
         );
     }
 
@@ -102,7 +102,7 @@ final class AdminEventExtension extends AbstractAdminExtension
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_PERSIST),
-            'sonata.admin.event.persistence.post_persist'
+            'sensiolabs.admin.event.persistence.post_persist'
         );
     }
 
@@ -110,7 +110,7 @@ final class AdminEventExtension extends AbstractAdminExtension
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_PRE_REMOVE),
-            'sonata.admin.event.persistence.pre_remove'
+            'sensiolabs.admin.event.persistence.pre_remove'
         );
     }
 
@@ -118,7 +118,7 @@ final class AdminEventExtension extends AbstractAdminExtension
     {
         $this->eventDispatcher->dispatch(
             new PersistenceEvent($admin, $object, PersistenceEvent::TYPE_POST_REMOVE),
-            'sonata.admin.event.persistence.post_remove'
+            'sensiolabs.admin.event.persistence.post_remove'
         );
     }
 
@@ -126,7 +126,7 @@ final class AdminEventExtension extends AbstractAdminExtension
     {
         $this->eventDispatcher->dispatch(
             new BatchActionEvent($admin, BatchActionEvent::TYPE_PRE_BATCH_ACTION, $actionName, $query, $idx, $allElements),
-            'sonata.admin.event.batch_action.pre_batch_action'
+            'sensiolabs.admin.event.batch_action.pre_batch_action'
         );
     }
 }

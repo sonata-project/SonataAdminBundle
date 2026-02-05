@@ -63,7 +63,7 @@ final class RoutesCache
         }
 
         foreach ($admin->getRoutes()->getElements() as $code => $route) {
-            $name = $route->getDefault('_sonata_name');
+            $name = $route->getDefault('_sensiolabs_name');
             \assert(\is_string($name));
             $routes[$code] = $name;
         }

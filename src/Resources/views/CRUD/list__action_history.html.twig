@@ -1,8 +1,8 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
@@ -10,20 +10,20 @@ file that was distributed with this source code.
 #}
 
 {% if admin.hasAccess('history', object) and admin.hasRoute('history') %}
-    {% set button_content = sonata_config.getOption('list_action_button_content') %}
+    {% set button_content = sensiolabs_config.getOption('list_action_button_content') %}
     <a
         href="{{ admin.generateObjectUrl('history', object, actions.link_parameters|default([])) }}"
-        class="btn btn-sm btn-default view_link"
-        title="{{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}"
+        class="inline-flex items-center justify-center gap-1.5 p-2 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors view_link"
+        title="{{ 'link_action_history'|trans({}, 'SensioLabsAdminBundle') }}"
     >
         {% if button_content == 'icon' or button_content == 'all' %}
-            <i class="fas fa-history" aria-hidden="true"></i>
+            {{ ux_icon('lucide:clock', {class: 'w-4 h-4'}) }}
         {% endif %}
         {% if button_content == 'text' or button_content == 'all' %}
-            {{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}
+            <span class="text-sm font-medium">{{ 'link_action_history'|trans({}, 'SensioLabsAdminBundle') }}</span>
         {% else %}
             <span class="sr-only">
-                {{ 'link_action_history'|trans({}, 'SonataAdminBundle') }}
+                {{ 'link_action_history'|trans({}, 'SensioLabsAdminBundle') }}
             </span>
         {% endif %}
     </a>

@@ -69,14 +69,14 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load(['options' => ['lock_protection' => true]]);
-        self::assertContainerBuilderHasService('sonata.admin.lock.extension');
+        self::assertContainerBuilderHasService('sensiolabs.admin.lock.extension');
     }
 
     public function testNotHasServiceDefinitionForLockExtension(): void
     {
         $this->container->setParameter('kernel.bundles', []);
         $this->load(['options' => ['lock_protection' => false]]);
-        self::assertContainerBuilderNotHasService('sonata.admin.lock.extension');
+        self::assertContainerBuilderNotHasService('sensiolabs.admin.lock.extension');
     }
 
     public function testLoadsExporterServiceDefinitionWhenExporterBundleIsRegistered(): void
@@ -84,7 +84,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.bundles', ['SonataExporterBundle' => 'whatever']);
         $this->load();
         self::assertContainerBuilderHasService(
-            'sonata.admin.admin_exporter',
+            'sensiolabs.admin.admin_exporter',
             AdminExporter::class
         );
     }
@@ -94,8 +94,8 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.bundles', []);
         $this->load();
 
-        self::assertContainerBuilderHasParameter('sonata.admin.configuration.security.role_admin');
-        self::assertContainerBuilderHasParameter('sonata.admin.configuration.security.role_super_admin');
+        self::assertContainerBuilderHasParameter('sensiolabs.admin.configuration.security.role_admin');
+        self::assertContainerBuilderHasParameter('sensiolabs.admin.configuration.security.role_super_admin');
     }
 
     public function testHasDefaultServiceParameters(): void
@@ -103,11 +103,11 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.bundles', []);
         $this->load();
 
-        self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_group');
-        self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_label_catalogue');
-        self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_translation_domain');
-        self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_icon');
-        self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_controller');
+        self::assertContainerBuilderHasParameter('sensiolabs.admin.configuration.default_group');
+        self::assertContainerBuilderHasParameter('sensiolabs.admin.configuration.default_label_catalogue');
+        self::assertContainerBuilderHasParameter('sensiolabs.admin.configuration.default_translation_domain');
+        self::assertContainerBuilderHasParameter('sensiolabs.admin.configuration.default_icon');
+        self::assertContainerBuilderHasParameter('sensiolabs.admin.configuration.default_controller');
     }
 
     public function testExtraStylesheetsGetAdded(): void
@@ -122,8 +122,8 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
         ];
 
         $extraStylesheetsNormalized = [
-            ['path' => 'foo/bar.css', 'package_name' => 'sonata_admin'],
-            ['path' => 'bar/quux.css', 'package_name' => 'sonata_admin'],
+            ['path' => 'foo/bar.css', 'package_name' => 'sensiolabs_admin'],
+            ['path' => 'bar/quux.css', 'package_name' => 'sensiolabs_admin'],
             ['path' => 'foo/bazz.css', 'package_name' => 'another_package'],
             ['path' => 'bar/asd.css', 'package_name' => null],
         ];
@@ -134,7 +134,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        $options = $this->container->getDefinition('sensiolabs.admin.configuration')->getArgument(2);
         static::assertIsArray($options);
 
         $stylesheets = $options['stylesheets'];
@@ -157,7 +157,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        $options = $this->container->getDefinition('sensiolabs.admin.configuration')->getArgument(2);
         static::assertIsArray($options);
 
         $stylesheets = $options['stylesheets'];
@@ -185,8 +185,8 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
         ];
 
         $extraJavascriptsNormalized = [
-            ['path' => 'foo/bar.js', 'package_name' => 'sonata_admin'],
-            ['path' => 'bar/quux.js', 'package_name' => 'sonata_admin'],
+            ['path' => 'foo/bar.js', 'package_name' => 'sensiolabs_admin'],
+            ['path' => 'bar/quux.js', 'package_name' => 'sensiolabs_admin'],
             ['path' => 'foo/bazz.js', 'package_name' => 'another_package'],
             ['path' => 'bar/asd.js', 'package_name' => null],
         ];
@@ -197,7 +197,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        $options = $this->container->getDefinition('sensiolabs.admin.configuration')->getArgument(2);
         static::assertIsArray($options);
 
         $javascripts = $options['javascripts'];
@@ -219,7 +219,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        $options = $this->container->getDefinition('sensiolabs.admin.configuration')->getArgument(2);
         static::assertIsArray($options);
 
         $javascripts = $options['javascripts'];
@@ -245,8 +245,8 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
             ['path' => 'bar/asd.css', 'package_name' => null],
         ];
         $extraStylesheetsNormalized = [
-            ['path' => 'foo/bar.css', 'package_name' => 'sonata_admin'],
-            ['path' => 'bar/quux.css', 'package_name' => 'sonata_admin'],
+            ['path' => 'foo/bar.css', 'package_name' => 'sensiolabs_admin'],
+            ['path' => 'bar/quux.css', 'package_name' => 'sensiolabs_admin'],
             ['path' => 'foo/bazz.css', 'package_name' => 'another_package'],
             ['path' => 'bar/asd.css', 'package_name' => null],
         ];
@@ -257,8 +257,8 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
             ['path' => 'bar/asd.js', 'package_name' => null],
         ];
         $extraJavascriptsNormalized = [
-            ['path' => 'foo/bar.js', 'package_name' => 'sonata_admin'],
-            ['path' => 'bar/quux.js', 'package_name' => 'sonata_admin'],
+            ['path' => 'foo/bar.js', 'package_name' => 'sensiolabs_admin'],
+            ['path' => 'bar/quux.js', 'package_name' => 'sensiolabs_admin'],
             ['path' => 'foo/bazz.js', 'package_name' => 'another_package'],
             ['path' => 'bar/asd.js', 'package_name' => null],
         ];
@@ -278,7 +278,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        $options = $this->container->getDefinition('sensiolabs.admin.configuration')->getArgument(2);
         static::assertIsArray($options);
 
         $stylesheets = $options['stylesheets'];
@@ -343,7 +343,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
             'pager_links' => '@SensioLabsAdmin/Pager/links.html.twig',
             'pager_results' => '@SensioLabsAdmin/Pager/results.html.twig',
             'tab_menu_template' => '@SensioLabsAdmin/Core/tab_menu_template.html.twig',
-            'knp_menu_template' => '@SensioLabsAdmin/Menu/sonata_menu.html.twig',
+            'knp_menu_template' => '@SensioLabsAdmin/Menu/sensiolabs_menu.html.twig',
             'action_create' => '@SensioLabsAdmin/CRUD/dashboard__action_create.html.twig',
             'button_acl' => '@SensioLabsAdmin/Button/acl_button.html.twig',
             'button_create' => '@SensioLabsAdmin/Button/create_button.html.twig',
@@ -353,7 +353,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
             'button_show' => '@SensioLabsAdmin/Button/show_button.html.twig',
             'form_theme' => [],
             'filter_theme' => [],
-        ], $this->container->getParameter('sonata.admin.configuration.templates'));
+        ], $this->container->getParameter('sensiolabs.admin.configuration.templates'));
     }
 
     public function testLoadIntlTemplate(): void
@@ -364,7 +364,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.bundles', array_merge($bundles, ['SonataIntlBundle' => true]));
         $this->load();
 
-        $templates = $this->container->getParameter('sonata.admin.configuration.templates');
+        $templates = $this->container->getParameter('sensiolabs.admin.configuration.templates');
         static::assertIsArray($templates);
         static::assertSame('@SonataIntl/CRUD/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
     }
@@ -374,7 +374,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.bundles', []);
         $this->load();
 
-        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        $options = $this->container->getDefinition('sensiolabs.admin.configuration')->getArgument(2);
         static::assertIsArray($options);
 
         $stylesheets = $options['stylesheets'];
@@ -393,7 +393,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        $options = $this->container->getDefinition('sensiolabs.admin.configuration')->getArgument(2);
         static::assertIsArray($options);
 
         $stylesheets = $options['stylesheets'];
@@ -412,7 +412,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        $options = $this->container->getDefinition('sensiolabs.admin.configuration')->getArgument(2);
         static::assertIsArray($options);
 
         $stylesheets = $options['stylesheets'];
@@ -425,7 +425,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
     public function testSetInvalidSkin(): void
     {
         $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('The value "skin-invalid" is not allowed for path "sonata_admin.options.skin". Permissible values: "skin-black", "skin-black-light", "skin-blue", "skin-blue-light", "skin-green", "skin-green-light", "skin-purple", "skin-purple-light", "skin-red", "skin-red-light", "skin-yellow", "skin-yellow-light"');
+        $this->expectExceptionMessage('The value "skin-invalid" is not allowed for path "sensiolabs_admin.options.skin". Permissible values: "skin-black", "skin-black-light", "skin-blue", "skin-blue-light", "skin-green", "skin-green-light", "skin-purple", "skin-purple-light", "skin-red", "skin-red-light", "skin-yellow", "skin-yellow-light"');
         $this->container->setParameter('kernel.bundles', []);
         $this->load([
             'options' => [
@@ -463,7 +463,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
             ],
         ]);
 
-        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        $options = $this->container->getDefinition('sensiolabs.admin.configuration')->getArgument(2);
         static::assertIsArray($options);
 
         $skin = $options['skin'];
@@ -474,7 +474,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
                 'bundles/sonataadmin/admin-lte-skins/%s.min.css',
                 $skin
             ),
-            'package_name' => 'sonata_admin',
+            'package_name' => 'sensiolabs_admin',
         ];
 
         return $defaultStylesheets;

@@ -52,6 +52,6 @@ final class StringOperatorType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'sonata_type_operator_string';
+        return 'sensiolabs_type_operator_string';
     }
 }

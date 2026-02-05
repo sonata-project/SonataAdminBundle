@@ -46,7 +46,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 interface TaggedAdminInterface extends MutableTemplateRegistryAwareInterface
 {
-    public const ADMIN_TAG = 'sonata.admin';
+    public const ADMIN_TAG = 'sensiolabs.admin';
 
     public const DEFAULT_LIST_MODES = [
         'list' => [

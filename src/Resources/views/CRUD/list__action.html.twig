@@ -1,8 +1,8 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends get_admin_template('base_list_field', admin.code) %}
 
 {% block field %}
-    <div class="btn-group">
+    <div class="flex items-center gap-1">
         {% for actions in field_description.option('actions') %}
             {% include actions.template %}
         {% endfor %}

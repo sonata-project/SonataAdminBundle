@@ -1,8 +1,8 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
@@ -12,11 +12,11 @@ file that was distributed with this source code.
 {% extends base_template %}
 
 {% block title %}
-    {{ 'title_show'|trans({'%name%': admin.toString(object)|u.truncate(15, '...') }, 'SonataAdminBundle') }}
+    {{ 'title_show'|trans({'%name%': admin.toString(object)|u.truncate(15, '...') }, 'SensioLabsAdminBundle') }}
 {% endblock %}
 
 {% block navbar_title %}
-    {{ 'title_show'|trans({'%name%': admin.toString(object)|u.truncate(100, '...') }, 'SonataAdminBundle') }}
+    {{ 'title_show'|trans({'%name%': admin.toString(object)|u.truncate(100, '...') }, 'SensioLabsAdminBundle') }}
 {% endblock %}
 
 {%- block actions -%}
@@ -31,9 +31,8 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block show %}
-    <div class="sonata-ba-view">
+    <div class="sensiolabs-ba-view">
 
-        {{ sonata_block_render_event('sonata.admin.show.top', { 'admin': admin, 'object': object }) }}
 
         {% set showtabs = admin.getshowtabs() %}
         {% set has_tab = (showtabs|length == 1 and showtabs|keys[0] != 'default') or showtabs|length > 1 %}
@@ -41,33 +40,40 @@ file that was distributed with this source code.
         {% if has_tab %}
             {% set tab_prefix = 'tab_' ~ admin.uniqid ~ '_' ~ random() %}
             {% set tab_query_index = app.request.query.get('_tab', 0)|split("_")|last %}
-            <div class="nav-tabs-custom">
-                <ul class="nav nav-tabs" role="tablist">
-                    {% for name, show_tab in showtabs %}
-                        {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
-                        <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %} class="active"{% endif %}>
-                            <a href="#{{ _tab_name }}" class="changer-tab" aria-controls="{{ _tab_name }}" data-toggle="tab">
+            <div class="admin-card" data-controller="sensiolabs-de--admin-bundle--edit">
+                <div class="border-b border-gray-200">
+                    <nav class="admin-tabs" role="tablist">
+                        {% for name, show_tab in showtabs %}
+                            {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
+                            <a href="#{{ _tab_name }}"
+                               class="admin-tab {% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %}admin-tab-active{% endif %}"
+                               aria-controls="{{ _tab_name }}"
+                               role="tab"
+                               data-sensiolabs-de--admin-bundle--edit-target="tab"
+                               data-action="click->sensiolabs-de--admin-bundle--edit#changeTab">
                                 {% if show_tab.translation_domain is defined and show_tab.translation_domain is same as(false) %}
                                     {{ show_tab.label }}
                                 {% else %}
                                     {{ show_tab.label|trans({}, show_tab.translation_domain ?? admin.translationDomain) }}
                                 {% endif %}
                             </a>
-                        </li>
-                    {% endfor %}
-                </ul>
+                        {% endfor %}
+                    </nav>
+                </div>
 
-                <div class="tab-content">
+                <div>
                     {% for code, show_tab in showtabs %}
                         {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
                         <div
-                            class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (tab_query_index == loop.index) %} in active{% endif %}"
+                            class="{% if (not app.request.query.has('_tab') and loop.first) or (tab_query_index == loop.index) %}{% else %}hidden{% endif %}"
                             id="{{ _tab_name }}"
+                            role="tabpanel"
+                            data-sensiolabs-de--admin-bundle--edit-target="tabContent"
                         >
-                            <div class="box-body  container-fluid">
-                                <div class="sonata-ba-collapsed-fields">
+                            <div class="admin-card-body">
+                                <div class="space-y-6">
                                     {% if show_tab.description != false %}
-                                        <p>{{ show_tab.description|raw }}</p>
+                                        <p class="text-gray-600">{{ show_tab.description|raw }}</p>
                                     {% endif %}
 
                                     {% set groups = show_tab.groups %}
@@ -85,19 +91,36 @@ file that was distributed with this source code.
 
     </div>
 
-    {{ sonata_block_render_event('sonata.admin.show.bottom', { 'admin': admin, 'object': object }) }}
 {% endblock %}
 
 {% block show_groups %}
-    <div class="row">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
         {% block field_row %}
             {% for code in groups %}
                 {% set show_group = admin.showgroups[code] %}
 
-                <div class="{{ show_group.class|default('col-md-12') }} {{ no_padding|default(false) ? 'nopadding' }}">
-                    <div class="{{ show_group.box_class }}">
-                        <div class="box-header">
-                            <h4 class="box-title">
+                {# Map Bootstrap grid classes to Tailwind #}
+                {% set col_class = show_group.class|default('col-md-12') %}
+                {% if 'col-md-12' in col_class %}
+                    {% set tw_col_class = 'lg:col-span-12' %}
+                {% elseif 'col-md-6' in col_class %}
+                    {% set tw_col_class = 'lg:col-span-6' %}
+                {% elseif 'col-md-4' in col_class %}
+                    {% set tw_col_class = 'lg:col-span-4' %}
+                {% elseif 'col-md-8' in col_class %}
+                    {% set tw_col_class = 'lg:col-span-8' %}
+                {% elseif 'col-md-3' in col_class %}
+                    {% set tw_col_class = 'lg:col-span-3' %}
+                {% elseif 'col-md-9' in col_class %}
+                    {% set tw_col_class = 'lg:col-span-9' %}
+                {% else %}
+                    {% set tw_col_class = 'lg:col-span-12' %}
+                {% endif %}
+
+                <div class="{{ tw_col_class }}">
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h4 class="text-lg font-medium text-gray-900">
                                 {% block show_title %}
                                     {% if show_group.translation_domain is defined and show_group.translation_domain is same as(false) %}
                                         {{ show_group.label }}
@@ -107,12 +130,12 @@ file that was distributed with this source code.
                                 {% endblock %}
                             </h4>
                         </div>
-                        <div class="box-body table-responsive no-padding">
-                            <table class="table">
-                                <tbody>
+                        <div class="admin-table-wrapper">
+                            <table class="admin-table">
+                                <tbody class="admin-table-body">
                                 {% for show_field_name in show_group.fields %}
                                     {% block show_field %}
-                                        <tr class="sonata-ba-view-container">
+                                        <tr class="sensiolabs-ba-view-container">
                                             {% if elements[show_field_name] is defined %}
                                                 {{ elements[show_field_name]|render_view_element(object) }}
                                             {% endif %}

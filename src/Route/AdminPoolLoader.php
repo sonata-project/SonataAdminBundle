@@ -23,7 +23,7 @@ use Symfony\Component\Routing\RouteCollection as SymfonyRouteCollection;
  */
 final class AdminPoolLoader extends Loader
 {
-    public const ROUTE_TYPE_NAME = 'sonata_admin';
+    public const ROUTE_TYPE_NAME = 'sensiolabs_admin';
 
     public function __construct(
         private Pool $pool,
@@ -43,7 +43,7 @@ final class AdminPoolLoader extends Loader
             $admin = $this->pool->getInstance($code);
 
             foreach ($admin->getRoutes()->getElements() as $route) {
-                $name = $route->getDefault('_sonata_name');
+                $name = $route->getDefault('_sensiolabs_name');
                 \assert(\is_string($name));
                 $collection->add($name, $route);
             }

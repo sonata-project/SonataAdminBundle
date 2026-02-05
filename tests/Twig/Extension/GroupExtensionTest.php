@@ -31,14 +31,14 @@ final class GroupExtensionTest extends TestCase
     public function testGetDashboardGroupsWithCreatableAdmins(): void
     {
         $container = new Container();
-        $pool = new Pool($container, ['sonata_admin_non_creatable', 'sonata_admin_creatable'], [
+        $pool = new Pool($container, ['sensiolabs_admin_non_creatable', 'sensiolabs_admin_creatable'], [
             'group_without_creatable' => [
                 'label' => 'non_creatable',
                 'translation_domain' => 'default',
                 'icon' => 'icon1',
                 'items' => [
                     [
-                        'admin' => 'sonata_admin_non_creatable',
+                        'admin' => 'sensiolabs_admin_non_creatable',
                         'label' => 'admin1',
                         'roles' => [],
                         'route' => 'foo',
@@ -56,7 +56,7 @@ final class GroupExtensionTest extends TestCase
                 'icon' => 'icon2',
                 'items' => [
                     [
-                        'admin' => 'sonata_admin_creatable',
+                        'admin' => 'sensiolabs_admin_creatable',
                         'label' => 'admin1',
                         'roles' => [],
                         'route' => 'foo',
@@ -75,8 +75,8 @@ final class GroupExtensionTest extends TestCase
         $adminNonCreatable = $this->createMock(AdminInterface::class);
         $adminCreatable = $this->createMock(NextMajorAdminInterface::class);
 
-        $container->set('sonata_admin_non_creatable', $adminNonCreatable);
-        $container->set('sonata_admin_creatable', $adminCreatable);
+        $container->set('sensiolabs_admin_non_creatable', $adminNonCreatable);
+        $container->set('sensiolabs_admin_creatable', $adminCreatable);
 
         $adminCreatable
             ->method('showInDashboard')

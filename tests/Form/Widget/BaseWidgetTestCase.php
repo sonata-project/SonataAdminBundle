@@ -41,7 +41,7 @@ abstract class BaseWidgetTestCase extends AbstractWidgetTestCase
     /**
      * @var array<string, mixed>
      */
-    protected $sonataAdmin = [
+    protected $sensiolabsAdmin = [
         'name' => null,
         'admin' => null,
         'value' => null,
@@ -58,7 +58,7 @@ abstract class BaseWidgetTestCase extends AbstractWidgetTestCase
     protected function getEnvironment(): Environment
     {
         $environment = parent::getEnvironment();
-        $environment->addGlobal('sonata_admin', $this->getSonataAdmin());
+        $environment->addGlobal('sensiolabs_admin', $this->getSonataAdmin());
         $environment->addExtension(new RoutingExtension(static::createStub(UrlGeneratorInterface::class)));
         $environment->addExtension(new StimulusTwigExtension(new StimulusHelper(null)));
         $environment->addExtension(new HttpKernelExtension());

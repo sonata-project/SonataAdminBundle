@@ -35,35 +35,19 @@ final class CanonicalizeRuntime implements RuntimeExtensionInterface
     }
 
     /**
-     * Returns a canonicalized locale for "select2" NPM library,
-     * or `null` if the locale's language is "en", which doesn't require localization.
+     * @deprecated This method is deprecated and will be removed in a future version.
+     *             Select2 has been replaced with Tom Select which handles localization differently.
      */
     public function getCanonicalizedLocaleForSelect2(): ?string
     {
-        $locale = $this->getLocale();
+        trigger_deprecation(
+            'sensiolabs-de/admin-bundle',
+            '5.0',
+            'The "%s()" method is deprecated. Select2 has been replaced with Tom Select.',
+            __METHOD__
+        );
 
-        // "en" language doesn't require localization.
-        if ('en' === $lang = substr($locale, 0, 2)) {
-            return null;
-        }
-
-        switch ($locale) {
-            case 'pt':
-                $locale = 'pt-PT';
-                break;
-            case 'ug':
-                $locale = 'ug-CN';
-                break;
-            case 'zh':
-                $locale = 'zh-CN';
-                break;
-            default:
-                if (!\in_array($locale, ['pt-BR', 'pt-PT', 'ug-CN', 'zh-CN', 'zh-TW'], true)) {
-                    $locale = $lang;
-                }
-        }
-
-        return $locale;
+        return null;
     }
 
     private function getLocale(): string

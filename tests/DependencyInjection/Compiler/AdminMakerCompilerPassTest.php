@@ -26,7 +26,7 @@ final class AdminMakerCompilerPassTest extends AbstractCompilerPassTestCase
     {
         $this->compile();
 
-        self::assertContainerBuilderNotHasService('sonata.admin.maker');
+        self::assertContainerBuilderNotHasService('sensiolabs.admin.maker');
     }
 
     public function testDoesNothingWithoutDefaultControllerParameter(): void
@@ -37,12 +37,12 @@ final class AdminMakerCompilerPassTest extends AbstractCompilerPassTestCase
             [],
             CRUDController::class,
         ]);
-        $this->container->setDefinition('sonata.admin.maker', $definition);
+        $this->container->setDefinition('sensiolabs.admin.maker', $definition);
 
         $this->compile();
 
         self::assertContainerBuilderHasServiceDefinitionWithArgument(
-            'sonata.admin.maker',
+            'sensiolabs.admin.maker',
             2,
             CRUDController::class
         );
@@ -56,14 +56,14 @@ final class AdminMakerCompilerPassTest extends AbstractCompilerPassTestCase
             [],
             CRUDController::class,
         ]);
-        $this->container->setDefinition('sonata.admin.maker', $definition);
+        $this->container->setDefinition('sensiolabs.admin.maker', $definition);
 
-        $this->container->setParameter('sonata.admin.configuration.default_controller', CRUDController::class);
+        $this->container->setParameter('sensiolabs.admin.configuration.default_controller', CRUDController::class);
 
         $this->compile();
 
         self::assertContainerBuilderHasServiceDefinitionWithArgument(
-            'sonata.admin.maker',
+            'sensiolabs.admin.maker',
             2,
             CRUDController::class
         );
@@ -75,19 +75,19 @@ final class AdminMakerCompilerPassTest extends AbstractCompilerPassTestCase
         $definition->setArguments([
             'dir',
             [],
-            'sonata.admin.controller.crud',
+            'sensiolabs.admin.controller.crud',
         ]);
-        $this->container->setDefinition('sonata.admin.maker', $definition);
+        $this->container->setDefinition('sensiolabs.admin.maker', $definition);
 
         $definition = new Definition(CRUDController::class);
-        $this->container->setDefinition('sonata.admin.controller.crud', $definition);
+        $this->container->setDefinition('sensiolabs.admin.controller.crud', $definition);
 
-        $this->container->setParameter('sonata.admin.configuration.default_controller', 'sonata.admin.controller.crud');
+        $this->container->setParameter('sensiolabs.admin.configuration.default_controller', 'sensiolabs.admin.controller.crud');
 
         $this->compile();
 
         self::assertContainerBuilderHasServiceDefinitionWithArgument(
-            'sonata.admin.maker',
+            'sensiolabs.admin.maker',
             2,
             CRUDController::class
         );

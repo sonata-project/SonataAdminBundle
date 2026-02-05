@@ -61,9 +61,9 @@ final class ModelListType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        if (isset($view->vars['sonata_admin'])) {
+        if (isset($view->vars['sensiolabs_admin'])) {
             // set the correct edit mode
-            $view->vars['sonata_admin']['edit'] = 'list';
+            $view->vars['sensiolabs_admin']['edit'] = 'list';
         }
         $view->vars['btn_add'] = $options['btn_add'];
         $view->vars['btn_edit'] = $options['btn_edit'];
@@ -117,6 +117,6 @@ final class ModelListType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'sonata_type_model_list';
+        return 'sensiolabs_type_model_list';
     }
 }

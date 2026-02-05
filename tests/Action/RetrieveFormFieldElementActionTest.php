@@ -70,7 +70,7 @@ final class RetrieveFormFieldElementActionTest extends TestCase
     {
         $object = new \stdClass();
         $request = new Request([
-            '_sonata_admin' => 'sonata.post.admin',
+            '_sensiolabs_admin' => 'sensiolabs.post.admin',
             'objectId' => 42,
             'elementId' => 'element_collection',
             'field' => 'enabled',

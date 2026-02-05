@@ -71,6 +71,6 @@ final class ChoiceFieldMaskType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'sonata_type_choice_field_mask';
+        return 'sensiolabs_type_choice_field_mask';
     }
 }

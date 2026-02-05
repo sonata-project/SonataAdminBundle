@@ -9,36 +9,69 @@ file that was distributed with this source code.
 
 #}
 <script type="text/javascript">
-    jQuery('div#field_container_{{ id }} .sonata-ba-tabs').sortable({
-        axis: 'y',
-        opacity: 0.6,
-        items: '> div',
-        stop: apply_position_value_{{ id }}
-    });
+(function() {
+    var container = document.querySelector('div#field_container_{{ id }} .sonata-ba-tabs');
+
+    if (!container) return;
+
+    // Check if Sortable is available
+    if (typeof Sortable !== 'undefined') {
+        var sortable = Sortable.create(container, {
+            animation: 150,
+            handle: '.sonata-ba-sortable-handler',
+            draggable: '> div',
+            ghostClass: 'opacity-50',
+            onEnd: apply_position_value_{{ id }}
+        });
+    } else {
+        console.warn('SortableJS not available. Drag-and-drop sorting will not work.');
+    }
 
     function apply_position_value_{{ id }}() {
-        // update the input value position
-        jQuery('div#field_container_{{ id }} .sonata-ba-tabs .sonata-ba-field-{{ id }}-{{ sonata_admin.field_description.option('sortable') }}').each(function(index, element) {
-            // remove the sortable handler and put it back
-            var parent = jQuery(element).closest('.nav-tabs-custom');
-            var tabs = parent.find('> .nav-tabs');
-            jQuery('.sonata-ba-sortable-handler', tabs).remove();
-            $('<li class="sonata-ba-sortable-handler pull-right"></li>')
-                    .prepend('<i class="fas fa-grip-lines"></i>')
-                    .appendTo(tabs);
-            jQuery('input', element).hide();
+        // Update the input value position
+        var elements = document.querySelectorAll('div#field_container_{{ id }} .sonata-ba-tabs .sonata-ba-field-{{ id }}-{{ sensiolabs_admin.field_description.option('sortable') }}');
+
+        elements.forEach(function(element, index) {
+            var parent = element.closest('.nav-tabs-custom');
+            if (!parent) return;
+
+            var tabs = parent.querySelector('.nav-tabs');
+            if (!tabs) return;
+
+            // Remove existing sortable handler
+            var handler = tabs.querySelector('.sonata-ba-sortable-handler');
+            if (handler) {
+                handler.remove();
+            }
+
+            // Add new sortable handler
+            var newHandler = document.createElement('li');
+            newHandler.className = 'sonata-ba-sortable-handler cursor-move float-right';
+            newHandler.innerHTML = '{{ ux_icon('lucide:grip-horizontal', {class: 'w-4 h-4'})|e('js') }}';
+            tabs.appendChild(newHandler);
+
+            // Hide the input
+            var input = element.querySelector('input');
+            if (input) {
+                input.style.display = 'none';
+            }
         });
 
-        jQuery('div#field_container_{{ id }} .sonata-ba-tabs .sonata-ba-field-{{ id }}-{{ sonata_admin.field_description.option('sortable') }} input').each(function(index, value) {
-            jQuery(value).val(index + 1);
+        // Update position values
+        var inputs = document.querySelectorAll('div#field_container_{{ id }} .sonata-ba-tabs .sonata-ba-field-{{ id }}-{{ sensiolabs_admin.field_description.option('sortable') }} input');
+        inputs.forEach(function(input, index) {
+            input.value = index + 1;
         });
     }
 
-    // refresh the sortable option when a new element is added
-    jQuery('#sonata-ba-field-container-{{ id }}').bind('sonata.add_element', function() {
-        apply_position_value_{{ id }}();
-        jQuery('div#field_container_{{ id }} .sonata-ba-tabs').sortable('refresh');
-    });
+    // Refresh the sortable option when a new element is added
+    var fieldContainer = document.getElementById('sonata-ba-field-container-{{ id }}');
+    if (fieldContainer) {
+        fieldContainer.addEventListener('sensiolabs.add_element', function() {
+            apply_position_value_{{ id }}();
+        });
+    }
 
     apply_position_value_{{ id }}();
+})();
 </script>

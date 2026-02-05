@@ -34,7 +34,7 @@ final class ObjectAclManipulatorCompilerPassTest extends TestCase
 
         $objectAclManipulatorCompilerPass->process($containerBuilder);
 
-        $availableManagers = $containerBuilder->getDefinition('sonata.admin.command.generate_object_acl')->getArgument(1);
+        $availableManagers = $containerBuilder->getDefinition('sensiolabs.admin.command.generate_object_acl')->getArgument(1);
 
         static::assertIsArray($availableManagers);
         static::assertArrayHasKey($serviceId, $availableManagers);
@@ -45,7 +45,7 @@ final class ObjectAclManipulatorCompilerPassTest extends TestCase
      */
     public static function provideAvailableManagerCases(): iterable
     {
-        $serviceId = 'sonata.admin.manipulator.acl.object.orm';
+        $serviceId = 'sensiolabs.admin.manipulator.acl.object.orm';
         $container = static::createContainer();
         $container
             ->register($serviceId)
@@ -53,7 +53,7 @@ final class ObjectAclManipulatorCompilerPassTest extends TestCase
 
         yield [$container, $serviceId];
 
-        $parameterName = 'sonata.admin.manipulator.acl.object.orm.class';
+        $parameterName = 'sensiolabs.admin.manipulator.acl.object.orm.class';
         $container = static::createContainer();
         $container->setParameter($parameterName, ObjectAclManipulator::class);
 
@@ -69,7 +69,7 @@ final class ObjectAclManipulatorCompilerPassTest extends TestCase
         $pool = new Pool(new Container());
         $container = new ContainerBuilder();
         $container
-            ->register('sonata.admin.command.generate_object_acl')
+            ->register('sensiolabs.admin.command.generate_object_acl')
             ->setClass(GenerateObjectAclCommand::class)
             ->setArguments([$pool, []]);
 

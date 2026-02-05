@@ -24,7 +24,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  */
 final class ConfigureMenuEvent extends Event
 {
-    public const SIDEBAR = 'sonata.admin.event.configure.menu.sidebar';
+    public const SIDEBAR = 'sensiolabs.admin.event.configure.menu.sidebar';
 
     public function __construct(
         private FactoryInterface $factory,

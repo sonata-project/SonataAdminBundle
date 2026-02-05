@@ -1,8 +1,8 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
@@ -21,324 +21,373 @@ file that was distributed with this source code.
 {% set _actions = block('actions') is defined ? block('actions')|trim : null %}
 {% set _navbar_title = block('navbar_title') is defined ? block('navbar_title')|trim : null %}
 {% set _list_filters_actions = block('list_filters_actions') is defined ? block('list_filters_actions')|trim : null -%}
-{% set _skin = sonata_config.getOption('skin') %}
-{% set _use_select2 = sonata_config.getOption('use_select2') %}
-{% set _use_icheck = sonata_config.getOption('use_icheck') %}
+{% set _use_select2 = sensiolabs_config.getOption('use_select2') %}
 
 <!DOCTYPE html>
-<html {% block html_attributes %}class="no-js"{% endblock %}>
+<html {% block html_attributes %}lang="en" class="no-js"{% endblock %}>
     <head>
         {% block meta_tags %}
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
             <meta charset="UTF-8">
-            <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
         {% endblock %}
 
-        <meta name="sonata-config" content='{{ {
-            SKIN: _skin,
-            CONFIRM_EXIT: sonata_config.getOption('confirm_exit'),
+        <meta name="sensiolabs-config" content='{{ {
+            CONFIRM_EXIT: sensiolabs_config.getOption('confirm_exit'),
             USE_SELECT2: _use_select2,
-            USE_ICHECK: _use_icheck,
-            USE_STICKYFORMS: sonata_config.getOption('use_stickyforms'),
-            DEBUG: sonata_config.getOption('js_debug'),
+            USE_STICKYFORMS: sensiolabs_config.getOption('use_stickyforms'),
+            DEBUG: sensiolabs_config.getOption('js_debug'),
         }|json_encode()|raw }}'
         >
-        <meta name="sonata-translations" content='{{ {
-            CONFIRM_EXIT: 'confirm_exit'|trans({}, 'SonataAdminBundle'),
+        <meta name="sensiolabs-translations" content='{{ {
+            CONFIRM_EXIT: 'confirm_exit'|trans({}, 'SensioLabsAdminBundle'),
         }|json_encode()|raw }}'
         >
 
         {% block stylesheets %}
-            {% for stylesheet in sonata_config.getOption('stylesheets', []) %}
+            {% for stylesheet in sensiolabs_config.getOption('stylesheets', []) %}
                 <link rel="stylesheet" href="{{ asset(stylesheet.path, stylesheet.package_name) }}">
             {% endfor %}
         {% endblock %}
 
         {% block javascripts %}
-            {% block sonata_javascript_config %}
+            {% block sensiolabs_javascript_config %}
             {% endblock %}
 
-            {% block sonata_javascript_pool %}
-                {% for javascript in sonata_config.getOption('javascripts', []) %}
+            {% block sensiolabs_javascript_pool %}
+                {{ importmap('app') }}
+
+                {% for javascript in sensiolabs_config.getOption('javascripts', []) %}
                     <script src="{{ asset(javascript.path, javascript.package_name) }}"></script>
                 {% endfor %}
             {% endblock %}
-
-            {# localize select2 #}
-            {% if sonata_config.getOption('use_select2') %}
-                {% set localeForSelect2 = canonicalize_locale_for_select2() %}
-                {% if localeForSelect2 %}
-                    <script src="{{ asset('bundles/sonataadmin/select2-locale/' ~ localeForSelect2 ~ '.js', 'sonata_admin') }}"></script>
-                {% endif %}
-            {% endif %}
         {% endblock %}
 
         <title>
-        {% block sonata_head_title %}
-            {{ 'Admin'|trans({}, 'SonataAdminBundle') }}
-
+        {% block sensiolabs_head_title %}
+            {{ 'Admin'|trans({}, 'SensioLabsAdminBundle') }}
             {% if _title is not empty %}
                 {{ _title|striptags|raw }}
             {% else %}
                 {% if action is defined %}
-                    -
-                    {{ render_breadcrumbs_for_title(admin, action) }}
+                    - {{ render_breadcrumbs_for_title(admin, action) }}
                 {% endif %}
             {% endif %}
         {% endblock %}
         </title>
     </head>
-    <body
-            {% block body_attributes -%}
-                class="sonata-bc {% block admin_lte_skin_class %}{{ _skin }}{% endblock %} fixed
-                {% if _use_select2 %}sonata-select2{% endif %}
-                {% if _use_icheck %}sonata-icheck{% endif %}
-                {% if app.request.cookies.get('sonata_sidebar_hide') -%}
-                    sidebar-collapse
-                {%- endif -%}"
-                {{ stimulus_controller('sonata-sticky') }}
-            {%- endblock -%}
+    <body {% block body_attributes %}class="admin-shell antialiased{% if _use_select2 %} sensiolabs-select2{% endif %}"{% endblock %}
+          data-controller="sensiolabs-de--admin-bundle--sidebar"
     >
 
-    <div class="wrapper">
+    {# Mobile overlay #}
+    <div class="admin-sidebar-overlay hidden" data-sensiolabs-de--admin-bundle--sidebar-target="overlay" data-action="click->sensiolabs-de--admin-bundle--sidebar#close"></div>
 
-        {% block sonata_header %}
-            <header class="main-header">
-                {% block sonata_header_noscript_warning %}
+    {% block sensiolabs_left_side %}
+        <aside class="admin-sidebar" id="admin-sidebar" data-sensiolabs-de--admin-bundle--sidebar-target="sidebar">
+            {% block sensiolabs_sidebar_header %}
+                <div class="admin-sidebar-header">
+                    {% block logo %}
+                        <a href="{{ path('sensiolabs_admin_dashboard') }}" class="admin-sidebar-brand">
+                            {% if 'icon' == sensiolabs_config.getOption('logo_content') or 'all' == sensiolabs_config.getOption('logo_content') %}
+                                <img src="{{ asset(sensiolabs_config.logo) }}" alt="{{ sensiolabs_config.title }}" class="admin-sidebar-brand-logo">
+                            {% endif %}
+                            {% if 'text' == sensiolabs_config.getOption('logo_content') or 'all' == sensiolabs_config.getOption('logo_content') %}
+                                <span class="truncate">{{ sensiolabs_config.title }}</span>
+                            {% endif %}
+                        </a>
+                    {% endblock %}
+                </div>
+            {% endblock %}
+
+            <nav class="admin-sidebar-nav" data-controller="sensiolabs-de--admin-bundle--treeview">
+                {% block sensiolabs_side_nav %}
+                    {% block side_bar_before_nav %} {% endblock %}
+                    {% block side_bar_nav %}
+                        {% for item in sensiolabs_admin_menu_items() %}
+                            {% if item.isSection() %}
+                                <div class="admin-sidebar-section">
+                                    <div class="admin-sidebar-section-title">
+                                        {{ item.label|trans({}, 'SensioLabsAdminBundle') }}
+                                    </div>
+                                    <ul class="admin-sidebar-menu">
+                            {% elseif item.isSubMenu() %}
+                                        <li class="treeview" data-sensiolabs-de--admin-bundle--treeview-target="item">
+                                            <a href="#" class="admin-sidebar-item group" data-action="click->sensiolabs-de--admin-bundle--treeview#toggle">
+                                                {% if item.icon %}
+                                                    <span class="admin-sidebar-item-icon">{{ item.icon|parse_icon|raw }}</span>
+                                                {% endif %}
+                                                <span class="flex-1">{{ item.label|trans({}, 'SensioLabsAdminBundle') }}</span>
+                                                <svg class="w-4 h-4 transition-transform duration-200 treeview-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                                </svg>
+                                            </a>
+                                            <ul class="admin-sidebar-submenu hidden" data-sensiolabs-de--admin-bundle--treeview-target="submenu">
+                                                {% for child in item.children %}
+                                                    <li>
+                                                        <a href="{{ sensiolabs_admin_menu_item_url(child) }}" class="admin-sidebar-submenu-item">
+                                                            {{ child.label|trans({}, 'SensioLabsAdminBundle') }}
+                                                        </a>
+                                                    </li>
+                                                {% endfor %}
+                                            </ul>
+                                        </li>
+                            {% else %}
+                                        <li>
+                                            <a href="{{ sensiolabs_admin_menu_item_url(item) }}" class="admin-sidebar-item">
+                                                {% if item.icon %}
+                                                    <span class="admin-sidebar-item-icon">{{ item.icon|parse_icon|raw }}</span>
+                                                {% endif %}
+                                                <span>{{ item.label|trans({}, 'SensioLabsAdminBundle') }}</span>
+                                            </a>
+                                        </li>
+                            {% endif %}
+                        {% endfor %}
+                                    </ul>
+                                </div>
+                    {% endblock side_bar_nav %}
+                    {% block side_bar_after_nav %}{% endblock %}
+                {% endblock sensiolabs_side_nav %}
+            </nav>
+
+            {% block sensiolabs_sidebar_footer %}
+                <div class="admin-sidebar-footer">
+                    <div class="text-xs text-sidebar-text-muted text-center">
+                        {% block side_bar_after_nav_content %}{% endblock %}
+                    </div>
+                </div>
+            {% endblock %}
+        </aside>
+    {% endblock sensiolabs_left_side %}
+
+    <div class="admin-main">
+        {% block sensiolabs_header %}
+            <header class="admin-header">
+                {% block sensiolabs_header_noscript_warning %}
                     <noscript>
                         <div class="noscript-warning">
-                            {{ 'noscript_warning'|trans({}, 'SonataAdminBundle') }}
+                            {{ 'noscript_warning'|trans({}, 'SensioLabsAdminBundle') }}
                         </div>
                     </noscript>
                 {% endblock %}
-                {% block logo %}
-                    <a class="logo" href="{{ path('sonata_admin_dashboard') }}">
-                        {% if 'icon' == sonata_config.getOption('logo_content') or 'all' == sonata_config.getOption('logo_content') %}
-                            <img src="{{ asset(sonata_config.logo) }}" alt="{{ sonata_config.title }}">
-                        {% endif %}
-                        {% if 'text' == sonata_config.getOption('logo_content') or 'all' == sonata_config.getOption('logo_content') %}
-                            <span>{{ sonata_config.title }}</span>
-                        {% endif %}
-                    </a>
-                {% endblock %}
-                {% block sonata_nav %}
-                    <nav class="navbar navbar-static-top" {{ stimulus_target('sonata-sticky', 'topNavbar') }}>
-                        <a href="#" class="sidebar-toggle fa5" data-toggle="push-menu"
-                           role="button" title="{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}">
-                            <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SonataAdminBundle') }}</span>
-                        </a>
 
-                        <div class="navbar-left">
-                            {% block sonata_breadcrumb %}
-                                <div class="hidden-xs">
-                                    {% if _breadcrumb is not empty or action is defined %}
-                                        <ol class="nav navbar-top-links breadcrumb">
-                                            {% if _breadcrumb is empty %}
-                                                {% if action is defined %}
-                                                    {{ render_breadcrumbs(admin, action) }}
-                                                {% endif %}
-                                            {% else %}
-                                                {{ _breadcrumb|raw }}
-                                            {% endif %}
-                                        </ol>
+                <button type="button" class="admin-sidebar-toggle" title="{{ 'toggle_navigation'|trans({}, 'SensioLabsAdminBundle') }}" data-action="click->sensiolabs-de--admin-bundle--sidebar#toggle">
+                    <span class="sr-only">{{ 'toggle_navigation'|trans({}, 'SensioLabsAdminBundle') }}</span>
+                    {{ ux_icon('lucide:menu', {class: 'w-6 h-6'}) }}
+                </button>
+
+                <div class="admin-header-left">
+                    {% block sensiolabs_breadcrumb %}
+                        {% if _breadcrumb is not empty or action is defined %}
+                            <nav class="admin-breadcrumb hidden md:flex">
+                                {% if _breadcrumb is empty %}
+                                    {% if action is defined %}
+                                        {{ render_breadcrumbs(admin, action) }}
                                     {% endif %}
-                                </div>
-                            {% endblock sonata_breadcrumb %}
-                        </div>
-
-                        {% block sonata_top_nav_menu %}
-                            <div class="navbar-custom-menu">
-                                <ul class="nav navbar-nav">
-                                    {% block sonata_top_nav_menu_add_block %}
-                                        {% set addBlock = include(get_global_template('add_block')) %}
-                                        {% if addBlock|trim is not empty %}
-                                            <li class="dropdown">
-                                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                    <i class="fas fa-plus-square fa-fw" aria-hidden="true"></i> <i class="fas fa-caret-down" aria-hidden="true"></i>
-                                                </a>
-                                                {{ addBlock|raw }}
-                                            </li>
-                                        {% endif %}
-                                    {% endblock %}
-                                    {% if app.user %}
-                                        {% block sonata_top_nav_menu_user_block %}
-                                            {% set userBlock = include(get_global_template('user_block')) %}
-                                            {% if userBlock|trim is not empty %}
-                                                <li class="dropdown user-menu">
-                                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                                        <i class="fas fa-user fa-fw" aria-hidden="true"></i> <i class="fas fa-caret-down" aria-hidden="true"></i>
-                                                    </a>
-                                                    <ul class="dropdown-menu dropdown-user">
-                                                        {{ userBlock|raw }}
-                                                    </ul>
-                                                </li>
-                                            {% endif %}
-                                        {% endblock %}
-                                    {% endif %}
-                                </ul>
-                            </div>
-                        {% endblock %}
-                    </nav>
-                {% endblock sonata_nav %}
-            </header>
-        {% endblock sonata_header %}
-
-        {% block sonata_wrapper %}
-            {% block sonata_left_side %}
-                <aside class="main-sidebar">
-                    <section class="sidebar">
-                        {% block sonata_side_nav %}
-                            {% block sonata_sidebar_search %}
-                                {% if sonata_config.getOption('search') %}
-                                    <form action="{{ path('sonata_admin_search') }}" method="GET" class="sidebar-form" role="search">
-                                        <div class="input-group custom-search-form">
-                                            <input type="text" name="q" value="{{ app.request.attributes.get('q', app.request.query.get('q', app.request.request.get('q'))) }}" class="form-control" placeholder="{{ 'search_placeholder'|trans({}, 'SonataAdminBundle') }}">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-flat" type="submit">
-                                                    <i class="fas fa-search" aria-hidden="true"></i>
-                                                </button>
-                                            </span>
-                                        </div>
-                                    </form>
+                                {% else %}
+                                    {{ _breadcrumb|raw }}
                                 {% endif %}
-                            {% endblock sonata_sidebar_search %}
+                            </nav>
+                        {% endif %}
+                    {% endblock sensiolabs_breadcrumb %}
+                </div>
 
-                            {% block side_bar_before_nav %} {% endblock %}
-                            {% block side_bar_nav %}
-                                {{ knp_menu_render('sonata_admin_sidebar', {template: get_global_template('knp_menu_template')}) }}
-                            {% endblock side_bar_nav %}
-                            {% block side_bar_after_nav %}
-                                <p class="text-center small" style="border-top: 1px solid #444444; padding-top: 10px">
-                                    {% block side_bar_after_nav_content %}
-                                    {% endblock %}
-                                </p>
+                {% block sensiolabs_top_nav_menu %}
+                    <div class="admin-header-right">
+                        {% block sensiolabs_top_nav_menu_add_block %}
+                            {% set addBlock = include(get_global_template('add_block')) %}
+                            {% if addBlock|trim is not empty %}
+                                <div class="admin-dropdown" data-controller="sensiolabs-de--admin-bundle--dropdown">
+                                    <button type="button" data-action="click->sensiolabs-de--admin-bundle--dropdown#toggle" data-sensiolabs-de--admin-bundle--dropdown-target="button" class="admin-btn-ghost admin-btn-icon-sm">
+                                        {{ ux_icon('lucide:plus', {class: 'w-5 h-5'}) }}
+                                    </button>
+                                    <div class="admin-dropdown-menu hidden" data-sensiolabs-de--admin-bundle--dropdown-target="menu">
+                                        <div class="admin-dropdown-menu-body">
+                                            {{ addBlock|raw }}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endblock %}
+                        {% if app.user %}
+                            {% block sensiolabs_top_nav_menu_user_block %}
+                                {% set userBlock = include(get_global_template('user_block')) %}
+                                {% if userBlock|trim is not empty %}
+                                    <div class="admin-dropdown" data-controller="sensiolabs-de--admin-bundle--dropdown">
+                                        <button type="button" data-action="click->sensiolabs-de--admin-bundle--dropdown#toggle" data-sensiolabs-de--admin-bundle--dropdown-target="button" class="admin-btn-ghost admin-btn-icon-sm">
+                                            <span class="admin-avatar admin-avatar-sm bg-primary-100 text-primary-600">
+                                                {{ ux_icon('lucide:user', {class: 'w-4 h-4'}) }}
+                                            </span>
+                                        </button>
+                                        <div class="admin-dropdown-menu hidden" data-sensiolabs-de--admin-bundle--dropdown-target="menu">
+                                            <div class="admin-dropdown-menu-body">
+                                                {{ userBlock|raw }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
                             {% endblock %}
-                        {% endblock sonata_side_nav %}
-                    </section>
-                </aside>
-            {% endblock sonata_left_side %}
+                        {% endif %}
+                    </div>
+                {% endblock %}
+            </header>
+        {% endblock sensiolabs_header %}
 
-            <div class="content-wrapper">
-                {% block sonata_page_content %}
-                    <section class="content-header">
-
-                        {% block sonata_page_content_header %}
-                            {% block sonata_page_content_nav %}
-                                {% if _navbar_title is not empty
-                                  or _tab_menu is not empty
-                                  or _actions is not empty
-                                  or _list_filters_actions is not empty
-                                 %}
-                                    <nav class="navbar navbar-default" role="navigation" {{ stimulus_target('sonata-sticky', 'navbar') }}>
-                                        <div class="container-fluid">
+        {% block sensiolabs_wrapper %}
+            <main>
+                {% block sensiolabs_page_content %}
+                    {% block sensiolabs_page_content_header %}
+                        {% block sensiolabs_page_content_nav %}
+                            {% if _navbar_title is not empty
+                              or _tab_menu is not empty
+                              or _actions is not empty
+                              or _list_filters_actions is not empty
+                             %}
+                                <div class="bg-white border-b border-gray-200 px-6 py-4">
+                                    <div class="flex flex-wrap items-center gap-4">
+                                        {# Left side: Title and primary action (Create button) #}
+                                        <div class="flex items-center gap-4 flex-1 min-w-0">
                                             {% block tab_menu_navbar_header %}
                                                 {% if _navbar_title is not empty %}
-                                                    <div class="navbar-header">
-                                                        <a class="navbar-brand" href="#">{{ _navbar_title|raw }}</a>
-                                                    </div>
+                                                    <h1 class="admin-content-title truncate">{{ _navbar_title|raw }}</h1>
                                                 {% endif %}
                                             {% endblock %}
 
-                                            <div class="navbar-collapse">
-                                                {% if _tab_menu is not empty %}
-                                                    <div class="navbar-left">
-                                                        {{ _tab_menu|raw }}
-                                                    </div>
-                                                {% endif %}
-
-                                                {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
-                                                    <div class="nav navbar-right btn-group">
-                                                        {% for mode, settings in admin.listModes %}
-                                                            <a href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}" class="btn btn-default navbar-btn btn-sm{% if admin.getListMode() == mode %} active{% endif %}">
-                                                                {# NEXT_MAJOR: Remove the if and keep the else part #}
-                                                                {% if settings.icon is not defined and settings.class is defined %}
-                                                                    {% deprecated 'Relying on the "class" setting is deprecated since sonata-project/admin-bundle 4.9, use the "icon" setting instead' %}
-                                                                    <i class="{{ settings.class }}" aria-hidden="true"></i>
-                                                                {% else %}
-                                                                    {{ settings.icon|default('')|parse_icon }}
-                                                                {% endif %}
-                                                            </a>
-                                                        {% endfor %}
-                                                    </div>
-                                                {% endif %}
-
-                                                {% block sonata_admin_content_actions_wrappers %}
-                                                    {% if _actions|replace({ '<li>': '', '</li>': '' })|trim is not empty %}
-                                                        <ul class="nav navbar-nav navbar-right">
-                                                        {% if _actions|split('</a>')|length > 2 %}
-                                                            <li class="dropdown sonata-actions">
-                                                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'link_actions'|trans({}, 'SonataAdminBundle') }} <b class="caret"></b></a>
-                                                                <ul class="dropdown-menu" role="menu">
-                                                                    {{ _actions|raw }}
-                                                                </ul>
-                                                            </li>
-                                                        {% else %}
-                                                            {{ _actions|raw }}
-                                                        {% endif %}
-                                                        </ul>
+                                            {# Primary action: Create button - most important action goes here #}
+                                            {% if admin is defined and action is defined and action == 'list' %}
+                                                {% if admin.hasAccess('create') and admin.hasRoute('create') %}
+                                                    {% if admin.subClasses is empty %}
+                                                        <a class="inline-flex items-center justify-center gap-2 h-10 px-4 text-sm font-medium rounded-lg bg-primary-500 text-white hover:bg-primary-600 transition-colors shadow-sm" href="{{ admin.generateUrl('create') }}">
+                                                            {{ ux_icon('lucide:plus', {class: 'w-4 h-4'}) }}
+                                                            {{ 'link_action_create'|trans({}, 'SensioLabsAdminBundle') }}
+                                                        </a>
+                                                    {% else %}
+                                                        <div class="admin-dropdown" data-controller="sensiolabs-de--admin-bundle--dropdown">
+                                                            <button type="button"
+                                                                    data-action="click->sensiolabs-de--admin-bundle--dropdown#toggle"
+                                                                    data-sensiolabs-de--admin-bundle--dropdown-target="button"
+                                                                    class="inline-flex items-center justify-center gap-2 h-10 px-4 text-sm font-medium rounded-lg bg-primary-500 text-white hover:bg-primary-600 transition-colors shadow-sm">
+                                                                {{ ux_icon('lucide:plus', {class: 'w-4 h-4'}) }}
+                                                                {{ 'link_action_create'|trans({}, 'SensioLabsAdminBundle') }}
+                                                                {{ ux_icon('lucide:chevron-down', {class: 'w-4 h-4'}) }}
+                                                            </button>
+                                                            <div class="admin-dropdown-menu hidden"
+                                                                 data-sensiolabs-de--admin-bundle--dropdown-target="menu">
+                                                                <div class="admin-dropdown-menu-body">
+                                                                    {% for subclass in admin.subclasses|keys %}
+                                                                        <a class="admin-dropdown-item" href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">
+                                                                            {{ ux_icon('lucide:plus-circle', {class: 'w-4 h-4 text-gray-400'}) }}
+                                                                            {{ subclass|trans({}, admin.translationdomain) }}
+                                                                        </a>
+                                                                    {% endfor %}
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     {% endif %}
-                                                {% endblock sonata_admin_content_actions_wrappers %}
-
-                                                {% if _list_filters_actions is not empty %}
-                                                    {{ _list_filters_actions|raw }}
                                                 {% endif %}
-                                            </div>
-                                        </div>
-                                    </nav>
-                                {% endif %}
-                            {% endblock sonata_page_content_nav %}
-                        {% endblock sonata_page_content_header %}
-                    </section>
+                                            {% endif %}
 
-                    <section class="content">
-                        {% block sonata_admin_content %}
+                                            {% if _tab_menu is not empty %}
+                                                <div class="hidden lg:block">
+                                                    {{ _tab_menu|raw }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+
+                                        {# Right side: Secondary actions #}
+                                        <div class="flex items-center gap-2">
+                                            {# View mode toggle (list/mosaic) #}
+                                            {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
+                                                <div class="inline-flex rounded-lg border border-gray-200 overflow-hidden shadow-sm" role="group" aria-label="View mode">
+                                                    {% for mode, settings in admin.listModes %}
+                                                        {% set mode_label = mode == 'list' ? 'List view' : (mode == 'mosaic' ? 'Grid view' : mode|capitalize ~ ' view') %}
+                                                        {% set is_active = admin.getListMode() == mode %}
+                                                        <a href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}"
+                                                           class="inline-flex items-center justify-center w-10 h-10 transition-all duration-150 {% if is_active %}bg-primary-500 text-white shadow-inner{% else %}bg-white text-gray-500 hover:text-gray-700 hover:bg-gray-50{% endif %} {% if not loop.last %}border-r border-gray-200{% endif %}"
+                                                           title="{{ mode_label }}"
+                                                           aria-label="{{ mode_label }}"
+                                                           {% if is_active %}aria-current="true"{% endif %}>
+                                                            {% if mode == 'list' %}
+                                                                {{ ux_icon('lucide:list', {class: 'w-5 h-5'}) }}
+                                                            {% elseif mode == 'mosaic' %}
+                                                                {{ ux_icon('lucide:layout-grid', {class: 'w-5 h-5'}) }}
+                                                            {% else %}
+                                                                {{ ux_icon('lucide:grid-3x3', {class: 'w-5 h-5'}) }}
+                                                            {% endif %}
+                                                        </a>
+                                                    {% endfor %}
+                                                </div>
+                                            {% endif %}
+
+                                            {# Filters dropdown #}
+                                            {% if _list_filters_actions is not empty %}
+                                                {{ _list_filters_actions|raw }}
+                                            {% endif %}
+
+                                            {# Other action buttons (edit, show, history, etc.) #}
+                                            {# Note: Create button is excluded on list view (handled above) #}
+                                            {% block sensiolabs_admin_content_actions_wrappers %}
+                                                {% set filtered_actions = _actions|replace({ '<li>': '', '</li>': '' })|trim %}
+                                                {% if filtered_actions is not empty %}
+                                                    <div class="admin-content-actions flex items-center gap-2">
+                                                        {{ _actions|raw }}
+                                                    </div>
+                                                {% endif %}
+                                            {% endblock sensiolabs_admin_content_actions_wrappers %}
+                                        </div>
+                                    </div>
+
+                                    {# Tab menu on mobile - show below header #}
+                                    {% if _tab_menu is not empty %}
+                                        <div class="lg:hidden mt-3 -mb-1">
+                                            {{ _tab_menu|raw }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+                        {% endblock sensiolabs_page_content_nav %}
+                    {% endblock sensiolabs_page_content_header %}
+
+                    <div class="admin-content">
+                        {% block sensiolabs_admin_content %}
 
                             {% block notice %}
                                 {% include '@SonataTwig/FlashMessage/render.html.twig' %}
                             {% endblock notice %}
 
                             {% if _preview is not empty %}
-                                <div class="sonata-ba-preview">{{ _preview|raw }}</div>
+                                <div class="sensiolabs-ba-preview mb-6">{{ _preview|raw }}</div>
                             {% endif %}
 
                             {% if _content is not empty %}
-                                <div class="sonata-ba-content">{{ _content|raw }}</div>
+                                <div class="sensiolabs-ba-content mb-6">{{ _content|raw }}</div>
                             {% endif %}
 
                             {% if _show is not empty %}
-                                <div class="sonata-ba-show">{{ _show|raw }}</div>
+                                <div class="sensiolabs-ba-show">{{ _show|raw }}</div>
                             {% endif %}
 
                             {% if _form is not empty %}
-                                <div class="sonata-ba-form">{{ _form|raw }}</div>
+                                <div class="sensiolabs-ba-form">{{ _form|raw }}</div>
                             {% endif %}
 
                             {% if _list_filters is not empty %}
-                                <div class="row">
+                                <div class="mb-5">
                                     {{ _list_filters|raw }}
                                 </div>
                             {% endif %}
 
                             {% if _list_table is not empty %}
-                                <div class="row">
+                                <div>
                                     {{ _list_table|raw }}
                                 </div>
                             {% endif %}
-                        {% endblock sonata_admin_content %}
-                    </section>
-                {% endblock sonata_page_content %}
-            </div>
-        {% endblock sonata_wrapper %}
+                        {% endblock sensiolabs_admin_content %}
+                    </div>
+                {% endblock sensiolabs_page_content %}
+            </main>
+        {% endblock sensiolabs_wrapper %}
     </div>
-
-    {% if sonata_config.getOption('use_bootlint') %}
-        {% block bootlint %}
-            {# Bootlint - https://github.com/twbs/bootlint#in-the-browser #}
-            <script type="text/javascript">
-                javascript:(function(){var s=document.createElement("script");s.onload=function(){bootlint.showLintReportForCurrentDocument([], {hasProblems: false, problemFree: false});};s.src="https://maxcdn.bootstrapcdn.com/bootlint/latest/bootlint.min.js";document.body.appendChild(s)})();
-            </script>
-        {% endblock %}
-    {% endif %}
 
     </body>
 </html>

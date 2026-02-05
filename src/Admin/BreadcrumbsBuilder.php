@@ -85,7 +85,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
             $menu = $menu->addChild(
                 'link_breadcrumb_dashboard',
                 [
-                    'uri' => $admin->getRouteGenerator()->generate('sonata_admin_dashboard'),
+                    'uri' => $admin->getRouteGenerator()->generate('sensiolabs_admin_dashboard'),
                     'extras' => ['translation_domain' => 'SensioLabsAdminBundle'],
                 ]
             );

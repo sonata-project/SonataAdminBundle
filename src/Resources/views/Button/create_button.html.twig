@@ -1,30 +1,44 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 
 #}
 
+{# On list view, the create button is rendered in the page header by standard_layout.html.twig #}
+{% if action is not defined or action != 'list' %}
 {% if admin.hasAccess('create') and admin.hasRoute('create') %}
     {% if admin.subClasses is empty %}
-        <li>
-            <a class="sonata-action-element" href="{{ admin.generateUrl('create') }}">
-                <i class="fas fa-plus-circle" aria-hidden="true"></i>
-                {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }}
-            </a>
-        </li>
+        <a class="admin-btn-primary" href="{{ admin.generateUrl('create') }}">
+            {{ ux_icon('lucide:plus', {class: 'w-4 h-4'}) }}
+            {{ 'link_action_create'|trans({}, 'SensioLabsAdminBundle') }}
+        </a>
     {% else %}
-        {% for subclass in admin.subclasses|keys %}
-            <li>
-                <a class="sonata-action-element" href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">
-                    <i class="fas fa-plus-circle" aria-hidden="true"></i>
-                    {{ 'link_action_create'|trans({}, 'SonataAdminBundle') }} {{ subclass|trans({}, admin.translationdomain) }}
-                </a>
-            </li>
-        {% endfor %}
+        <div class="admin-dropdown" data-controller="sensiolabs-de--admin-bundle--dropdown">
+            <button type="button"
+                    data-action="click->sensiolabs-de--admin-bundle--dropdown#toggle"
+                    data-sensiolabs-de--admin-bundle--dropdown-target="button"
+                    class="admin-btn-primary">
+                {{ ux_icon('lucide:plus', {class: 'w-4 h-4'}) }}
+                {{ 'link_action_create'|trans({}, 'SensioLabsAdminBundle') }}
+                {{ ux_icon('lucide:chevron-down', {class: 'w-4 h-4'}) }}
+            </button>
+            <div class="admin-dropdown-menu hidden"
+                 data-sensiolabs-de--admin-bundle--dropdown-target="menu">
+                <div class="admin-dropdown-menu-body">
+                    {% for subclass in admin.subclasses|keys %}
+                        <a class="admin-dropdown-item" href="{{ admin.generateUrl('create', {'subclass': subclass}) }}">
+                            {{ ux_icon('lucide:plus-circle', {class: 'w-4 h-4 text-gray-400'}) }}
+                            {{ subclass|trans({}, admin.translationdomain) }}
+                        </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     {% endif %}
+{% endif %}
 {% endif %}

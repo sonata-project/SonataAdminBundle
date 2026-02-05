@@ -145,7 +145,7 @@ final class Pool
 
     /**
      * Returns an admin class by its Admin code
-     * ie : sonata.news.admin.post|sonata.news.admin.comment => return the child class of post.
+     * ie : sensiolabs.news.admin.post|sensiolabs.news.admin.comment => return the child class of post.
      *
      * @throws AdminCodeNotFoundException
      *

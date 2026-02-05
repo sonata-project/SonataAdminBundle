@@ -26,11 +26,11 @@ final class XEditableExtension extends AbstractExtension
     {
         return [
             new TwigFilter(
-                'sonata_xeditable_type',
+                'sensiolabs_xeditable_type',
                 [XEditableRuntime::class, 'getXEditableType']
             ),
             new TwigFilter(
-                'sonata_xeditable_choices',
+                'sensiolabs_xeditable_choices',
                 [XEditableRuntime::class, 'getXEditableChoices']
             ),
         ];

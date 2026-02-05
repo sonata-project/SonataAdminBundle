@@ -43,7 +43,7 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $sonataAdmin = [
+        $sensiolabsAdmin = [
             'name' => false,
             'admin' => false,
             'value' => null,
@@ -54,23 +54,23 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
             'options' => $this->options,
         ];
 
-        $builder->setAttribute('sonata_admin_enabled', false);
+        $builder->setAttribute('sensiolabs_admin_enabled', false);
 
-        if ($options['sonata_field_description'] instanceof FieldDescriptionInterface) {
-            $fieldDescription = $options['sonata_field_description'];
+        if ($options['sensiolabs_field_description'] instanceof FieldDescriptionInterface) {
+            $fieldDescription = $options['sensiolabs_field_description'];
 
-            $sonataAdmin['admin'] = $fieldDescription->getAdmin();
-            $sonataAdmin['field_description'] = $fieldDescription;
-            $sonataAdmin['name'] = $fieldDescription->getName();
-            $sonataAdmin['edit'] = $fieldDescription->getOption('edit', 'standard');
-            $sonataAdmin['inline'] = $fieldDescription->getOption('inline', 'natural');
-            $sonataAdmin['block_name'] = $fieldDescription->getOption('block_name', false);
-            $sonataAdmin['class'] = $this->getClass($builder);
+            $sensiolabsAdmin['admin'] = $fieldDescription->getAdmin();
+            $sensiolabsAdmin['field_description'] = $fieldDescription;
+            $sensiolabsAdmin['name'] = $fieldDescription->getName();
+            $sensiolabsAdmin['edit'] = $fieldDescription->getOption('edit', 'standard');
+            $sensiolabsAdmin['inline'] = $fieldDescription->getOption('inline', 'natural');
+            $sensiolabsAdmin['block_name'] = $fieldDescription->getOption('block_name', false);
+            $sensiolabsAdmin['class'] = $this->getClass($builder);
 
-            $builder->setAttribute('sonata_admin_enabled', true);
+            $builder->setAttribute('sensiolabs_admin_enabled', true);
         }
 
-        $builder->setAttribute('sonata_admin', $sonataAdmin);
+        $builder->setAttribute('sensiolabs_admin', $sensiolabsAdmin);
     }
 
     /**
@@ -78,21 +78,21 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
      */
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-        $sonataAdmin = $form->getConfig()->getAttribute('sonata_admin');
+        $sensiolabsAdmin = $form->getConfig()->getAttribute('sensiolabs_admin');
 
         /*
          * We have a child, so we need to upgrade block prefix
          */
         if (
             null !== $view->parent
-            && true === $view->parent->vars['sonata_admin_enabled']
-            && \is_array($sonataAdmin)
-            && false === $sonataAdmin['admin']
+            && true === $view->parent->vars['sensiolabs_admin_enabled']
+            && \is_array($sensiolabsAdmin)
+            && false === $sensiolabsAdmin['admin']
         ) {
             $blockPrefixes = $view->vars['block_prefixes'] ?? [];
             \assert(\is_array($blockPrefixes));
 
-            $adminCode = $view->parent->vars['sonata_admin_code'] ?? '';
+            $adminCode = $view->parent->vars['sensiolabs_admin_code'] ?? '';
             \assert(\is_string($adminCode));
 
             $baseName = str_replace('.', '_', $adminCode);
@@ -109,8 +109,8 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
             $blockPrefixes[] = \sprintf('%s_%s_%s_%s', $baseName, $baseType, $view->parent->vars['name'], $blockSuffix);
 
             $view->vars['block_prefixes'] = array_unique($blockPrefixes);
-            $view->vars['sonata_admin_enabled'] = true;
-            $view->vars['sonata_admin'] = [
+            $view->vars['sensiolabs_admin_enabled'] = true;
+            $view->vars['sensiolabs_admin'] = [
                 'admin' => false,
                 'field_description' => false,
                 'name' => false,
@@ -120,20 +120,20 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
                 'class' => false,
                 'options' => $this->options,
             ];
-            $view->vars['sonata_admin_code'] = $adminCode;
+            $view->vars['sensiolabs_admin_code'] = $adminCode;
 
             return;
         }
 
         // avoid to add extra information not required by non admin field
-        if (\is_array($sonataAdmin) && true === $form->getConfig()->getAttribute('sonata_admin_enabled', true)) {
-            $sonataAdmin['value'] = $form->getData();
+        if (\is_array($sensiolabsAdmin) && true === $form->getConfig()->getAttribute('sensiolabs_admin_enabled', true)) {
+            $sensiolabsAdmin['value'] = $form->getData();
 
             // add a new block types, so the Admin Form element can be tweaked based on the admin code
             $blockPrefixes = $view->vars['block_prefixes'] ?? [];
             \assert(\is_array($blockPrefixes));
 
-            $admin = $sonataAdmin['admin'];
+            $admin = $sensiolabsAdmin['admin'];
             \assert($admin instanceof AdminInterface);
 
             $baseName = str_replace('.', '_', $admin->getCode());
@@ -145,31 +145,31 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
             \assert(\is_string($blockSuffix));
 
             $blockPrefixes[] = \sprintf('%s_%s', $baseName, $baseType);
-            $blockPrefixes[] = \sprintf('%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType);
-            $blockPrefixes[] = \sprintf('%s_%s_%s_%s', $baseName, $sonataAdmin['name'], $baseType, $blockSuffix);
+            $blockPrefixes[] = \sprintf('%s_%s_%s', $baseName, $sensiolabsAdmin['name'], $baseType);
+            $blockPrefixes[] = \sprintf('%s_%s_%s_%s', $baseName, $sensiolabsAdmin['name'], $baseType, $blockSuffix);
 
-            if (isset($sonataAdmin['block_name']) && false !== $sonataAdmin['block_name']) {
-                $blockPrefixes[] = $sonataAdmin['block_name'];
+            if (isset($sensiolabsAdmin['block_name']) && false !== $sensiolabsAdmin['block_name']) {
+                $blockPrefixes[] = $sensiolabsAdmin['block_name'];
             }
 
             $view->vars['block_prefixes'] = array_unique($blockPrefixes);
-            $view->vars['sonata_admin_enabled'] = true;
-            $view->vars['sonata_admin'] = $sonataAdmin;
-            $view->vars['sonata_admin_code'] = $admin->getCode();
-            $view->vars['sonata_admin_translation_domain'] = $admin->getTranslationDomain();
+            $view->vars['sensiolabs_admin_enabled'] = true;
+            $view->vars['sensiolabs_admin'] = $sensiolabsAdmin;
+            $view->vars['sensiolabs_admin_code'] = $admin->getCode();
+            $view->vars['sensiolabs_admin_translation_domain'] = $admin->getTranslationDomain();
 
             $attr = $view->vars['attr'];
 
-            if (!isset($attr['class']) && isset($sonataAdmin['class'])) {
-                $attr['class'] = $sonataAdmin['class'];
+            if (!isset($attr['class']) && isset($sensiolabsAdmin['class'])) {
+                $attr['class'] = $sensiolabsAdmin['class'];
             }
 
             $view->vars['attr'] = $attr;
         } else {
-            $view->vars['sonata_admin_enabled'] = false;
+            $view->vars['sensiolabs_admin_enabled'] = false;
         }
 
-        $view->vars['sonata_admin'] = $sonataAdmin;
+        $view->vars['sensiolabs_admin'] = $sensiolabsAdmin;
     }
 
     /**
@@ -185,8 +185,8 @@ final class FormTypeFieldExtension extends AbstractTypeExtension
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'sonata_admin' => null,
-            'sonata_field_description' => null,
+            'sensiolabs_admin' => null,
+            'sensiolabs_field_description' => null,
 
             // be compatible with mopa if not installed, avoid generating an exception for invalid option
             'label_render' => true,

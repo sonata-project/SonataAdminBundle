@@ -35,8 +35,18 @@ final class RoleSecurityHandler implements SecurityHandlerInterface
         $this->superAdminRoles = [$superAdminRole];
     }
 
-    public function isGranted(AdminInterface $admin, string $attribute, ?object $object = null): bool
+    public function isGranted(AdminInterface $admin, string|Expression $attribute, ?object $object = null): bool
     {
+        // Handle Expression objects directly
+        if ($attribute instanceof Expression) {
+            try {
+                return $this->isAnyGranted($this->superAdminRoles)
+                    || $this->authorizationChecker->isGranted($attribute, $object);
+            } catch (AuthenticationCredentialsNotFoundException) {
+                return false;
+            }
+        }
+
         $useAll = $this->hasOnlyAdminRole($attribute);
         $mappedAttributes = $this->mapAttribute($attribute, $admin);
         $allRole = \sprintf($this->getBaseRole($admin), 'ALL');

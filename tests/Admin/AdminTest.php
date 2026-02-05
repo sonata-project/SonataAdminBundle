@@ -132,7 +132,7 @@ final class AdminTest extends TestCase
         $class = Post::class;
         $baseControllerName = 'Sonata\NewsBundle\Controller\PostAdminController';
 
-        $admin = new PostAdmin('sonata.post.admin.post', $class, $baseControllerName);
+        $admin = new PostAdmin('sensiolabs.post.admin.post', $class, $baseControllerName);
         static::assertInstanceOf(AbstractAdmin::class, $admin);
         static::assertSame($class, $admin->getClass());
         static::assertSame($baseControllerName, $admin->getBaseControllerName());
@@ -269,26 +269,26 @@ final class AdminTest extends TestCase
     public function testChildren(): void
     {
         $postAdmin = new PostAdmin();
-        $postAdmin->setCode('sonata.post.admin.post');
+        $postAdmin->setCode('sensiolabs.post.admin.post');
         static::assertFalse($postAdmin->hasChildren());
         static::assertFalse($postAdmin->hasChild('comment'));
 
         $commentAdmin = new CommentAdmin();
-        $commentAdmin->setCode('sonata.post.admin.comment');
+        $commentAdmin->setCode('sensiolabs.post.admin.comment');
         $postAdmin->addChild($commentAdmin, 'post');
 
         static::assertTrue($postAdmin->hasChildren());
-        static::assertTrue($postAdmin->hasChild('sonata.post.admin.comment'));
+        static::assertTrue($postAdmin->hasChild('sensiolabs.post.admin.comment'));
 
-        static::assertSame('sonata.post.admin.comment', $postAdmin->getChild('sonata.post.admin.comment')->getCode());
-        static::assertSame('sonata.post.admin.post|sonata.post.admin.comment', $postAdmin->getChild('sonata.post.admin.comment')->getBaseCodeRoute());
-        static::assertSame($postAdmin, $postAdmin->getChild('sonata.post.admin.comment')->getParent());
+        static::assertSame('sensiolabs.post.admin.comment', $postAdmin->getChild('sensiolabs.post.admin.comment')->getCode());
+        static::assertSame('sensiolabs.post.admin.post|sensiolabs.post.admin.comment', $postAdmin->getChild('sensiolabs.post.admin.comment')->getBaseCodeRoute());
+        static::assertSame($postAdmin, $postAdmin->getChild('sensiolabs.post.admin.comment')->getParent());
         static::assertSame('post', $commentAdmin->getParentAssociationMapping());
 
         static::assertFalse($postAdmin->isChild());
         static::assertTrue($commentAdmin->isChild());
 
-        static::assertSame(['sonata.post.admin.comment' => $commentAdmin], $postAdmin->getChildren());
+        static::assertSame(['sensiolabs.post.admin.comment' => $commentAdmin], $postAdmin->getChildren());
     }
 
     public function testParent(): void
@@ -923,17 +923,17 @@ final class AdminTest extends TestCase
     public function testGetBaseCodeRoute(): void
     {
         $postAdmin = new PostAdmin();
-        $postAdmin->setCode('sonata.post.admin.post');
+        $postAdmin->setCode('sensiolabs.post.admin.post');
 
         $commentAdmin = new CommentAdmin();
-        $commentAdmin->setCode('sonata.post.admin.comment');
+        $commentAdmin->setCode('sensiolabs.post.admin.comment');
 
         static::assertSame($postAdmin->getCode(), $postAdmin->getBaseCodeRoute());
 
         $postAdmin->addChild($commentAdmin, 'post');
 
         static::assertSame(
-            'sonata.post.admin.post|sonata.post.admin.comment',
+            'sensiolabs.post.admin.post|sensiolabs.post.admin.comment',
             $commentAdmin->getBaseCodeRoute()
         );
     }
@@ -1267,9 +1267,9 @@ final class AdminTest extends TestCase
     public function testGetObjectIdentifier(): void
     {
         $admin = new PostAdmin();
-        $admin->setCode('sonata.post.admin.post');
+        $admin->setCode('sensiolabs.post.admin.post');
 
-        static::assertSame('sonata.post.admin.post', $admin->getObjectIdentifier());
+        static::assertSame('sensiolabs.post.admin.post', $admin->getObjectIdentifier());
     }
 
     #[DoesNotPerformAssertions]
@@ -1285,12 +1285,12 @@ final class AdminTest extends TestCase
     public function testGetRootCode(): void
     {
         $admin = new PostAdmin();
-        $admin->setCode('sonata.post.admin.post');
+        $admin->setCode('sensiolabs.post.admin.post');
 
-        static::assertSame('sonata.post.admin.post', $admin->getRootCode());
+        static::assertSame('sensiolabs.post.admin.post', $admin->getRootCode());
 
         $parentAdmin = new PostAdmin();
-        $parentAdmin->setCode('sonata.post.admin.post.parent');
+        $parentAdmin->setCode('sensiolabs.post.admin.post.parent');
 
         $parentFieldDescription = $this->createMock(FieldDescriptionInterface::class);
         $parentFieldDescription->expects(static::once())
@@ -1300,7 +1300,7 @@ final class AdminTest extends TestCase
         static::assertFalse($admin->hasParentFieldDescription());
         $admin->setParentFieldDescription($parentFieldDescription);
         static::assertSame($parentFieldDescription, $admin->getParentFieldDescription());
-        static::assertSame('sonata.post.admin.post.parent', $admin->getRootCode());
+        static::assertSame('sensiolabs.post.admin.post.parent', $admin->getRootCode());
     }
 
     public function testGetRoot(): void
@@ -1896,7 +1896,7 @@ final class AdminTest extends TestCase
     public function testGetListMode(string $expected, ?Request $request = null): void
     {
         $admin = new PostAdmin();
-        $admin->setCode('sonata.post.admin.post');
+        $admin->setCode('sensiolabs.post.admin.post');
 
         if (null !== $request) {
             $admin->setRequest($request);
@@ -1935,7 +1935,7 @@ final class AdminTest extends TestCase
             'mosaic' => ['icon' => '<i class="fas fa-th-large fa-fw" aria-hidden="true"></i>'],
             'list' => ['icon' => '<i class="fas fa-list fa-fw" aria-hidden="true"></i>'],
         ]);
-        $admin->setCode('sonata.post.admin.post');
+        $admin->setCode('sensiolabs.post.admin.post');
 
         if (null !== $request) {
             $admin->setRequest($request);
@@ -2048,14 +2048,14 @@ final class AdminTest extends TestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage(
-            'Circular reference detected! The child admin `sonata.post.admin.post` is already in the parent tree of the `sonata.post.admin.comment` admin.'
+            'Circular reference detected! The child admin `sensiolabs.post.admin.post` is already in the parent tree of the `sensiolabs.post.admin.comment` admin.'
         );
 
         $postAdmin = new PostAdmin();
-        $postAdmin->setCode('sonata.post.admin.post');
+        $postAdmin->setCode('sensiolabs.post.admin.post');
 
         $commentAdmin = new CommentAdmin();
-        $commentAdmin->setCode('sonata.post.admin.comment');
+        $commentAdmin->setCode('sensiolabs.post.admin.comment');
 
         $postAdmin->addChild($commentAdmin, 'post');
         $commentAdmin->addChild($postAdmin, 'comment');
@@ -2065,17 +2065,17 @@ final class AdminTest extends TestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage(
-            'Circular reference detected! The child admin `sonata.post.admin.post` is already in the parent tree of the `sonata.post.admin.comment_vote` admin.'
+            'Circular reference detected! The child admin `sensiolabs.post.admin.post` is already in the parent tree of the `sensiolabs.post.admin.comment_vote` admin.'
         );
 
         $postAdmin = new PostAdmin();
-        $postAdmin->setCode('sonata.post.admin.post');
+        $postAdmin->setCode('sensiolabs.post.admin.post');
 
         $commentAdmin = new CommentAdmin();
-        $commentAdmin->setCode('sonata.post.admin.comment');
+        $commentAdmin->setCode('sensiolabs.post.admin.comment');
 
         $commentVoteAdmin = new CommentVoteAdmin();
-        $commentVoteAdmin->setCode('sonata.post.admin.comment_vote');
+        $commentVoteAdmin->setCode('sensiolabs.post.admin.comment_vote');
 
         $postAdmin->addChild($commentAdmin, 'post');
         $commentAdmin->addChild($commentVoteAdmin, 'comment');
@@ -2086,11 +2086,11 @@ final class AdminTest extends TestCase
     {
         $this->expectException(\LogicException::class);
         $this->expectExceptionMessage(
-            'Circular reference detected! The child admin `sonata.post.admin.post` is already in the parent tree of the `sonata.post.admin.post` admin.'
+            'Circular reference detected! The child admin `sensiolabs.post.admin.post` is already in the parent tree of the `sensiolabs.post.admin.post` admin.'
         );
 
         $postAdmin = new PostAdmin();
-        $postAdmin->setCode('sonata.post.admin.post');
+        $postAdmin->setCode('sensiolabs.post.admin.post');
         $postAdmin->addChild($postAdmin, 'post');
     }
 

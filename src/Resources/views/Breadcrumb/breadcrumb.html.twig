@@ -6,21 +6,25 @@
         {%- set label = label|trans(menu.extra('translation_params', {}), translation_domain) -%}
     {%- endif -%}
 
+    {% if not loop.first %}
+        <span class="admin-breadcrumb-separator">
+            {{ ux_icon('lucide:chevron-right', {class: 'w-4 h-4'}) }}
+        </span>
+    {% endif %}
+
     {% if not loop.last %}
-        <li>
-            {% if menu.uri is not empty %}
-                <a href="{{ menu.uri }}">
-                    {% if menu.extra('safe_label', true) %}
-                        {{- label|raw -}}
-                    {% else %}
-                        {{- label|u.truncate(100, '...') -}}
-                    {% endif %}
-                </a>
-            {% else %}
-                <span>{{ label|u.truncate(100, '...') }}</span>
-            {% endif %}
-        </li>
+        {% if menu.uri is not empty %}
+            <a href="{{ menu.uri }}" class="admin-breadcrumb-item">
+                {% if menu.extra('safe_label', true) %}
+                    {{- label|raw -}}
+                {% else %}
+                    {{- label|u.truncate(100, '...') -}}
+                {% endif %}
+            </a>
+        {% else %}
+            <span class="admin-breadcrumb-item">{{ label|u.truncate(100, '...') }}</span>
+        {% endif %}
     {% else %}
-        <li class="active"><span>{{ label|u.truncate(100, '...') }}</span></li>
+        <span class="admin-breadcrumb-current">{{ label|u.truncate(100, '...') }}</span>
     {% endif %}
 {% endfor %}

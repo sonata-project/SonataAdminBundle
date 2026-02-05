@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SensioLabs\AdminBundle\Filter;
 
-use SensioLabs\AdminBundle\Search\ChainableFilterInterface;
+use SensioLabs\AdminBundle\Filter\ChainableFilterInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 /**

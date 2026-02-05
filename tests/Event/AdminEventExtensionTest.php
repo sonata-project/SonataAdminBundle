@@ -84,7 +84,7 @@ final class AdminEventExtensionTest extends TestCase
         $this
             ->getExtension([
                 static::callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_FORM)),
-                static::equalTo('sonata.admin.event.configure.form'),
+                static::equalTo('sensiolabs.admin.event.configure.form'),
             ])
             ->configureFormFields(new FormMapper(
                 static::createStub(FormContractorInterface::class),
@@ -98,7 +98,7 @@ final class AdminEventExtensionTest extends TestCase
         $this
             ->getExtension([
                 static::callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_LIST)),
-                static::equalTo('sonata.admin.event.configure.list'),
+                static::equalTo('sensiolabs.admin.event.configure.list'),
             ])
             ->configureListFields(new ListMapper(
                 static::createStub(ListBuilderInterface::class),
@@ -112,7 +112,7 @@ final class AdminEventExtensionTest extends TestCase
         $this
             ->getExtension([
                 static::callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_DATAGRID)),
-                static::equalTo('sonata.admin.event.configure.datagrid'),
+                static::equalTo('sensiolabs.admin.event.configure.datagrid'),
             ])
             ->configureDatagridFilters(new DatagridMapper(
                 static::createStub(DatagridBuilderInterface::class),
@@ -126,7 +126,7 @@ final class AdminEventExtensionTest extends TestCase
         $this
             ->getExtension([
                 static::callback($this->getConfigureEventClosure(ConfigureEvent::TYPE_SHOW)),
-                static::equalTo('sonata.admin.event.configure.show'),
+                static::equalTo('sensiolabs.admin.event.configure.show'),
             ])
             ->configureShowFields(new ShowMapper(
                 static::createStub(ShowBuilderInterface::class),
@@ -139,7 +139,7 @@ final class AdminEventExtensionTest extends TestCase
     {
         $this->getExtension([
             static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_PRE_UPDATE)),
-            static::equalTo('sonata.admin.event.persistence.pre_update'),
+            static::equalTo('sensiolabs.admin.event.persistence.pre_update'),
         ])->preUpdate($this->createMock(AdminInterface::class), new \stdClass());
     }
 
@@ -147,7 +147,7 @@ final class AdminEventExtensionTest extends TestCase
     {
         $this->getExtension([
             static::isInstanceOf(ConfigureQueryEvent::class),
-            static::equalTo('sonata.admin.event.configure.query'),
+            static::equalTo('sensiolabs.admin.event.configure.query'),
         ])->configureQuery($this->createMock(AdminInterface::class), $this->createMock(ProxyQueryInterface::class));
     }
 
@@ -155,7 +155,7 @@ final class AdminEventExtensionTest extends TestCase
     {
         $this->getExtension([
             static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_UPDATE)),
-            static::equalTo('sonata.admin.event.persistence.post_update'),
+            static::equalTo('sensiolabs.admin.event.persistence.post_update'),
         ])->postUpdate($this->createMock(AdminInterface::class), new \stdClass());
     }
 
@@ -163,7 +163,7 @@ final class AdminEventExtensionTest extends TestCase
     {
         $this->getExtension([
             static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_PRE_PERSIST)),
-            static::equalTo('sonata.admin.event.persistence.pre_persist'),
+            static::equalTo('sensiolabs.admin.event.persistence.pre_persist'),
         ])->prePersist($this->createMock(AdminInterface::class), new \stdClass());
     }
 
@@ -171,7 +171,7 @@ final class AdminEventExtensionTest extends TestCase
     {
         $this->getExtension([
             static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_PERSIST)),
-            static::equalTo('sonata.admin.event.persistence.post_persist'),
+            static::equalTo('sensiolabs.admin.event.persistence.post_persist'),
         ])->postPersist($this->createMock(AdminInterface::class), new \stdClass());
     }
 
@@ -179,7 +179,7 @@ final class AdminEventExtensionTest extends TestCase
     {
         $this->getExtension([
             static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_PRE_REMOVE)),
-            static::equalTo('sonata.admin.event.persistence.pre_remove'),
+            static::equalTo('sensiolabs.admin.event.persistence.pre_remove'),
         ])->preRemove($this->createMock(AdminInterface::class), new \stdClass());
     }
 
@@ -187,7 +187,7 @@ final class AdminEventExtensionTest extends TestCase
     {
         $this->getExtension([
             static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_REMOVE)),
-            static::equalTo('sonata.admin.event.persistence.post_remove'),
+            static::equalTo('sensiolabs.admin.event.persistence.post_remove'),
         ])->postRemove($this->createMock(AdminInterface::class), new \stdClass());
     }
 
@@ -220,7 +220,7 @@ final class AdminEventExtensionTest extends TestCase
                     return true;
                 }
             ),
-            static::equalTo('sonata.admin.event.batch_action.pre_batch_action'),
+            static::equalTo('sensiolabs.admin.event.batch_action.pre_batch_action'),
         ])->preBatchAction($admin, 'delete', $proxyQuery, $idx, false);
     }
 }

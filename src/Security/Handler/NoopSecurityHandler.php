@@ -14,13 +14,14 @@ declare(strict_types=1);
 namespace SensioLabs\AdminBundle\Security\Handler;
 
 use SensioLabs\AdminBundle\Admin\AdminInterface;
+use Symfony\Component\ExpressionLanguage\Expression;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 final class NoopSecurityHandler implements SecurityHandlerInterface
 {
-    public function isGranted(AdminInterface $admin, string $attribute, ?object $object = null): bool
+    public function isGranted(AdminInterface $admin, string|Expression $attribute, ?object $object = null): bool
     {
         return true;
     }

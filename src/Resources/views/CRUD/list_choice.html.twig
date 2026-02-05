@@ -1,8 +1,8 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
@@ -15,16 +15,15 @@ file that was distributed with this source code.
     field_description.option('editable', false) and
     admin.hasAccess('edit', object)
 %}
-{% set x_editable_type = field_description.type|sonata_xeditable_type %}
+{% set x_editable_type = field_description.type|sensiolabs_xeditable_type %}
 
 {% block field_span_attributes %}
     {% if is_editable and x_editable_type %}
         {{ parent() }}
-        data-source="{{ field_description|sonata_xeditable_choices|json_encode }}"
+        data-source="{{ field_description|sensiolabs_xeditable_choices|json_encode }}"
     {% endif %}
 {% endblock %}
 
-{# NEXT_MAJOR: Remove the fallback on catalogue #}
 {% block field %}
     {%- include '@SensioLabsAdmin/CRUD/display_choice.html.twig' with {
         value: value,

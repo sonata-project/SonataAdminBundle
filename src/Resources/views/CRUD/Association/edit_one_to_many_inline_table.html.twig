@@ -26,7 +26,7 @@ file that was distributed with this source code.
                         {% if nested_field.vars.translation_domain is same as(false) %}
                             {{ nested_field.vars.label }}
                         {% else %}
-                            {% set translationDomain = nested_field.vars.translation_domain|default(nested_field.vars['sonata_admin'].admin.translationDomain|default(null)) %}
+                            {% set translationDomain = nested_field.vars.translation_domain|default(nested_field.vars['sensiolabs_admin'].admin.translationDomain|default(null)) %}
                             {{ nested_field.vars.label|trans({}, translationDomain) }}
                         {% endif %}
                     </th>
@@ -48,7 +48,7 @@ file that was distributed with this source code.
                             style="display:none;"
                         {% endif %}
                     >
-                        {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
+                        {% if sensiolabs_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
                             {{ form_widget(nested_field) }}
 
                             {{ form_help(nested_field) }}

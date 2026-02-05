@@ -1,8 +1,8 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
@@ -11,120 +11,95 @@ file that was distributed with this source code.
 
 {% extends base_template %}
 
-{% block title %}{{ 'title_dashboard'|trans({}, 'SonataAdminBundle') }}{% endblock %}
+{% block title %}{{ dashboard_content.title|default('Dashboard')|trans({}, 'SensioLabsAdminBundle') }}{% endblock %}
 {% block breadcrumb %}{% endblock %}
+
 {% block content %}
-
-    {% set has_left = false %}
-    {% for block in blocks.left %}
-        {% if not has_left and (block.roles|length == 0 or is_granted_affirmative(block.roles)) %}
-            {% set has_left = true %}
-        {% endif %}
-    {% endfor %}
-
-    {% set has_center = false %}
-    {% for block in blocks.center %}
-        {% if not has_center and (block.roles|length == 0 or is_granted_affirmative(block.roles)) %}
-            {% set has_center = true %}
-        {% endif %}
-    {% endfor %}
-
-    {% set has_right = false %}
-    {% for block in blocks.right %}
-        {% if not has_right and (block.roles|length == 0 or is_granted_affirmative(block.roles)) %}
-            {% set has_right = true %}
-        {% endif %}
-    {% endfor %}
-
-    {% set has_top = false %}
-    {% for block in blocks.top %}
-        {% if not has_top and (block.roles|length == 0 or is_granted_affirmative(block.roles)) %}
-            {% set has_top = true %}
-        {% endif %}
-    {% endfor %}
-
-    {% set has_bottom = false %}
-    {% for block in blocks.bottom %}
-        {% if not has_bottom and (block.roles|length == 0 or is_granted_affirmative(block.roles)) %}
-            {% set has_bottom = true %}
-        {% endif %}
-    {% endfor %}
-
-    {{ sonata_block_render_event('sonata.admin.dashboard.top') }}
-
-    {% if has_top %}
-        <div class="row">
-            {% for block in blocks.top %}
-                {% if block.roles|length == 0 or is_granted_affirmative(block.roles) %}
-                    <div class="{{ block.class }}">
-                        {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+    <div class="space-y-6">
+        {% block dashboard_content %}
+            {# Welcome Header #}
+            <div class="admin-card">
+                <div class="p-6 bg-gradient-to-r from-primary-500 to-primary-600 rounded-xl text-white">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h1 class="text-2xl font-bold mb-1">
+                                {% if app.user %}
+                                    {{ 'welcome_back'|trans({'%name%': app.user.userIdentifier|default('Admin')}, 'SensioLabsAdminBundle') }}
+                                {% else %}
+                                    {{ dashboard_content.title|default('Dashboard')|trans({}, 'SensioLabsAdminBundle') }}
+                                {% endif %}
+                            </h1>
+                            <p class="text-primary-100">{{ 'dashboard_subtitle'|trans({}, 'SensioLabsAdminBundle') }}</p>
+                        </div>
+                        <div class="hidden md:block">
+                            {{ ux_icon('lucide:bar-chart-3', {class: 'w-16 h-16 text-white/20'}) }}
+                        </div>
                     </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    <div class="row">
-        {% set width_left = 4 %}
-        {% set width_right = 4 %}
-        {% set width_center = 4 %}
-
-        {# if center block is not present we make left and right ones wider #}
-        {% if not has_center %}
-            {% set width_left = 6 %}
-            {% set width_right = 6 %}
-        {% endif %}
-
-        {# if there is no right and left block present we make center one full width #}
-        {% if not has_left and not has_right %}
-            {% set width_center = 12 %}
-        {% endif %}
-
-        {# don't show left column if only center one is present #}
-        {% if has_left or has_right %}
-        <div class="col-md-{{ width_left }}">
-            {% for block in blocks.left %}
-                {% if block.roles|length == 0 or is_granted_affirmative(block.roles) %}
-                    {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
-                {% endif %}
-            {% endfor %}
-        </div>
-        {% endif %}
-
-        {% if has_center %}
-            <div class="col-md-{{ width_center }}">
-                {% for block in blocks.center %}
-                    {% if block.roles|length == 0 or is_granted_affirmative(block.roles) %}
-                        {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
-                    {% endif %}
-                {% endfor %}
+                </div>
             </div>
-        {% endif %}
 
-        {# don't show right column if only center one is present #}
-        {% if has_left or has_right %}
-         <div class="col-md-{{ width_right }}">
-            {% for block in blocks.right %}
-                {% if block.roles|length == 0 or is_granted_affirmative(block.roles) %}
-                    {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
-                {% endif %}
-            {% endfor %}
-        </div>
-        {% endif %}
-    </div>
+            {# Quick Stats - Example placeholder #}
+            {% if dashboard_content.stats is defined %}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                    {% for stat in dashboard_content.stats %}
+                        <div class="admin-stat-card">
+                            <div class="admin-stat-card-header">
+                                <div class="admin-stat-card-icon admin-stat-card-icon-{{ stat.color|default('primary') }}">
+                                    {{ ux_icon(stat.icon|default('lucide:bar-chart-3'), {class: 'w-5 h-5'}) }}
+                                </div>
+                            </div>
+                            <div class="admin-stat-card-value">{{ stat.value }}</div>
+                            <div class="admin-stat-card-label">{{ stat.label|trans({}, 'SensioLabsAdminBundle') }}</div>
+                            {% if stat.trend is defined %}
+                                <div class="admin-stat-card-trend admin-stat-card-trend-{{ stat.trend > 0 ? 'up' : 'down' }}">
+                                    {{ ux_icon(stat.trend > 0 ? 'lucide:trending-up' : 'lucide:trending-down', {class: 'w-4 h-4'}) }}
+                                    {{ stat.trend|abs }}%
+                                </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
 
-    {% if has_bottom %}
-        <div class="row">
-            {% for block in blocks.bottom %}
-                {% if block.roles|length == 0 or is_granted_affirmative(block.roles) %}
-                    <div class="{{ block.class }}">
-                        {{ sonata_block_render({ 'type': block.type, 'settings': block.settings}) }}
+            {# Dashboard Widgets #}
+            {% if dashboard_content.widgets is defined %}
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for widget in dashboard_content.widgets %}
+                        <div class="{{ widget.class|default('') }}">
+                            {{ include(widget.template, widget.parameters|default({})) }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {# Quick Access - Admin groups #}
+            {% if sensiolabs_admin_groups is defined and sensiolabs_admin_groups|length > 0 %}
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2 class="admin-card-header-title">{{ 'quick_access'|trans({}, 'SensioLabsAdminBundle') }}</h2>
                     </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    {% endif %}
-
-    {{ sonata_block_render_event('sonata.admin.dashboard.bottom') }}
-
+                    <div class="admin-card-body">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+                            {% for group in sensiolabs_admin_groups %}
+                                {% for admin in group.items %}
+                                    {% if admin.hasRoute('list') and admin.hasAccess('list') %}
+                                        <a href="{{ admin.generateUrl('list') }}" class="flex items-center gap-3 p-4 rounded-xl border border-gray-200 hover:border-primary-300 hover:bg-primary-50/50 transition-all duration-200 group">
+                                            <div class="w-10 h-10 rounded-lg bg-primary-100 text-primary-600 flex items-center justify-center group-hover:bg-primary-500 group-hover:text-white transition-colors">
+                                                {{ ux_icon(admin.icon|default('lucide:layers'), {class: 'w-5 h-5'}) }}
+                                            </div>
+                                            <div class="flex-1 min-w-0">
+                                                <div class="font-medium text-gray-900 truncate">{{ admin.label|trans({}, admin.translationDomain) }}</div>
+                                                <div class="text-sm text-gray-500">{{ 'manage'|trans({}, 'SensioLabsAdminBundle') }}</div>
+                                            </div>
+                                            {{ ux_icon('lucide:chevron-right', {class: 'w-5 h-5 text-gray-400 group-hover:text-primary-500 transition-colors'}) }}
+                                        </a>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endblock %}
+    </div>
 {% endblock %}

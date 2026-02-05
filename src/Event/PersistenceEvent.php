@@ -23,8 +23,8 @@ use Symfony\Contracts\EventDispatcher\Event;
  *   - preRemove | postRemove.
  *
  * You can register the listener to the event dispatcher by using:
- *   - sonata.admin.event.persistence.[pre|post]_[persist|update|remove)
- *   - sonata.admin.event.persistence.[admin_code].[pre|post]_[persist|update|remove)  (not implemented yet)
+ *   - sensiolabs.admin.event.persistence.[pre|post]_[persist|update|remove)
+ *   - sensiolabs.admin.event.persistence.[admin_code].[pre|post]_[persist|update|remove)  (not implemented yet)
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *

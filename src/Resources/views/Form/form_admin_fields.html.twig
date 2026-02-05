@@ -24,8 +24,8 @@ file that was distributed with this source code.
 {%- endblock form_errors %}
 
 {% block form_help -%}
-    {% if sonata_admin_translation_domain is defined and translation_domain is null %}
-        {% set translation_domain = sonata_admin_translation_domain %}
+    {% if sensiolabs_admin_translation_domain is defined and translation_domain is null %}
+        {% set translation_domain = sensiolabs_admin_translation_domain %}
     {% endif %}
     {% if help is not empty %}
         {% set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' help-block sonata-ba-field-help')}) %}
@@ -97,7 +97,7 @@ file that was distributed with this source code.
 
 {# Labels #}
 {% block form_label %}
-    {% if label is not same as(false) and sonata_admin.options['form_type'] == 'horizontal' %}
+    {% if label is not same as(false) and sensiolabs_admin.options['form_type'] == 'horizontal' %}
         {% set label_class = 'col-sm-3' %}
     {% endif %}
 
@@ -127,10 +127,10 @@ file that was distributed with this source code.
         <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
             {%- if translation_domain is same as(false) -%}
                 {{- label -}}
-            {%- elseif not sonata_admin.admin -%}
+            {%- elseif not sensiolabs_admin.admin -%}
                 {{- label|trans(label_translation_parameters, translation_domain) -}}
             {%- else -%}
-                {{- label|trans(label_translation_parameters, sonata_admin.field_description.translationDomain|default(sonata_admin.admin.translationDomain)) -}}
+                {{- label|trans(label_translation_parameters, sensiolabs_admin.field_description.translationDomain|default(sensiolabs_admin.admin.translationDomain)) -}}
             {%- endif -%}
         </label>
     {% endif %}
@@ -145,8 +145,8 @@ file that was distributed with this source code.
 {%- endblock radio_label %}
 
 {% block checkbox_radio_label %}
-    {% if sonata_admin.admin %}
-        {% set translation_domain = sonata_admin.field_description.translationDomain %}
+    {% if sensiolabs_admin.admin %}
+        {% set translation_domain = sensiolabs_admin.field_description.translationDomain %}
     {% endif %}
     {# Do not display the label if widget is not defined in order to prevent double label rendering #}
     {% if widget is defined %}
@@ -198,27 +198,27 @@ file that was distributed with this source code.
 
     {% set attr = attr|merge({'class': attr.class|default('') ~ ' form-control'}) %}
     {% if (sortable is defined) and sortable and multiple %}
-        {{ block('sonata_type_choice_multiple_sortable') }}
+        {{ block('sensiolabs_type_choice_multiple_sortable') }}
     {% else %}
         {% set data_placeholder = placeholder %}
         {% if placeholder != '' %}
-            {% if not sonata_admin.admin %}
+            {% if not sensiolabs_admin.admin %}
                 {% set data_placeholder = placeholder|trans({}, translation_domain) %}
             {% else %}
-                {% set data_placeholder = placeholder|trans({}, sonata_admin.field_description.translationDomain) %}
+                {% set data_placeholder = placeholder|trans({}, sensiolabs_admin.field_description.translationDomain) %}
             {% endif %}
         {% endif %}
 
-        {% set use_select2 = sonata_config is defined and sonata_config.getOption('use_select2') %}
+        {% set use_select2 = sensiolabs_config is defined and sensiolabs_config.getOption('use_select2') %}
 
         <select {{ block('widget_attributes') }}{% if multiple %} multiple="multiple"{% endif %}{% if placeholder is defined and placeholder is not none and use_select2 %} data-placeholder="{{ data_placeholder }}"{% endif %}>
             {% if empty_value is defined and empty_value is not none %}
                 <option value=""{% if required and value is empty %} selected="selected"{% endif %}>
                     {% if empty_value != '' %}
-                        {% if not sonata_admin.admin %}
+                        {% if not sensiolabs_admin.admin %}
                             {{- empty_value|trans({}, translation_domain) -}}
                         {% else %}
-                            {{- empty_value|trans({}, sonata_admin.field_description.translationDomain) -}}
+                            {{- empty_value|trans({}, sensiolabs_admin.field_description.translationDomain) -}}
                         {% endif %}
                     {% endif %}
                 </option>
@@ -321,7 +321,7 @@ file that was distributed with this source code.
             {% set div_class = div_class ~ ' sonata-collection-row-without-label' %}
         {% endif %}
 
-        {% if sonata_admin is defined and sonata_admin.options['form_type'] == 'horizontal' %}
+        {% if sensiolabs_admin is defined and sensiolabs_admin.options['form_type'] == 'horizontal' %}
             {# Add an offset if no label or is a checkbox/radio #}
             {% if label is same as(false) or form.vars.checked is defined %}
                 {% if 'collection' in form.parent.vars.block_prefixes %}
@@ -338,8 +338,8 @@ file that was distributed with this source code.
             {{ form_label(form, label|default(null)) }}
         {% endif %}
 
-        {% if sonata_admin is defined and sonata_admin_enabled %}
-            {% set div_class = div_class ~ ' sonata-ba-field-' ~ sonata_admin.edit ~ '-' ~ sonata_admin.inline %}
+        {% if sensiolabs_admin is defined and sensiolabs_admin_enabled %}
+            {% set div_class = div_class ~ ' sonata-ba-field-' ~ sensiolabs_admin.edit ~ '-' ~ sensiolabs_admin.inline %}
         {% endif %}
 
         {% if errors|length > 0 %}
@@ -370,7 +370,7 @@ file that was distributed with this source code.
     {{ block('form_row') }}
 {%- endblock radio_row %}
 
-{% block sonata_type_native_collection_widget_row %}
+{% block sensiolabs_type_native_collection_widget_row %}
     <div class="sonata-collection-row" {{ stimulus_target('sonata-collection', 'item') }}>
         {% if allow_delete %}
             <div class="row">
@@ -387,15 +387,15 @@ file that was distributed with this source code.
             </div>
         {% endif %}
     </div>
-{% endblock sonata_type_native_collection_widget_row %}
+{% endblock sensiolabs_type_native_collection_widget_row %}
 
-{% block sonata_type_native_collection_widget %}
+{% block sensiolabs_type_native_collection_widget %}
     {% if prototype is defined %}
         {% set child = prototype %}
         {% set allow_delete_backup = allow_delete %}
         {% set allow_delete = true %}
         {% set attr = attr|merge({
-            'data-prototype': block('sonata_type_native_collection_widget_row'),
+            'data-prototype': block('sensiolabs_type_native_collection_widget_row'),
             'data-prototype-name': prototype.vars.name,
             'class': attr.class|default(''),
         })|merge(stimulus_controller('sonata-collection').toArray()) %}
@@ -403,7 +403,7 @@ file that was distributed with this source code.
     {% endif %}
     <div {{ block('widget_container_attributes') }}>
         {% for child in form %}
-            {{ block('sonata_type_native_collection_widget_row') }}
+            {{ block('sensiolabs_type_native_collection_widget_row') }}
         {% endfor %}
         {{ form_rest(form) }}
         {% if allow_add %}
@@ -412,29 +412,29 @@ file that was distributed with this source code.
             </button>
         {% endif %}
     </div>
-{% endblock sonata_type_native_collection_widget %}
+{% endblock sensiolabs_type_native_collection_widget %}
 
-{% block sonata_type_immutable_array_widget %}
+{% block sensiolabs_type_immutable_array_widget %}
     <div {{ block('widget_container_attributes') }}>
         {% for key, child in form %}
-            {{ block('sonata_type_immutable_array_widget_row') }}
+            {{ block('sensiolabs_type_immutable_array_widget_row') }}
         {% endfor %}
 
         {{ form_rest(form) }}
     </div>
-{% endblock sonata_type_immutable_array_widget %}
+{% endblock sensiolabs_type_immutable_array_widget %}
 
-{% block sonata_type_immutable_array_widget_row %}
+{% block sensiolabs_type_immutable_array_widget_row %}
     <div class="form-group{% if child.vars.errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
 
         {{ form_label(child) }}
 
         {% set div_class = "" %}
-        {% if sonata_admin.options['form_type'] == 'horizontal' %}
+        {% if sensiolabs_admin.options['form_type'] == 'horizontal' %}
             {% set div_class = 'col-sm-9' %}
         {% endif %}
 
-        <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }}{% if child.vars.errors|length > 0 %} sonata-ba-field-error{% endif %}">
+        <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sensiolabs_admin.edit }}-{{ sensiolabs_admin.inline }}{% if child.vars.errors|length > 0 %} sonata-ba-field-error{% endif %}">
             {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
             {{ form_help(child) }}
         </div>
@@ -447,11 +447,11 @@ file that was distributed with this source code.
     </div>
 {% endblock %}
 
-{% block sonata_type_model_autocomplete_widget %}
+{% block sensiolabs_type_model_autocomplete_widget %}
     {% include template %}
-{% endblock sonata_type_model_autocomplete_widget %}
+{% endblock sensiolabs_type_model_autocomplete_widget %}
 
-{% block sonata_type_choice_field_mask_widget %}
+{% block sensiolabs_type_choice_field_mask_widget %}
     {{ block('choice_widget') }}
     {# Taking the form name excluding ending field glue character #}
     {% set main_form_name = id|slice(0, (id|length - name|length)-1) %}
@@ -463,15 +463,31 @@ file that was distributed with this source code.
         {% set js_events = ['change'] %}
     {% endif %}
     <script>
-        jQuery(document).ready(function() {
-            var allFields = {{ all_fields|json_encode|raw }},
-                map = {{ map|json_encode|raw }},
-                showMaskChoiceEl = jQuery("{{ js_selector }}");
-                {% for js_event in js_events %}
-                    showMaskChoiceEl.on("{{ js_event }}", function () {
-                        choice_field_mask_show(jQuery(this).val());
+        (function() {
+            var allFields = {{ all_fields|json_encode|raw }};
+            var map = {{ map|json_encode|raw }};
+            var showMaskChoiceEl = document.querySelector("{{ js_selector }}");
+
+            if (!showMaskChoiceEl) return;
+
+            {% for js_event in js_events %}
+                {% if js_event == 'ifChecked' %}
+                    // ifChecked was for iCheck - use change event instead
+                {% else %}
+                    showMaskChoiceEl.addEventListener("{{ js_event }}", function () {
+                        choice_field_mask_show(this.value);
                     });
-                {% endfor %}
+                {% endif %}
+            {% endfor %}
+
+            // For radio/checkbox groups, also listen on the container
+            {% if expanded %}
+            document.querySelectorAll("{{ js_selector }}").forEach(function(el) {
+                el.addEventListener('change', function() {
+                    choice_field_mask_show(this.value);
+                });
+            });
+            {% endif %}
 
             function choice_field_mask_show(val) {
                 var controlGroupIdFunc = function (field) {
@@ -479,101 +495,112 @@ file that was distributed with this source code.
                     var defaultFieldId = '#sonata-ba-field-container-{{ main_form_name }}_' + field;
 
                     // Some fields may be named with a dash (like keys of immutable array form type)
-                    if (jQuery(defaultFieldId).length === 0) {
+                    if (!document.querySelector(defaultFieldId)) {
                         defaultFieldId = '#sonata-ba-field-container-{{ main_form_name }}-' + field;
                     }
 
                     // Some fields are rendered by form_widget (no container)
-                    if (jQuery(defaultFieldId).length === 0) {
+                    if (!document.querySelector(defaultFieldId)) {
                         defaultFieldId = '#{{ main_form_name }}_' + field;
                     }
 
-                    // catch select2 fields with inline: table option
-                    if (jQuery(defaultFieldId).length === 0) {
+                    // catch autocomplete fields with inline: table option
+                    if (!document.querySelector(defaultFieldId)) {
                         defaultFieldId = '#{{ main_form_name }}_' + field + '_autocomplete_input';
                     }
 
                     return defaultFieldId;
                 };
 
-                jQuery.each(allFields, function (i, field) {
-                    var fieldContainer = controlGroupIdFunc(field);
-                    jQuery(fieldContainer).hide();
-                    {% if form.parent.vars.sonata_admin.inline == 'table' %}
-                        var td = jQuery(fieldContainer).parent();
-                        var columnIndex = td.index();
-                        var headerTh = $("table thead tr th:eq(" + columnIndex + ")");
-                        td.hide();
-                        headerTh.hide();
+                allFields.forEach(function (field) {
+                    var fieldContainer = document.querySelector(controlGroupIdFunc(field));
+                    if (!fieldContainer) return;
+
+                    fieldContainer.style.display = 'none';
+                    {% if form.parent.vars.sensiolabs_admin.inline == 'table' %}
+                        var td = fieldContainer.parentElement;
+                        var columnIndex = Array.from(td.parentElement.children).indexOf(td);
+                        var headerTh = document.querySelector("table thead tr th:nth-child(" + (columnIndex + 1) + ")");
+                        td.style.display = 'none';
+                        if (headerTh) headerTh.style.display = 'none';
                     {% endif %}
-                    jQuery(fieldContainer).find('[required="required"]').attr('data-required', 'required').removeAttr("required");
+                    fieldContainer.querySelectorAll('[required="required"]').forEach(function(el) {
+                        el.setAttribute('data-required', 'required');
+                        el.removeAttribute('required');
+                    });
                 });
 
                 if (map[val]) {
-                    jQuery.each(map[val], function (i, field) {
-                        var fieldContainer = controlGroupIdFunc(field);
-                        jQuery(fieldContainer).show();
-                        {% if form.parent.vars.sonata_admin.inline == 'table' %}
-                            var td = jQuery(fieldContainer).parent();
-                            var columnIndex = td.index();
-                            var headerTh = $("table thead tr th:eq(" + columnIndex + ")");
-                            td.show();
-                            headerTh.show();
+                    map[val].forEach(function (field) {
+                        var fieldContainer = document.querySelector(controlGroupIdFunc(field));
+                        if (!fieldContainer) return;
+
+                        fieldContainer.style.display = '';
+                        {% if form.parent.vars.sensiolabs_admin.inline == 'table' %}
+                            var td = fieldContainer.parentElement;
+                            var columnIndex = Array.from(td.parentElement.children).indexOf(td);
+                            var headerTh = document.querySelector("table thead tr th:nth-child(" + (columnIndex + 1) + ")");
+                            td.style.display = '';
+                            if (headerTh) headerTh.style.display = '';
                         {% endif %}
-                        jQuery(fieldContainer).find('[data-required="required"]').attr("required", "required");
+                        fieldContainer.querySelectorAll('[data-required="required"]').forEach(function(el) {
+                            el.setAttribute('required', 'required');
+                        });
                     });
                 }
             }
 
             {% if value is empty %}
-                choice_field_mask_show(showMaskChoiceEl.val());
+                choice_field_mask_show(showMaskChoiceEl.value);
             {% else %}
                 choice_field_mask_show('{{ value|e('js') }}');
             {% endif %}
-        });
-
+        })();
     </script>
 {% endblock %}
 
-{% block sonata_type_choice_multiple_sortable %}
+{% block sensiolabs_type_choice_multiple_sortable %}
     <input type="hidden" name="{{ full_name }}" id="{{ id }}" value="{{ value|join(',') }}" />
 
     <script>
-        jQuery(document).ready(function() {
+        (function() {
             var options = {};
 
-            {% block sonata_type_model_autocomplete_select2_options_js %}{% endblock %}
+            {% block sensiolabs_type_model_autocomplete_select2_options_js %}{% endblock %}
 
-            Admin.setup_sortable_select2(jQuery('#{{ id }}'), {{ form.vars.choices|json_encode|raw }}, options);
-        });
+            var element = document.getElementById('{{ id }}');
+            if (element && typeof Admin !== 'undefined') {
+                Admin.setup_sortable_select2(element, {{ form.vars.choices|json_encode|raw }}, options);
+            }
+        })();
     </script>
 {% endblock %}
 
-{% block sonata_type_model_list_widget %}
+{% block sensiolabs_type_model_list_widget %}
     <div id="field_container_{{ id }}" class="field-container">
         <span id="field_widget_{{ id }}" class="field-short-description">
-            {% if sonata_admin.value and sonata_admin.field_description.associationadmin.urlSafeIdentifier(sonata_admin.value) is not null %}
-                {{ render(path('sonata_admin_short_object_information', {
-                    '_sonata_admin': sonata_admin.field_description.associationadmin.baseCodeRoute,
-                    'objectId': sonata_admin.field_description.associationadmin.urlSafeIdentifier(sonata_admin.value),
-                    'uniqid': sonata_admin.field_description.associationadmin.uniqid,
-                    'linkParameters': sonata_admin.field_description.option('link_parameters', {})
+            {% if sensiolabs_admin.value and sensiolabs_admin.field_description.associationadmin.urlSafeIdentifier(sensiolabs_admin.value) is not null %}
+                {{ render(path('sensiolabs_admin_short_object_information', {
+                    '_sensiolabs_admin': sensiolabs_admin.field_description.associationadmin.baseCodeRoute,
+                    'objectId': sensiolabs_admin.field_description.associationadmin.urlSafeIdentifier(sensiolabs_admin.value),
+                    'uniqid': sensiolabs_admin.field_description.associationadmin.uniqid,
+                    'linkParameters': sensiolabs_admin.field_description.option('link_parameters', {})
                 } + (
-                    sonata_admin.field_description.associationadmin.hasRequest()
-                    ? sonata_admin.field_description.associationadmin.request.attributes.get('_route_params', {})
+                    sensiolabs_admin.field_description.associationadmin.hasRequest()
+                    ? sensiolabs_admin.field_description.associationadmin.request.attributes.get('_route_params', {})
                     : {}
                 ) + app.request.query.all|default({})
                 )) }}
-            {% elseif sonata_admin.field_description.option('placeholder', 'short_object_description_placeholder') %}
+            {% elseif sensiolabs_admin.field_description.option('placeholder', 'short_object_description_placeholder') %}
                 <span class="inner-field-short-description">
-                    {{ sonata_admin.field_description.option('placeholder', 'short_object_description_placeholder')|trans({}, 'SonataAdminBundle') }}
+                    {{ sensiolabs_admin.field_description.option('placeholder', 'short_object_description_placeholder')|trans({}, 'SonataAdminBundle') }}
                 </span>
             {% endif %}
         </span>
         <span id="field_actions_{{ id }}" class="field-actions">
             <span class="btn-group">
-                {% if sonata_admin.field_description.associationadmin.hasroute('list') and sonata_admin.field_description.associationadmin.hasAccess('list') and btn_list %}
-                    <a href="{{ sonata_admin.field_description.associationadmin.generateUrl('list', {select: true}) }}"
+                {% if sensiolabs_admin.field_description.associationadmin.hasroute('list') and sensiolabs_admin.field_description.associationadmin.hasAccess('list') and btn_list %}
+                    <a href="{{ sensiolabs_admin.field_description.associationadmin.generateUrl('list', {select: true}) }}"
                        onclick="return start_field_dialog_form_list_{{ id }}(this);"
                        class="btn btn-info btn-sm sonata-ba-action"
                        {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
@@ -593,11 +620,11 @@ file that was distributed with this source code.
                     </a>
                 {% endif %}
 
-                {% if sonata_admin.field_description.associationadmin.hasroute('create')
-                    and sonata_admin.field_description.associationadmin.hasAccess('create')
+                {% if sensiolabs_admin.field_description.associationadmin.hasroute('create')
+                    and sensiolabs_admin.field_description.associationadmin.hasAccess('create')
                     and btn_add
                 %}
-                    <a href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
+                    <a href="{{ sensiolabs_admin.field_description.associationadmin.generateUrl('create') }}"
                        onclick="return start_field_dialog_form_add_{{ id }}(this);"
                        class="btn btn-success btn-sm sonata-ba-action"
                         {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
@@ -616,15 +643,15 @@ file that was distributed with this source code.
                         }}
                     </a>
                 {% endif %}
-                {% if sonata_admin.field_description.associationadmin.hasroute('edit')
-                    and sonata_admin.field_description.associationadmin.hasAccess('edit')
+                {% if sensiolabs_admin.field_description.associationadmin.hasroute('edit')
+                    and sensiolabs_admin.field_description.associationadmin.hasAccess('edit')
                     and btn_edit
                 %}
-                    <a href="{{ sonata_admin.value == null ? '' : sonata_admin.field_description.associationadmin.generateUrl('edit', {
-                        (sonata_admin.field_description.associationadmin.idParameter) : sonata_admin.field_description.associationadmin.urlSafeIdentifier(sonata_admin.value)})
+                    <a href="{{ sensiolabs_admin.value == null ? '' : sensiolabs_admin.field_description.associationadmin.generateUrl('edit', {
+                        (sensiolabs_admin.field_description.associationadmin.idParameter) : sensiolabs_admin.field_description.associationadmin.urlSafeIdentifier(sensiolabs_admin.value)})
                     }}"
                        onclick="return start_field_dialog_form_edit_{{ id }}(this);"
-                       class="btn btn-warning btn-sm sonata-ba-action {% if sonata_admin.value == null %}hidden{% endif %}"
+                       class="btn btn-warning btn-sm sonata-ba-action {% if sensiolabs_admin.value == null %}hidden{% endif %}"
                         {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                        title="{{
                            btn_translation_domain|default(null) is same as(false)
@@ -690,6 +717,6 @@ file that was distributed with this source code.
     {% include '@SensioLabsAdmin/CRUD/Association/edit_many_script.html.twig' %}
 {% endblock %}
 
-{% block sonata_type_template_widget %}
+{% block sensiolabs_type_template_widget %}
     {% include template with parameters only %}
-{% endblock sonata_type_template_widget %}
+{% endblock sensiolabs_type_template_widget %}

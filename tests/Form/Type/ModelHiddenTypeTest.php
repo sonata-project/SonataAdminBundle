@@ -39,7 +39,7 @@ final class ModelHiddenTypeTest extends TypeTestCase
     public function testGetBlockPrefix(): void
     {
         $type = new ModelHiddenType();
-        static::assertSame('sonata_type_model_hidden', $type->getBlockPrefix());
+        static::assertSame('sensiolabs_type_model_hidden', $type->getBlockPrefix());
     }
 
     public function testGetParent(): void

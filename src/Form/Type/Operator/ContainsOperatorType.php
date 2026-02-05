@@ -46,6 +46,6 @@ final class ContainsOperatorType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'sonata_type_operator_contains';
+        return 'sensiolabs_type_operator_contains';
     }
 }

@@ -1,162 +1,203 @@
+{#
+
+This file is part of the SensioLabs Admin Bundle package.
+
+(c) SensioLabs
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
 {% block form %}
-    {{ sonata_block_render_event('sonata.admin.edit.form.top', { 'admin': admin, 'object': object }) }}
 
     {% set url = objectId is not null ? 'edit' : 'create' %}
 
     {% if not admin.hasRoute(url) %}
-        <div>
-            {{ "form_not_available"|trans({}, "SonataAdminBundle") }}
+        <div class="admin-alert admin-alert-warning">
+            <div class="admin-alert-icon">
+                {{ ux_icon('lucide:alert-triangle', {class: 'w-5 h-5'}) }}
+            </div>
+            <div class="admin-alert-content">
+                <div class="admin-alert-title">{{ "form_not_available"|trans({}, "SensioLabsAdminBundle") }}</div>
+            </div>
         </div>
     {% else %}
         <form
-              {% if sonata_config.getOption('form_type') == 'horizontal' %}class="form-horizontal"{% endif %}
               role="form"
-              action="{% block sonata_form_action_url %}{{ admin.generateUrl(url, {(admin.idParameter): objectId, 'uniqid': admin.uniqid, 'subclass': app.request.attributes.get('subclass', app.request.query.get('subclass', app.request.request.get('subclass')))}) }}{% endblock %}"
+              action="{% block sensiolabs_form_action_url %}{{ admin.generateUrl(url, {(admin.idParameter): objectId, 'uniqid': admin.uniqid, 'subclass': app.request.attributes.get('subclass', app.request.query.get('subclass', app.request.request.get('subclass')))}) }}{% endblock %}"
               {% if form.vars.multipart %} enctype="multipart/form-data"{% endif %}
               method="POST"
-              {% if not sonata_config.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
-              {{
-                stimulus_controller('sonata-confirm-exit')|
-                stimulus_controller('sonata-edit')
-              }}
-              {{
-                stimulus_action('sonata-confirm-exit', 'confirm', 'beforeunload@window')|
-                stimulus_action('sonata-confirm-exit', 'skip', 'submit')|
-                stimulus_action('sonata-edit', 'prepareSubmit', 'submit')|
-                stimulus_action('sonata-edit', 'checkValidity:capture', 'invalid')
-              }}
-              {% block sonata_form_attributes %}{% endblock %}
+              {% if not sensiolabs_config.getOption('html5_validate') %}novalidate="novalidate"{% endif %}
+              data-controller="sensiolabs-de--admin-bundle--confirm-exit sensiolabs-de--admin-bundle--edit"
+              data-action="beforeunload@window->sensiolabs-de--admin-bundle--confirm-exit#confirm submit->sensiolabs-de--admin-bundle--confirm-exit#skip submit->sensiolabs-de--admin-bundle--edit#prepareSubmit invalid:capture->sensiolabs-de--admin-bundle--edit#checkValidity"
+              {% block sensiolabs_form_attributes %}{% endblock %}
               >
 
             {{ include('@SensioLabsAdmin/Helper/render_form_dismissable_errors.html.twig') }}
 
-            {% block sonata_pre_fieldsets %}
-                <div class="row">
+            {% block sensiolabs_pre_fieldsets %}
             {% endblock %}
 
-            {% block sonata_tab_content %}
+            {% block sensiolabs_tab_content %}
                 {% import "@SensioLabsAdmin/CRUD/base_edit_form_macro.html.twig" as form_helper %}
                 {% set formtabs = admin.getformtabs() %}
                 {% set has_tab = ((formtabs|length == 1 and formtabs|keys[0] != 'default') or formtabs|length > 1 ) %}
 
-                <div class="col-md-12">
+                <div class="w-full">
                     {% if has_tab %}
                         {% set tab_prefix = 'tab_' ~ admin.uniqid ~ '_' ~ random() %}
                         {% set tab_query_index = app.request.query.get('_tab', 0)|split("_")|last %}
-                        <div class="nav-tabs-custom">
-                            <ul class="nav nav-tabs" role="tablist">
-                                {% for name, form_tab in formtabs %}
-                                    {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
-                                    <li{% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %} class="active"{% endif %}>
-                                        <a href="#{{ _tab_name }}" class="changer-tab" aria-controls="{{ _tab_name }}" data-toggle="tab" {{ stimulus_target('sonata-edit', 'tab') }} {{ stimulus_action('sonata-edit', 'changeTab', 'click') }}>
-                                            <i class="fas fa-exclamation-circle has-errors" aria-hidden="true" hidden></i>
+                        <div class="admin-card">
+                            <div class="border-b border-gray-200">
+                                <nav class="admin-tabs" role="tablist">
+                                    {% for name, form_tab in formtabs %}
+                                        {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
+                                        <a href="#{{ _tab_name }}"
+                                           class="admin-tab {% if (not app.request.query.has('_tab') and loop.index == 1) or (tab_query_index == loop.index) %}admin-tab-active{% endif %}"
+                                           aria-controls="{{ _tab_name }}"
+                                           role="tab"
+                                           data-sensiolabs-de--admin-bundle--edit-target="tab"
+                                           data-action="click->sensiolabs-de--admin-bundle--edit#changeTab">
+                                            <span class="has-errors text-error-500 mr-1.5" hidden>
+                                                {{ ux_icon('lucide:alert-circle', {class: 'w-4 h-4'}) }}
+                                            </span>
                                             {% if form_tab.translation_domain is defined and form_tab.translation_domain is same as(false) %}
                                                 {{ form_tab.label }}
                                             {% else %}
                                                 {{ form_tab.label|trans({}, form_tab.translation_domain ?? admin.translationDomain) }}
                                             {% endif %}
                                         </a>
-                                    </li>
-                                {% endfor %}
-                            </ul>
-                            <div class="tab-content">
+                                    {% endfor %}
+                                </nav>
+                            </div>
+                            <div class="admin-card-body">
                                 {% for code, form_tab in formtabs %}
                                     {% set _tab_name = tab_prefix ~ '_' ~ loop.index %}
                                     <div
-                                        class="tab-pane fade{% if (not app.request.query.has('_tab') and loop.first) or (tab_query_index == loop.index) %} in active{% endif %}"
+                                        class="admin-tab-content {% if (not app.request.query.has('_tab') and loop.first) or (tab_query_index == loop.index) %}{% else %}hidden{% endif %}"
                                         id="{{ _tab_name }}"
+                                        role="tabpanel"
+                                        data-sensiolabs-de--admin-bundle--edit-target="tabContent"
                                     >
-                                        <div class="box-body  container-fluid">
-                                            <div class="sonata-ba-collapsed-fields">
-                                                {% if form_tab.description != false %}
-                                                    {% if form_tab.translation_domain is defined and form_tab.translation_domain is same as(false) %}
-                                                        <p>{{ form_tab.description|raw }}</p>
-                                                    {% else %}
-                                                        <p>{{ form_tab.description|trans({}, form_tab.translation_domain ?? admin.translationDomain)|raw }}</p>
-                                                    {% endif %}
+                                        {% if form_tab.description != false %}
+                                            <p class="text-gray-600 mb-6">
+                                                {% if form_tab.translation_domain is defined and form_tab.translation_domain is same as(false) %}
+                                                    {{ form_tab.description|raw }}
+                                                {% else %}
+                                                    {{ form_tab.description|trans({}, form_tab.translation_domain ?? admin.translationDomain)|raw }}
                                                 {% endif %}
+                                            </p>
+                                        {% endif %}
 
-                                                {{ form_helper.render_groups(admin, form, form_tab['groups'], has_tab) }}
-                                            </div>
-                                        </div>
+                                        {{ form_helper.render_groups(admin, form, form_tab['groups'], has_tab) }}
                                     </div>
                                 {% endfor %}
                             </div>
-                            <input type="hidden" name="_tab" value="{{ app.request.query.get('_tab') }}" {{ stimulus_target('sonata-edit', 'tabStore') }}>
+                            <input type="hidden" name="_tab" value="{{ app.request.query.get('_tab') }}" data-sensiolabs-de--admin-bundle--edit-target="tabStore">
                         </div>
                     {% elseif formtabs['default'] is defined %}
-                        {{ form_helper.render_groups(admin, form, formtabs['default'].groups, has_tab) }}
+                        <div class="admin-card">
+                            <div class="admin-card-body">
+                                {{ form_helper.render_groups(admin, form, formtabs['default'].groups, has_tab) }}
+                            </div>
+                        </div>
                     {% endif %}
                 </div>
             {% endblock %}
 
-            {% block sonata_post_fieldsets %}
-                </div>
+            {% block sensiolabs_post_fieldsets %}
             {% endblock %}
 
             {{ form_rest(form) }}
 
             {% block formactions %}
-                <div class="sonata-ba-form-actions well well-small form-actions" {{ stimulus_target('sonata-sticky', 'action') }}>
-                {% block sonata_form_actions %}
+                <div class="sensiolabs-ba-form-actions bg-white/95 backdrop-blur-sm border-t border-gray-200 px-6 py-4 mt-6 -mx-6 flex flex-wrap gap-3 items-center shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+                {% block sensiolabs_form_actions %}
                     {% if app.request.isxmlhttprequest %}
                         {% if objectId is not null %}
-                            <button type="submit" class="btn btn-success" name="btn_update"><i class="fas fa-save" aria-hidden="true"></i> {{ 'btn_update'|trans({}, 'SonataAdminBundle') }}</button>
+                            <button type="submit" class="admin-btn-success" name="btn_update">
+                                {{ ux_icon('lucide:check', {class: 'w-4 h-4'}) }}
+                                {{ 'btn_update'|trans({}, 'SensioLabsAdminBundle') }}
+                            </button>
                             {% if admin.hasRoute('delete') and admin.hasAccess('delete', object) %}
                                 {% block btn_delete %}
-                                    {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
-                                    <a class="btn btn-danger" href="{{ admin.generateObjectUrl('delete', object) }}">
-                                        <i class="fas fa-minus-circle" aria-hidden="true"></i> {{ 'link_delete'|trans({}, 'SonataAdminBundle') }}
+                                    <span class="admin-divider-vertical"></span>
+                                    <a class="admin-btn-error" href="{{ admin.generateObjectUrl('delete', object) }}">
+                                        {{ ux_icon('lucide:trash-2', {class: 'w-4 h-4'}) }}
+                                        {{ 'link_delete'|trans({}, 'SensioLabsAdminBundle') }}
                                     </a>
                                 {% endblock %}
                             {% endif %}
                         {% else %}
                             {% block btn_create %}
-                                <button type="submit" class="btn btn-success" name="btn_create"><i class="fas fa-plus-circle" aria-hidden="true"></i> {{ 'btn_create'|trans({}, 'SonataAdminBundle') }}</button>
+                                <button type="submit" class="admin-btn-success" name="btn_create">
+                                    {{ ux_icon('lucide:plus', {class: 'w-4 h-4'}) }}
+                                    {{ 'btn_create'|trans({}, 'SensioLabsAdminBundle') }}
+                                </button>
                             {% endblock %}
                         {% endif %}
                     {% else %}
                         {% if admin.supportsPreviewMode %}
                             {% block btn_preview %}
-                                <button class="btn btn-info persist-preview" name="btn_preview" type="submit">
-                                    <i class="fas fa-eye" aria-hidden="true"></i>
-                                    {{ 'btn_preview'|trans({}, 'SonataAdminBundle') }}
+                                <button class="admin-btn-info persist-preview" name="btn_preview" type="submit">
+                                    {{ ux_icon('lucide:eye', {class: 'w-4 h-4'}) }}
+                                    {{ 'btn_preview'|trans({}, 'SensioLabsAdminBundle') }}
                                 </button>
                             {% endblock %}
                         {% endif %}
                         {% if objectId is not null %}
                             {% block btn_update_and_edit %}
-                                <button type="submit" class="btn btn-success" name="btn_update_and_edit"><i class="fas fa-save" aria-hidden="true"></i> {{ 'btn_update_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
+                                <button type="submit" class="admin-btn-success" name="btn_update_and_edit">
+                                    {{ ux_icon('lucide:check', {class: 'w-4 h-4'}) }}
+                                    {{ 'btn_update_and_edit_again'|trans({}, 'SensioLabsAdminBundle') }}
+                                </button>
                             {% endblock %}
 
                             {% if admin.hasRoute('list') and admin.hasAccess('list') %}
                                 {% block btn_update_and_list %}
-                                    <button type="submit" class="btn btn-success" name="btn_update_and_list"><i class="fas fa-save"></i> <i class="fas fa-list" aria-hidden="true"></i> {{ 'btn_update_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
+                                    <button type="submit" class="admin-btn-outline" name="btn_update_and_list">
+                                        {{ ux_icon('lucide:check', {class: 'w-4 h-4'}) }}
+                                        {{ 'btn_update_and_return_to_list'|trans({}, 'SensioLabsAdminBundle') }}
+                                    </button>
                                 {% endblock %}
                             {% endif %}
 
                             {% if admin.hasRoute('delete') and admin.hasAccess('delete', object) %}
+                                <span class="flex-1"></span>
                                 {{ block('btn_delete') }}
                             {% endif %}
 
                             {% if admin.isAclEnabled() and admin.hasRoute('acl') and admin.hasAccess('acl', object) %}
                                 {% block btn_acl %}
-                                    <a class="btn btn-info" href="{{ admin.generateObjectUrl('acl', object) }}"><i class="fas fa-users" aria-hidden="true"></i> {{ 'link_edit_acl'|trans({}, 'SonataAdminBundle') }}</a>
+                                    <a class="admin-btn-ghost" href="{{ admin.generateObjectUrl('acl', object) }}">
+                                        {{ ux_icon('lucide:shield-check', {class: 'w-4 h-4'}) }}
+                                        {{ 'link_edit_acl'|trans({}, 'SensioLabsAdminBundle') }}
+                                    </a>
                                 {% endblock %}
                             {% endif %}
                         {% else %}
                             {% if admin.hasroute('edit') and admin.hasAccess('edit') %}
                                 {% block btn_create_and_edit %}
-                                    <button class="btn btn-success" type="submit" name="btn_create_and_edit"><i class="fas fa-save" aria-hidden="true"></i> {{ 'btn_create_and_edit_again'|trans({}, 'SonataAdminBundle') }}</button>
+                                    <button class="admin-btn-success" type="submit" name="btn_create_and_edit">
+                                        {{ ux_icon('lucide:check', {class: 'w-4 h-4'}) }}
+                                        {{ 'btn_create_and_edit_again'|trans({}, 'SensioLabsAdminBundle') }}
+                                    </button>
                                 {% endblock %}
                             {% endif %}
                             {% if admin.hasroute('list') and admin.hasAccess('list') %}
                                 {% block btn_create_and_list %}
-                                    <button type="submit" class="btn btn-success" name="btn_create_and_list"><i class="fas fa-save"></i> <i class="fas fa-list" aria-hidden="true"></i> {{ 'btn_create_and_return_to_list'|trans({}, 'SonataAdminBundle') }}</button>
+                                    <button type="submit" class="admin-btn-outline" name="btn_create_and_list">
+                                        {{ ux_icon('lucide:check', {class: 'w-4 h-4'}) }}
+                                        {{ 'btn_create_and_return_to_list'|trans({}, 'SensioLabsAdminBundle') }}
+                                    </button>
                                 {% endblock %}
                             {% endif %}
                             {% block btn_create_and_create %}
-                                <button class="btn btn-success" type="submit" name="btn_create_and_create"><i class="fas fa-plus-circle" aria-hidden="true"></i> {{ 'btn_create_and_create_a_new_one'|trans({}, 'SonataAdminBundle') }}</button>
+                                <button class="admin-btn-ghost" type="submit" name="btn_create_and_create">
+                                    {{ ux_icon('lucide:plus', {class: 'w-4 h-4'}) }}
+                                    {{ 'btn_create_and_create_a_new_one'|trans({}, 'SensioLabsAdminBundle') }}
+                                </button>
                             {% endblock %}
                         {% endif %}
                     {% endif %}
@@ -166,6 +207,5 @@
         </form>
     {% endif %}
 
-    {{ sonata_block_render_event('sonata.admin.edit.form.bottom', { 'admin': admin, 'object': object }) }}
 
 {% endblock %}

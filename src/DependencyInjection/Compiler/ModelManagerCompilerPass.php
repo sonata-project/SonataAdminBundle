@@ -27,7 +27,7 @@ use Symfony\Component\DependencyInjection\Exception\LogicException;
  */
 final class ModelManagerCompilerPass implements CompilerPassInterface
 {
-    public const MANAGER_TAG = 'sonata.admin.manager';
+    public const MANAGER_TAG = 'sensiolabs.admin.manager';
 
     public function process(ContainerBuilder $container): void
     {
@@ -48,8 +48,8 @@ final class ModelManagerCompilerPass implements CompilerPassInterface
             $availableManagers[$id] = $definition;
         }
 
-        if ($container->hasDefinition('sonata.admin.maker')) {
-            $adminMaker = $container->getDefinition('sonata.admin.maker');
+        if ($container->hasDefinition('sensiolabs.admin.maker')) {
+            $adminMaker = $container->getDefinition('sensiolabs.admin.maker');
 
             $adminMaker->replaceArgument(1, $availableManagers);
         }

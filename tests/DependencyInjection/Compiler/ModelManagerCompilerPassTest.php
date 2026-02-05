@@ -36,7 +36,7 @@ final class ModelManagerCompilerPassTest extends TestCase
         ]);
 
         $containerBuilder = new ContainerBuilder();
-        $containerBuilder->setDefinition('sonata.admin.maker', $adminMaker);
+        $containerBuilder->setDefinition('sensiolabs.admin.maker', $adminMaker);
         $containerBuilder->setParameter('kernel.bundles', ['MakerBundle' => 'MakerBundle']);
 
         $compilerPass = new ModelManagerCompilerPass();
@@ -56,12 +56,12 @@ final class ModelManagerCompilerPassTest extends TestCase
         ]);
         $containerBuilder = new ContainerBuilder();
         $containerBuilder->setParameter('kernel.bundles', ['MakerBundle' => 'MakerBundle']);
-        $containerBuilder->setDefinition('sonata.admin.maker', $adminMaker);
+        $containerBuilder->setDefinition('sensiolabs.admin.maker', $adminMaker);
 
         $managerDefinition = new Definition(ModelManager::class);
         $managerDefinition->addTag(ModelManagerCompilerPass::MANAGER_TAG);
 
-        $containerBuilder->setDefinition('sonata.admin.manager.test', $managerDefinition);
+        $containerBuilder->setDefinition('sensiolabs.admin.manager.test', $managerDefinition);
 
         $compilerPass = new ModelManagerCompilerPass();
         $compilerPass->process($containerBuilder);
@@ -81,17 +81,17 @@ final class ModelManagerCompilerPassTest extends TestCase
 
         $containerBuilder = new ContainerBuilder();
         $containerBuilder->setParameter('kernel.bundles', ['MakerBundle' => 'MakerBundle']);
-        $containerBuilder->setDefinition('sonata.admin.maker', $adminMaker);
+        $containerBuilder->setDefinition('sensiolabs.admin.maker', $adminMaker);
 
         $managerDefinition = new Definition(\stdClass::class);
         $managerDefinition->addTag(ModelManagerCompilerPass::MANAGER_TAG);
 
-        $containerBuilder->setDefinition('sonata.admin.manager.test', $managerDefinition);
+        $containerBuilder->setDefinition('sensiolabs.admin.manager.test', $managerDefinition);
 
         $compilerPass = new ModelManagerCompilerPass();
 
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage(\sprintf('Service "sonata.admin.manager.test" must implement `%s`.', ModelManagerInterface::class));
+        $this->expectExceptionMessage(\sprintf('Service "sensiolabs.admin.manager.test" must implement `%s`.', ModelManagerInterface::class));
 
         $compilerPass->process($containerBuilder);
     }

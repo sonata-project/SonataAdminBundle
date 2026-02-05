@@ -63,11 +63,11 @@ final class RouteCollection implements RouteCollectionInterface
             $defaults['_controller'] = $this->baseControllerName.$actionJoiner.$this->actionify($code);
         }
 
-        if (!isset($defaults['_sonata_admin'])) {
-            $defaults['_sonata_admin'] = $this->baseCodeRoute;
+        if (!isset($defaults['_sensiolabs_admin'])) {
+            $defaults['_sensiolabs_admin'] = $this->baseCodeRoute;
         }
 
-        $defaults['_sonata_name'] = $this->getRouteName($name);
+        $defaults['_sensiolabs_name'] = $this->getRouteName($name);
 
         $element = static fn (): Route => new Route($pattern, $defaults, $requirements, $options, $host, $schemes, $methods, $condition);
         $this->addElement($code, $element);

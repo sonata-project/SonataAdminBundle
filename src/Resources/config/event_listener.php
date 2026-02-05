@@ -19,6 +19,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
         // @phpstan-ignore-next-line classConstant.internalClass
-        ->set('sonata.admin.event_listener.configure_crud_controller', ConfigureCRUDControllerListener::class)
+        ->set('sensiolabs.admin.event_listener.configure_crud_controller', ConfigureCRUDControllerListener::class)
             ->tag('kernel.event_subscriber');
 };

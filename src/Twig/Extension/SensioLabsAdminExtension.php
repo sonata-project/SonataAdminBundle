@@ -29,7 +29,7 @@ final class SensioLabsAdminExtension extends AbstractExtension
     {
         return [
             new TwigFilter(
-                'sonata_urlsafeid',
+                'sensiolabs_urlsafeid',
                 [SensioLabsAdminRuntime::class, 'getUrlSafeIdentifier']
             ),
         ];
@@ -37,6 +37,6 @@ final class SensioLabsAdminExtension extends AbstractExtension
 
     public function getName(): string
     {
-        return 'sonata_admin';
+        return 'sensiolabs_admin';
     }
 }

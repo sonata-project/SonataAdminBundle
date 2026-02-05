@@ -65,7 +65,7 @@ final class ExplainAdminCommand extends Command
         $output->writeln('');
         $output->writeln('<info>Routes</info>');
         foreach ($admin->getRoutes()->getElements() as $route) {
-            $output->writeln(\sprintf('  - % -25s %s', $route->getDefault('_sonata_name'), $route->getPath()));
+            $output->writeln(\sprintf('  - % -25s %s', $route->getDefault('_sensiolabs_name'), $route->getPath()));
         }
 
         $output->writeln('');

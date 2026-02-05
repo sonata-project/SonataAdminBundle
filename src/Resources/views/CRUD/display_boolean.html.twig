@@ -1,8 +1,8 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
@@ -10,17 +10,19 @@ file that was distributed with this source code.
 #}
 
 {%- apply trim|raw %}
-    {% if value %}
-        {% set text = 'label_type_yes'|trans({}, 'SonataAdminBundle') %}
-    {% else %}
-        {% set text = 'label_type_no'|trans({}, 'SonataAdminBundle') %}
-    {% endif %}
+    {% set isTrue = inverse|default(false) ? not value : value %}
 
-    {% if inverse|default(false) ? not value : value %}
-        {% set class = 'label-success' %}
-    {% else %}
-        {% set class = 'label-danger' %}
-    {% endif %}
-
-    <span class="label {{ class }}">{{ text }}</span>
+    <span class="inline-flex items-center gap-1.5">
+        {% if isTrue %}
+            <span class="flex items-center justify-center w-5 h-5 rounded-full bg-success-100 text-success-600">
+                {{ ux_icon('lucide:check', {class: 'w-3 h-3'}) }}
+            </span>
+            <span class="text-sm font-medium text-success-700">{{ 'label_type_yes'|trans({}, 'SensioLabsAdminBundle') }}</span>
+        {% else %}
+            <span class="flex items-center justify-center w-5 h-5 rounded-full bg-gray-100 text-gray-400">
+                {{ ux_icon('lucide:x', {class: 'w-3 h-3'}) }}
+            </span>
+            <span class="text-sm text-gray-500">{{ 'label_type_no'|trans({}, 'SensioLabsAdminBundle') }}</span>
+        {% endif %}
+    </span>
 {% endapply -%}

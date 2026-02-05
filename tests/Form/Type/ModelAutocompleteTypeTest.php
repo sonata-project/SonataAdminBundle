@@ -56,7 +56,7 @@ final class ModelAutocompleteTypeTest extends TypeTestCase
         static::assertFalse($options['dropdown_auto_width']);
 
         static::assertSame('', $options['url']);
-        static::assertSame(['name' => 'sonata_admin_retrieve_autocomplete_items', 'parameters' => []], $options['route']);
+        static::assertSame(['name' => 'sensiolabs_admin_retrieve_autocomplete_items', 'parameters' => []], $options['route']);
         static::assertSame([], $options['req_params']);
         static::assertSame('q', $options['req_param_name_search']);
         static::assertSame(DatagridInterface::PAGE, $options['req_param_name_page_number']);
@@ -69,7 +69,7 @@ final class ModelAutocompleteTypeTest extends TypeTestCase
         static::assertSame('', $options['dropdown_css_class']);
         static::assertSame('', $options['dropdown_item_css_class']);
 
-        static::assertSame('@SensioLabsAdmin/Form/Type/sonata_type_model_autocomplete.html.twig', $options['template']);
+        static::assertSame('@SensioLabsAdmin/Form/Type/sensiolabs_type_model_autocomplete.html.twig', $options['template']);
 
         static::assertSame('', $options['context']);
 
@@ -80,6 +80,6 @@ final class ModelAutocompleteTypeTest extends TypeTestCase
 
     public function testGetBlockPrefix(): void
     {
-        static::assertSame('sonata_type_model_autocomplete', $this->type->getBlockPrefix());
+        static::assertSame('sensiolabs_type_model_autocomplete', $this->type->getBlockPrefix());
     }
 }

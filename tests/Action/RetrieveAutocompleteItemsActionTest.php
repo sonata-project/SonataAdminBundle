@@ -56,7 +56,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     public function testRetrieveAutocompleteItemsActionNotGranted(): void
     {
         $request = new Request([
-            '_sonata_admin' => 'foo.admin',
+            '_sensiolabs_admin' => 'foo.admin',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->admin->method('hasAccess')->willReturnMap([
@@ -73,7 +73,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     {
         $object = new \stdClass();
         $request = new Request([
-            '_sonata_admin' => 'foo.admin',
+            '_sensiolabs_admin' => 'foo.admin',
             'field' => 'barField',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
@@ -101,7 +101,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     {
         $object = new \stdClass();
         $request = new Request([
-            '_sonata_admin' => 'foo.admin',
+            '_sensiolabs_admin' => 'foo.admin',
             'field' => 'barField',
             'q' => 'so',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
@@ -131,7 +131,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     public function testRetrieveAutocompleteItems(): void
     {
         $request = new Request([
-            '_sonata_admin' => 'foo.admin',
+            '_sensiolabs_admin' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
@@ -156,7 +156,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     public function testRetrieveAutocompleteItemsComplexPropertyArray(): void
     {
         $request = new Request([
-            '_sonata_admin' => 'foo.admin',
+            '_sensiolabs_admin' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
@@ -200,7 +200,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
     public function testRetrieveAutocompleteItemsComplexProperty(): void
     {
         $request = new Request([
-            '_sonata_admin' => 'foo.admin',
+            '_sensiolabs_admin' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);

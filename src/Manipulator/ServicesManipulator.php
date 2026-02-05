@@ -24,7 +24,7 @@ final class ServicesManipulator
     private string $template = '    %s:
         class: %s
         tags:
-            - { name: sonata.admin, model_class: %s, controller: %s, manager_type: %s, group: admin, label: %s }
+            - { name: sensiolabs.admin, model_class: %s, controller: %s, manager_type: %s, group: admin, label: %s }
 ';
 
     public function __construct(

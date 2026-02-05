@@ -66,7 +66,7 @@ final class MenuBuilderTest extends TestCase
         $this->provider
             ->expects(static::once())
             ->method('get')
-            ->with('sonata_group_menu')
+            ->with('sensiolabs_group_menu')
             ->willReturn($this->factory->createItem('bar')->addChild('foo')->getParent());
 
         $builder = $this->createMenuBuilder($adminGroups);
@@ -151,13 +151,13 @@ final class MenuBuilderTest extends TestCase
             ->method('dispatch')
             ->with(
                 static::isInstanceOf(ConfigureMenuEvent::class),
-                static::equalTo('sonata.admin.event.configure.menu.sidebar')
+                static::equalTo('sensiolabs.admin.event.configure.menu.sidebar')
             );
 
         $this->provider
             ->expects(static::once())
             ->method('get')
-            ->with('sonata_group_menu')
+            ->with('sensiolabs_group_menu')
             ->willReturn($this->factory->createItem('bar'));
 
         $builder->createSidebarMenu();

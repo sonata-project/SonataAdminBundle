@@ -55,6 +55,6 @@ final class ModelReferenceType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'sonata_type_model_reference';
+        return 'sensiolabs_type_model_reference';
     }
 }

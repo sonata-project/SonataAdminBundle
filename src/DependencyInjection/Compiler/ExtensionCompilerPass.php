@@ -60,7 +60,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
         $universalExtensions = [];
         $targets = [];
 
-        foreach ($container->findTaggedServiceIds('sonata.admin.extension') as $id => $tags) {
+        foreach ($container->findTaggedServiceIds('sensiolabs.admin.extension') as $id => $tags) {
             $adminExtension = $container->getDefinition($id);
 
             // Trim possible parameter delimiters ("%") from the class name.
@@ -99,7 +99,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
         /**
          * @phpstan-var ExtensionMap $extensionConfig
          */
-        $extensionConfig = $container->getParameter('sonata.admin.extension.map');
+        $extensionConfig = $container->getParameter('sensiolabs.admin.extension.map');
         $extensionMap = $this->flattenExtensionConfiguration($extensionConfig);
 
         foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {

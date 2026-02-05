@@ -1,13 +1,42 @@
+{#
+
+This file is part of the SensioLabs Admin Bundle package.
+
+(c) SensioLabs
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
 {% macro render_groups(admin, form, groups, has_tab) %}
-    <div class="row">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
     {% for code in groups|filter(code => admin.formgroups[code] is defined) %}
         {% set form_group = admin.formgroups[code] %}
 
-        <div class="{{ form_group.class|default('col-md-12') }}">
-            <div class="{{ form_group.box_class }}">
-                <div class="box-header">
-                    <h4 class="box-title">
+        {# Map Bootstrap grid classes to Tailwind #}
+        {% set col_class = form_group.class|default('col-md-12') %}
+        {% if 'col-md-12' in col_class %}
+            {% set tw_col_class = 'lg:col-span-12' %}
+        {% elseif 'col-md-6' in col_class %}
+            {% set tw_col_class = 'lg:col-span-6' %}
+        {% elseif 'col-md-4' in col_class %}
+            {% set tw_col_class = 'lg:col-span-4' %}
+        {% elseif 'col-md-8' in col_class %}
+            {% set tw_col_class = 'lg:col-span-8' %}
+        {% elseif 'col-md-3' in col_class %}
+            {% set tw_col_class = 'lg:col-span-3' %}
+        {% elseif 'col-md-9' in col_class %}
+            {% set tw_col_class = 'lg:col-span-9' %}
+        {% else %}
+            {% set tw_col_class = 'lg:col-span-12' %}
+        {% endif %}
+
+        <div class="{{ tw_col_class }}">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="text-lg font-medium text-gray-900">
                         {% if form_group.translation_domain is defined and form_group.translation_domain is same as(false) %}
                             {{ form_group.label }}
                         {% else %}
@@ -15,25 +44,29 @@
                         {% endif %}
                     </h4>
                 </div>
-                <div class="box-body">
-                    <div class="sonata-ba-collapsed-fields">
+                <div class="card-body">
+                    <div class="space-y-4">
                         {% if form_group.description %}
-                            {% if form_group.translation_domain is defined and form_group.translation_domain is same as(false) %}
-                                <p>{{ form_group.description|raw }}</p>
-                            {% else %}
-                                <p>{{ form_group.description|trans({}, form_group.translation_domain ?? admin.translationDomain)|raw }}</p>
-                            {% endif %}
+                            <p class="text-gray-600">
+                                {% if form_group.translation_domain is defined and form_group.translation_domain is same as(false) %}
+                                    {{ form_group.description|raw }}
+                                {% else %}
+                                    {{ form_group.description|trans({}, form_group.translation_domain ?? admin.translationDomain)|raw }}
+                                {% endif %}
+                            </p>
                         {% endif %}
 
                         {% for form_field_name in form_group.fields|filter(form_field_name => form[form_field_name] is defined) %}
                             {{ form_row(form[form_field_name]) }}
                         {% else %}
                             {% if form_group.empty_message != false %}
-                                {% if form_group.empty_message_translation_domain is defined and form_group.empty_message_translation_domain is same as(false) %}
-                                    <em>{{ form_group.empty_message }}</em>
-                                {% else %}
-                                    <em>{{ form_group.empty_message|trans({}, form_group.empty_message_translation_domain ?? admin.translationDomain) }}</em>
-                                {% endif %}
+                                <em class="text-gray-500">
+                                    {% if form_group.empty_message_translation_domain is defined and form_group.empty_message_translation_domain is same as(false) %}
+                                        {{ form_group.empty_message }}
+                                    {% else %}
+                                        {{ form_group.empty_message|trans({}, form_group.empty_message_translation_domain ?? admin.translationDomain) }}
+                                    {% endif %}
+                                </em>
                             {% endif %}
                         {% endfor %}
                     </div>

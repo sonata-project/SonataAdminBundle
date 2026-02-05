@@ -44,6 +44,6 @@ final class EqualOperatorType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'sonata_type_operator_equal';
+        return 'sensiolabs_type_operator_equal';
     }
 }

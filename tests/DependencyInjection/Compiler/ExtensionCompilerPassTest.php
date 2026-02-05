@@ -524,18 +524,18 @@ final class ExtensionCompilerPassTest extends TestCase
             ->register('sonata_extension_security')
             ->setPublic(true)
             ->setClass($extensionClass)
-            ->addTag('sonata.admin.extension', ['global' => true]);
+            ->addTag('sensiolabs.admin.extension', ['global' => true]);
         $container
             ->register('sonata_extension_filter')
             ->setPublic(true)
             ->setClass($extensionClass)
-            ->addTag('sonata.admin.extension', ['global' => false])
-            ->addTag('sonata.admin.extension', ['target' => 'sonata_news_admin', 'priority' => 10])
-            ->addTag('sonata.admin.extension', ['target' => 'sonata_article_admin'])
-            ->addTag('sonata.admin.extension', ['implements' => Publishable::class])
-            ->addTag('sonata.admin.extension', ['admin_uses' => TimestampableTrait::class]);
+            ->addTag('sensiolabs.admin.extension', ['global' => false])
+            ->addTag('sensiolabs.admin.extension', ['target' => 'sonata_news_admin', 'priority' => 10])
+            ->addTag('sensiolabs.admin.extension', ['target' => 'sonata_article_admin'])
+            ->addTag('sensiolabs.admin.extension', ['implements' => Publishable::class])
+            ->addTag('sensiolabs.admin.extension', ['admin_uses' => TimestampableTrait::class]);
 
-        // Add definitions for sonata.templating service
+        // Add definitions for sensiolabs.templating service
         $container
             ->register('kernel')
             ->setClass(KernelInterface::class);

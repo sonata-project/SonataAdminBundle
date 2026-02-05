@@ -210,19 +210,19 @@ final class CRUDControllerTest extends TestCase
         $this->parameterBag = new ParameterBag();
 
         $this->request->setSession($this->session);
-        $this->container->set('sonata.admin.pool', $this->pool);
+        $this->container->set('sensiolabs.admin.pool', $this->pool);
         $this->container->set('request_stack', $requestStack);
         $this->container->set('foo.admin', $this->admin);
         $this->container->set('twig', $this->twig);
         $this->container->set('session', $this->session);
-        $this->container->set('sonata.exporter.exporter', $exporter);
-        $this->container->set('sonata.admin.admin_exporter', $adminExporter);
-        $this->container->set('sonata.admin.audit.manager', $this->auditManager);
-        $this->container->set('sonata.admin.object.manipulator.acl.admin', $this->adminObjectAclManipulator);
+        $this->container->set('sensiolabs.exporter.exporter', $exporter);
+        $this->container->set('sensiolabs.admin.admin_exporter', $adminExporter);
+        $this->container->set('sensiolabs.admin.audit.manager', $this->auditManager);
+        $this->container->set('sensiolabs.admin.object.manipulator.acl.admin', $this->adminObjectAclManipulator);
         $this->container->set('security.csrf.token_manager', $this->csrfProvider);
         $this->container->set('logger', $this->logger);
         $this->container->set('translator', $this->translator);
-        $this->container->set('sonata.admin.request.fetcher', $this->adminFetcher);
+        $this->container->set('sensiolabs.admin.request.fetcher', $this->adminFetcher);
         $this->container->set('parameter_bag', $this->parameterBag);
         $this->container->set('http_kernel', $this->httpKernel);
         $this->container->set('serializer', new Serializer([
@@ -375,7 +375,7 @@ final class CRUDControllerTest extends TestCase
             ->willReturn($admin);
 
         $container = new Container();
-        $container->set('sonata.admin.request.fetcher', $adminFetcher);
+        $container->set('sensiolabs.admin.request.fetcher', $adminFetcher);
 
         $controller->setContainer($container);
 
@@ -597,7 +597,7 @@ final class CRUDControllerTest extends TestCase
                 'admin' => $this->admin,
                 'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'list',
-                'csrf_token' => 'csrf-token-123_sonata.batch',
+                'csrf_token' => 'csrf-token-123_sensiolabs.batch',
                 'export_formats' => ['json'],
                 'form' => $formView,
                 'datagrid' => $datagrid,
@@ -640,7 +640,7 @@ final class CRUDControllerTest extends TestCase
         $result = $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
 
         static::assertInstanceOf(RedirectResponse::class, $result);
-        static::assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame(['flash_batch_delete_success'], $this->session->getFlashBag()->get('sensiolabs_flash_success'));
         static::assertSame('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
     }
 
@@ -662,7 +662,7 @@ final class CRUDControllerTest extends TestCase
         $result = $this->controller->batchActionDelete($this->createMock(ProxyQueryInterface::class));
 
         static::assertInstanceOf(RedirectResponse::class, $result);
-        static::assertSame(['flash_batch_delete_error'], $this->session->getFlashBag()->get('sonata_flash_error'));
+        static::assertSame(['flash_batch_delete_error'], $this->session->getFlashBag()->get('sensiolabs_flash_error'));
         static::assertSame('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
     }
 
@@ -719,7 +719,7 @@ final class CRUDControllerTest extends TestCase
         static::assertInstanceOf(RedirectResponse::class, $result);
         static::assertSame(
             [CustomModelManagerExceptionMessageController::ERROR_MESSAGE],
-            $this->session->getFlashBag()->get('sonata_flash_error')
+            $this->session->getFlashBag()->get('sensiolabs_flash_error')
         );
         static::assertSame('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
     }
@@ -759,7 +759,7 @@ final class CRUDControllerTest extends TestCase
         static::assertInstanceOf(RedirectResponse::class, $result);
         static::assertSame(
             [CustomModelManagerThrowableMessageController::ERROR_MESSAGE],
-            $this->session->getFlashBag()->get('sonata_flash_error')
+            $this->session->getFlashBag()->get('sensiolabs_flash_error')
         );
         static::assertSame('list?filter%5Bfoo%5D=bar', $result->getTargetUrl());
     }
@@ -1055,7 +1055,7 @@ final class CRUDControllerTest extends TestCase
                 'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'delete',
                 'object' => $object,
-                'csrf_token' => 'csrf-token-123_sonata.delete',
+                'csrf_token' => 'csrf-token-123_sensiolabs.delete',
             ]);
 
         static::assertInstanceOf(Response::class, $this->controller->deleteAction($this->request));
@@ -1161,7 +1161,7 @@ final class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_DELETE);
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.delete');
 
         $response = $this->controller->deleteAction($this->request);
 
@@ -1185,7 +1185,7 @@ final class CRUDControllerTest extends TestCase
             ->with(static::equalTo('delete'));
 
         $this->request->setMethod(Request::METHOD_POST);
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.delete');
 
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
@@ -1218,7 +1218,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->request->setMethod(Request::METHOD_DELETE);
 
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.delete');
         $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $response = $this->controller->deleteAction($this->request);
@@ -1251,7 +1251,7 @@ final class CRUDControllerTest extends TestCase
         $this->parameterBag->set('kernel.debug', true);
 
         $this->request->setMethod(Request::METHOD_DELETE);
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.delete');
 
         $this->expectException(ModelManagerException::class);
 
@@ -1282,12 +1282,12 @@ final class CRUDControllerTest extends TestCase
 
         $this->request->setMethod(Request::METHOD_DELETE);
 
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.delete');
 
         $response = $this->controller->deleteAction($this->request);
 
         static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sensiolabs_flash_success'));
         static::assertSame('list', $response->getTargetUrl());
     }
 
@@ -1315,12 +1315,12 @@ final class CRUDControllerTest extends TestCase
 
         $this->request->setMethod(Request::METHOD_POST);
 
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.delete');
 
         $response = $this->controller->deleteAction($this->request);
 
         static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sensiolabs_flash_success'));
         static::assertSame('list', $response->getTargetUrl());
     }
 
@@ -1353,7 +1353,7 @@ final class CRUDControllerTest extends TestCase
         $response = $this->controller->deleteAction($this->request);
 
         static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame(['flash_delete_success'], $this->session->getFlashBag()->get('sensiolabs_flash_success'));
         static::assertSame('list', $response->getTargetUrl());
     }
 
@@ -1379,7 +1379,7 @@ final class CRUDControllerTest extends TestCase
                 'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'delete',
                 'object' => $object,
-                'csrf_token' => 'csrf-token-123_sonata.delete',
+                'csrf_token' => 'csrf-token-123_sensiolabs.delete',
             ]);
 
         static::assertInstanceOf(Response::class, $this->controller->deleteAction($this->request));
@@ -1413,12 +1413,12 @@ final class CRUDControllerTest extends TestCase
         self::assertLoggerLogsModelManagerException($this->admin, 'delete');
 
         $this->request->setMethod(Request::METHOD_DELETE);
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.delete');
 
         $response = $this->controller->deleteAction($this->request);
 
         static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertSame(['flash_delete_error'], $this->session->getFlashBag()->get('sonata_flash_error'));
+        static::assertSame(['flash_delete_error'], $this->session->getFlashBag()->get('sensiolabs_flash_error'));
         static::assertSame('list', $response->getTargetUrl());
     }
 
@@ -1446,7 +1446,7 @@ final class CRUDControllerTest extends TestCase
             });
 
         $this->request->setMethod(Request::METHOD_DELETE);
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.delete');
 
         $customController = new CustomModelManagerExceptionMessageController();
         $customController->setContainer($this->container);
@@ -1455,7 +1455,7 @@ final class CRUDControllerTest extends TestCase
         $response = $customController->deleteAction($this->request);
 
         static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertSame([CustomModelManagerExceptionMessageController::ERROR_MESSAGE], $this->session->getFlashBag()->get('sonata_flash_error'));
+        static::assertSame([CustomModelManagerExceptionMessageController::ERROR_MESSAGE], $this->session->getFlashBag()->get('sensiolabs_flash_error'));
         static::assertSame('list', $response->getTargetUrl());
     }
 
@@ -1483,7 +1483,7 @@ final class CRUDControllerTest extends TestCase
             });
 
         $this->request->setMethod(Request::METHOD_DELETE);
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.delete');
 
         $customController = new CustomModelManagerThrowableMessageController();
         $customController->setContainer($this->container);
@@ -1492,7 +1492,7 @@ final class CRUDControllerTest extends TestCase
         $response = $customController->deleteAction($this->request);
 
         static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertSame([CustomModelManagerThrowableMessageController::ERROR_MESSAGE], $this->session->getFlashBag()->get('sonata_flash_error'));
+        static::assertSame([CustomModelManagerThrowableMessageController::ERROR_MESSAGE], $this->session->getFlashBag()->get('sensiolabs_flash_error'));
         static::assertSame('list', $response->getTargetUrl());
     }
 
@@ -1511,7 +1511,7 @@ final class CRUDControllerTest extends TestCase
             ->with(static::equalTo('delete'));
 
         $this->request->setMethod(Request::METHOD_POST);
-        $this->request->request->set('_sonata_csrf_token', 'CSRF-INVALID');
+        $this->request->request->set('_sensiolabs_csrf_token', 'CSRF-INVALID');
 
         try {
             $this->controller->deleteAction($this->request);
@@ -1724,7 +1724,7 @@ final class CRUDControllerTest extends TestCase
         $response = $this->controller->editAction($this->request);
 
         static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertSame(['flash_edit_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame(['flash_edit_success'], $this->session->getFlashBag()->get('sensiolabs_flash_success'));
         static::assertSame('stdClass_edit', $response->getTargetUrl());
     }
 
@@ -1791,7 +1791,7 @@ final class CRUDControllerTest extends TestCase
 
         static::assertInstanceOf(Response::class, $this->controller->editAction($this->request));
 
-        static::assertSame(['sonata_flash_error' => ['flash_edit_error']], $this->session->getFlashBag()->all());
+        static::assertSame(['sensiolabs_flash_error' => ['flash_edit_error']], $this->session->getFlashBag()->all());
     }
 
     public function testEditActionWithModelManagerExceptionAndCustomError(): void
@@ -1874,7 +1874,7 @@ final class CRUDControllerTest extends TestCase
         static::assertInstanceOf(Response::class, $response);
 
         static::assertSame(
-            ['sonata_flash_error' => [CustomModelManagerExceptionMessageController::ERROR_MESSAGE]],
+            ['sensiolabs_flash_error' => [CustomModelManagerExceptionMessageController::ERROR_MESSAGE]],
             $this->session->getFlashBag()->all()
         );
     }
@@ -1959,7 +1959,7 @@ final class CRUDControllerTest extends TestCase
         static::assertInstanceOf(Response::class, $response);
 
         static::assertSame(
-            ['sonata_flash_error' => [CustomModelManagerThrowableMessageController::ERROR_MESSAGE]],
+            ['sensiolabs_flash_error' => [CustomModelManagerThrowableMessageController::ERROR_MESSAGE]],
             $this->session->getFlashBag()->all()
         );
     }
@@ -2197,7 +2197,7 @@ final class CRUDControllerTest extends TestCase
             ]);
 
         static::assertInstanceOf(Response::class, $this->controller->editAction($this->request));
-        static::assertSame(['sonata_flash_error' => ['flash_edit_error']], $this->session->getFlashBag()->all());
+        static::assertSame(['sensiolabs_flash_error' => ['flash_edit_error']], $this->session->getFlashBag()->all());
     }
 
     public function testEditActionWithPreview(): void
@@ -2489,7 +2489,7 @@ final class CRUDControllerTest extends TestCase
         $response = $this->controller->createAction($this->request);
 
         static::assertInstanceOf(RedirectResponse::class, $response);
-        static::assertSame(['flash_create_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame(['flash_create_success'], $this->session->getFlashBag()->get('sensiolabs_flash_success'));
         static::assertSame('stdClass_edit', $response->getTargetUrl());
     }
 
@@ -2552,7 +2552,7 @@ final class CRUDControllerTest extends TestCase
             ]);
 
         static::assertInstanceOf(Response::class, $this->controller->createAction($this->request));
-        static::assertSame(['sonata_flash_error' => ['flash_create_error']], $this->session->getFlashBag()->all());
+        static::assertSame(['sensiolabs_flash_error' => ['flash_create_error']], $this->session->getFlashBag()->all());
     }
 
     #[DataProvider('getToStringValues')]
@@ -2620,7 +2620,7 @@ final class CRUDControllerTest extends TestCase
             ]);
 
         static::assertInstanceOf(Response::class, $this->controller->createAction($this->request));
-        static::assertSame(['sonata_flash_error' => ['flash_create_error']], $this->session->getFlashBag()->all());
+        static::assertSame(['sensiolabs_flash_error' => ['flash_create_error']], $this->session->getFlashBag()->all());
     }
 
     public function testCreateActionWithModelManagerExceptionAndCustomError(): void
@@ -2699,7 +2699,7 @@ final class CRUDControllerTest extends TestCase
 
         static::assertInstanceOf(Response::class, $response);
         static::assertSame(
-            ['sonata_flash_error' => [CustomModelManagerExceptionMessageController::ERROR_MESSAGE]],
+            ['sensiolabs_flash_error' => [CustomModelManagerExceptionMessageController::ERROR_MESSAGE]],
             $this->session->getFlashBag()->all()
         );
     }
@@ -2780,7 +2780,7 @@ final class CRUDControllerTest extends TestCase
 
         static::assertInstanceOf(Response::class, $response);
         static::assertSame(
-            ['sonata_flash_error' => [CustomModelManagerThrowableMessageController::ERROR_MESSAGE]],
+            ['sensiolabs_flash_error' => [CustomModelManagerThrowableMessageController::ERROR_MESSAGE]],
             $this->session->getFlashBag()->all()
         );
     }
@@ -3498,7 +3498,7 @@ final class CRUDControllerTest extends TestCase
 
         static::assertInstanceOf(RedirectResponse::class, $response);
 
-        static::assertSame(['flash_acl_edit_success'], $this->session->getFlashBag()->get('sonata_flash_success'));
+        static::assertSame(['flash_acl_edit_success'], $this->session->getFlashBag()->get('sensiolabs_flash_success'));
         static::assertSame(\sprintf('%s_acl', DummyDomainObject::class), $response->getTargetUrl());
     }
 
@@ -3940,7 +3940,7 @@ final class CRUDControllerTest extends TestCase
     public function testBatchActionActionNotDefined(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->expectExceptionMessage('A `sonata.admin.controller.crud::batchActionFoo` method must be callable or create a `controller` configuration for your batch action.');
+        $this->expectExceptionMessage('A `sensiolabs.admin.controller.crud::batchActionFoo` method must be callable or create a `controller` configuration for your batch action.');
 
         $batchActions = [];
 
@@ -3950,11 +3950,11 @@ final class CRUDControllerTest extends TestCase
 
         $this->admin->expects(static::once())
             ->method('getBaseControllerName')
-            ->willReturn('sonata.admin.controller.crud');
+            ->willReturn('sensiolabs.admin.controller.crud');
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
 
         $this->controller->batchAction($this->request);
     }
@@ -3963,7 +3963,7 @@ final class CRUDControllerTest extends TestCase
     {
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
-        $this->request->request->set('_sonata_csrf_token', 'CSRF-INVALID');
+        $this->request->request->set('_sensiolabs_csrf_token', 'CSRF-INVALID');
 
         try {
             $this->controller->batchAction($this->request);
@@ -3985,15 +3985,15 @@ final class CRUDControllerTest extends TestCase
 
         $this->admin->expects(static::any())
             ->method('getBaseControllerName')
-            ->willReturn('sonata.admin.controller.crud');
+            ->willReturn('sensiolabs.admin.controller.crud');
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage(
-            'A `sonata.admin.controller.crud::batchActionFoo` method must be callable or create a `controller` configuration for your batch action.'
+            'A `sensiolabs.admin.controller.crud::batchActionFoo` method must be callable or create a `controller` configuration for your batch action.'
         );
 
         $this->controller->batchAction($this->request);
@@ -4009,7 +4009,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->admin->expects(static::any())
             ->method('getBaseControllerName')
-            ->willReturn($baseControllerName = 'sonata.admin.controller.crud');
+            ->willReturn($baseControllerName = 'sensiolabs.admin.controller.crud');
 
         $this->expectGetController($baseControllerName.'::batchActionDelete');
 
@@ -4060,7 +4060,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]));
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
 
         static::assertNull(BCHelper::getFromRequest($this->request, 'idx'));
 
@@ -4080,7 +4080,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->admin->expects(static::any())
             ->method('getBaseControllerName')
-            ->willReturn($baseControllerName = 'sonata.admin.controller.crud');
+            ->willReturn($baseControllerName = 'sensiolabs.admin.controller.crud');
 
         $this->expectGetController($baseControllerName.'::batchActionDelete');
 
@@ -4132,7 +4132,7 @@ final class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', 'delete');
         $this->request->request->set('idx', ['123', '456']);
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
 
         $result = $this->controller->batchAction($this->request);
 
@@ -4165,13 +4165,13 @@ final class CRUDControllerTest extends TestCase
 
         $this->admin->expects(static::any())
             ->method('getBaseControllerName')
-            ->willReturn($baseControllerName = 'sonata.admin.controller.crud');
+            ->willReturn($baseControllerName = 'sensiolabs.admin.controller.crud');
 
         $this->expectGetController($baseControllerName.'::batchActionDelete');
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode($data, \JSON_THROW_ON_ERROR));
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
@@ -4200,7 +4200,7 @@ final class CRUDControllerTest extends TestCase
                 'action' => 'list',
                 'datagrid' => $datagrid,
                 'form' => $formView,
-                'csrf_token' => 'csrf-token-123_sonata.batch',
+                'csrf_token' => 'csrf-token-123_sensiolabs.batch',
                 'action_label' => 'Foo Bar',
                 'data' => $data,
                 'batch_translation_domain' => 'FooBarBaz',
@@ -4240,7 +4240,7 @@ final class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', $actionName);
         $this->request->request->set('idx', ['789']);
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
 
         static::assertNull(BCHelper::getFromRequest($this->request, 'all_elements'));
 
@@ -4248,7 +4248,7 @@ final class CRUDControllerTest extends TestCase
 
         static::assertNull(BCHelper::getFromRequest($this->request, 'all_elements'), 'Ensure original request is not modified by calling `CRUDController::batchAction()`.');
         static::assertInstanceOf(RedirectResponse::class, $result);
-        static::assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sonata_flash_info'));
+        static::assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sensiolabs_flash_info'));
         static::assertSame('list', $result->getTargetUrl());
     }
 
@@ -4277,7 +4277,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode($data));
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
 
         $datagrid = $this->createMock(DatagridInterface::class);
 
@@ -4329,12 +4329,12 @@ final class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', 'foo');
         $this->request->request->set('idx', ['999']);
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
 
         $result = $controller->batchAction($this->request);
 
         static::assertInstanceOf(RedirectResponse::class, $result);
-        static::assertSame(['flash_foo_error'], $this->session->getFlashBag()->get('sonata_flash_info'));
+        static::assertSame(['flash_foo_error'], $this->session->getFlashBag()->get('sensiolabs_flash_info'));
         static::assertSame('list', $result->getTargetUrl());
     }
 
@@ -4359,12 +4359,12 @@ final class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', 'delete');
         $this->request->request->set('idx', []);
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
 
         $result = $this->controller->batchAction($this->request);
 
         static::assertInstanceOf(RedirectResponse::class, $result);
-        static::assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sonata_flash_info'));
+        static::assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sensiolabs_flash_info'));
         static::assertSame('list', $result->getTargetUrl());
     }
 
@@ -4407,7 +4407,7 @@ final class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('action', 'bar');
         $this->request->request->set('idx', []);
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
 
         $this->expectTranslate('flash_batch_no_elements_processed', [], 'SensioLabsAdminBundle');
         $result = $controller->batchAction($this->request);
@@ -4461,7 +4461,7 @@ final class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('foo', 'bar');
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
 
         $result = $this->controller->batchAction($this->request);
 
@@ -4509,7 +4509,7 @@ final class CRUDControllerTest extends TestCase
 
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'delete', 'idx' => ['123', '456'], 'all_elements' => true]));
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
 
         $result = $this->controller->batchAction($this->request);
 
@@ -4575,7 +4575,7 @@ final class CRUDControllerTest extends TestCase
         $this->request->setMethod(Request::METHOD_POST);
         $this->request->request->set('data', json_encode(['action' => 'foo', 'idx' => ['123', '456'], 'all_elements' => false]));
         $this->request->request->set('foo', 'bar');
-        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.batch');
+        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
 
         $result = $this->controller->batchAction($this->request);
 

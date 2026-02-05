@@ -30,7 +30,7 @@ final class TemplateType extends AbstractType
 
         $parameters = [];
 
-        $fieldDescription = $view->vars['sonata_admin']['field_description'] ?? null;
+        $fieldDescription = $view->vars['sensiolabs_admin']['field_description'] ?? null;
         if ($fieldDescription instanceof FieldDescriptionInterface) {
             $parameters['field_description'] = $fieldDescription;
             $parameters['admin'] = $fieldDescription->getAdmin();
@@ -56,6 +56,6 @@ final class TemplateType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'sonata_type_template';
+        return 'sensiolabs_type_template';
     }
 }

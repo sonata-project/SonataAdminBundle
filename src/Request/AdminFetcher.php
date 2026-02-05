@@ -27,14 +27,14 @@ final class AdminFetcher implements AdminFetcherInterface
 
     public function get(Request $request): AdminInterface
     {
-        $adminCode = BCHelper::getFromRequest($request, '_sonata_admin');
+        $adminCode = BCHelper::getFromRequest($request, '_sensiolabs_admin');
 
         if (!\is_string($adminCode)) {
             $route = BCHelper::getFromRequest($request, '_route', '');
             \assert(\is_string($route));
 
             throw new \InvalidArgumentException(\sprintf(
-                'There is no `_sonata_admin` defined for the current route `%s`.',
+                'There is no `_sensiolabs_admin` defined for the current route `%s`.',
                 $route
             ));
         }

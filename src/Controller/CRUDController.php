@@ -81,13 +81,13 @@ class CRUDController extends AbstractController
     public static function getSubscribedServices(): array
     {
         return [
-            'sonata.admin.pool' => Pool::class,
-            'sonata.admin.audit.manager' => AuditManagerInterface::class,
-            'sonata.admin.object.manipulator.acl.admin' => '?'.AdminObjectAclManipulator::class,
-            'sonata.admin.request.fetcher' => AdminFetcherInterface::class,
-            'sonata.exporter.exporter' => '?'.ExporterInterface::class,
-            'sonata.admin.admin_exporter' => '?'.AdminExporter::class,
-            'sonata.admin.security.acl_user_manager' => '?'.AdminAclUserManagerInterface::class,
+            'sensiolabs.admin.pool' => Pool::class,
+            'sensiolabs.admin.audit.manager' => AuditManagerInterface::class,
+            'sensiolabs.admin.object.manipulator.acl.admin' => '?'.AdminObjectAclManipulator::class,
+            'sensiolabs.admin.request.fetcher' => AdminFetcherInterface::class,
+            'sensiolabs.exporter.exporter' => '?'.ExporterInterface::class,
+            'sensiolabs.admin.admin_exporter' => '?'.AdminExporter::class,
+            'sensiolabs.admin.security.acl_user_manager' => '?'.AdminAclUserManagerInterface::class,
 
             'controller_resolver' => 'controller_resolver',
             'http_kernel' => HttpKernelInterface::class,
@@ -123,8 +123,8 @@ class CRUDController extends AbstractController
 
         $template = $this->templateRegistry->getTemplate('list');
 
-        if ($this->container->has('sonata.admin.admin_exporter')) {
-            $exporter = $this->container->get('sonata.admin.admin_exporter');
+        if ($this->container->has('sensiolabs.admin.admin_exporter')) {
+            $exporter = $this->container->get('sensiolabs.admin.admin_exporter');
             \assert($exporter instanceof AdminExporter);
             $exportFormats = $exporter->getAvailableFormats($this->admin);
         }
@@ -133,7 +133,7 @@ class CRUDController extends AbstractController
             'action' => 'list',
             'form' => $formView,
             'datagrid' => $datagrid,
-            'csrf_token' => $this->getCsrfToken('sonata.batch'),
+            'csrf_token' => $this->getCsrfToken('sensiolabs.batch'),
             'export_formats' => $exportFormats ?? $this->admin->getExportFormats(),
         ]);
     }
@@ -156,14 +156,14 @@ class CRUDController extends AbstractController
         try {
             $modelManager->batchDelete($this->admin->getClass(), $query);
             $this->addFlash(
-                'sonata_flash_success',
+                'sensiolabs_flash_success',
                 $this->trans('flash_batch_delete_success', [], 'SensioLabsAdminBundle')
             );
         } catch (ModelManagerThrowable $e) {
             $errorMessage = $this->handleModelManagerThrowable($e);
 
             $this->addFlash(
-                'sonata_flash_error',
+                'sensiolabs_flash_error',
                 $errorMessage ?? $this->trans('flash_batch_delete_error', [], 'SensioLabsAdminBundle')
             );
         }
@@ -191,7 +191,7 @@ class CRUDController extends AbstractController
 
         if (\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_DELETE], true)) {
             // check the csrf token
-            $this->validateCsrfToken($request, 'sonata.delete');
+            $this->validateCsrfToken($request, 'sensiolabs.delete');
 
             $objectName = $this->admin->toString($object);
 
@@ -203,7 +203,7 @@ class CRUDController extends AbstractController
                 }
 
                 $this->addFlash(
-                    'sonata_flash_success',
+                    'sensiolabs_flash_success',
                     $this->trans(
                         'flash_delete_success',
                         ['%name%' => $this->escapeHtml($objectName)],
@@ -218,7 +218,7 @@ class CRUDController extends AbstractController
                 }
 
                 $this->addFlash(
-                    'sonata_flash_error',
+                    'sensiolabs_flash_error',
                     $errorMessage ?? $this->trans(
                         'flash_delete_error',
                         ['%name%' => $this->escapeHtml($objectName)],
@@ -235,7 +235,7 @@ class CRUDController extends AbstractController
         return $this->renderWithExtraParams($template, [
             'object' => $object,
             'action' => 'delete',
-            'csrf_token' => $this->getCsrfToken('sonata.delete'),
+            'csrf_token' => $this->getCsrfToken('sensiolabs.delete'),
         ]);
     }
 
@@ -285,7 +285,7 @@ class CRUDController extends AbstractController
                     }
 
                     $this->addFlash(
-                        'sonata_flash_success',
+                        'sensiolabs_flash_success',
                         $this->trans(
                             'flash_edit_success',
                             ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
@@ -300,7 +300,7 @@ class CRUDController extends AbstractController
 
                     $isFormValid = false;
                 } catch (LockException) {
-                    $this->addFlash('sonata_flash_error', $this->trans('flash_lock_error', [
+                    $this->addFlash('sensiolabs_flash_error', $this->trans('flash_lock_error', [
                         '%name%' => $this->escapeHtml($this->admin->toString($existingObject)),
                         '%link_start%' => \sprintf('<a href="%s">', $this->admin->generateObjectUrl('edit', $existingObject)),
                         '%link_end%' => '</a>',
@@ -315,7 +315,7 @@ class CRUDController extends AbstractController
                 }
 
                 $this->addFlash(
-                    'sonata_flash_error',
+                    'sensiolabs_flash_error',
                     $errorMessage ?? $this->trans(
                         'flash_edit_error',
                         ['%name%' => $this->escapeHtml($this->admin->toString($existingObject))],
@@ -360,7 +360,7 @@ class CRUDController extends AbstractController
         }
 
         // check the csrf token
-        $this->validateCsrfToken($request, 'sonata.batch');
+        $this->validateCsrfToken($request, 'sensiolabs.batch');
 
         $confirmation = BCHelper::getFromRequest($request, 'confirmation', false);
 
@@ -380,7 +380,7 @@ class CRUDController extends AbstractController
             $data = $forwardedRequest->request->all();
             $data['all_elements'] = $allElements;
 
-            unset($data['_sonata_csrf_token']);
+            unset($data['_sensiolabs_csrf_token']);
         } else {
             if (!\is_string($encodedData)) {
                 throw new BadRequestParamHttpException('data', 'string', $encodedData);
@@ -424,7 +424,7 @@ class CRUDController extends AbstractController
 
         if (\is_string($nonRelevantMessage)) {
             $this->addFlash(
-                'sonata_flash_info',
+                'sensiolabs_flash_info',
                 $this->trans($nonRelevantMessage, [], 'SensioLabsAdminBundle')
             );
 
@@ -450,7 +450,7 @@ class CRUDController extends AbstractController
                 'datagrid' => $datagrid,
                 'form' => $formView,
                 'data' => $data,
-                'csrf_token' => $this->getCsrfToken('sonata.batch'),
+                'csrf_token' => $this->getCsrfToken('sensiolabs.batch'),
             ]);
         }
 
@@ -472,7 +472,7 @@ class CRUDController extends AbstractController
                 $this->admin->getModelManager()->addIdentifiersToQuery($this->admin->getClass(), $query, $idx);
             } else {
                 $this->addFlash(
-                    'sonata_flash_info',
+                    'sensiolabs_flash_info',
                     $this->trans('flash_batch_no_elements_processed', [], 'SensioLabsAdminBundle')
                 );
 
@@ -537,7 +537,7 @@ class CRUDController extends AbstractController
                     }
 
                     $this->addFlash(
-                        'sonata_flash_success',
+                        'sensiolabs_flash_success',
                         $this->trans(
                             'flash_create_success',
                             ['%name%' => $this->escapeHtml($this->admin->toString($newObject))],
@@ -561,7 +561,7 @@ class CRUDController extends AbstractController
                 }
 
                 $this->addFlash(
-                    'sonata_flash_error',
+                    'sensiolabs_flash_error',
                     $errorMessage ?? $this->trans(
                         'flash_create_error',
                         ['%name%' => $this->escapeHtml($this->admin->toString($newObject))],
@@ -635,7 +635,7 @@ class CRUDController extends AbstractController
         $objectId = $this->admin->getNormalizedIdentifier($object);
         \assert(null !== $objectId);
 
-        $manager = $this->container->get('sonata.admin.audit.manager');
+        $manager = $this->container->get('sensiolabs.admin.audit.manager');
         \assert($manager instanceof AuditManagerInterface);
 
         if (!$manager->hasReader($this->admin->getClass())) {
@@ -674,7 +674,7 @@ class CRUDController extends AbstractController
         $objectId = $this->admin->getNormalizedIdentifier($object);
         \assert(null !== $objectId);
 
-        $manager = $this->container->get('sonata.admin.audit.manager');
+        $manager = $this->container->get('sensiolabs.admin.audit.manager');
         \assert($manager instanceof AuditManagerInterface);
 
         if (!$manager->hasReader($this->admin->getClass())) {
@@ -724,7 +724,7 @@ class CRUDController extends AbstractController
         $objectId = $this->admin->getNormalizedIdentifier($object);
         \assert(null !== $objectId);
 
-        $manager = $this->container->get('sonata.admin.audit.manager');
+        $manager = $this->container->get('sensiolabs.admin.audit.manager');
         \assert($manager instanceof AuditManagerInterface);
 
         if (!$manager->hasReader($this->admin->getClass())) {
@@ -785,12 +785,12 @@ class CRUDController extends AbstractController
             throw new BadRequestParamHttpException('format', 'string', $format);
         }
 
-        $adminExporter = $this->container->get('sonata.admin.admin_exporter');
+        $adminExporter = $this->container->get('sensiolabs.admin.admin_exporter');
         \assert($adminExporter instanceof AdminExporter);
         $allowedExportFormats = $adminExporter->getAvailableFormats($this->admin);
         $filename = $adminExporter->getExportFilename($this->admin, $format);
 
-        $exporter = $this->container->get('sonata.exporter.exporter');
+        $exporter = $this->container->get('sensiolabs.exporter.exporter');
         \assert($exporter instanceof ExporterInterface);
 
         if (!\in_array($format, $allowedExportFormats, true)) {
@@ -830,7 +830,7 @@ class CRUDController extends AbstractController
         $aclUsers = $this->getAclUsers();
         $aclRoles = $this->getAclRoles();
 
-        $adminObjectAclManipulator = $this->container->get('sonata.admin.object.manipulator.acl.admin');
+        $adminObjectAclManipulator = $this->container->get('sensiolabs.admin.object.manipulator.acl.admin');
         \assert($adminObjectAclManipulator instanceof AdminObjectAclManipulator);
 
         $adminObjectAclData = new AdminObjectAclData(
@@ -859,7 +859,7 @@ class CRUDController extends AbstractController
                 if ($form->isValid()) {
                     $adminObjectAclManipulator->$updateMethod($adminObjectAclData);
                     $this->addFlash(
-                        'sonata_flash_success',
+                        'sensiolabs_flash_success',
                         $this->trans('flash_acl_edit_success', [], 'SensioLabsAdminBundle')
                     );
 
@@ -888,7 +888,7 @@ class CRUDController extends AbstractController
      */
     final public function configureAdmin(Request $request): void
     {
-        $adminFetcher = $this->container->get('sonata.admin.request.fetcher');
+        $adminFetcher = $this->container->get('sensiolabs.admin.request.fetcher');
         \assert($adminFetcher instanceof AdminFetcherInterface);
 
         /** @var AdminInterface<T> $admin */
@@ -1090,11 +1090,11 @@ class CRUDController extends AbstractController
      */
     protected function getAclUsers(): \Traversable
     {
-        if (!$this->container->has('sonata.admin.security.acl_user_manager')) {
+        if (!$this->container->has('sensiolabs.admin.security.acl_user_manager')) {
             return new \ArrayIterator([]);
         }
 
-        $aclUserManager = $this->container->get('sonata.admin.security.acl_user_manager');
+        $aclUserManager = $this->container->get('sensiolabs.admin.security.acl_user_manager');
         \assert($aclUserManager instanceof AdminAclUserManagerInterface);
         $aclUsers = $aclUserManager->findUsers();
 
@@ -1109,7 +1109,7 @@ class CRUDController extends AbstractController
         $aclRoles = [];
         $roleHierarchy = $this->getParameter('security.role_hierarchy.roles');
         \assert(\is_array($roleHierarchy));
-        $pool = $this->container->get('sonata.admin.pool');
+        $pool = $this->container->get('sensiolabs.admin.pool');
         \assert($pool instanceof Pool);
 
         foreach ($pool->getAdminServiceCodes() as $code) {
@@ -1147,7 +1147,7 @@ class CRUDController extends AbstractController
             return;
         }
 
-        $token = BCHelper::getFromRequest($request, '_sonata_csrf_token');
+        $token = BCHelper::getFromRequest($request, '_sensiolabs_csrf_token');
         $tokenManager = $this->container->get('security.csrf.token_manager');
         \assert($tokenManager instanceof CsrfTokenManagerInterface);
 

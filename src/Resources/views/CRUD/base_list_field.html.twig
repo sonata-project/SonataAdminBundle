@@ -1,16 +1,16 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
 
 #}
 
-<td class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}"{% if field_description.option('row_align') %} style="text-align:{{ field_description.option('row_align') }}"{% endif %}>
-    {% set route_name = field_description.option('route').name|default(sonata_config.getOption('default_admin_route')) %}
+<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-{{ field_description.type }}" data-object-id="{{ admin.id(object) }}"{% if field_description.option('row_align') %} style="text-align:{{ field_description.option('row_align') }}"{% endif %}>
+    {% set route_name = field_description.option('route').name|default(sensiolabs_config.getOption('default_admin_route')) %}
     {% set route_parameters = field_description.option('route').parameters|default([]) %}
 
     {% if
@@ -18,20 +18,16 @@ file that was distributed with this source code.
         and admin.hasRoute(route_name)
         and admin.hasAccess(route_name, route_name in ['show', 'edit'] ? object : null)
     %}
-        <a class="sonata-link-identifier" href="{{ admin.generateObjectUrl(route_name, object, route_parameters) }}">
+        <a class="text-primary-600 hover:text-primary-700 font-medium" href="{{ admin.generateObjectUrl(route_name, object, route_parameters) }}">
             {%- block field %}
                 {% if field_description.option('collapse') is not null %}
                     {% set collapse = field_description.option('collapse') %}
-                    <div class="sonata-readmore" {{ stimulus_controller('sonata-readmore', {
-                        'collapsedHeight': collapse.height|default(40),
-                        'moreText': collapse.more|default('read_more')|trans({}, 'SonataAdminBundle'),
-                        'lessText': collapse.less|default('read_less')|trans({}, 'SonataAdminBundle'),
-                    }) }}>
-                        <div class="sonata-readmore-content" {{ stimulus_target('sonata-readmore', 'content') }}>{{ value }}</div>
+                    <div class="sensiolabs-readmore" data-controller="sensiolabs-de--admin-bundle--readmore" data-sensiolabs-de--admin-bundle--readmore-collapsed-height-value="{{ collapse.height|default(40) }}" data-sensiolabs-de--admin-bundle--readmore-more-text-value="{{ collapse.more|default('read_more')|trans({}, 'SensioLabsAdminBundle') }}" data-sensiolabs-de--admin-bundle--readmore-less-text-value="{{ collapse.less|default('read_less')|trans({}, 'SensioLabsAdminBundle') }}">
+                        <div class="sensiolabs-readmore-content" data-sensiolabs-de--admin-bundle--readmore-target="content">{{ value }}</div>
                         <button type="button"
-                                class="sonata-readmore-btn btn-link"
-                                {{ stimulus_target('sonata-readmore', 'button') }}
-                                {{ stimulus_action('sonata-readmore', 'toggle', 'click') }}></button>
+                                class="text-sm text-primary-600 hover:text-primary-700 mt-1"
+                                data-sensiolabs-de--admin-bundle--readmore-target="button"
+                                data-action="click->sensiolabs-de--admin-bundle--readmore#toggle"></button>
                     </div>
                 {% else %}
                     {{ value }}
@@ -41,18 +37,16 @@ file that was distributed with this source code.
     {% else %}
         {% set is_editable = field_description.option('editable', false) and admin.hasAccess('edit', object) %}
         {% if is_editable and field_description.option('multiple', false) and value is iterable %}
-            {# multiple editable field should be real multiple #}
-            {# https://vitalets.github.io/x-editable/docs.html#checklist #}
             {% set x_editable_type = 'checklist' %}
         {% else %}
-            {% set x_editable_type = field_description.type|sonata_xeditable_type %}
+            {% set x_editable_type = field_description.type|sensiolabs_xeditable_type %}
         {% endif %}
 
         {% if is_editable and x_editable_type %}
             {% set url = path(
-                'sonata_admin_set_object_field_value',
+                'sensiolabs_admin_set_object_field_value',
                 {
-                    '_sonata_admin': admin.baseCodeRoute,
+                    '_sensiolabs_admin': admin.baseCodeRoute,
                     'context': 'list',
                     'field': field_description.name,
                     'objectId': admin.urlSafeIdentifier(object)
@@ -61,12 +55,11 @@ file that was distributed with this source code.
                 + app.request.query.all|default({})
             ) %}
 
-            {% if field_description.type == constant('Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface::TYPE_DATE') and value is not empty %}
-                {# it is a x-editable format https://vitalets.github.io/x-editable/docs.html#date #}
+            {% if field_description.type == constant('SensioLabs\\AdminBundle\\FieldDescription\\FieldDescriptionInterface::TYPE_DATE') and value is not empty %}
                 {% set data_value = value|date('Y-m-d', options.timezone|default(null)) %}
-            {% elseif field_description.type == constant('Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface::TYPE_BOOLEAN') and value is empty %}
+            {% elseif field_description.type == constant('SensioLabs\\AdminBundle\\FieldDescription\\FieldDescriptionInterface::TYPE_BOOLEAN') and value is empty %}
                 {% set data_value = 0 %}
-            {% elseif field_description.type == constant('Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface::TYPE_ENUM') and value is not empty %}
+            {% elseif field_description.type == constant('SensioLabs\\AdminBundle\\FieldDescription\\FieldDescriptionInterface::TYPE_ENUM') and value is not empty %}
                 {% set data_value = value.value %}
             {% elseif value is iterable %}
                 {% set data_value = value|json_encode %}
@@ -74,7 +67,7 @@ file that was distributed with this source code.
                 {% set data_value = value %}
             {% endif %}
 
-            <span {% block field_span_attributes %}class="x-editable"
+            <span {% block field_span_attributes %}class="x-editable editable-click"
                   data-type="{{ x_editable_type }}"
                   data-value="{{ data_value }}"
                   {% if field_description.label is not same as(false) %}
@@ -84,7 +77,7 @@ file that was distributed with this source code.
                           data-title="{{ field_description.label|trans({}, field_description.translationDomain) }}"
                       {% endif %}
                   {% endif %}
-                  {% if field_description.type == constant('Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface::TYPE_DATE') %}
+                  {% if field_description.type == constant('SensioLabs\\AdminBundle\\FieldDescription\\FieldDescriptionInterface::TYPE_DATE') %}
                     data-format="yyyy-mm-dd"
                   {% endif %}
                   data-pk="{{ admin.id(object) }}"

@@ -139,7 +139,7 @@ final class ModelAutocompleteType extends AbstractType
 
             // ajax parameters
             'url' => '',
-            'route' => ['name' => 'sonata_admin_retrieve_autocomplete_items', 'parameters' => []],
+            'route' => ['name' => 'sensiolabs_admin_retrieve_autocomplete_items', 'parameters' => []],
             'req_params' => [],
             'req_param_name_search' => 'q',
             'req_param_name_page_number' => DatagridInterface::PAGE,
@@ -158,7 +158,7 @@ final class ModelAutocompleteType extends AbstractType
             // allow HTML
             'safe_label' => false,
 
-            'template' => '@SensioLabsAdmin/Form/Type/sonata_type_model_autocomplete.html.twig',
+            'template' => '@SensioLabsAdmin/Form/Type/sensiolabs_type_model_autocomplete.html.twig',
         ]);
 
         $resolver->setRequired(['property', 'model_manager', 'class']);
@@ -194,6 +194,6 @@ final class ModelAutocompleteType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'sonata_type_model_autocomplete';
+        return 'sensiolabs_type_model_autocomplete';
     }
 }

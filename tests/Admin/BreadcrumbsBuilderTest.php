@@ -43,7 +43,7 @@ final class BreadcrumbsBuilderTest extends TestCase
         $labelTranslatorStrategy = static::createStub(LabelTranslatorStrategyInterface::class);
 
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
-        $routeGenerator->method('generate')->with('sonata_admin_dashboard')->willReturn('/dashboard');
+        $routeGenerator->method('generate')->with('sensiolabs_admin_dashboard')->willReturn('/dashboard');
 
         $admin->method('getRouteGenerator')->willReturn($routeGenerator);
         $labelTranslatorStrategy->method('getLabel')->willReturnMap([
@@ -159,7 +159,7 @@ final class BreadcrumbsBuilderTest extends TestCase
         $labelTranslatorStrategy = static::createStub(LabelTranslatorStrategyInterface::class);
 
         $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
-        $routeGenerator->method('generate')->with('sonata_admin_dashboard')->willReturn('/dashboard');
+        $routeGenerator->method('generate')->with('sensiolabs_admin_dashboard')->willReturn('/dashboard');
         $admin->method('getRouteGenerator')->willReturn($routeGenerator);
 
         $menu->method('addChild')->willReturnMap([

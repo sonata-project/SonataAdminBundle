@@ -34,14 +34,14 @@ final class AddFilterTypeCompilerPassTest extends AbstractCompilerPassTestCase
         ]);
 
         $this->container
-            ->setDefinition('sonata.admin.builder.filter.factory', $filterFactoryDefinition);
+            ->setDefinition('sensiolabs.admin.builder.filter.factory', $filterFactoryDefinition);
     }
 
     public function testProcess(): void
     {
         $fooFilter = new Definition(FooFilter::class);
         $fooFilter
-            ->addTag('sonata.admin.filter.type', [
+            ->addTag('sensiolabs.admin.filter.type', [
                 'alias' => 'foo_filter_alias',
             ]);
 
@@ -50,14 +50,14 @@ final class AddFilterTypeCompilerPassTest extends AbstractCompilerPassTestCase
 
         $barFilter = new Definition(BarFilter::class);
         $barFilter
-            ->addTag('sonata.admin.filter.type');
+            ->addTag('sensiolabs.admin.filter.type');
 
         $this->container
             ->setDefinition('acme.demo.bar_filter', $barFilter);
 
         $this->compile();
 
-        $serviceLocator = $this->container->getDefinition('sonata.admin.builder.filter.factory')->getArgument(0);
+        $serviceLocator = $this->container->getDefinition('sensiolabs.admin.builder.filter.factory')->getArgument(0);
         static::assertInstanceOf(Reference::class, $serviceLocator);
 
         self::assertContainerBuilderHasServiceLocator(
@@ -73,7 +73,7 @@ final class AddFilterTypeCompilerPassTest extends AbstractCompilerPassTestCase
     {
         $filter = new Definition('not_existing_class');
         $filter
-            ->addTag('sonata.admin.filter.type');
+            ->addTag('sensiolabs.admin.filter.type');
 
         $this->container
             ->setDefinition('acme.demo.foo_filter', $filter);
@@ -88,7 +88,7 @@ final class AddFilterTypeCompilerPassTest extends AbstractCompilerPassTestCase
     {
         $filter = new Definition(\stdClass::class);
         $filter
-            ->addTag('sonata.admin.filter.type');
+            ->addTag('sensiolabs.admin.filter.type');
 
         $this->container
             ->setDefinition('acme.demo.foo_filter', $filter);

@@ -19,15 +19,15 @@ use SensioLabs\AdminBundle\Command\ListAdminCommand;
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
-        ->set('sonata.admin.command.explain', ExplainAdminCommand::class)
+        ->set('sensiolabs.admin.command.explain', ExplainAdminCommand::class)
             ->tag('console.command')
             ->args([
-                service('sonata.admin.pool'),
+                service('sensiolabs.admin.pool'),
             ])
 
-        ->set('sonata.admin.command.list', ListAdminCommand::class)
+        ->set('sensiolabs.admin.command.list', ListAdminCommand::class)
             ->tag('console.command')
             ->args([
-                service('sonata.admin.pool'),
+                service('sensiolabs.admin.pool'),
             ]);
 };

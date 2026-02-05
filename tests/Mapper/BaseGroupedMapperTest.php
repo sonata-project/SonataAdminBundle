@@ -40,7 +40,7 @@ final class BaseGroupedMapperTest extends TestCase
         $admin->setLabelTranslatorStrategy($labelStrategy);
 
         $container = new Container();
-        $container->setParameter('sonata.admin.configuration.translate_group_label', '');
+        $container->setParameter('sensiolabs.admin.configuration.translate_group_label', '');
         $configurationPool = new Pool($container);
 
         $admin->setConfigurationPool($configurationPool);

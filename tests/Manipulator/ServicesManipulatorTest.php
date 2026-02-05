@@ -51,7 +51,7 @@ final class ServicesManipulatorTest extends TestCase
     service_id:
         class: SensioLabs\AdminBundle\Admin\AdminInterface
         tags:
-            - { name: sonata.admin, model_class: stdClass, controller: controller_name, manager_type: manager_type, group: admin, label: stdClass }\n",
+            - { name: sensiolabs.admin, model_class: stdClass, controller: controller_name, manager_type: manager_type, group: admin, label: stdClass }\n",
             file_get_contents($this->file)
         );
         $this->servicesManipulator->addResource(
@@ -66,12 +66,12 @@ final class ServicesManipulatorTest extends TestCase
     service_id:
         class: SensioLabs\AdminBundle\Admin\AdminInterface
         tags:
-            - { name: sonata.admin, model_class: stdClass, controller: controller_name, manager_type: manager_type, group: admin, label: stdClass }
+            - { name: sensiolabs.admin, model_class: stdClass, controller: controller_name, manager_type: manager_type, group: admin, label: stdClass }
 
     another_service_id:
         class: SensioLabs\AdminBundle\Admin\AdminInterface
         tags:
-            - { name: sonata.admin, model_class: stdClass, controller: another_controller_name, manager_type: another_manager_type, group: admin, label: stdClass }\n",
+            - { name: sensiolabs.admin, model_class: stdClass, controller: another_controller_name, manager_type: another_manager_type, group: admin, label: stdClass }\n",
             file_get_contents($this->file)
         );
     }
@@ -112,7 +112,7 @@ final class ServicesManipulatorTest extends TestCase
     service_id:
         class: SensioLabs\AdminBundle\Admin\AdminInterface
         tags:
-            - { name: sonata.admin, model_class: stdClass, controller: controller_name, manager_type: manager_type, group: admin, label: stdClass }\n",
+            - { name: sensiolabs.admin, model_class: stdClass, controller: controller_name, manager_type: manager_type, group: admin, label: stdClass }\n",
             file_get_contents($this->file)
         );
     }

@@ -266,13 +266,13 @@ final class ConfigurationTest extends TestCase
         ]]);
 
         static::assertSame([
-            ['path' => 'foo.css', 'package_name' => 'sonata_admin'],
+            ['path' => 'foo.css', 'package_name' => 'sensiolabs_admin'],
             ['path' => 'bar.css', 'package_name' => 'pkg'],
             ['path' => 'baz.css', 'package_name' => null],
         ], $config['assets']['extra_stylesheets']);
 
         static::assertSame([
-            ['path' => 'foo.js', 'package_name' => 'sonata_admin'],
+            ['path' => 'foo.js', 'package_name' => 'sensiolabs_admin'],
             ['path' => 'bar.js', 'package_name' => 'pkg'],
             ['path' => 'baz.js', 'package_name' => null],
         ], $config['assets']['extra_javascripts']);
@@ -327,7 +327,7 @@ final class ConfigurationTest extends TestCase
     {
         $config = $this->process([]);
 
-        static::assertSame('sonata.admin.controller.crud', $config['default_controller']);
+        static::assertSame('sensiolabs.admin.controller.crud', $config['default_controller']);
     }
 
     public function testSettingDefaultController(): void

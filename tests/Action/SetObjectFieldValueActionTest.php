@@ -101,7 +101,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     {
         $object = new Foo();
         $request = new Request([
-            '_sonata_admin' => 'sonata.post.admin',
+            '_sensiolabs_admin' => 'sensiolabs.post.admin',
             'objectId' => 42,
             'field' => 'enabled',
             'value' => 1,
@@ -111,7 +111,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn('sonata.post.admin');
+        $this->admin->method('getCode')->willReturn('sensiolabs.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('enabled')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
@@ -154,7 +154,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     ): void {
         $object = new Bafoo();
         $request = new Request([
-            '_sonata_admin' => 'sonata.post.admin',
+            '_sensiolabs_admin' => 'sensiolabs.post.admin',
             'objectId' => 42,
             'field' => 'dateProp',
             'value' => '2020-12-12',
@@ -164,7 +164,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn('sonata.post.admin');
+        $this->admin->method('getCode')->willReturn('sensiolabs.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('dateProp')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('dateProp')->willReturn($fieldDescription);
@@ -201,7 +201,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $object = new Baz();
         $associationObject = new Bar();
         $request = new Request([
-            '_sonata_admin' => 'sonata.post.admin',
+            '_sensiolabs_admin' => 'sensiolabs.post.admin',
             'objectId' => 42,
             'field' => 'bar',
             'value' => 1,
@@ -211,7 +211,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn('sonata.post.admin');
+        $this->admin->method('getCode')->willReturn('sensiolabs.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('bar')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('bar')->willReturn($fieldDescription);
@@ -244,7 +244,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $object = new Baz();
         $object->setBar($bar);
         $request = new Request([
-            '_sonata_admin' => 'sonata.post.admin',
+            '_sensiolabs_admin' => 'sensiolabs.post.admin',
             'objectId' => 42,
             'field' => 'bar.enabled',
             'value' => 1,
@@ -277,7 +277,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     {
         $object = new StatusMultiple();
         $request = new Request([
-            '_sonata_admin' => 'sonata.post.admin',
+            '_sensiolabs_admin' => 'sensiolabs.post.admin',
             'objectId' => 42,
             'field' => 'status',
             'value' => [1, 2],
@@ -287,7 +287,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn('sonata.post.admin');
+        $this->admin->method('getCode')->willReturn('sensiolabs.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('status')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('status')->willReturn($fieldDescription);
@@ -315,7 +315,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     {
         $object = new Foo();
         $request = new Request([
-            '_sonata_admin' => 'sonata.post.admin',
+            '_sensiolabs_admin' => 'sensiolabs.post.admin',
             'objectId' => 42,
             'field' => 'enabled',
             'value' => 'yes',
@@ -330,7 +330,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn('sonata.post.admin');
+        $this->admin->method('getCode')->willReturn('sensiolabs.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('enabled')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
@@ -357,7 +357,7 @@ final class SetObjectFieldValueActionTest extends TestCase
     {
         $object = new Foo();
         $request = new Request([
-            '_sonata_admin' => 'sonata.post.admin',
+            '_sensiolabs_admin' => 'sensiolabs.post.admin',
             'objectId' => 42,
             'field' => 'enabled',
             'value' => 'yes',
@@ -377,7 +377,7 @@ final class SetObjectFieldValueActionTest extends TestCase
         $fieldDescription = static::createStub(FieldDescriptionInterface::class);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('getCode')->willReturn('sonata.post.admin');
+        $this->admin->method('getCode')->willReturn('sensiolabs.post.admin');
         $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
         $this->admin->method('hasListFieldDescription')->with('enabled')->willReturn(true);
         $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);

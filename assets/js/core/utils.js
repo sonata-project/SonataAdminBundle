@@ -86,3 +86,45 @@ export function convertQueryStringToObject(str) {
     return accumulator;
   }, {});
 }
+
+/**
+ * Converts a nested object to a query string format.
+ * Replaces the 'qs' library stringify function.
+ *
+ * @param {Object} obj - The object to stringify
+ * @param {string} prefix - The prefix for nested keys
+ * @returns {string} - Query string representation
+ *
+ * @example
+ * stringifyNestedObject({ filter: { field: 'value' } })
+ * // Returns: 'filter[field]=value'
+ */
+export function stringifyNestedObject(obj, prefix = '') {
+  const pairs = [];
+
+  for (const key in obj) {
+    if (!Object.prototype.hasOwnProperty.call(obj, key)) {
+      continue;
+    }
+
+    const value = obj[key];
+    const encodedKey = prefix ? `${prefix}[${encodeURIComponent(key)}]` : encodeURIComponent(key);
+
+    if (value === null || value === undefined) {
+      pairs.push(`${encodedKey}=`);
+    } else if (typeof value === 'object' && !Array.isArray(value)) {
+      const nested = stringifyNestedObject(value, encodedKey);
+      if (nested) {
+        pairs.push(nested);
+      }
+    } else if (Array.isArray(value)) {
+      value.forEach((item) => {
+        pairs.push(`${encodedKey}[]=${encodeURIComponent(item)}`);
+      });
+    } else {
+      pairs.push(`${encodedKey}=${encodeURIComponent(value)}`);
+    }
+  }
+
+  return pairs.join('&');
+}

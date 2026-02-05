@@ -1,8 +1,8 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
@@ -15,10 +15,8 @@ file that was distributed with this source code.
     and admin.show|length > 0
     and admin.hasRoute('show')
 %}
-    <li>
-        <a class="sonata-action-element" href="{{ admin.generateObjectUrl('show', object) }}">
-            <i class="fas fa-eye" aria-hidden="true"></i>
-            {{ 'link_action_show'|trans({}, 'SonataAdminBundle') }}
-        </a>
-    </li>
+    <a class="admin-btn-ghost" href="{{ admin.generateObjectUrl('show', object) }}">
+        {{ ux_icon('lucide:eye', {class: 'w-4 h-4'}) }}
+        {{ 'link_action_show'|trans({}, 'SensioLabsAdminBundle') }}
+    </a>
 {% endif %}

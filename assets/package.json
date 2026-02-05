@@ -1,0 +1,88 @@
+{
+    "name": "@sensiolabs-de/admin-bundle",
+    "version": "5.0.0",
+    "description": "SensioLabs Admin Bundle - Assets for Symfony Admin",
+    "license": "MIT",
+    "type": "module",
+    "main": "app.js",
+    "symfony": {
+        "controllers": {
+            "collection": {
+                "main": "./js/controllers/collection_controller.js",
+                "fetch": "eager",
+                "enabled": true
+            },
+            "confirm-exit": {
+                "main": "./js/controllers/confirm_exit_controller.js",
+                "fetch": "eager",
+                "enabled": true
+            },
+            "dropdown": {
+                "main": "./js/controllers/dropdown_controller.js",
+                "fetch": "eager",
+                "enabled": true
+            },
+            "edit": {
+                "main": "./js/controllers/edit_controller.js",
+                "fetch": "eager",
+                "enabled": true
+            },
+            "filter": {
+                "main": "./js/controllers/filter_controller.js",
+                "fetch": "eager",
+                "enabled": true
+            },
+            "filter-list": {
+                "main": "./js/controllers/filter_list_controller.js",
+                "fetch": "eager",
+                "enabled": true
+            },
+            "per-page": {
+                "main": "./js/controllers/per_page_controller.js",
+                "fetch": "eager",
+                "enabled": true
+            },
+            "readmore": {
+                "main": "./js/controllers/readmore_controller.js",
+                "fetch": "eager",
+                "enabled": true
+            },
+            "revision": {
+                "main": "./js/controllers/revision_controller.js",
+                "fetch": "eager",
+                "enabled": true
+            },
+            "sidebar": {
+                "main": "./js/controllers/sidebar_controller.js",
+                "fetch": "eager",
+                "enabled": true
+            },
+            "sticky": {
+                "main": "./js/controllers/sticky_controller.js",
+                "fetch": "eager",
+                "enabled": true
+            },
+            "treeview": {
+                "main": "./js/controllers/treeview_controller.js",
+                "fetch": "eager",
+                "enabled": true
+            }
+        },
+        "importmap": {
+            "@hotwired/stimulus": "^3.2.0",
+            "tom-select": "^2.3.0",
+            "sortablejs": "^1.15.0"
+        }
+    },
+    "peerDependencies": {
+        "@hotwired/stimulus": "^3.2.0",
+        "tom-select": "^2.3.0",
+        "sortablejs": "^1.15.0"
+    },
+    "exports": {
+        ".": "./app.js",
+        "./app": "./app.js",
+        "./styles/*": "./styles/*",
+        "./js/*": "./js/*"
+    }
+}

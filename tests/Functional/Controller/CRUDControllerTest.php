@@ -173,14 +173,14 @@ final class CRUDControllerTest extends WebTestCase
 
         static::assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
 
-        $csrfToken = $crawler->selectButton('OK')->form()->getValues()['_sonata_csrf_token'];
+        $csrfToken = $crawler->selectButton('OK')->form()->getValues()['_sensiolabs_csrf_token'];
 
         $client->request(
             Request::METHOD_POST,
             '/admin/tests/app/foo/batch',
             [
                 'data' => json_encode(['action' => 'other', 'all_elements' => true]),
-                '_sonata_csrf_token' => $csrfToken,
+                '_sensiolabs_csrf_token' => $csrfToken,
             ]
         );
 

@@ -25,15 +25,15 @@ use Symfony\Component\DependencyInjection\Reference;
  */
 final class AddAuditReadersCompilerPass implements CompilerPassInterface
 {
-    public const AUDIT_READER_TAG = 'sonata.admin.audit_reader';
+    public const AUDIT_READER_TAG = 'sensiolabs.admin.audit_reader';
 
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->has('sonata.admin.audit.manager')) {
+        if (!$container->has('sensiolabs.admin.audit.manager')) {
             return;
         }
 
-        $definition = $container->getDefinition('sonata.admin.audit.manager');
+        $definition = $container->getDefinition('sensiolabs.admin.audit.manager');
         $readers = [];
 
         foreach ($container->findTaggedServiceIds(self::AUDIT_READER_TAG, true) as $id => $tags) {

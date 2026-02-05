@@ -21,7 +21,7 @@ use SensioLabs\AdminBundle\Exception\BadRequestParamHttpException;
 use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use SensioLabs\AdminBundle\Filter\FilterInterface;
 use SensioLabs\AdminBundle\Request\AdminFetcherInterface;
-use SensioLabs\AdminBundle\Search\ChainableFilterInterface;
+use SensioLabs\AdminBundle\Filter\ChainableFilterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

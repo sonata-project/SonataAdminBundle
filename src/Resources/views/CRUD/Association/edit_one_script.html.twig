@@ -21,58 +21,75 @@ This code manages the one-to-many association field popup
 <!-- edit one association -->
 
 <script type="text/javascript">
-
+(function() {
     // handle the add link
-    var field_add_{{ id }} = function(event) {
-
+    var field_add_{{ id }} = async function(event) {
         event.preventDefault();
         event.stopPropagation();
 
-        var form = jQuery(this).closest('form');
+        var form = this.closest('form');
+        var formData = new FormData(form);
+        formData.append('_xml_http_request', 'true');
 
-        // the ajax post
-        jQuery(form).ajaxSubmit({
-            url: '{{ path('sonata_admin_append_form_element', {
-                '_sonata_admin': sonata_admin.admin.root.baseCodeRoute,
+        try {
+            var response = await fetch('{{ path('sensiolabs_admin_append_form_element', {
+                '_sensiolabs_admin': sensiolabs_admin.admin.root.baseCodeRoute,
                 'elementId': id,
-                'objectId': sonata_admin.admin.root.id(sonata_admin.admin.root.subject),
-                'uniqid': sonata_admin.admin.root.uniqid,
-            } + sonata_admin.field_description.getOption('link_parameters', {})
+                'objectId': sensiolabs_admin.admin.root.id(sensiolabs_admin.admin.root.subject),
+                'uniqid': sensiolabs_admin.admin.root.uniqid,
+            } + sensiolabs_admin.field_description.getOption('link_parameters', {})
             + (
-                sonata_admin.admin.root.hasRequest()
-                ? sonata_admin.admin.root.request.attributes.get('_route_params', {})
+                sensiolabs_admin.admin.root.hasRequest()
+                ? sensiolabs_admin.admin.root.request.attributes.get('_route_params', {})
                 : {}
             ) + app.request.query.all|default({})
-            ) }}',
-            type: "POST",
-            dataType: 'html',
-            data: { _xml_http_request: true },
-            success: function(html) {
-                if (!html.length) {
-                    return;
+            ) }}', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
                 }
+            });
 
-                var $newForm = jQuery(html);
-                var $oldForm = jQuery('#field_container_{{ id }}');
-
-                // Maintain state of file inputs
-                $oldForm.find('input[type="file"]').each(function(){
-                    var id = '#'+$(this).attr('id');
-                    $newForm.find(id).replaceWith($(this));
-                });
-
-                $oldForm.replaceWith($newForm); // replace the html
-
-                Admin.shared_setup(jQuery('#field_container_{{ id }}'));
-
-                if(jQuery('input[type="file"]', form).length > 0) {
-                    jQuery(form).attr('enctype', 'multipart/form-data');
-                    jQuery(form).attr('encoding', 'multipart/form-data');
-                }
-                jQuery('#sonata-ba-field-container-{{ id }}').trigger('sonata.add_element');
-                jQuery('#field_container_{{ id }}').trigger('sonata.add_element');
+            var html = await response.text();
+            if (!html.length) {
+                return;
             }
-        });
+
+            var oldForm = document.getElementById('field_container_{{ id }}');
+            var template = document.createElement('template');
+            template.innerHTML = html.trim();
+            var newForm = template.content.firstChild;
+
+            // Maintain state of file inputs
+            oldForm.querySelectorAll('input[type="file"]').forEach(function(fileInput) {
+                var newFileInput = newForm.querySelector('#' + fileInput.id);
+                if (newFileInput) {
+                    newFileInput.parentNode.replaceChild(fileInput, newFileInput);
+                }
+            });
+
+            oldForm.parentNode.replaceChild(newForm, oldForm);
+
+            Admin.shared_setup(document.getElementById('field_container_{{ id }}'));
+
+            if (form.querySelector('input[type="file"]')) {
+                form.setAttribute('enctype', 'multipart/form-data');
+                form.setAttribute('encoding', 'multipart/form-data');
+            }
+
+            var container = document.getElementById('sonata-ba-field-container-{{ id }}');
+            if (container) {
+                container.dispatchEvent(new CustomEvent('sensiolabs.add_element', { bubbles: true }));
+            }
+
+            var fieldContainer = document.getElementById('field_container_{{ id }}');
+            if (fieldContainer) {
+                fieldContainer.dispatchEvent(new CustomEvent('sensiolabs.add_element', { bubbles: true }));
+            }
+        } catch (error) {
+            console.error('[{{ id }}|field_add] Error:', error);
+        }
 
         return false;
     };
@@ -81,21 +98,19 @@ This code manages the one-to-many association field popup
 
     // this function initializes the popup
     // this can be only done this way as popup can be cascaded
-    function start_field_retrieve_{{ id }}(link) {
-
+    window.start_field_retrieve_{{ id }} = function(link) {
         link.onclick = null;
 
         // initialize component
-        field_widget_{{ id }} = jQuery("#field_widget_{{ id }}");
+        field_widget_{{ id }} = document.getElementById('field_widget_{{ id }}');
 
-        // add the jQuery event to the a element
-        jQuery(link)
-            .click(field_add_{{ id }})
-            .trigger('click')
-        ;
+        // add the event to the a element
+        link.addEventListener('click', field_add_{{ id }});
+        link.click();
 
         return false;
-    }
+    };
+})();
 </script>
 
 <!-- / edit one association -->

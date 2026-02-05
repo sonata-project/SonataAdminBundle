@@ -22,7 +22,7 @@ use Symfony\Contracts\EventDispatcher\Event;
  *   - preBatchAction.
  *
  * You can register the listener to the event dispatcher by using:
- *   - sonata.admin.event.batch_action.pre_batch_action)
+ *   - sensiolabs.admin.event.batch_action.pre_batch_action)
  *
  * @author Jochem Klaver <info@7ochem.nl>
  *

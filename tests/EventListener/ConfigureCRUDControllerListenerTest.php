@@ -43,10 +43,10 @@ final class ConfigureCRUDControllerListenerTest extends TestCase
             ->willReturn(true);
 
         $adminFetcher = $this->createMock(AdminFetcherInterface::class);
-        $container->set('sonata.admin.request.fetcher', $adminFetcher);
+        $container->set('sensiolabs.admin.request.fetcher', $adminFetcher);
 
         $request = new Request([], [], [
-            '_sonata_admin' => 'admin.code',
+            '_sensiolabs_admin' => 'admin.code',
         ]);
 
         $controller = new CRUDController();

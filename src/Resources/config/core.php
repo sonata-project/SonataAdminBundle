@@ -33,8 +33,6 @@ use SensioLabs\AdminBundle\Model\AuditManagerInterface;
 use SensioLabs\AdminBundle\Request\AdminFetcher;
 use SensioLabs\AdminBundle\Request\AdminFetcherInterface;
 use SensioLabs\AdminBundle\Route\AdminPoolLoader;
-use SensioLabs\AdminBundle\Search\SearchHandler;
-use SensioLabs\AdminBundle\Search\SearchHandlerInterface;
 use SensioLabs\AdminBundle\SensioLabsConfiguration;
 use SensioLabs\AdminBundle\Templating\TemplateRegistry;
 use SensioLabs\AdminBundle\Translator\Extractor\AdminExtractor;
@@ -48,26 +46,26 @@ use Symfony\Component\Asset\PathPackage;
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->parameters()
 
-        ->set('sonata.admin.assets.public_dir', '/public')
-        ->set('sonata.admin.assets.base_path', '/');
+        ->set('sensiolabs.admin.assets.public_dir', '/public')
+        ->set('sensiolabs.admin.assets.base_path', '/');
 
     $containerConfigurator->services()
 
-        ->set('sonata.admin.assets.version_strategy', LastModifiedVersionStrategy::class)
+        ->set('sensiolabs.admin.assets.version_strategy', LastModifiedVersionStrategy::class)
             ->args([
                 param('kernel.project_dir'),
-                param('sonata.admin.assets.public_dir'),
+                param('sensiolabs.admin.assets.public_dir'),
             ])
 
-        ->set('sonata.admin.assets.package', PathPackage::class)
-            ->tag('assets.package', ['package' => 'sonata_admin'])
+        ->set('sensiolabs.admin.assets.package', PathPackage::class)
+            ->tag('assets.package', ['package' => 'sensiolabs_admin'])
             ->args([
-                param('sonata.admin.assets.base_path'),
-                service('sonata.admin.assets.version_strategy'),
+                param('sensiolabs.admin.assets.base_path'),
+                service('sensiolabs.admin.assets.version_strategy'),
                 service('assets.context'),
             ])
 
-        ->set('sonata.admin.pool', Pool::class)
+        ->set('sensiolabs.admin.pool', Pool::class)
             ->args([
                 abstract_arg('admin service locator'),
                 abstract_arg('admin service ids'),
@@ -75,113 +73,114 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 abstract_arg('admin service clasess'),
             ])
 
-        ->alias(Pool::class, 'sonata.admin.pool')
+        ->alias(Pool::class, 'sensiolabs.admin.pool')
 
-        ->set('sonata.admin.configuration', SensioLabsConfiguration::class)
+        // Backward compatibility aliases for external Sonata bundles
+        ->alias('sonata.admin.pool', 'sensiolabs.admin.pool')
+            ->public()
+        ->alias('Sonata\AdminBundle\Admin\Pool', 'sensiolabs.admin.pool')
+
+        ->set('sensiolabs.admin.configuration', SensioLabsConfiguration::class)
             ->args([
                 abstract_arg('title'),
                 abstract_arg('logo'),
                 abstract_arg('options'),
             ])
 
-        ->set('sonata.admin.route_loader', AdminPoolLoader::class)
+        ->set('sensiolabs.admin.route_loader', AdminPoolLoader::class)
             ->tag('routing.loader')
             ->args([
-                service('sonata.admin.pool'),
+                service('sensiolabs.admin.pool'),
             ])
 
         // @phpstan-ignore-next-line classConstant.internalClass
-        ->set('sonata.admin.helper', AdminHelper::class)
+        ->set('sensiolabs.admin.helper', AdminHelper::class)
             ->args([
                 service('property_accessor'),
             ])
 
-        ->set('sonata.admin.builder.filter.factory', FilterFactory::class)
+        ->set('sensiolabs.admin.builder.filter.factory', FilterFactory::class)
             ->args([
                 abstract_arg('service locator'),
             ])
 
-        ->alias(FilterFactoryInterface::class, 'sonata.admin.builder.filter.factory')
+        ->alias(FilterFactoryInterface::class, 'sensiolabs.admin.builder.filter.factory')
 
-        ->set('sonata.admin.breadcrumbs_builder', BreadcrumbsBuilder::class)
+        ->set('sensiolabs.admin.breadcrumbs_builder', BreadcrumbsBuilder::class)
             ->args([
-                param('sonata.admin.configuration.breadcrumbs'),
+                param('sensiolabs.admin.configuration.breadcrumbs'),
             ])
 
-        ->alias(BreadcrumbsBuilderInterface::class, 'sonata.admin.breadcrumbs_builder')
+        ->alias(BreadcrumbsBuilderInterface::class, 'sensiolabs.admin.breadcrumbs_builder')
 
-        // Services used to format the label, default is sonata.admin.label.strategy.noop
+        // Services used to format the label, default is sensiolabs.admin.label.strategy.noop
 
-        ->set('sonata.admin.label.strategy.native', NativeLabelTranslatorStrategy::class)
+        ->set('sensiolabs.admin.label.strategy.native', NativeLabelTranslatorStrategy::class)
 
-        ->alias(LabelTranslatorStrategyInterface::class, 'sonata.admin.label.strategy.native')
+        ->alias(LabelTranslatorStrategyInterface::class, 'sensiolabs.admin.label.strategy.native')
 
-        ->set('sonata.admin.label.strategy.noop', NoopLabelTranslatorStrategy::class)
+        ->set('sensiolabs.admin.label.strategy.noop', NoopLabelTranslatorStrategy::class)
 
-        ->set('sonata.admin.label.strategy.underscore', UnderscoreLabelTranslatorStrategy::class)
+        ->set('sensiolabs.admin.label.strategy.underscore', UnderscoreLabelTranslatorStrategy::class)
 
-        ->set('sonata.admin.label.strategy.form_component', FormLabelTranslatorStrategy::class)
+        ->set('sensiolabs.admin.label.strategy.form_component', FormLabelTranslatorStrategy::class)
 
         // @phpstan-ignore-next-line classConstant.internalClass
-        ->set('sonata.admin.translation_extractor', AdminExtractor::class)
+        ->set('sensiolabs.admin.translation_extractor', AdminExtractor::class)
             ->tag('translation.extractor', [
-                'alias' => 'sonata_admin',
+                'alias' => 'sensiolabs_admin',
             ])
             ->args([
-                service('sonata.admin.pool'),
-                service('sonata.admin.breadcrumbs_builder'),
+                service('sensiolabs.admin.pool'),
+                service('sensiolabs.admin.breadcrumbs_builder'),
             ])
 
-        ->set('sonata.admin.audit.manager', AuditManager::class)
+        ->set('sensiolabs.admin.audit.manager', AuditManager::class)
             ->args([
                 abstract_arg('service locator'),
             ])
 
-        ->alias(AuditManagerInterface::class, 'sonata.admin.audit.manager')
+        ->alias(AuditManagerInterface::class, 'sensiolabs.admin.audit.manager')
 
-        ->set('sonata.admin.search.handler', SearchHandler::class)
-
-        ->alias(SearchHandlerInterface::class, 'sonata.admin.search.handler')
-
-        ->set('sonata.admin.controller.crud', CRUDController::class)
+        ->set('sensiolabs.admin.controller.crud', CRUDController::class)
             ->public()
             ->tag('container.service_subscriber')
             ->call('setContainer', [service(ContainerInterface::class)])
 
-        ->set('sonata.admin.event.extension', AdminEventExtension::class)
-            ->tag('sonata.admin.extension', ['global' => true])
+        ->set('sensiolabs.admin.event.extension', AdminEventExtension::class)
+            ->tag('sensiolabs.admin.extension', ['global' => true])
             ->args([
                 service('event_dispatcher'),
             ])
 
-        ->set('sonata.admin.lock.extension', LockExtension::class)
-            ->tag('sonata.admin.extension', ['global' => true])
+        ->set('sensiolabs.admin.lock.extension', LockExtension::class)
+            ->tag('sensiolabs.admin.extension', ['global' => true])
 
-        ->set('sonata.admin.filter_persister.session', SessionFilterPersister::class)
+        ->set('sensiolabs.admin.filter_persister.session', SessionFilterPersister::class)
             ->args([
                 service('request_stack'),
             ])
 
-        ->alias(FilterPersisterInterface::class, 'sonata.admin.filter_persister.session')
+        ->alias(FilterPersisterInterface::class, 'sensiolabs.admin.filter_persister.session')
 
-        ->set('sonata.admin.global_template_registry', TemplateRegistry::class)
+        ->set('sensiolabs.admin.global_template_registry', TemplateRegistry::class)
             ->args([
-                param('sonata.admin.configuration.templates'),
+                param('sensiolabs.admin.configuration.templates'),
             ])
 
-        ->set('sonata.admin.request.fetcher', AdminFetcher::class)
+        ->set('sensiolabs.admin.request.fetcher', AdminFetcher::class)
             ->args([
-                service('sonata.admin.pool'),
+                service('sensiolabs.admin.pool'),
             ])
 
-        ->alias(AdminFetcherInterface::class, 'sonata.admin.request.fetcher')
+        ->alias(AdminFetcherInterface::class, 'sensiolabs.admin.request.fetcher')
 
-        ->set('sonata.admin.argument_resolver.admin', AdminValueResolver::class)
+        ->set('sensiolabs.admin.argument_resolver.admin', AdminValueResolver::class)
             ->args([
-                service('sonata.admin.request.fetcher'),
+                service('sensiolabs.admin.request.fetcher'),
             ])
             ->tag('controller.argument_value_resolver')
 
-        ->set('sonata.admin.argument_resolver.proxy_query', ProxyQueryResolver::class)
+        ->set('sensiolabs.admin.argument_resolver.proxy_query', ProxyQueryResolver::class)
             ->tag('controller.argument_value_resolver');
 };

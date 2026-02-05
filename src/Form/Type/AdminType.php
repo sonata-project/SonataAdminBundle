@@ -159,7 +159,7 @@ final class AdminType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'sonata_type_admin';
+        return 'sensiolabs_type_admin';
     }
 
     /**
@@ -169,11 +169,11 @@ final class AdminType extends AbstractType
      */
     private function getFieldDescription(array $options): FieldDescriptionInterface
     {
-        if (!isset($options['sonata_field_description'])) {
-            throw new \RuntimeException('Please provide a valid `sonata_field_description` option');
+        if (!isset($options['sensiolabs_field_description'])) {
+            throw new \RuntimeException('Please provide a valid `sensiolabs_field_description` option');
         }
 
-        return $options['sonata_field_description'];
+        return $options['sensiolabs_field_description'];
     }
 
     /**

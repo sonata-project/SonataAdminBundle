@@ -124,7 +124,7 @@ final class AdminHelper
         $form->handleRequest($admin->getRequest());
 
         $childFieldDescription = null !== $childFormBuilder
-            ? $childFormBuilder->getOption('sonata_field_description')
+            ? $childFormBuilder->getOption('sensiolabs_field_description')
             : null;
 
         if (

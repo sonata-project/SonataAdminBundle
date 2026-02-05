@@ -18,10 +18,10 @@ use SensioLabs\AdminBundle\Bridge\Exporter\AdminExporter;
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
-        ->set('sonata.admin.admin_exporter', AdminExporter::class)
+        ->set('sensiolabs.admin.admin_exporter', AdminExporter::class)
             ->args([
-                service('sonata.exporter.exporter'),
+                service('sensiolabs.exporter.exporter'),
             ])
 
-        ->alias(AdminExporter::class, 'sonata.admin.admin_exporter');
+        ->alias(AdminExporter::class, 'sensiolabs.admin.admin_exporter');
 };

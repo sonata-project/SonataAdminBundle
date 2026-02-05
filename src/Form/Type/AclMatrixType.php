@@ -54,6 +54,6 @@ final class AclMatrixType extends AbstractType
 
     public function getBlockPrefix(): string
     {
-        return 'sonata_type_acl_matrix';
+        return 'sensiolabs_type_acl_matrix';
     }
 }

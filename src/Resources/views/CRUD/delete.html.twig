@@ -1,8 +1,8 @@
 {#
 
-This file is part of the Sonata package.
+This file is part of the SensioLabs Admin Bundle package.
 
-(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+(c) SensioLabs
 
 For the full copyright and license information, please view the LICENSE
 file that was distributed with this source code.
@@ -23,29 +23,38 @@ file that was distributed with this source code.
 {%- endblock -%}
 
 {% block content %}
-    <div class="sonata-ba-delete">
+    <div class="sensiolabs-ba-delete max-w-2xl mx-auto py-8">
 
-        <div class="box box-danger">
-            <div class="box-header">
-                <h3 class="box-title">{{ 'title_delete'|trans({}, 'SonataAdminBundle') }}</h3>
+        <div class="admin-card border-error-200">
+            <div class="admin-card-header bg-error-50 border-b border-error-200">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-full bg-error-100 flex items-center justify-center">
+                        {{ ux_icon('lucide:alert-triangle', {class: 'w-5 h-5 text-error-600'}) }}
+                    </div>
+                    <h3 class="text-lg font-semibold text-error-800">{{ 'title_delete'|trans({}, 'SensioLabsAdminBundle') }}</h3>
+                </div>
             </div>
-            <div class="box-body">
-                {{ 'message_delete_confirmation'|trans({'%object%': admin.toString(object)}, 'SonataAdminBundle') }}
+            <div class="admin-card-body">
+                <p class="text-gray-600">{{ 'message_delete_confirmation'|trans({'%object%': admin.toString(object)}, 'SensioLabsAdminBundle') }}</p>
             </div>
-            <div class="box-footer clearfix">
-                <form method="POST" action="{{ admin.generateObjectUrl('delete', object) }}">
+            <div class="admin-card-footer bg-gray-50 flex flex-wrap gap-3 items-center">
+                <form method="POST" action="{{ admin.generateObjectUrl('delete', object) }}" class="inline">
                     <input type="hidden" name="_method" value="DELETE">
-                    <input type="hidden" name="_sonata_csrf_token" value="{{ csrf_token }}">
+                    <input type="hidden" name="_sensiolabs_csrf_token" value="{{ csrf_token }}">
 
-                    <button type="submit" name="btn_delete" class="btn btn-danger"><i class="fas fa-trash-alt" aria-hidden="true"></i> {{ 'btn_delete'|trans({}, 'SonataAdminBundle') }}</button>
-                    {% if admin.hasRoute('edit') and admin.hasAccess('edit', object) %}
-                        {{ 'delete_or'|trans({}, 'SonataAdminBundle') }}
-
-                        <a class="btn btn-success" href="{{ admin.generateObjectUrl('edit', object) }}">
-                            <i class="fas fa-pencil-alt" aria-hidden="true"></i>
-                            {{ 'link_action_edit'|trans({}, 'SonataAdminBundle') }}</a>
-                    {% endif %}
+                    <button type="submit" name="btn_delete" class="admin-btn-error">
+                        {{ ux_icon('lucide:trash-2', {class: 'w-4 h-4'}) }}
+                        {{ 'btn_delete'|trans({}, 'SensioLabsAdminBundle') }}
+                    </button>
                 </form>
+                {% if admin.hasRoute('edit') and admin.hasAccess('edit', object) %}
+                    <span class="text-gray-400">{{ 'delete_or'|trans({}, 'SensioLabsAdminBundle') }}</span>
+
+                    <a class="admin-btn-outline" href="{{ admin.generateObjectUrl('edit', object) }}">
+                        {{ ux_icon('lucide:pencil', {class: 'w-4 h-4'}) }}
+                        {{ 'link_action_edit'|trans({}, 'SensioLabsAdminBundle') }}
+                    </a>
+                {% endif %}
             </div>
         </div>
     </div>

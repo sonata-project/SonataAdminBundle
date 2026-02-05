@@ -56,7 +56,7 @@ final class AdminMakerTest extends TestCase
         $managerOrmProxy->method('getExportFields')->with(Foo::class)
             ->willReturn(['bar', 'baz']);
 
-        $this->modelManagers = ['sonata.admin.manager.orm' => $managerOrmProxy];
+        $this->modelManagers = ['sensiolabs.admin.manager.orm' => $managerOrmProxy];
         $this->servicesFile = \sprintf('%s.yml', uniqid('test_', true));
         $this->projectDirectory = \sprintf('%s/sonata-admin-bundle/', sys_get_temp_dir());
         $this->filesystem = new Filesystem();

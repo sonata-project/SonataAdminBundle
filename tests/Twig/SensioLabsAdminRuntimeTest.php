@@ -30,7 +30,7 @@ use Twig\Loader\FilesystemLoader;
 
 final class SensioLabsAdminRuntimeTest extends TestCase
 {
-    private SensioLabsAdminRuntime $sonataAdminRuntime;
+    private SensioLabsAdminRuntime $sensiolabsAdminRuntime;
 
     private Environment $environment;
 
@@ -56,7 +56,7 @@ final class SensioLabsAdminRuntimeTest extends TestCase
 
         $this->container = new Container();
 
-        $this->pool = new Pool($this->container, ['sonata_admin_foo_service'], [], [Foo::class => ['sonata_admin_foo_service']]);
+        $this->pool = new Pool($this->container, ['sensiolabs_admin_foo_service'], [], [Foo::class => ['sensiolabs_admin_foo_service']]);
 
         $this->sonataAdminRuntime = new SensioLabsAdminRuntime($this->pool);
 
@@ -78,7 +78,7 @@ final class SensioLabsAdminRuntimeTest extends TestCase
 
         // routing extension
         $phpFileLoader = new PhpFileLoader(new FileLocator([\sprintf('%s/../../src/Resources/config/routing', __DIR__)]));
-        $routeCollection = $phpFileLoader->load('sonata_admin.php');
+        $routeCollection = $phpFileLoader->load('sensiolabs_admin.php');
 
         $phpFileLoader = new PhpFileLoader(new FileLocator([\sprintf('%s/../Fixtures/Resources/config/routing', __DIR__)]));
         $testRouteCollection = $phpFileLoader->load('routing.php');
@@ -94,7 +94,7 @@ final class SensioLabsAdminRuntimeTest extends TestCase
 
         $this->admin
             ->method('getCode')
-            ->willReturn('sonata_admin_foo_service');
+            ->willReturn('sensiolabs_admin_foo_service');
 
         $this->admin
             ->method('id')
@@ -115,8 +115,8 @@ final class SensioLabsAdminRuntimeTest extends TestCase
             ->with(static::equalTo($this->object))
             ->willReturn('12345');
 
-        $this->container->set('sonata_admin_foo_service', $this->admin);
-        $this->container->set('sonata_admin_bar_service', $this->adminBar);
+        $this->container->set('sensiolabs_admin_foo_service', $this->admin);
+        $this->container->set('sensiolabs_admin_bar_service', $this->adminBar);
     }
 
     public function testGetUrlsafeIdentifier(): void
@@ -125,9 +125,9 @@ final class SensioLabsAdminRuntimeTest extends TestCase
 
         $pool = new Pool(
             $this->container,
-            ['sonata_admin_foo_service'],
+            ['sensiolabs_admin_foo_service'],
             [],
-            [\stdClass::class => ['sonata_admin_foo_service']]
+            [\stdClass::class => ['sensiolabs_admin_foo_service']]
         );
 
         $this->admin->expects(static::once())
@@ -135,11 +135,11 @@ final class SensioLabsAdminRuntimeTest extends TestCase
             ->with(static::equalTo($model))
             ->willReturn('1234567');
 
-        $this->container->set('sonata_admin_foo_service', $this->admin);
+        $this->container->set('sensiolabs_admin_foo_service', $this->admin);
 
-        $sonataAdminRuntime = new SensioLabsAdminRuntime($pool);
+        $sensiolabsAdminRuntime = new SensioLabsAdminRuntime($pool);
 
-        static::assertSame('1234567', $sonataAdminRuntime->getUrlSafeIdentifier($model));
+        static::assertSame('1234567', $sensiolabsAdminRuntime->getUrlSafeIdentifier($model));
     }
 
     public function testGetUrlsafeIdentifierGivenAdminFoo(): void
@@ -149,13 +149,13 @@ final class SensioLabsAdminRuntimeTest extends TestCase
         $pool = new Pool(
             $this->container,
             [
-                'sonata_admin_foo_service',
-                'sonata_admin_bar_service',
+                'sensiolabs_admin_foo_service',
+                'sensiolabs_admin_bar_service',
             ],
             [],
             [\stdClass::class => [
-                'sonata_admin_foo_service',
-                'sonata_admin_bar_service',
+                'sensiolabs_admin_foo_service',
+                'sensiolabs_admin_bar_service',
             ]]
         );
 
@@ -167,9 +167,9 @@ final class SensioLabsAdminRuntimeTest extends TestCase
         $this->adminBar->expects(static::never())
             ->method('getUrlSafeIdentifier');
 
-        $sonataAdminRuntime = new SensioLabsAdminRuntime($pool);
+        $sensiolabsAdminRuntime = new SensioLabsAdminRuntime($pool);
 
-        static::assertSame('1234567', $sonataAdminRuntime->getUrlSafeIdentifier($model, $this->admin));
+        static::assertSame('1234567', $sensiolabsAdminRuntime->getUrlSafeIdentifier($model, $this->admin));
     }
 
     public function testGetUrlsafeIdentifierGivenAdminBar(): void
@@ -178,11 +178,11 @@ final class SensioLabsAdminRuntimeTest extends TestCase
 
         $pool = new Pool(
             $this->container,
-            ['sonata_admin_foo_service', 'sonata_admin_bar_service'],
+            ['sensiolabs_admin_foo_service', 'sensiolabs_admin_bar_service'],
             [],
             [\stdClass::class => [
-                'sonata_admin_foo_service',
-                'sonata_admin_bar_service',
+                'sensiolabs_admin_foo_service',
+                'sensiolabs_admin_bar_service',
             ]]
         );
 
@@ -194,8 +194,8 @@ final class SensioLabsAdminRuntimeTest extends TestCase
             ->with(static::equalTo($model))
             ->willReturn('1234567');
 
-        $sonataAdminRuntime = new SensioLabsAdminRuntime($pool);
+        $sensiolabsAdminRuntime = new SensioLabsAdminRuntime($pool);
 
-        static::assertSame('1234567', $sonataAdminRuntime->getUrlSafeIdentifier($model, $this->adminBar));
+        static::assertSame('1234567', $sensiolabsAdminRuntime->getUrlSafeIdentifier($model, $this->adminBar));
     }
 }

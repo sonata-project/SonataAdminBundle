@@ -110,7 +110,7 @@ final class GenerateObjectAclCommandTest extends TestCase
             ->with(static::isInstanceOf(StreamOutput::class), $admin, null);
 
         $aclObjectManipulators = [
-            'sonata.admin.manipulator.acl.object.bar' => $manipulator,
+            'sensiolabs.admin.manipulator.acl.object.bar' => $manipulator,
         ];
 
         $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators);
@@ -143,7 +143,7 @@ final class GenerateObjectAclCommandTest extends TestCase
             );
 
         $aclObjectManipulators = [
-            'sonata.admin.manipulator.acl.object.bar' => $manipulator,
+            'sensiolabs.admin.manipulator.acl.object.bar' => $manipulator,
         ];
 
         $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators);

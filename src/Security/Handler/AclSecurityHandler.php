@@ -82,7 +82,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         return $this->objectPermissions;
     }
 
-    public function isGranted(AdminInterface $admin, string $attribute, ?object $object = null): bool
+    public function isGranted(AdminInterface $admin, string|Expression $attribute, ?object $object = null): bool
     {
         try {
             return $this->isAnyGranted($this->superAdminRoles)

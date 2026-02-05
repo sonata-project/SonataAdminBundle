@@ -18,11 +18,11 @@ use SensioLabs\AdminBundle\Maker\AdminMaker;
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
 
-        ->set('sonata.admin.maker', AdminMaker::class)
+        ->set('sensiolabs.admin.maker', AdminMaker::class)
             ->tag('maker.command')
             ->args([
                 param('kernel.project_dir'),
                 abstract_arg('available model managers'),
-                param('sonata.admin.configuration.default_controller'),
+                param('sensiolabs.admin.configuration.default_controller'),
             ]);
 };

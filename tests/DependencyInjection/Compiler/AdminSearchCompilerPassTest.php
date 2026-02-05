@@ -53,12 +53,12 @@ final class AdminSearchCompilerPassTest extends AbstractCompilerPassTestCase
         $this->setDefinition('admin.baz', $adminBazDefinition);
 
         $searchHandlerDefinition = new Definition();
-        $this->setDefinition('sonata.admin.search.handler', $searchHandlerDefinition);
+        $this->setDefinition('sensiolabs.admin.search.handler', $searchHandlerDefinition);
 
         $this->compile();
 
         self::assertContainerBuilderHasServiceDefinitionWithMethodCall(
-            'sonata.admin.search.handler',
+            'sensiolabs.admin.search.handler',
             'configureAdminSearch',
             [['admin_foo_code' => true, 'admin_bar_code' => false]]
         );

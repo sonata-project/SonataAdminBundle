@@ -34,7 +34,7 @@ final class AdminPoolLoaderTest extends TestCase
 
         $adminPoolLoader = new AdminPoolLoader($pool);
 
-        static::assertTrue($adminPoolLoader->supports('foo', 'sonata_admin'));
+        static::assertTrue($adminPoolLoader->supports('foo', 'sensiolabs_admin'));
         static::assertFalse($adminPoolLoader->supports('foo', 'bar'));
     }
 
@@ -66,7 +66,7 @@ final class AdminPoolLoaderTest extends TestCase
 
         $container->set('bar_admin', $admin2);
 
-        $collection = $adminPoolLoader->load('foo', 'sonata_admin');
+        $collection = $adminPoolLoader->load('foo', 'sensiolabs_admin');
 
         static::assertInstanceOf(SymfonyRouteCollection::class, $collection);
         static::assertInstanceOf(SymfonyRoute::class, $collection->get('baseRouteNameFoo_foo'));

@@ -67,7 +67,7 @@ final class ChoiceFieldMaskTypeTest extends TypeTestCase
     public function testGetBlockPrefix(): void
     {
         $type = new ChoiceFieldMaskType();
-        static::assertSame('sonata_type_choice_field_mask', $type->getBlockPrefix());
+        static::assertSame('sensiolabs_type_choice_field_mask', $type->getBlockPrefix());
     }
 
     public function testGetParent(): void

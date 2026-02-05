@@ -186,7 +186,7 @@ final class AbstractFormContractorTest extends TestCase
         $this->fieldDescription->method('getOption')->with(static::logicalOr(
             static::equalTo('edit'),
             static::equalTo('admin_code')
-        ))->willReturn('sonata.admin.code');
+        ))->willReturn('sensiolabs.admin.code');
 
         $this->fieldDescription
             ->method('getAdmin')

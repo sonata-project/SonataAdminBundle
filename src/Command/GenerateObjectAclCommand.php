@@ -104,7 +104,7 @@ final class GenerateObjectAclCommand extends QuestionableCommand
                 $securityIdentity = new UserSecurityIdentity($objectOwner, $this->getUserModelClass($input, $output));
             }
 
-            $manipulatorId = \sprintf('sonata.admin.manipulator.acl.object.%s', $admin->getManagerType());
+            $manipulatorId = \sprintf('sensiolabs.admin.manipulator.acl.object.%s', $admin->getManagerType());
             if (!isset($this->aclObjectManipulators[$manipulatorId])) {
                 $output->writeln('Admin class is using a manager type that has no manipulator implemented : <info>ignoring</info>');
 
