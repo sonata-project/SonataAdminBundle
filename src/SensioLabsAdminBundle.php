@@ -18,6 +18,7 @@ use SensioLabs\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompil
 use SensioLabs\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
 use SensioLabs\AdminBundle\DependencyInjection\Compiler\AdminAddInitializeCallCompilerPass;
 use SensioLabs\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
+use SensioLabs\AdminBundle\DependencyInjection\Compiler\DashboardControllerCompilerPass;
 use SensioLabs\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use SensioLabs\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
 use SensioLabs\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
@@ -51,6 +52,7 @@ final class SensioLabsAdminBundle extends Bundle
         $container->addCompilerPass(new AdminMakerCompilerPass());
         $container->addCompilerPass(new AddAuditReadersCompilerPass());
         $container->addCompilerPass(new AdminAddInitializeCallCompilerPass(), PassConfig::TYPE_BEFORE_REMOVING, -100);
+        $container->addCompilerPass(new DashboardControllerCompilerPass());
 
         // ORM compiler passes
         $container->addCompilerPass(new AddGuesserCompilerPass());

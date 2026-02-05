@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace SensioLabs\AdminBundle\DependencyInjection;
 
+use SensioLabs\AdminBundle\Dashboard\DashboardControllerInterface;
 use SensioLabs\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
 use SensioLabs\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
 use SensioLabs\AdminBundle\Model\AuditReaderInterface;
@@ -121,6 +122,13 @@ final class SensioLabsAdminExtension extends Extension implements PrependExtensi
             $loader->load('exporter.php');
         }
 
+        // Auto-configure dashboard controllers
+        $container->registerForAutoconfiguration(DashboardControllerInterface::class)
+            ->addTag('sensiolabs.admin.dashboard_controller')
+            ->addMethodCall('setPool', [new Reference('sensiolabs.admin.pool')])
+            ->addMethodCall('setTemplateRegistry', [new Reference('sensiolabs.admin.global_template_registry')])
+            ->addMethodCall('setTwig', [new Reference('twig')]);
+
         $configuration = $this->getConfiguration($configs, $container);
         \assert(null !== $configuration);
 
@@ -147,13 +155,10 @@ final class SensioLabsAdminExtension extends Extension implements PrependExtensi
         $container->setParameter('sensiolabs.admin.configuration.templates', $config['templates']);
         $container->setParameter('sensiolabs.admin.configuration.default_admin_services', $config['default_admin_services']);
         $container->setParameter('sensiolabs.admin.configuration.default_controller', $config['default_controller']);
-        $container->setParameter('sensiolabs.admin.configuration.dashboard_groups', $config['dashboard']['groups']);
-        $container->setParameter('sensiolabs.admin.configuration.sort_admins', $config['options']['sort_admins']);
         $container->setParameter(
             'sensiolabs.admin.configuration.mosaic_background',
             $config['options']['mosaic_background']
         );
-        $container->setParameter('sensiolabs.admin.configuration.default_group', $config['options']['default_group']);
         $container->setParameter('sensiolabs.admin.configuration.default_translation_domain', $config['options']['default_translation_domain']);
         $container->setParameter('sensiolabs.admin.configuration.default_icon', $config['options']['default_icon']);
         $container->setParameter('sensiolabs.admin.configuration.breadcrumbs', $config['breadcrumbs']);

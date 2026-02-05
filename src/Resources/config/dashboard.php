@@ -13,32 +13,31 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use SensioLabs\AdminBundle\Dashboard\AbstractDashboardController;
+use SensioLabs\AdminBundle\Dashboard\DashboardControllerInterface;
 use SensioLabs\AdminBundle\Dashboard\DefaultDashboardController;
 use SensioLabs\AdminBundle\Twig\DashboardRuntime;
 use SensioLabs\AdminBundle\Twig\Extension\DashboardExtension;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->services()
-
+        // Default dashboard controller (used when no custom one is defined)
         ->set('sensiolabs.admin.dashboard.default_controller', DefaultDashboardController::class)
             ->public()
-            ->args([
-                service('sensiolabs.admin.pool'),
-                service('sensiolabs.admin.global_template_registry'),
-                service('twig'),
-            ])
+            ->tag('sensiolabs.admin.dashboard_controller')
+            ->call('setPool', [service('sensiolabs.admin.pool')])
+            ->call('setTemplateRegistry', [service('sensiolabs.admin.global_template_registry')])
+            ->call('setTwig', [service('twig')])
 
-        ->alias(AbstractDashboardController::class, 'sensiolabs.admin.dashboard.default_controller')
-
+        // Twig runtime for dashboard helpers
         ->set('sensiolabs.admin.twig.dashboard_runtime', DashboardRuntime::class)
             ->tag('twig.runtime')
             ->args([
-                service(AbstractDashboardController::class),
+                service(DashboardControllerInterface::class),
                 service('sensiolabs.admin.pool'),
                 service('router'),
             ])
 
+        // Twig extension
         ->set('sensiolabs.admin.twig.dashboard_extension', DashboardExtension::class)
             ->tag('twig.extension');
 };

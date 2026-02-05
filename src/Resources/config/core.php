@@ -69,8 +69,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 abstract_arg('admin service locator'),
                 abstract_arg('admin service ids'),
-                abstract_arg('admin service groups'),
-                abstract_arg('admin service clasess'),
+                abstract_arg('admin service classes'),
             ])
 
         ->alias(Pool::class, 'sensiolabs.admin.pool')

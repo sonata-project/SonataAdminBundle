@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace SensioLabs\AdminBundle\DependencyInjection;
 
-use SensioLabs\AdminBundle\Admin\Pool;
 use SensioLabs\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use SensioLabs\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
@@ -28,15 +27,12 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  * @author Michael Williams <mtotheikle@gmail.com>
  *
  * @phpstan-import-type ExtensionMap from ExtensionCompilerPass
- * @phpstan-import-type Item from Pool
  *
  * @phpstan-type SonataAdminConfigurationOptions = array{
  *     confirm_exit: bool,
  *     default_admin_route: string,
- *     default_group: string,
  *     default_icon: string,
  *     default_translation_domain: string,
- *     dropdown_number_groups_per_colums: int,
  *     form_type: 'standard'|'horizontal',
  *     html5_validate: bool,
  *     js_debug: bool,
@@ -45,7 +41,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *     logo_content: 'text'|'icon'|'all',
  *     mosaic_background: string,
  *     pager_links: int|null,
- *     sort_admins: bool,
  *     use_select2: bool,
  *     use_stickyforms: bool,
  * }
@@ -64,25 +59,6 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *     },
  *     breadcrumbs: array{
  *         child_admin_route: string,
- *     },
- *     dashboard: array{
- *         blocks: array{
- *             class: string,
- *             position: string,
- *             roles: list<string>,
- *             settings: array<string, mixed>,
- *             type: string,
- *         },
- *         groups: array<string, array{
- *             label?: string,
- *             translation_domain?: string,
- *             icon?: string,
- *             items: array<Item>,
- *             keep_open: bool,
- *             on_top: bool,
- *             provider?: string,
- *             roles: list<string>
- *        }>,
  *     },
  *     default_admin_services: array{
  *         configuration_pool: string|null,
@@ -257,7 +233,6 @@ final class Configuration implements ConfigurationInterface
                     ->addDefaultsIfNotSet()
                     ->children()
                         ->booleanNode('html5_validate')->defaultTrue()->end()
-                        ->booleanNode('sort_admins')->defaultFalse()->info('Auto order groups and admins by label or id')->end()
                         ->booleanNode('confirm_exit')->defaultTrue()->end()
                         ->booleanNode('js_debug')->defaultFalse()->end()
                         ->booleanNode('use_select2')->defaultTrue()->end()
@@ -271,19 +246,14 @@ final class Configuration implements ConfigurationInterface
                             ->defaultValue('show')
                             ->info('Name of the admin route to be used as a default to generate the link to the object')
                         ->end()
-                        ->scalarNode('default_group')
-                            ->defaultValue('default')
-                            ->info('Group used for admin services if one isn\'t provided.')
-                        ->end()
                         ->scalarNode('default_translation_domain')
                             ->defaultValue('messages')
                             ->info('Translation domain used for admin services if one isn\'t provided.')
                         ->end()
                         ->scalarNode('default_icon')
-                            ->defaultValue('fas fa-folder')
+                            ->defaultValue('lucide:folder')
                             ->info('Icon used for admin services if one isn\'t provided.')
                         ->end()
-                        ->integerNode('dropdown_number_groups_per_colums')->defaultValue(2)->end()
                         ->enumNode('logo_content')
                             ->values(['text', 'icon', 'all'])
                             ->defaultValue('all')
@@ -301,110 +271,6 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('mosaic_background')
                             ->defaultValue('bundles/sonataadmin/images/default_mosaic_image.png')
                             ->info('Background used in mosaic view')
-                        ->end()
-                    ->end()
-                ->end()
-                ->arrayNode('dashboard')
-                    ->addDefaultsIfNotSet()
-                    ->fixXmlConfig('group')
-                    ->fixXmlConfig('block')
-                    ->children()
-                        ->arrayNode('groups')
-                            ->useAttributeAsKey('id')
-                            ->prototype('array')
-                                ->beforeNormalization()
-                                    ->ifArray()
-                                    ->then(static function (array $items): array {
-                                        if (isset($items['provider'])) {
-                                            $disallowedItems = ['items', 'label'];
-                                            foreach ($disallowedItems as $item) {
-                                                if (isset($items[$item])) {
-                                                    throw new \InvalidArgumentException(\sprintf(
-                                                        'The config value "%s" cannot be used alongside "provider" config value',
-                                                        $item
-                                                    ));
-                                                }
-                                            }
-                                        }
-
-                                        return $items;
-                                    })
-                                ->end()
-                                ->fixXmlConfig('item')
-                                ->children()
-                                    ->scalarNode('label')->end()
-                                    ->scalarNode('translation_domain')->end()
-                                    ->scalarNode('icon')->end()
-                                    ->scalarNode('on_top')->defaultFalse()->info('Show menu item in side dashboard menu without treeview')->end()
-                                    ->scalarNode('keep_open')->defaultFalse()->info('Keep menu group always open')->end()
-                                    ->scalarNode('provider')->end()
-                                    ->arrayNode('items')
-                                        ->beforeNormalization()
-                                            ->ifArray()
-                                            ->then(static function (array $items): array {
-                                                foreach ($items as $key => $item) {
-                                                    if (!\is_array($item)) {
-                                                        $item = ['admin' => $item];
-                                                        $items[$key] = $item;
-
-                                                        continue;
-                                                    }
-
-                                                    if (isset($item['admin'])) {
-                                                        if ('' === $item['admin']) {
-                                                            throw new \InvalidArgumentException('Admin key cannot be empty for array items');
-                                                        }
-
-                                                        if (isset($item['route'])) {
-                                                            throw new \InvalidArgumentException('Parameter "route" is not expected when the "admin" is provided for array items');
-                                                        }
-
-                                                        if (isset($item['label'])) {
-                                                            throw new \InvalidArgumentException('Parameter "label" is not expected when the "admin" is provided for array items');
-                                                        }
-
-                                                        continue;
-                                                    }
-
-                                                    if (!isset($item['route'])) {
-                                                        throw new \InvalidArgumentException('Expected parameter "route" for array items');
-                                                    }
-
-                                                    if (!isset($item['label'])) {
-                                                        throw new \InvalidArgumentException('Expected parameter "label" for array items');
-                                                    }
-                                                }
-
-                                                return $items;
-                                            })
-                                        ->end()
-                                        ->prototype('array')
-                                            ->children()
-                                                ->scalarNode('admin')->end()
-                                                ->scalarNode('label')->end()
-                                                ->scalarNode('route')->end()
-                                                ->arrayNode('roles')
-                                                    ->prototype('scalar')
-                                                        ->info('Roles which will see the route in the menu')
-                                                        ->defaultValue([])
-                                                    ->end()
-                                                ->end()
-                                                ->arrayNode('route_params')
-                                                    ->prototype('scalar')->end()
-                                                    ->defaultValue([])
-                                                ->end()
-                                                ->booleanNode('route_absolute')
-                                                    ->info('Whether the generated url should be absolute')
-                                                    ->defaultFalse()
-                                                ->end()
-                                            ->end()
-                                        ->end()
-                                    ->end()
-                                    ->arrayNode('roles')
-                                        ->prototype('scalar')->defaultValue([])->end()
-                                    ->end()
-                                ->end()
-                            ->end()
                         ->end()
                     ->end()
                 ->end()

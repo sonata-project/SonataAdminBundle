@@ -23,9 +23,9 @@ return static function (RoutingConfigurator $routes) {
             'permanent' => true,
         ]);
 
-    // Dashboard (uses default controller, can be overridden)
+    // Dashboard (auto-detects custom controller or uses default)
     $routes->add('sensiolabs_admin_dashboard', '/dashboard')
-        ->controller('sensiolabs.admin.dashboard.default_controller::index');
+        ->controller('sensiolabs.admin.dashboard.controller::index');
 
     // Core admin routes (form field helpers, autocomplete, etc.)
     $routes->add('sensiolabs_admin_retrieve_form_element', '/core/get-form-field-element')

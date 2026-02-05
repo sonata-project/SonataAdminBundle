@@ -93,7 +93,7 @@ file that was distributed with this source code.
     {%- set linkAttributes = item.linkAttributes|merge({'class': linkClasses|join(' ')}) %}
     <a href="{{ item.uri }}"{{ macros.attributes(linkAttributes) }}>
         {% if item.attribute('icon') is not empty %}
-            <span class="icon-sm">{{ item.attribute('icon')|parse_icon }}</span>
+            <span class="icon-sm">{{ ux_icon(item.attribute('icon'), {class: 'w-4 h-4'}) }}</span>
         {% endif %}
         {{ block('label') }}
     </a>
@@ -108,7 +108,7 @@ file that was distributed with this source code.
     {%- set labelAttributes = item.labelAttributes|merge({'class': spanClasses|join(' ')}) %}
     <span {{ macros.attributes(labelAttributes) }}>
         {% if item.attribute('icon') is not empty %}
-            <span class="icon-sm">{{ item.attribute('icon')|parse_icon }}</span>
+            <span class="icon-sm">{{ ux_icon(item.attribute('icon'), {class: 'w-4 h-4'}) }}</span>
         {% endif %}
         {{ block('label') }}
     </span>
@@ -123,7 +123,7 @@ file that was distributed with this source code.
     {%- set attributes = attributes|merge({'data-dropdown-toggle': true}) %}
     <button type="button" {{ macros.attributes(attributes) }}>
         {% if item.attribute('icon') is not empty %}
-            <span class="icon-sm">{{ item.attribute('icon')|parse_icon }}</span>
+            <span class="icon-sm">{{ ux_icon(item.attribute('icon'), {class: 'w-4 h-4'}) }}</span>
         {% endif %}
         {{ block('label') }}
         {{ ux_icon('lucide:chevron-down', {class: 'w-4 h-4 ml-1'}) }}

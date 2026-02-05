@@ -17,13 +17,11 @@ use SensioLabs\AdminBundle\Twig\BreadcrumbsRuntime;
 use SensioLabs\AdminBundle\Twig\CanonicalizeRuntime;
 use SensioLabs\AdminBundle\Twig\Extension\BreadcrumbsExtension;
 use SensioLabs\AdminBundle\Twig\Extension\CanonicalizeExtension;
-use SensioLabs\AdminBundle\Twig\Extension\IconExtension;
 use SensioLabs\AdminBundle\Twig\Extension\RenderElementExtension;
 use SensioLabs\AdminBundle\Twig\Extension\SecurityExtension;
 use SensioLabs\AdminBundle\Twig\Extension\SensioLabsAdminExtension;
 use SensioLabs\AdminBundle\Twig\Extension\TemplateRegistryExtension;
 use SensioLabs\AdminBundle\Twig\Extension\XEditableExtension;
-use SensioLabs\AdminBundle\Twig\IconRuntime;
 use SensioLabs\AdminBundle\Twig\RenderElementRuntime;
 use SensioLabs\AdminBundle\Twig\SecurityRuntime;
 use SensioLabs\AdminBundle\Twig\SensioLabsAdminRuntime;
@@ -55,12 +53,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                 service('sensiolabs.admin.global_template_registry'),
                 service('sensiolabs.admin.pool'),
             ])
-
-        ->set('sensiolabs.admin.twig.icon_extension', IconExtension::class)
-            ->tag('twig.extension')
-
-        ->set('sensiolabs.admin.twig.icon_runtime', IconRuntime::class)
-            ->tag('twig.runtime')
 
         ->set('sensiolabs.admin.twig.security_extension', SecurityExtension::class)
             ->tag('twig.extension')

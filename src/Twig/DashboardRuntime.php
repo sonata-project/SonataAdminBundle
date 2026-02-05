@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SensioLabs\AdminBundle\Twig;
 
 use SensioLabs\AdminBundle\Admin\Pool;
-use SensioLabs\AdminBundle\Dashboard\AbstractDashboardController;
+use SensioLabs\AdminBundle\Dashboard\DashboardControllerInterface;
 use SensioLabs\AdminBundle\Dashboard\MenuItem;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\RuntimeExtensionInterface;
@@ -22,7 +22,7 @@ use Twig\Extension\RuntimeExtensionInterface;
 final class DashboardRuntime implements RuntimeExtensionInterface
 {
     public function __construct(
-        private AbstractDashboardController $dashboardController,
+        private DashboardControllerInterface $dashboardController,
         private Pool $pool,
         private UrlGeneratorInterface $urlGenerator,
     ) {

@@ -79,7 +79,7 @@ file that was distributed with this source code.
                                                 {% endif %}
                                                 {% if field_description.getOption('label_icon') %}
                                                     <span class="w-4 h-4 opacity-60">
-                                                        {{ field_description.getOption('label_icon')|parse_icon }}
+                                                        {{ ux_icon(field_description.getOption('label_icon'), {class: 'w-4 h-4'}) }}
                                                     </span>
                                                 {% endif %}
                                                 {% if field_description.label is not same as(false) %}

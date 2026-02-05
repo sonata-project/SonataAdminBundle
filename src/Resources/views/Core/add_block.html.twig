@@ -25,7 +25,7 @@ file that was distributed with this source code.
         {% if item.type == 'crud' and item.adminCode %}
             <a href="{{ sensiolabs_admin_menu_item_url(item)|replace({'list': 'create'}) }}" class="dropdown-item flex items-center gap-2">
                 {% if item.icon %}
-                    <span class="icon-sm text-gray-400">{{ item.icon|parse_icon|raw }}</span>
+                    {{ ux_icon(item.icon, {class: 'icon-sm text-gray-400'}) }}
                 {% else %}
                     {{ ux_icon('lucide:plus', {class: 'icon-sm text-gray-400'}) }}
                 {% endif %}

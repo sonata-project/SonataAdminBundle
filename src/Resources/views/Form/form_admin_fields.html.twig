@@ -16,7 +16,7 @@ file that was distributed with this source code.
         {% if not form.parent %}<div class="alert alert-danger">{% endif %}
             <ul class="list-unstyled">
                 {% for error in errors %}
-                    <li><i class="fas fa-exclamation-circle" aria-hidden="true"></i> {{ error.message }}</li>
+                    <li>{{ ux_icon('lucide:alert-circle', {class: 'w-4 h-4 inline-block'}) }} {{ error.message }}</li>
                 {% endfor %}
             </ul>
         {% if not form.parent %}</div>{% endif %}
@@ -376,7 +376,7 @@ file that was distributed with this source code.
             <div class="row">
                 <div class="col-xs-1">
                     <button type="button" class="btn btn-link sonata-collection-delete" {{ stimulus_action('sonata-collection', 'delete', 'click') }}>
-                        <i class="fas fa-minus-circle" aria-hidden="true"></i>
+                        {{ ux_icon('lucide:minus-circle', {class: 'w-4 h-4 inline-block'}) }}
                     </button>
                 </div>
                 <div class="col-xs-11">
@@ -408,7 +408,7 @@ file that was distributed with this source code.
         {{ form_rest(form) }}
         {% if allow_add %}
             <button type="button" class="btn btn-link sonata-collection-add" {{ stimulus_action('sonata-collection', 'add', 'click') }}>
-                <i class="fas fa-plus-circle" aria-hidden="true"></i>
+                {{ ux_icon('lucide:plus-circle', {class: 'w-4 h-4 inline-block'}) }}
             </button>
         {% endif %}
     </div>
@@ -610,7 +610,7 @@ file that was distributed with this source code.
                            : btn_list|trans({}, btn_translation_domain|default(btn_catalogue))
                        }}"
                     >
-                        <i class="fas fa-list"></i>
+                        {{ ux_icon('lucide:list', {class: 'w-4 h-4 inline-block'}) }}
                         {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                         {{
                             btn_translation_domain|default(null) is same as(false)
@@ -634,7 +634,7 @@ file that was distributed with this source code.
                            : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
                        }}"
                     >
-                        <i class="fas fa-plus-circle"></i>
+                        {{ ux_icon('lucide:plus-circle', {class: 'w-4 h-4 inline-block'}) }}
                         {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                         {{
                             btn_translation_domain|default(null) is same as(false)
@@ -659,7 +659,7 @@ file that was distributed with this source code.
                            : btn_edit|trans({}, btn_translation_domain|default(btn_catalogue))
                        }}"
                     >
-                        <i class="fas fa-pencil-alt"></i>
+                        {{ ux_icon('lucide:pencil', {class: 'w-4 h-4 inline-block'}) }}
                         {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                         {{
                             btn_translation_domain|default(null) is same as(false)
@@ -683,7 +683,7 @@ file that was distributed with this source code.
                             : btn_delete|trans({}, btn_translation_domain|default(btn_catalogue))
                         }}"
                     >
-                        <i class="fas fa-minus-circle"></i>
+                        {{ ux_icon('lucide:minus-circle', {class: 'w-4 h-4 inline-block'}) }}
                         {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                         {{
                             btn_translation_domain|default(null) is same as(false)

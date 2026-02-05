@@ -52,24 +52,9 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         }
 
         $parameterBag = $container->getParameterBag();
-        $groupDefaults = $admins = $adminServices = $classes = [];
+        $admins = $adminServices = $classes = [];
 
         $pool = $container->getDefinition('sensiolabs.admin.pool');
-        $defaultController = $container->getParameter('sensiolabs.admin.configuration.default_controller');
-        \assert(\is_string($defaultController));
-
-        $defaultGroup = $container->getParameter('sensiolabs.admin.configuration.default_group');
-        \assert(\is_string($defaultGroup));
-        $defaultTranslationDomain = $container->getParameter('sensiolabs.admin.configuration.default_translation_domain');
-        \assert(\is_string($defaultTranslationDomain));
-        $defaultIcon = $container->getParameter('sensiolabs.admin.configuration.default_icon');
-        \assert(\is_string($defaultIcon));
-
-        $defaultValues = [
-            'group' => $defaultGroup,
-            'translation_domain' => $defaultTranslationDomain,
-            'icon' => $defaultIcon,
-        ];
 
         foreach ($container->findTaggedServiceIds(TaggedAdminInterface::ADMIN_TAG) as $id => $tags) {
             if (\count($tags) > 1) {
@@ -128,162 +113,12 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     $classes[$modelClass][] = $code;
                 }
 
-                $showInDashboard = (bool) (isset($attributes['show_in_dashboard']) ? $parameterBag->resolveValue($attributes['show_in_dashboard']) : true);
-                if (!$showInDashboard) {
-                    continue;
-                }
-
-                $resolvedGroupName = isset($attributes['group']) ?
-                    $parameterBag->resolveValue($attributes['group']) :
-                    $defaultValues['group'];
-                \assert(\is_string($resolvedGroupName));
-
-                if (isset($attributes['label_catalogue'])) {
-                    throw new \InvalidArgumentException('The "label_catalogue" attribute is not supported. Use "translation_domain" instead.');
-                }
-
-                $groupTranslationDomain = $attributes['translation_domain'] ?? $defaultValues['translation_domain'];
-                $icon = $attributes['icon'] ?? $defaultValues['icon'];
-                $onTop = $attributes['on_top'] ?? false;
-                $keepOpen = $attributes['keep_open'] ?? false;
-
-                if (!isset($groupDefaults[$resolvedGroupName])) {
-                    $groupDefaults[$resolvedGroupName] = [
-                        'label' => $resolvedGroupName,
-                        'translation_domain' => $groupTranslationDomain,
-                        'icon' => $icon,
-                        'items' => [],
-                        'roles' => [],
-                        'on_top' => false,
-                        'keep_open' => false,
-                    ];
-                }
-
-                $groupDefaults[$resolvedGroupName]['priority'] = max($groupDefaults[$resolvedGroupName]['priority'] ?? 0, $attributes['priority'] ?? 0);
-                $groupDefaults[$resolvedGroupName]['items'][] = [
-                    'admin' => $code,
-                    'route_params' => [],
-                    'route_absolute' => false,
-                    'priority' => $attributes['priority'] ?? 0,
-                ];
-
-                if (true === $groupDefaults[$resolvedGroupName]['on_top']
-                    || true === $onTop && (\count($groupDefaults[$resolvedGroupName]['items']) > 1)) {
-                    throw new \RuntimeException('You can\'t use "on_top" option with multiple same name groups.');
-                }
-                $groupDefaults[$resolvedGroupName]['on_top'] = $onTop;
-
-                $groupDefaults[$resolvedGroupName]['keep_open'] = $keepOpen;
             }
-        }
-
-        $dashboardGroupsSettings = $container->getParameter('sensiolabs.admin.configuration.dashboard_groups');
-        \assert(\is_array($dashboardGroupsSettings));
-        $sortAdmins = $container->getParameter('sensiolabs.admin.configuration.sort_admins');
-        \assert(\is_bool($sortAdmins));
-
-        $sortAdminsByPriority = true;
-
-        if ([] !== $dashboardGroupsSettings) {
-            $groups = $dashboardGroupsSettings;
-
-            foreach ($dashboardGroupsSettings as $groupName => $group) {
-                $resolvedGroupName = $parameterBag->resolveValue($groupName);
-                \assert(\is_string($resolvedGroupName));
-
-                if (!isset($groupDefaults[$resolvedGroupName])) {
-                    $groupDefaults[$resolvedGroupName] = [
-                        'items' => [],
-                        'label' => $resolvedGroupName,
-                        'translation_domain' => $defaultValues['translation_domain'],
-                        'icon' => $defaultValues['icon'],
-                        'roles' => [],
-                        'on_top' => false,
-                        'keep_open' => false,
-                    ];
-                }
-
-                if (!isset($group['items']) || [] === $group['items']) {
-                    $groups[$resolvedGroupName]['items'] = $groupDefaults[$resolvedGroupName]['items'];
-                } else {
-                    $sortAdminsByPriority = false;
-                }
-
-                if (!isset($group['label']) || '' === $group['label']) {
-                    $groups[$resolvedGroupName]['label'] = $groupDefaults[$resolvedGroupName]['label'];
-                }
-
-                if (!isset($group['translation_domain']) || '' === $group['translation_domain']) {
-                    $groups[$resolvedGroupName]['translation_domain'] = $groupDefaults[$resolvedGroupName]['translation_domain'];
-                }
-
-                if (!isset($group['icon']) || '' === $group['icon']) {
-                    $groups[$resolvedGroupName]['icon'] = $groupDefaults[$resolvedGroupName]['icon'];
-                }
-
-                if (!isset($group['roles']) || [] === $group['roles']) {
-                    $groups[$resolvedGroupName]['roles'] = $groupDefaults[$resolvedGroupName]['roles'];
-                }
-
-                if (
-                    isset($groups[$resolvedGroupName]['on_top'])
-                    && true === ($group['on_top'] ?? false)
-                    && \count($groups[$resolvedGroupName]['items']) > 1
-                ) {
-                    throw new \RuntimeException('You can\'t use "on_top" option with multiple same name groups.');
-                }
-                if (!isset($group['on_top'])) {
-                    $groups[$resolvedGroupName]['on_top'] = $groupDefaults[$resolvedGroupName]['on_top'];
-                }
-
-                if (!isset($group['keep_open'])) {
-                    $groups[$resolvedGroupName]['keep_open'] = $groupDefaults[$resolvedGroupName]['keep_open'];
-                }
-            }
-        } elseif ($sortAdmins) {
-            $groups = $groupDefaults;
-
-            $elementSort = static function (array &$element): void {
-                usort(
-                    $element['items'],
-                    static function (array $a, array $b): int {
-                        $labelA = isset($a['label']) && '' !== $a['label'] ? $a['label'] : $a['admin'];
-                        $labelB = isset($b['label']) && '' !== $b['label'] ? $b['label'] : $b['admin'];
-
-                        return $labelA <=> $labelB;
-                    }
-                );
-            };
-
-            /*
-             * 1) sort the groups by their index
-             * 2) sort the elements within each group by label/admin
-             */
-            ksort($groups);
-            array_walk($groups, $elementSort);
-
-            $sortAdminsByPriority = false;
-        } else {
-            $groups = $groupDefaults;
-
-            uasort($groups, static fn (array $a, array $b): int => $b['priority'] <=> $a['priority']);
-        }
-
-        if ($sortAdminsByPriority) {
-            $elementSort = static function (array &$element): void {
-                usort(
-                    $element['items'],
-                    static fn (array $a, array $b): int => ($b['priority'] ?? 0) <=> ($a['priority'] ?? 0)
-                );
-            };
-
-            array_walk($groups, $elementSort);
         }
 
         $pool->replaceArgument(0, ServiceLocatorTagPass::register($container, $adminServices));
         $pool->replaceArgument(1, $admins);
-        $pool->replaceArgument(2, $groups);
-        $pool->replaceArgument(3, $classes);
+        $pool->replaceArgument(2, $classes);
     }
 
     /**

@@ -68,7 +68,7 @@ file that was distributed with this source code.
                             : btn_list|trans({}, btn_translation_domain|default(btn_catalogue))
                         }}"
                         >
-                        <i class="fas fa-list"></i>
+                        {{ ux_icon('lucide:list', {class: 'w-4 h-4 inline-block'}) }}
                         {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                         {{
                             btn_translation_domain|default(null) is same as(false)
@@ -89,7 +89,7 @@ file that was distributed with this source code.
                             : btn_add|trans({}, btn_translation_domain|default(btn_catalogue))
                         }}"
                         >
-                        <i class="fas fa-plus-circle"></i>
+                        {{ ux_icon('lucide:plus-circle', {class: 'w-4 h-4 inline-block'}) }}
                         {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                         {{
                             btn_translation_domain|default(null) is same as(false)
@@ -116,7 +116,7 @@ file that was distributed with this source code.
                         : btn_delete|trans({}, btn_translation_domain|default(btn_catalogue))
                     }}"
                     >
-                    <i class="fas fa-minus-circle"></i>
+                    {{ ux_icon('lucide:minus-circle', {class: 'w-4 h-4 inline-block'}) }}
                     {# NEXT_MAJOR: Remove the fallback on null and on btn_catalogue #}
                     {{
                         btn_translation_domain|default(null) is same as(false)

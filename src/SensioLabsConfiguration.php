@@ -17,10 +17,8 @@ namespace SensioLabs\AdminBundle;
  * @phpstan-type SensioLabsConfigurationOptions = array{
  *     confirm_exit: bool,
  *     default_admin_route: string,
- *     default_group: string,
  *     default_icon: string,
  *     default_translation_domain: string,
- *     dropdown_number_groups_per_colums: int,
  *     form_type: 'standard'|'horizontal',
  *     html5_validate: bool,
  *     javascripts: list<string>,
@@ -32,7 +30,6 @@ namespace SensioLabs\AdminBundle;
  *     pager_links: ?int,
  *     role_admin: string,
  *     role_super_admin: string,
- *     sort_admins: bool,
  *     stylesheets: list<string>,
  *     use_select2: bool,
  *     use_stickyforms: bool

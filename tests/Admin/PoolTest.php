@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SensioLabs\AdminBundle\Tests\Admin;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
 use SensioLabs\AdminBundle\Admin\AdminInterface;
 use SensioLabs\AdminBundle\Admin\Pool;
@@ -22,9 +21,6 @@ use SensioLabs\AdminBundle\Exception\AdminCodeNotFoundException;
 use SensioLabs\AdminBundle\Exception\TooManyAdminClassException;
 use Symfony\Component\DependencyInjection\Container;
 
-/**
- * @phpstan-import-type Group from Pool
- */
 final class PoolTest extends TestCase
 {
     private Container $container;
@@ -37,82 +33,11 @@ final class PoolTest extends TestCase
         $this->pool = new Pool($this->container);
     }
 
-    /**
-     * NEXT_MAJOR: Remove this test.
-     */
-    #[IgnoreDeprecations]
-    public function testGetDashboardGroupsForLegacyAdmin(): void
-    {
-        $adminGroup1 = $this->createMock(AdminInterface::class);
-        $adminGroup1->expects(static::once())->method('showIn')->willReturn(true);
-
-        $adminGroup2 = $this->createMock(AdminInterface::class);
-        $adminGroup2->expects(static::once())->method('showIn')->willReturn(false);
-
-        $adminGroup3 = $this->createMock(AdminInterface::class);
-        $adminGroup3->expects(static::once())->method('showIn')->willReturn(false);
-
-        $this->container->set('sensiolabs.user.admin.group1', $adminGroup1);
-        $this->container->set('sensiolabs.user.admin.group2', $adminGroup2);
-        $this->container->set('sensiolabs.user.admin.group3', $adminGroup3);
-
-        $pool = new Pool(
-            $this->container,
-            ['sensiolabs.user.admin.group1', 'sensiolabs.user.admin.group2', 'sensiolabs.user.admin.group3'],
-            [
-                'adminGroup1' => $this->getGroupArray('sensiolabs.user.admin.group1'),
-                'adminGroup2' => $this->getGroupArray('sensiolabs.user.admin.group2'),
-                'adminGroup3' => $this->getGroupArray('sensiolabs.user.admin.group3'),
-                'adminGroup4' => $this->getGroupArray(),
-            ]
-        );
-
-        $groups = $pool->getDashboardGroups();
-
-        static::assertCount(1, $groups);
-        static::assertSame($adminGroup1, $groups['adminGroup1']['items'][0]);
-    }
-
-    public function testGetDashboardGroups(): void
-    {
-        // NEXT_MAJOR: Use $this->createMock(AdminInterface::class);
-        $adminGroup1 = $this->createMock(NextMajorAdminInterface::class);
-        $adminGroup1->expects(static::once())->method('showInDashboard')->willReturn(true);
-
-        // NEXT_MAJOR: Use $this->createMock(AdminInterface::class);
-        $adminGroup2 = $this->createMock(NextMajorAdminInterface::class);
-        $adminGroup2->expects(static::once())->method('showInDashboard')->willReturn(false);
-
-        // NEXT_MAJOR: Use $this->createMock(AdminInterface::class);
-        $adminGroup3 = $this->createMock(NextMajorAdminInterface::class);
-        $adminGroup3->expects(static::once())->method('showInDashboard')->willReturn(false);
-
-        $this->container->set('sensiolabs.user.admin.group1', $adminGroup1);
-        $this->container->set('sensiolabs.user.admin.group2', $adminGroup2);
-        $this->container->set('sensiolabs.user.admin.group3', $adminGroup3);
-
-        $pool = new Pool(
-            $this->container,
-            ['sensiolabs.user.admin.group1', 'sensiolabs.user.admin.group2', 'sensiolabs.user.admin.group3'],
-            [
-                'adminGroup1' => $this->getGroupArray('sensiolabs.user.admin.group1'),
-                'adminGroup2' => $this->getGroupArray('sensiolabs.user.admin.group2'),
-                'adminGroup3' => $this->getGroupArray('sensiolabs.user.admin.group3'),
-                'adminGroup4' => $this->getGroupArray(),
-            ]
-        );
-
-        $groups = $pool->getDashboardGroups();
-
-        static::assertCount(1, $groups);
-        static::assertSame($adminGroup1, $groups['adminGroup1']['items'][0]);
-    }
-
     public function testGetAdminForClassWithTooManyRegisteredAdmin(): void
     {
         $class = \stdClass::class;
 
-        $pool = new Pool($this->container, ['sensiolabs.user.admin.group1'], [], [
+        $pool = new Pool($this->container, ['sensiolabs.user.admin.group1'], [
             $class => ['sensiolabs.user.admin.group1', 'sensiolabs.user.admin.group2'],
         ]);
 
@@ -129,7 +54,7 @@ final class PoolTest extends TestCase
 
         $this->container->set('sensiolabs.user.admin.group1', $this->createMock(AdminInterface::class));
 
-        $pool = new Pool($this->container, ['sensiolabs.user.admin.group1'], [], [
+        $pool = new Pool($this->container, ['sensiolabs.user.admin.group1'], [
             $class => [Pool::DEFAULT_ADMIN_KEY => 'sensiolabs.user.admin.group1', 'sensiolabs.user.admin.group2'],
         ]);
 
@@ -143,7 +68,7 @@ final class PoolTest extends TestCase
 
         $this->container->set('sensiolabs.user.admin.group1', $this->createMock(AdminInterface::class));
 
-        $pool = new Pool($this->container, ['sensiolabs.user.admin.group1'], [], [$class => ['sensiolabs.user.admin.group1']]);
+        $pool = new Pool($this->container, ['sensiolabs.user.admin.group1'], [$class => ['sensiolabs.user.admin.group1']]);
 
         static::assertTrue($pool->hasAdminByClass($class));
         static::assertInstanceOf(AdminInterface::class, $pool->getAdminByClass($class));
@@ -385,59 +310,13 @@ final class PoolTest extends TestCase
     {
         $class = \stdClass::class;
 
-        $pool = new Pool($this->container, [], [], [$class => ['sensiolabs.user.admin.group1']]);
+        $pool = new Pool($this->container, [], [$class => ['sensiolabs.user.admin.group1']]);
         static::assertSame([$class => ['sensiolabs.user.admin.group1']], $pool->getAdminClasses());
-    }
-
-    public function testGetAdminGroups(): void
-    {
-        $groups = [
-            'sensiolabs.user.admin.group1' => [
-                'label' => 'label',
-                'icon' => 'icon',
-                'translation_domain' => 'admin_domain',
-                'items' => [],
-                'keep_open' => false,
-                'on_top' => false,
-                'roles' => [],
-            ],
-        ];
-
-        $pool = new Pool($this->container, [], $groups);
-        static::assertSame($groups, $pool->getAdminGroups());
     }
 
     public function testGetAdminServiceCodes(): void
     {
         $pool = new Pool($this->container, ['sensiolabs.user.admin.group1', 'sensiolabs.user.admin.group2', 'sensiolabs.user.admin.group3']);
         static::assertSame(['sensiolabs.user.admin.group1', 'sensiolabs.user.admin.group2', 'sensiolabs.user.admin.group3'], $pool->getAdminServiceCodes());
-    }
-
-    /**
-     * @phpstan-return Group
-     */
-    private function getGroupArray(?string $serviceId = null): array
-    {
-        $item = [
-            'label' => '',
-            'route' => '',
-            'route_absolute' => false,
-            'route_params' => [],
-            'roles' => [],
-        ];
-
-        if (null !== $serviceId) {
-            $item['admin'] = $serviceId;
-        }
-
-        return [
-            'label' => '',
-            'translation_domain' => '',
-            'icon' => '',
-            'items' => [$item],
-            'keep_open' => false,
-            'on_top' => false,
-            'roles' => [],
-        ];
     }
 }

@@ -19,8 +19,6 @@ use Knp\Menu\Renderer\TwigRenderer;
 use Knp\Menu\Twig\MenuExtension;
 use PHPUnit\Framework\TestCase;
 use SensioLabs\AdminBundle\Tests\Fixtures\StubTranslator;
-use SensioLabs\AdminBundle\Twig\Extension\IconExtension;
-use SensioLabs\AdminBundle\Twig\IconRuntime;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Environment;
@@ -59,7 +57,6 @@ abstract class BaseMenuTestCase extends TestCase
     protected function renderMenu(ItemInterface $item, array $options = []): string
     {
         $this->environment->addExtension(new TranslationExtension($this->getTranslator()));
-        $this->environment->addExtension(new IconExtension(new IconRuntime()));
         $this->environment->addExtension(new MenuExtension());
 
         $renderer = new TwigRenderer(

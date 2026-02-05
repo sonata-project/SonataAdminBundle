@@ -1731,7 +1731,7 @@ abstract class AbstractAdmin extends BaseAbstractAdmin implements AdminInterface
                 'translation_domain' => 'SensioLabsAdminBundle',
                 'template' => $this->getTemplateRegistry()->getTemplate('action_create'),
                 'url' => $this->generateUrl('create'),
-                'icon' => 'fas fa-plus-circle',
+                'icon' => 'lucide:plus-circle',
             ];
         }
 
@@ -1740,7 +1740,7 @@ abstract class AbstractAdmin extends BaseAbstractAdmin implements AdminInterface
                 'label' => 'link_list',
                 'translation_domain' => 'SensioLabsAdminBundle',
                 'url' => $this->generateUrl('list'),
-                'icon' => 'fas fa-list',
+                'icon' => 'lucide:list',
             ];
         }
 

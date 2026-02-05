@@ -13,26 +13,16 @@ declare(strict_types=1);
 
 namespace SensioLabs\AdminBundle\Dashboard;
 
-use SensioLabs\AdminBundle\Admin\Pool;
-use SensioLabs\AdminBundle\Templating\TemplateRegistryInterface;
-use Twig\Environment;
-
 /**
  * Default dashboard controller that auto-generates menu items from registered admins.
+ *
+ * This is used when no custom dashboard controller is registered.
  */
 final class DefaultDashboardController extends AbstractDashboardController
 {
-    public function __construct(
-        Pool $pool,
-        TemplateRegistryInterface $templateRegistry,
-        Environment $twig,
-    ) {
-        parent::__construct($pool, $templateRegistry, $twig);
-    }
-
     public function configureMenuItems(): iterable
     {
-        yield MenuItem::linkToDashboard('Dashboard', 'fas fa-home');
+        yield MenuItem::linkToDashboard('Dashboard', 'lucide:home');
 
         $adminCodes = $this->getPool()->getAdminServiceCodes();
 
@@ -47,7 +37,7 @@ final class DefaultDashboardController extends AbstractDashboardController
 
             yield MenuItem::linkToCrud(
                 $admin->getLabel() ?? $adminCode,
-                'fas fa-folder',
+                'lucide:folder',
                 $admin->getCode()
             );
         }

@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 {% block field %}
     <a class="btn btn-primary" href="{{ admin.generateUrl(action|default('list')) }}">
-        <i class="fas fa-check" aria-hidden="true"></i>
+        {{ ux_icon('lucide:check', {class: 'w-4 h-4 inline-block'}) }}
         {{ 'list_select'|trans({}, 'SonataAdminBundle') }}
     </a>
 {% endblock %}

@@ -87,6 +87,7 @@ final class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
                 [
                     'uri' => $admin->getRouteGenerator()->generate('sensiolabs_admin_dashboard'),
                     'extras' => ['translation_domain' => 'SensioLabsAdminBundle'],
+                    'attributes' => ['icon' => 'lucide:home'],
                 ]
             );
         }

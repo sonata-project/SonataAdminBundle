@@ -19,11 +19,11 @@ file that was distributed with this source code.
         {% for element in collection|filter(element => not root) %}
             <li>
                 <div class="sonata-tree__item">
-                    {% if element.parent %}<i class="fas fa-caret-right" aria-hidden="true"></i>{% endif %}
-                    <i class="fas fa-code" aria-hidden="true"></i>
+                    {% if element.parent %}{{ ux_icon('lucide:chevron-right', {class: 'w-4 h-4 inline-block'}) }}{% endif %}
+                    {{ ux_icon('lucide:code', {class: 'w-4 h-4 inline-block'}) }}
                     <a class="sonata-tree__item__edit" href="{{ admin.generateObjectUrl('edit', element) }}">{{ element.name }}</a>
                     <i class="text-muted">{{ element.description }}</i>
-                    <a class="label label-default pull-right" href="{{ admin.generateObjectUrl('edit', element) }}">edit <i class="fas fa-magic" aria-hidden="true"></i></a>
+                    <a class="label label-default pull-right" href="{{ admin.generateObjectUrl('edit', element) }}">edit {{ ux_icon('lucide:wand-2', {class: 'w-4 h-4 inline-block'}) }}</a>
                     {% if true %}<span class="label label-warning pull-right">true</span>{% endif %}
                 </div>
 
@@ -59,7 +59,7 @@ file that was distributed with this source code.
                                     <a href="{{ admin.generateUrl('tree', { 'context': context.id }) }}">
                                         {% if currentContext and context.id == currentContext.id %}
                                             <span class="pull-right">
-                                                <i class="fas fa-check" aria-hidden="true"></i>
+                                                {{ ux_icon('lucide:check', {class: 'w-4 h-4 inline-block'}) }}
                                             </span>
                                         {% endif %}
                                         {{ site.name }}

@@ -21,87 +21,20 @@ use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
- *
- * @phpstan-type Item = array{
- *     label: string,
- *     roles: list<string>,
- *     route: string,
- *     route_absolute: bool,
- *     route_params: array<string, string>
- * }|array{
- *     admin: string,
- *     roles: list<string>,
- *     route_absolute: bool,
- *     route_params: array<string, string>
- * }
- * @phpstan-type Group = array{
- *     label: string,
- *     translation_domain: string,
- *     icon: string,
- *     items: list<Item>,
- *     keep_open: bool,
- *     on_top: bool,
- *     provider?: string,
- *     roles: list<string>
- * }
  */
 final class Pool
 {
     public const DEFAULT_ADMIN_KEY = 'default';
 
     /**
-     * @param string[]                            $adminServiceCodes
-     * @param array<string, array<string, mixed>> $adminGroups
-     * @param array<class-string, string[]>       $adminClasses
-     *
-     * @phpstan-param array<string, Group> $adminGroups
+     * @param string[]                      $adminServiceCodes
+     * @param array<class-string, string[]> $adminClasses
      */
     public function __construct(
         private ContainerInterface $container,
         private array $adminServiceCodes = [],
-        private array $adminGroups = [],
         private array $adminClasses = [],
     ) {
-    }
-
-    /**
-     * @phpstan-return array<string, array{
-     *  label: string,
-     *  translation_domain: string,
-     *  icon: string,
-     *  items: list<AdminInterface<object>>,
-     *  keep_open: bool,
-     *  on_top: bool,
-     *  provider?: string,
-     *  roles: list<string>
-     * }>
-     */
-    public function getDashboardGroups(): array
-    {
-        $groups = [];
-
-        foreach ($this->adminGroups as $name => $adminGroup) {
-            $items = [];
-            foreach ($adminGroup['items'] as $item) {
-                if (!isset($item['admin'])) {
-                    continue;
-                }
-
-                $admin = $this->getInstance($item['admin']);
-
-                if (!$admin->showInDashboard()) {
-                    continue;
-                }
-
-                $items[] = $admin;
-            }
-
-            if ([] !== $items) {
-                $groups[$name] = ['items' => $items] + $adminGroup;
-            }
-        }
-
-        return $groups;
     }
 
     /**
@@ -273,16 +206,6 @@ final class Pool
         }
 
         return $admin;
-    }
-
-    /**
-     * @return array<string, array<string, mixed>>
-     *
-     * @phpstan-return array<string, Group>
-     */
-    public function getAdminGroups(): array
-    {
-        return $this->adminGroups;
     }
 
     /**

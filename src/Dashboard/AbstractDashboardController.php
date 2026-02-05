@@ -17,15 +17,48 @@ use SensioLabs\AdminBundle\Admin\Pool;
 use SensioLabs\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Service\Attribute\Required;
 use Twig\Environment;
 
-abstract class AbstractDashboardController
+/**
+ * Base class for dashboard controllers.
+ *
+ * Extend this class and implement configureMenuItems() to create your custom dashboard.
+ * Dependencies are injected automatically via setter injection - no constructor needed.
+ *
+ * Example:
+ *
+ *     class DashboardController extends AbstractDashboardController
+ *     {
+ *         public function configureMenuItems(): iterable
+ *         {
+ *             yield MenuItem::linkToDashboard('Dashboard', 'lucide:home');
+ *             yield MenuItem::linkToCrud('Users', 'lucide:users', 'app.admin.user');
+ *         }
+ *     }
+ */
+abstract class AbstractDashboardController implements DashboardControllerInterface
 {
-    public function __construct(
-        private Pool $pool,
-        private TemplateRegistryInterface $templateRegistry,
-        private Environment $twig,
-    ) {
+    private Pool $pool;
+    private TemplateRegistryInterface $templateRegistry;
+    private Environment $twig;
+
+    #[Required]
+    public function setPool(Pool $pool): void
+    {
+        $this->pool = $pool;
+    }
+
+    #[Required]
+    public function setTemplateRegistry(TemplateRegistryInterface $templateRegistry): void
+    {
+        $this->templateRegistry = $templateRegistry;
+    }
+
+    #[Required]
+    public function setTwig(Environment $twig): void
+    {
+        $this->twig = $twig;
     }
 
     public function index(Request $request): Response
@@ -73,12 +106,12 @@ abstract class AbstractDashboardController
         return $items;
     }
 
-    public function getPool(): Pool
+    protected function getPool(): Pool
     {
         return $this->pool;
     }
 
-    public function getTemplateRegistry(): TemplateRegistryInterface
+    protected function getTemplateRegistry(): TemplateRegistryInterface
     {
         return $this->templateRegistry;
     }
@@ -89,7 +122,7 @@ abstract class AbstractDashboardController
     }
 
     /**
-     * Helper to generate URL for an admin's list action.
+     * Helper to generate URL for an admin's action.
      */
     protected function generateAdminUrl(string $adminCode, string $action = 'list', array $parameters = []): string
     {
