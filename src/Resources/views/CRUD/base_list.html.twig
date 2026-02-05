@@ -254,7 +254,7 @@ file that was distributed with this source code.
     {% set activeFilterCount = admin.datagrid.filters|filter(filter => filter.isActive())|length %}
     {%- if displayableFilters|length %}
         <div class="admin-dropdown" id="filter-list-{{ admin.uniqid() }}" data-controller="sensiolabs-de--admin-bundle--filter-list sensiolabs-de--admin-bundle--dropdown" data-sensiolabs-de--admin-bundle--filter-list-active-class="active" data-sensiolabs-de--admin-bundle--filter-list-sensiolabs-de--admin-bundle--filter-outlet="#filter-container-{{ admin.uniqid() }}">
-            <button type="button" data-action="click->sensiolabs-de--admin-bundle--dropdown#toggle" data-sensiolabs-de--admin-bundle--dropdown-target="button" class="inline-flex items-center justify-center gap-2 h-10 px-4 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm">
+            <button type="button" data-action="click->sensiolabs-de--admin-bundle--dropdown#toggle" data-sensiolabs-de--admin-bundle--dropdown-target="button" class="inline-flex items-center justify-center gap-2 h-9 px-4 text-sm font-medium rounded-lg bg-white text-gray-700 hover:bg-gray-50 transition-all shadow-sm ring-1 ring-gray-200">
                 {{ ux_icon('lucide:filter', {class: 'w-4 h-4'}) }}
                 <span>{{ 'link_filters'|trans({}, 'SensioLabsAdminBundle') }}</span>
                 {% if activeFilterCount > 0 %}

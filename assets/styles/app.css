@@ -410,7 +410,13 @@ body.sidebar-open .admin-sidebar-overlay {
 }
 
 .admin-sidebar-submenu-item.active {
-    @apply text-primary-400;
+    @apply text-white bg-primary-500/20 font-medium;
+    box-shadow: inset 3px 0 0 var(--color-primary-500);
+}
+
+/* Treeview toggle state */
+.treeview.is-toggled > a .treeview-chevron {
+    transform: rotate(90deg);
 }
 
 .admin-sidebar-footer {
@@ -450,12 +456,21 @@ body.sidebar-open .admin-sidebar-overlay {
 /* Header */
 /* Header removed - using headerless layout */
 
+/* Desktop: no header bar, blends with page background */
+/* Mobile: show compact header with hamburger menu */
 .admin-page-header {
-    @apply px-6 py-4 bg-white border-b border-gray-200;
+    @apply px-6 py-4;
+}
+
+@media (max-width: 1023px) {
+    .admin-page-header {
+        @apply bg-white border-b border-gray-200;
+    }
 }
 
 .admin-mobile-menu-toggle {
-    @apply flex items-center justify-center w-9 h-9 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors;
+    @apply items-center justify-center w-9 h-9 rounded-lg text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors;
+    /* Hidden on desktop, shown on mobile via lg:hidden in template */
 }
 
 .admin-header-left {
@@ -578,54 +593,65 @@ body.sidebar-open .admin-sidebar-overlay {
     @apply p-2 aspect-square;
 }
 
-/* Button variants - each includes base styles */
+/* Button variants - each includes base styles, consistent height */
 .admin-btn-primary {
-    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 py-2.5 text-sm bg-primary-500 text-white hover:bg-primary-600 active:bg-primary-700 focus-visible:ring-primary-500;
-    box-shadow: var(--admin-shadow-xs), inset 0 1px 0 oklch(1 0 0 / 0.1);
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 text-sm bg-primary-500 text-white hover:bg-primary-600 active:bg-primary-700 focus-visible:ring-primary-500;
+    height: 36px; /* 2.25rem = h-9 */
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1), inset 0 1px 0 oklch(1 0 0 / 0.1);
 }
 
 .admin-btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 py-2.5 text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300 focus-visible:ring-gray-500;
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 text-sm bg-gray-100 text-gray-700 hover:bg-gray-200 active:bg-gray-300 focus-visible:ring-gray-500;
+    height: 36px;
 }
 
 .admin-btn-success {
-    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 py-2.5 text-sm bg-success-500 text-white hover:bg-success-600 active:bg-success-700 focus-visible:ring-success-500;
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 text-sm bg-success-500 text-white hover:bg-success-600 active:bg-success-700 focus-visible:ring-success-500;
+    height: 36px;
     box-shadow: var(--admin-shadow-xs), inset 0 1px 0 oklch(1 0 0 / 0.1);
 }
 
 .admin-btn-warning {
-    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 py-2.5 text-sm bg-warning-500 text-white hover:bg-warning-600 active:bg-warning-700 focus-visible:ring-warning-500;
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 text-sm bg-warning-500 text-white hover:bg-warning-600 active:bg-warning-700 focus-visible:ring-warning-500;
+    height: 36px;
     box-shadow: var(--admin-shadow-xs), inset 0 1px 0 oklch(1 0 0 / 0.1);
 }
 
 .admin-btn-error {
-    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 py-2.5 text-sm bg-error-500 text-white hover:bg-error-600 active:bg-error-700 focus-visible:ring-error-500;
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 text-sm bg-error-500 text-white hover:bg-error-600 active:bg-error-700 focus-visible:ring-error-500;
+    height: 36px;
     box-shadow: var(--admin-shadow-xs), inset 0 1px 0 oklch(1 0 0 / 0.1);
 }
 
 .admin-btn-info {
-    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 py-2.5 text-sm bg-info-500 text-white hover:bg-info-600 active:bg-info-700 focus-visible:ring-info-500;
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 text-sm bg-info-500 text-white hover:bg-info-600 active:bg-info-700 focus-visible:ring-info-500;
+    height: 36px;
     box-shadow: var(--admin-shadow-xs), inset 0 1px 0 oklch(1 0 0 / 0.1);
 }
 
 .admin-btn-outline {
-    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 py-2.5 text-sm border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 active:bg-gray-100 focus-visible:ring-gray-500;
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 text-sm border border-gray-300 bg-white text-gray-700 hover:bg-gray-50 active:bg-gray-100 focus-visible:ring-gray-500;
+    height: 36px;
 }
 
 .admin-btn-outline-primary {
-    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 py-2.5 text-sm border border-primary-300 bg-white text-primary-600 hover:bg-primary-50 active:bg-primary-100 focus-visible:ring-primary-500;
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 text-sm border border-primary-300 bg-white text-primary-600 hover:bg-primary-50 active:bg-primary-100 focus-visible:ring-primary-500;
+    height: 36px;
 }
 
 .admin-btn-outline-error {
-    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 py-2.5 text-sm border border-error-300 bg-white text-error-600 hover:bg-error-50 active:bg-error-100 focus-visible:ring-error-500;
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 text-sm border border-error-300 bg-white text-error-600 hover:bg-error-50 active:bg-error-100 focus-visible:ring-error-500;
+    height: 36px;
 }
 
 .admin-btn-ghost {
-    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 py-2.5 text-sm text-gray-600 hover:bg-gray-100 active:bg-gray-200 focus-visible:ring-gray-500;
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 text-sm text-gray-600 hover:bg-gray-100 active:bg-gray-200 focus-visible:ring-gray-500;
+    height: 36px;
 }
 
 .admin-btn-ghost-primary {
-    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 py-2.5 text-sm text-primary-600 hover:bg-primary-50 active:bg-primary-100 focus-visible:ring-primary-500;
+    @apply inline-flex items-center justify-center gap-2 font-medium rounded-lg transition-all duration-150 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none select-none px-4 text-sm text-primary-600 hover:bg-primary-50 active:bg-primary-100 focus-visible:ring-primary-500;
+    height: 36px;
 }
 
 .admin-btn-link {
@@ -1299,15 +1325,21 @@ body.sidebar-open .admin-sidebar-overlay {
 }
 
 .admin-filter-apply-btn {
-    @apply inline-flex items-center justify-center gap-1.5 h-10 px-4 text-sm font-medium text-white bg-primary-500 rounded-lg hover:bg-primary-600 transition-colors shadow-sm;
+    @apply inline-flex items-center justify-center gap-1.5 px-4 text-sm font-medium text-white bg-primary-500 rounded-lg hover:bg-primary-600 transition-colors;
+    height: 36px;
+    box-shadow: var(--admin-shadow-xs);
 }
 
 .admin-filter-reset-btn {
-    @apply inline-flex items-center justify-center w-10 h-10 text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-700 hover:border-gray-300 transition-all;
+    @apply inline-flex items-center justify-center text-gray-500 bg-gray-100 rounded-lg hover:bg-gray-200 hover:text-gray-700 transition-all;
+    width: 36px;
+    height: 36px;
 }
 
 .admin-filter-advanced-btn {
-    @apply inline-flex items-center justify-center w-10 h-10 text-gray-500 bg-white border border-gray-200 rounded-lg hover:bg-gray-50 hover:text-gray-700 hover:border-gray-300 transition-all;
+    @apply inline-flex items-center justify-center text-gray-500 bg-gray-100 rounded-lg hover:bg-gray-200 hover:text-gray-700 transition-all;
+    width: 36px;
+    height: 36px;
 }
 
 /* Legacy panel support */

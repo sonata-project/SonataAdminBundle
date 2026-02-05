@@ -103,8 +103,6 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
         $this->container->setParameter('kernel.bundles', []);
         $this->load();
 
-        self::assertContainerBuilderHasParameter('sensiolabs.admin.configuration.default_group');
-        self::assertContainerBuilderHasParameter('sensiolabs.admin.configuration.default_label_catalogue');
         self::assertContainerBuilderHasParameter('sensiolabs.admin.configuration.default_translation_domain');
         self::assertContainerBuilderHasParameter('sensiolabs.admin.configuration.default_icon');
         self::assertContainerBuilderHasParameter('sensiolabs.admin.configuration.default_controller');

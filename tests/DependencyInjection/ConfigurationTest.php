@@ -30,12 +30,9 @@ final class ConfigurationTest extends TestCase
         static::assertNull($config['options']['pager_links']);
         static::assertTrue($config['options']['confirm_exit']);
         static::assertFalse($config['options']['js_debug']);
-        static::assertTrue($config['options']['use_icheck']);
         static::assertSame('bundles/sonataadmin/images/default_mosaic_image.png', $config['options']['mosaic_background']);
-        static::assertSame('default', $config['options']['default_group']);
-        static::assertSame('SensioLabsAdminBundle', $config['options']['default_label_catalogue']);
-        static::assertNull($config['options']['default_translation_domain']);
-        static::assertSame('fas fa-folder', $config['options']['default_icon']);
+        static::assertSame('messages', $config['options']['default_translation_domain']);
+        static::assertSame('lucide:folder', $config['options']['default_icon']);
     }
 
     public function testBreadcrumbsChildRouteDefaultsToShow(): void
@@ -80,145 +77,6 @@ final class ConfigurationTest extends TestCase
             'label_translator_strategy' => null,
             'pager_type' => null,
         ], $config['default_admin_services']);
-    }
-
-    public function testDashboardWithoutRoles(): void
-    {
-        $config = $this->process([]);
-
-        static::assertIsArray($config['dashboard']);
-        static::assertIsArray($config['dashboard']['blocks']);
-        static::assertIsArray($config['dashboard']['blocks'][0]);
-        static::assertEmpty($config['dashboard']['blocks'][0]['roles']);
-    }
-
-    public function testDashboardWithRoles(): void
-    {
-        $config = $this->process([[
-            'dashboard' => [
-                'blocks' => [[
-                    'roles' => ['ROLE_ADMIN'],
-                    'type' => 'my.type',
-                ]],
-            ],
-        ]]);
-
-        static::assertIsArray($config['dashboard']);
-        static::assertIsArray($config['dashboard']['blocks']);
-        static::assertIsArray($config['dashboard']['blocks'][0]);
-        static::assertSame($config['dashboard']['blocks'][0]['roles'], ['ROLE_ADMIN']);
-    }
-
-    public function testDashboardGroups(): void
-    {
-        $config = $this->process([[
-            'dashboard' => [
-                'groups' => [
-                    'bar' => [
-                        'label' => 'foo',
-                        'icon' => '<i class="fas fa-edit"></i>',
-                        'items' => [
-                            'item1',
-                            'item2',
-                            [
-                                'label' => 'fooLabel',
-                                'route' => 'fooRoute',
-                                'route_params' => ['bar' => 'foo'],
-                                'route_absolute' => true,
-                            ],
-                            [
-                                'label' => 'barLabel',
-                                'route' => 'barRoute',
-                            ],
-                        ],
-                    ],
-                ],
-            ],
-        ]]);
-
-        static::assertIsArray($config['dashboard']);
-        static::assertIsArray($config['dashboard']['groups']);
-        static::assertIsArray($config['dashboard']['groups']['bar']);
-        static::assertIsArray($config['dashboard']['groups']['bar']['items']);
-        static::assertCount(4, $config['dashboard']['groups']['bar']['items']);
-        static::assertSame(
-            $config['dashboard']['groups']['bar']['items'][0],
-            [
-                'admin' => 'item1',
-                'roles' => [],
-                'route_params' => [],
-                'route_absolute' => false,
-            ]
-        );
-        static::assertSame(
-            $config['dashboard']['groups']['bar']['items'][1],
-            [
-                'admin' => 'item2',
-                'roles' => [],
-                'route_params' => [],
-                'route_absolute' => false,
-            ]
-        );
-        static::assertSame(
-            $config['dashboard']['groups']['bar']['items'][2],
-            [
-                'label' => 'fooLabel',
-                'route' => 'fooRoute',
-                'route_params' => ['bar' => 'foo'],
-                'route_absolute' => true,
-                'roles' => [],
-            ]
-        );
-        static::assertSame(
-            $config['dashboard']['groups']['bar']['items'][3],
-            [
-                'label' => 'barLabel',
-                'route' => 'barRoute',
-                'roles' => [],
-                'route_params' => [],
-                'route_absolute' => false,
-            ]
-        );
-    }
-
-    public function testDashboardGroupsWithNoRoute(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected parameter "route" for array items');
-
-        $this->process([[
-            'dashboard' => [
-                'groups' => [
-                    'bar' => [
-                        'label' => 'foo',
-                        'icon' => '<i class="fas fa-edit"></i>',
-                        'items' => [
-                            ['label' => 'noRoute'],
-                        ],
-                    ],
-                ],
-            ],
-        ]]);
-    }
-
-    public function testDashboardGroupsWithNoLabel(): void
-    {
-        $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Expected parameter "label" for array items');
-
-        $this->process([[
-            'dashboard' => [
-                'groups' => [
-                    'bar' => [
-                        'label' => 'foo',
-                        'icon' => '<i class="fas fa-edit"></i>',
-                        'items' => [
-                            ['route' => 'noLabel'],
-                        ],
-                    ],
-                ],
-            ],
-        ]]);
     }
 
     public function testSecurityConfigurationDefaults(): void

@@ -104,6 +104,23 @@ file that was distributed with this source code.
                 {% block sensiolabs_side_nav %}
                     {% block side_bar_before_nav %} {% endblock %}
                     {% block side_bar_nav %}
+                        {# Determine current context for menu highlighting #}
+                        {% set current_admin_code = admin is defined ? admin.code : null %}
+                        {% set current_route = app.request.attributes.get('_route') %}
+
+                        {# Macro to check if a menu item is active #}
+                        {% macro is_menu_item_active(item, current_admin_code, current_route) %}
+                            {%- if item.type == 'crud' and item.adminCode is not null and item.adminCode == current_admin_code -%}
+                                true
+                            {%- elseif item.type == 'route' and item.routeName is not null and item.routeName == current_route -%}
+                                true
+                            {%- elseif item.type == 'dashboard' and current_route == 'sensiolabs_admin_dashboard' -%}
+                                true
+                            {%- else -%}
+                                false
+                            {%- endif -%}
+                        {% endmacro %}
+
                         {% for item in sensiolabs_admin_menu_items() %}
                             {% if item.isSection() %}
                                 <div class="admin-sidebar-section">
@@ -126,8 +143,9 @@ file that was distributed with this source code.
                                             </a>
                                             <ul class="admin-sidebar-submenu hidden" data-sensiolabs-de--admin-bundle--treeview-target="submenu">
                                                 {% for child in item.children %}
+                                                    {% set is_child_active = _self.is_menu_item_active(child, current_admin_code, current_route)|trim == 'true' %}
                                                     <li>
-                                                        <a href="{{ sensiolabs_admin_menu_item_url(child) }}" class="admin-sidebar-submenu-item">
+                                                        <a href="{{ sensiolabs_admin_menu_item_url(child) }}" class="admin-sidebar-submenu-item{% if is_child_active %} active{% endif %}">
                                                             {{ child.label|trans({}, 'SensioLabsAdminBundle') }}
                                                         </a>
                                                     </li>
@@ -135,8 +153,9 @@ file that was distributed with this source code.
                                             </ul>
                                         </li>
                             {% else %}
+                                        {% set is_item_active = _self.is_menu_item_active(item, current_admin_code, current_route)|trim == 'true' %}
                                         <li>
-                                            <a href="{{ sensiolabs_admin_menu_item_url(item) }}" class="admin-sidebar-item">
+                                            <a href="{{ sensiolabs_admin_menu_item_url(item) }}" class="admin-sidebar-item{% if is_item_active %} active{% endif %}">
                                                 {% if item.icon %}
                                                     <span class="admin-sidebar-item-icon">{{ ux_icon(item.icon, {class: 'w-5 h-5'}) }}</span>
                                                 {% else %}
@@ -203,28 +222,28 @@ file that was distributed with this source code.
                     {% block sensiolabs_page_content_header %}
                         {% block sensiolabs_page_content_nav %}
                             <div class="admin-page-header">
-                                {# Top row: Breadcrumb + Mobile menu toggle #}
-                                <div class="flex items-center justify-between mb-1">
-                                    {% block sensiolabs_breadcrumb %}
-                                        {% if _breadcrumb is not empty or action is defined %}
-                                            <nav class="admin-breadcrumb-subtle">
-                                                {% if _breadcrumb is empty %}
-                                                    {% if action is defined %}
-                                                        {{ render_breadcrumbs(admin, action) }}
-                                                    {% endif %}
-                                                {% else %}
-                                                    {{ _breadcrumb|raw }}
-                                                {% endif %}
-                                            </nav>
-                                        {% else %}
-                                            <div></div>
-                                        {% endif %}
-                                    {% endblock sensiolabs_breadcrumb %}
-
-                                    <button type="button" class="admin-mobile-menu-toggle lg:hidden" title="{{ 'toggle_navigation'|trans({}, 'SensioLabsAdminBundle') }}" data-action="click->sensiolabs-de--admin-bundle--sidebar#toggle">
+                                {# Mobile only: hamburger menu row #}
+                                <div class="flex items-center justify-between mb-2 lg:hidden">
+                                    <span class="text-sm font-medium text-gray-600">{{ sensiolabs_config.title }}</span>
+                                    <button type="button" class="admin-mobile-menu-toggle flex" title="{{ 'toggle_navigation'|trans({}, 'SensioLabsAdminBundle') }}" data-action="click->sensiolabs-de--admin-bundle--sidebar#toggle">
                                         {{ ux_icon('lucide:menu', {class: 'w-5 h-5'}) }}
                                     </button>
                                 </div>
+
+                                {# Breadcrumb row #}
+                                {% block sensiolabs_breadcrumb %}
+                                    {% if _breadcrumb is not empty or action is defined %}
+                                        <nav class="admin-breadcrumb-subtle mb-2">
+                                            {% if _breadcrumb is empty %}
+                                                {% if action is defined %}
+                                                    {{ render_breadcrumbs(admin, action) }}
+                                                {% endif %}
+                                            {% else %}
+                                                {{ _breadcrumb|raw }}
+                                            {% endif %}
+                                        </nav>
+                                    {% endif %}
+                                {% endblock sensiolabs_breadcrumb %}
 
                                 {# Main row: Title + Actions #}
                                 <div class="flex flex-wrap items-center gap-4">
@@ -243,16 +262,16 @@ file that was distributed with this source code.
                                         {% endif %}
                                     </div>
 
-                                    {# Right side: All actions #}
+                                    {# Right side: All actions - use h-9 consistently #}
                                     <div class="flex items-center gap-2">
                                         {# View mode toggle #}
                                         {% if admin is defined and action is defined and action == 'list' and admin.listModes|length > 1 %}
-                                            <div class="inline-flex rounded-lg border border-gray-200 overflow-hidden shadow-sm" role="group" aria-label="View mode">
+                                            <div class="inline-flex h-9 rounded-lg overflow-hidden shadow-sm ring-1 ring-gray-200" role="group" aria-label="View mode">
                                                 {% for mode, settings in admin.listModes %}
                                                     {% set mode_label = mode == 'list' ? 'List view' : (mode == 'mosaic' ? 'Grid view' : mode|capitalize ~ ' view') %}
                                                     {% set is_active = admin.getListMode() == mode %}
                                                     <a href="{{ admin.generateUrl('list', app.request.query.all|merge({_list_mode: mode})) }}"
-                                                       class="inline-flex items-center justify-center w-9 h-9 transition-all duration-150 {% if is_active %}bg-primary-500 text-white{% else %}bg-white text-gray-500 hover:text-gray-700 hover:bg-gray-50{% endif %} {% if not loop.last %}border-r border-gray-200{% endif %}"
+                                                       class="inline-flex items-center justify-center w-9 h-9 transition-all duration-150 {% if is_active %}bg-primary-500 text-white{% else %}bg-white text-gray-500 hover:text-gray-700 hover:bg-gray-50{% endif %}"
                                                        title="{{ mode_label }}"
                                                        aria-label="{{ mode_label }}"
                                                        {% if is_active %}aria-current="true"{% endif %}>
@@ -277,18 +296,18 @@ file that was distributed with this source code.
                                         {% if admin is defined and action is defined and action == 'list' %}
                                             {% if admin.hasAccess('create') and admin.hasRoute('create') %}
                                                 {% if admin.subClasses is empty %}
-                                                    <a class="admin-btn-primary h-9 px-3 text-sm" href="{{ admin.generateUrl('create') }}">
+                                                    <a class="admin-btn-primary h-9 px-4" href="{{ admin.generateUrl('create') }}">
                                                         {{ ux_icon('lucide:plus', {class: 'w-4 h-4'}) }}
-                                                        {{ 'link_action_create'|trans({}, 'SensioLabsAdminBundle') }}
+                                                        <span class="hidden sm:inline">{{ 'link_action_create'|trans({}, 'SensioLabsAdminBundle') }}</span>
                                                     </a>
                                                 {% else %}
                                                     <div class="admin-dropdown" data-controller="sensiolabs-de--admin-bundle--dropdown">
                                                         <button type="button"
                                                                 data-action="click->sensiolabs-de--admin-bundle--dropdown#toggle"
                                                                 data-sensiolabs-de--admin-bundle--dropdown-target="button"
-                                                                class="admin-btn-primary h-9 px-3 text-sm">
+                                                                class="admin-btn-primary h-9 px-4">
                                                             {{ ux_icon('lucide:plus', {class: 'w-4 h-4'}) }}
-                                                            {{ 'link_action_create'|trans({}, 'SensioLabsAdminBundle') }}
+                                                            <span class="hidden sm:inline">{{ 'link_action_create'|trans({}, 'SensioLabsAdminBundle') }}</span>
                                                             {{ ux_icon('lucide:chevron-down', {class: 'w-4 h-4'}) }}
                                                         </button>
                                                         <div class="admin-dropdown-menu hidden"
