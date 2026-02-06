@@ -15,7 +15,6 @@ namespace SensioLabs\AdminBundle\Tests\App;
 
 use Knp\Bundle\MenuBundle\KnpMenuBundle;
 use SensioLabs\AdminBundle\SensioLabsAdminBundle;
-use Sonata\BlockBundle\SonataBlockBundle;
 use Sonata\Doctrine\Bridge\Symfony\SonataDoctrineBundle;
 use Sonata\Form\Bridge\Symfony\SonataFormBundle;
 use Sonata\Twig\Bridge\Symfony\SonataTwigBundle;
@@ -28,6 +27,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
+use Symfony\UX\Icons\UXIconsBundle;
 use Symfony\UX\StimulusBundle\StimulusBundle;
 
 final class AppKernel extends Kernel
@@ -42,7 +42,7 @@ final class AppKernel extends Kernel
             new SecurityBundle(),
             new KnpMenuBundle(),
             new StimulusBundle(),
-            new SonataBlockBundle(),
+            new UXIconsBundle(),
             new SonataDoctrineBundle(),
             new SensioLabsAdminBundle(),
             new SonataTwigBundle(),
@@ -77,6 +77,9 @@ final class AppKernel extends Kernel
             'fragments' => ['enabled' => true],
             'form' => ['enabled' => true],
             'assets' => null,
+            'asset_mapper' => [
+                'paths' => ['assets/'],
+            ],
             'test' => true,
             'router' => ['utf8' => true],
             'translator' => [
@@ -99,6 +102,12 @@ final class AppKernel extends Kernel
         $containerBuilder->loadFromExtension('security', [
             'firewalls' => ['main' => []],
             'providers' => ['in_memory' => ['memory' => null]],
+        ]);
+
+        $containerBuilder->loadFromExtension('ux_icons', [
+            'icon_dir' => \sprintf('%s/assets/icons', $this->getProjectDir()),
+            'ignore_not_found' => true,
+            'iconify' => ['enabled' => false],
         ]);
 
         $containerBuilder->loadFromExtension('twig', [

@@ -258,8 +258,10 @@ final class SensioLabsAdminExtension extends Extension implements PrependExtensi
             ->registerForAutoconfiguration(AuditReaderInterface::class)
             ->addTag(AddAuditReadersCompilerPass::AUDIT_READER_TAG);
 
-        // Load ORM configuration
-        $this->loadORMConfiguration($configs, $container, $bundles);
+        // Load ORM configuration only if DoctrineBundle is registered
+        if (isset($bundles['DoctrineBundle'])) {
+            $this->loadORMConfiguration($configs, $container, $bundles);
+        }
     }
 
     /**

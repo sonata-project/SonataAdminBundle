@@ -506,6 +506,10 @@
         <source>go_to_the_first_page</source>
         <target>Prejdite na prvú stránku</target>
       </trans-unit>
+      <trans-unit id="logout">
+        <source>logout</source>
+        <target>Odhlásiť sa</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

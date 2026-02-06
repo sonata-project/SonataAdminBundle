@@ -46,13 +46,17 @@ final class MenuItem
         );
     }
 
-    public static function linkToCrud(string $label, ?string $icon = null, ?string $adminCode = null): self
+    /**
+     * @param string[] $roles Roles required to view this menu item
+     */
+    public static function linkToCrud(string $label, ?string $icon = null, ?string $adminCode = null, array $roles = []): self
     {
         return new self(
             type: 'crud',
             label: $label,
             icon: $icon,
             adminCode: $adminCode,
+            roles: $roles,
         );
     }
 
@@ -85,21 +89,29 @@ final class MenuItem
         );
     }
 
-    public static function section(string $label, ?string $icon = null): self
+    /**
+     * @param string[] $roles Roles required to view this menu item
+     */
+    public static function section(string $label, ?string $icon = null, array $roles = []): self
     {
         return new self(
             type: 'section',
             label: $label,
             icon: $icon,
+            roles: $roles,
         );
     }
 
-    public static function subMenu(string $label, ?string $icon = null, MenuItem ...$children): self
+    /**
+     * @param string[] $roles Roles required to view this menu item
+     */
+    public static function subMenu(string $label, ?string $icon = null, array $roles = [], MenuItem ...$children): self
     {
         return new self(
             type: 'submenu',
             label: $label,
             icon: $icon,
+            roles: $roles,
             children: $children,
         );
     }

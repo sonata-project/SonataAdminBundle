@@ -506,6 +506,10 @@
         <source>go_to_the_first_page</source>
         <target>Idite na prvu stranicu</target>
       </trans-unit>
+      <trans-unit id="logout">
+        <source>logout</source>
+        <target>Odjava</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

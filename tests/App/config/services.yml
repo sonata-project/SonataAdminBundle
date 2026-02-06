@@ -3,104 +3,104 @@ services:
         autowire: true
         autoconfigure: true
 
-    Sonata\AdminBundle\Tests\App\:
+    SensioLabs\AdminBundle\Tests\App\:
         resource: ../*
-        exclude: ../{Entity,config,AppKernel.php}
+        exclude: ../{Entity,config,ORM,assets,AppKernel.php,importmap.php}
 
-    Sonata\AdminBundle\Tests\App\Controller\:
+    SensioLabs\AdminBundle\Tests\App\Controller\:
         resource: ../Controller
         tags: [controller.service_arguments]
 
     sonata.admin.manager.test:
-        class: Sonata\AdminBundle\Tests\App\Model\ModelManager
+        class: SensioLabs\AdminBundle\Tests\App\Model\ModelManager
         arguments:
-            - '@Sonata\AdminBundle\Tests\App\Model\FooRepository'
+            - '@SensioLabs\AdminBundle\Tests\App\Model\FooRepository'
         tags:
             - {name: sonata.admin.manager}
 
     sonata.admin.manager.bar:
-        class: Sonata\AdminBundle\Tests\App\Model\ModelManager
+        class: SensioLabs\AdminBundle\Tests\App\Model\ModelManager
         arguments:
-            - '@Sonata\AdminBundle\Tests\App\Model\BarRepository'
+            - '@SensioLabs\AdminBundle\Tests\App\Model\BarRepository'
         tags:
             - {name: sonata.admin.manager}
 
     sonata.admin.manager.baz:
-        class: Sonata\AdminBundle\Tests\App\Model\ModelManager
+        class: SensioLabs\AdminBundle\Tests\App\Model\ModelManager
         arguments:
-            - '@Sonata\AdminBundle\Tests\App\Model\BazRepository'
+            - '@SensioLabs\AdminBundle\Tests\App\Model\BazRepository'
         tags:
             - {name: sonata.admin.manager}
 
     sonata.admin.builder.test_form:
-        class: Sonata\AdminBundle\Tests\App\Builder\FormContractor
+        class: SensioLabs\AdminBundle\Tests\App\Builder\FormContractor
         arguments:
             - '@form.factory'
             - '@form.registry'
 
     sonata.admin.builder.test_show:
-        class: Sonata\AdminBundle\Tests\App\Builder\ShowBuilder
+        class: SensioLabs\AdminBundle\Tests\App\Builder\ShowBuilder
 
     sonata.admin.builder.test_list:
-        class: Sonata\AdminBundle\Tests\App\Builder\ListBuilder
+        class: SensioLabs\AdminBundle\Tests\App\Builder\ListBuilder
 
     sonata.admin.pager.test:
-        class: Sonata\AdminBundle\Tests\App\Datagrid\Pager
+        class: SensioLabs\AdminBundle\Tests\App\Datagrid\Pager
         arguments:
-            - '@Sonata\AdminBundle\Tests\App\Model\FooRepository'
-            - '@Sonata\AdminBundle\Tests\App\Model\BazRepository'
+            - '@SensioLabs\AdminBundle\Tests\App\Model\FooRepository'
+            - '@SensioLabs\AdminBundle\Tests\App\Model\BazRepository'
 
     sonata.admin.builder.test_datagrid:
-        class: Sonata\AdminBundle\Tests\App\Builder\DatagridBuilder
+        class: SensioLabs\AdminBundle\Tests\App\Builder\DatagridBuilder
         arguments:
             - '@form.factory'
             - '@sonata.admin.pager.test'
             - '@sonata.admin.datagrid.proxy_query'
 
     sonata.admin.data_source.test:
-        class: Sonata\AdminBundle\Tests\App\Exporter\DataSource
+        class: SensioLabs\AdminBundle\Tests\App\Exporter\DataSource
 
     sonata.admin.datagrid.proxy_query:
-        class: Sonata\AdminBundle\Tests\App\Datagrid\ProxyQuery
+        class: SensioLabs\AdminBundle\Tests\App\Datagrid\ProxyQuery
 
     sonata.admin.field_description_factory.test:
-        class: Sonata\AdminBundle\Tests\App\FieldDescription\FieldDescriptionFactory
+        class: SensioLabs\AdminBundle\Tests\App\FieldDescription\FieldDescriptionFactory
 
     sonata_foo_admin:
-        class: Sonata\AdminBundle\Tests\App\Admin\FooAdmin
+        class: SensioLabs\AdminBundle\Tests\App\Admin\FooAdmin
         tags:
-            - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Foo, controller: 'sonata.admin.controller.crud', manager_type: test, label: Foo}
+            - {name: sonata.admin, model_class: SensioLabs\AdminBundle\Tests\App\Model\Foo, controller: 'sonata.admin.controller.crud', manager_type: test, label: Foo}
         calls:
             - [addChild, ['@sonata_bar_admin', 'foo']]
 
-    Sonata\AdminBundle\Tests\App\Admin\FooAdminWithCustomController:
+    SensioLabs\AdminBundle\Tests\App\Admin\FooAdminWithCustomController:
         tags:
-            - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Foo, controller: Sonata\AdminBundle\Tests\App\Controller\CustomCRUDController, manager_type: test, label: Foo}
+            - {name: sonata.admin, model_class: SensioLabs\AdminBundle\Tests\App\Model\Foo, controller: SensioLabs\AdminBundle\Tests\App\Controller\CustomCRUDController, manager_type: test, label: Foo}
 
-    Sonata\AdminBundle\Tests\App\Admin\AdminAsParameterAdmin:
+    SensioLabs\AdminBundle\Tests\App\Admin\AdminAsParameterAdmin:
         tags:
-            - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Foo, manager_type: test}
+            - {name: sonata.admin, model_class: SensioLabs\AdminBundle\Tests\App\Model\Foo, manager_type: test}
 
-    Sonata\AdminBundle\Tests\App\Admin\EmptyAdmin:
+    SensioLabs\AdminBundle\Tests\App\Admin\EmptyAdmin:
         tags:
-            - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Foo, manager_type: test, label: Empty}
+            - {name: sonata.admin, model_class: SensioLabs\AdminBundle\Tests\App\Model\Foo, manager_type: test, label: Empty}
 
-    Sonata\AdminBundle\Tests\App\Admin\TranslatedAdmin:
+    SensioLabs\AdminBundle\Tests\App\Admin\TranslatedAdmin:
         tags:
-            - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Translated, manager_type: test, group: 'group_label', label: 'admin_label'}
+            - {name: sonata.admin, model_class: SensioLabs\AdminBundle\Tests\App\Model\Translated, manager_type: test, group: 'group_label', label: 'admin_label'}
 
     sonata_baz_admin:
-        class: Sonata\AdminBundle\Tests\App\Admin\BazAdmin
+        class: SensioLabs\AdminBundle\Tests\App\Admin\BazAdmin
         tags:
-            - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Baz, manager_type: test, model_manager: sonata.admin.manager.baz, label: Baz}
+            - {name: sonata.admin, model_class: SensioLabs\AdminBundle\Tests\App\Model\Baz, manager_type: test, model_manager: sonata.admin.manager.baz, label: Baz}
 
     sonata_bar_admin:
-        class: Sonata\AdminBundle\Tests\App\Admin\BarAdmin
+        class: SensioLabs\AdminBundle\Tests\App\Admin\BarAdmin
         tags:
-            - {name: sonata.admin, model_class: Sonata\AdminBundle\Tests\App\Model\Bar, manager_type: test, model_manager: sonata.admin.manager.bar, label: Bar}
+            - {name: sonata.admin, model_class: SensioLabs\AdminBundle\Tests\App\Model\Bar, manager_type: test, model_manager: sonata.admin.manager.bar, label: Bar}
         calls:
             - [addChild, ['@sonata_baz_admin']]
 
-    Sonata\AdminBundle\Tests\App\Admin\Extension\CustomAdminExtension:
+    SensioLabs\AdminBundle\Tests\App\Admin\Extension\CustomAdminExtension:
         tags:
             - {name: sonata.admin.extension, target: sonata_foo_admin}

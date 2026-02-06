@@ -506,6 +506,10 @@
         <source>go_to_the_first_page</source>
         <target>اذهب إلى الصفحة الأولى</target>
       </trans-unit>
+      <trans-unit id="logout">
+        <source>logout</source>
+        <target>تسجيل الخروج</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

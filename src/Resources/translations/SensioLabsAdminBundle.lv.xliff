@@ -508,6 +508,10 @@
         <source>go_to_the_first_page</source>
         <target>Pāriet uz pirmo lapu</target>
       </trans-unit>
+      <trans-unit id="logout">
+        <source>logout</source>
+        <target>Izrakstīties</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

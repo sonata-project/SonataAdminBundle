@@ -45,7 +45,7 @@ final class DashboardRuntime implements RuntimeExtensionInterface
      */
     public function isMenuItemGranted(MenuItem $item): bool
     {
-        // For CRUD items, check admin access
+        // For CRUD items, check admin access and optional roles
         if ('crud' === $item->getType()) {
             $adminCode = $item->getAdminCode();
             if (null === $adminCode) {
@@ -60,12 +60,26 @@ final class DashboardRuntime implements RuntimeExtensionInterface
                     return false;
                 }
 
-                return $admin->showInDashboard();
+                if (!$admin->showInDashboard()) {
+                    return false;
+                }
             } catch (\Exception $e) {
                 // If we can't determine access, show the item and let the controller handle it
                 // This prevents hiding menu items due to configuration issues
                 return true;
             }
+
+            // Also check explicit roles if specified on the CRUD item
+            $roles = $item->getRoles();
+            if ([] !== $roles) {
+                foreach ($roles as $role) {
+                    if (!$this->authorizationChecker->isGranted($role)) {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
 
         // For route, url, and dashboard items, check roles if specified
