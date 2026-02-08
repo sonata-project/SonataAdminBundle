@@ -44,21 +44,8 @@ final class AuditReader implements AuditReaderInterface
         }
     }
 
-    /**
-     * NEXT_MAJOR: Change the default limit value to `null`.
-     */
-    public function findRevisionHistory(string $className, ?int $limit = 20, ?int $offset = 0): array
+    public function findRevisionHistory(string $className, ?int $limit = null, int $offset = 0): array
     {
-        // NEXT_MAJOR: Remove this check and restrict offset native type to `int`.
-        if (null === $offset) {
-            @trigger_error(
-                'Using a null offset when retrieving the revision history is deprecated'
-                .'since sonata-project/doctrine-orm-admin-bundle 4.9 and will throw an error in 5.0.',
-                \E_USER_DEPRECATED
-            );
-            $offset = 0;
-        }
-
         return array_map(
             $this->createRevisionFromEntityAuditRevision(...),
             $this->auditReader->findRevisionHistory($limit, $offset)

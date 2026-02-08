@@ -56,15 +56,15 @@ final class SensioLabsAdminRuntimeTest extends TestCase
 
         $this->container = new Container();
 
-        $this->pool = new Pool($this->container, ['sensiolabs_admin_foo_service'], [], [Foo::class => ['sensiolabs_admin_foo_service']]);
+        $this->pool = new Pool($this->container, ['sensiolabs_admin_foo_service'], [Foo::class => ['sensiolabs_admin_foo_service']]);
 
-        $this->sonataAdminRuntime = new SensioLabsAdminRuntime($this->pool);
+        $this->sensiolabsAdminRuntime = new SensioLabsAdminRuntime($this->pool);
 
         $loader = new FilesystemLoader([
             __DIR__.'/../../src/Resources/views/CRUD',
             __DIR__.'/../Fixtures/Resources/views/CRUD',
         ]);
-        $loader->addPath(__DIR__.'/../../src/Resources/views/', 'SonataAdmin');
+        $loader->addPath(__DIR__.'/../../src/Resources/views/', 'SensioLabsAdmin');
         $loader->addPath(__DIR__.'/../Fixtures/Resources/views/', 'App');
 
         $this->environment = new Environment($loader, [
@@ -73,7 +73,7 @@ final class SensioLabsAdminRuntimeTest extends TestCase
             'autoescape' => 'html',
             'optimizations' => 0,
         ]);
-        $this->environment->addExtension(new SensioLabsAdminExtension($this->sonataAdminRuntime));
+        $this->environment->addExtension(new SensioLabsAdminExtension($this->sensiolabsAdminRuntime));
         $this->environment->addExtension(new FakeTemplateRegistryExtension());
 
         // routing extension
@@ -126,7 +126,6 @@ final class SensioLabsAdminRuntimeTest extends TestCase
         $pool = new Pool(
             $this->container,
             ['sensiolabs_admin_foo_service'],
-            [],
             [\stdClass::class => ['sensiolabs_admin_foo_service']]
         );
 
@@ -152,7 +151,6 @@ final class SensioLabsAdminRuntimeTest extends TestCase
                 'sensiolabs_admin_foo_service',
                 'sensiolabs_admin_bar_service',
             ],
-            [],
             [\stdClass::class => [
                 'sensiolabs_admin_foo_service',
                 'sensiolabs_admin_bar_service',
@@ -179,7 +177,6 @@ final class SensioLabsAdminRuntimeTest extends TestCase
         $pool = new Pool(
             $this->container,
             ['sensiolabs_admin_foo_service', 'sensiolabs_admin_bar_service'],
-            [],
             [\stdClass::class => [
                 'sensiolabs_admin_foo_service',
                 'sensiolabs_admin_bar_service',

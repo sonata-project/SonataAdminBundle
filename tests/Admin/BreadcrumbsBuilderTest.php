@@ -166,6 +166,7 @@ final class BreadcrumbsBuilderTest extends TestCase
             ['link_breadcrumb_dashboard', [
                 'uri' => '/dashboard',
                 'extras' => ['translation_domain' => 'SensioLabsAdminBundle'],
+                'attributes' => ['icon' => 'lucide:home'],
             ], $menu],
             ['create my object', [
                 'extras' => ['translation_domain' => 'FooBundle'],

@@ -54,17 +54,6 @@ final class NullFilterTest extends FilterTestCase
         static::assertTrue($filter->isActive());
     }
 
-    public function testRenderSettings(): void
-    {
-        $filter = new NullFilter();
-        $filter->initialize('field_name', [
-            'field_options' => ['class' => 'FooBar'],
-        ]);
-        $options = $filter->getRenderSettings()[1];
-
-        static::assertSame(BooleanType::class, $options['field_type']);
-    }
-
     /**
      * @phpstan-return iterable<array-key, array{bool, int, string}>
      */

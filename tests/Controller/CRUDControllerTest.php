@@ -37,7 +37,6 @@ use SensioLabs\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use SensioLabs\AdminBundle\Templating\MutableTemplateRegistryInterface;
 use SensioLabs\AdminBundle\Tests\App\Controller\CustomModelManagerExceptionMessageController;
 use SensioLabs\AdminBundle\Tests\App\Controller\CustomModelManagerThrowableMessageController;
-use SensioLabs\AdminBundle\Tests\Fixtures\Controller\BatchAdminController;
 use SensioLabs\AdminBundle\Tests\Fixtures\Controller\BatchOtherController;
 use SensioLabs\AdminBundle\Tests\Fixtures\Controller\PreCRUDController;
 use SensioLabs\AdminBundle\Tests\Fixtures\Entity\Entity;
@@ -295,7 +294,6 @@ final class CRUDControllerTest extends TestCase
             'renderJson',
             'renderWithExtraParams',
             'isXmlHttpRequest',
-            'getBaseTemplate',
             'redirectTo',
             'addFlash',
         ];
@@ -413,40 +411,12 @@ final class CRUDControllerTest extends TestCase
         static::assertSame('@SensioLabsAdmin/ajax_layout.html.twig', $globals['base_template']);
     }
 
-    public function testGetBaseTemplate(): void
-    {
-        static::assertSame(
-            '@SensioLabsAdmin/standard_layout.html.twig',
-            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
-        );
-
-        $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
-        static::assertSame(
-            '@SensioLabsAdmin/ajax_layout.html.twig',
-            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
-        );
-
-        $this->request->headers->remove('X-Requested-With');
-        static::assertSame(
-            '@SensioLabsAdmin/standard_layout.html.twig',
-            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
-        );
-
-        $this->request->request->set('_xml_http_request', true);
-        static::assertSame(
-            '@SensioLabsAdmin/ajax_layout.html.twig',
-            $this->protectedTestedMethods['getBaseTemplate']->invoke($this->controller)
-        );
-    }
-
     public function testRender(): void
     {
         $this->twig
             ->expects(static::once())
             ->method('render')
             ->with('@FooAdmin/foo.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
             ]);
 
         static::assertInstanceOf(
@@ -466,8 +436,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@FooAdmin/foo.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
             ]);
 
         $response = new Response();
@@ -489,8 +457,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@FooAdmin/foo.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'foo' => 'bar',
             ]);
 
@@ -511,8 +477,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@FooAdmin/foo.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/ajax_layout.html.twig',
                 'foo' => 'bar',
             ]);
 
@@ -594,8 +558,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/list.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'list',
                 'csrf_token' => 'csrf-token-123_sensiolabs.batch',
                 'export_formats' => ['json'],
@@ -842,8 +804,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/show.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'show',
                 'object' => $object,
                 'elements' => $show,
@@ -1051,8 +1011,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/delete.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'delete',
                 'object' => $object,
                 'csrf_token' => 'csrf-token-123_sensiolabs.delete',
@@ -1133,8 +1091,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/delete.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'delete',
                 'object' => $object,
                 'csrf_token' => null,
@@ -1375,8 +1331,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/delete.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'delete',
                 'object' => $object,
                 'csrf_token' => 'csrf-token-123_sensiolabs.delete',
@@ -1648,8 +1602,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
@@ -1781,8 +1733,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
@@ -1845,8 +1795,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
@@ -1930,8 +1878,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
@@ -2188,8 +2134,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
@@ -2252,8 +2196,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/preview.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'edit',
                 'form' => $formView,
                 'object' => $object,
@@ -2400,8 +2342,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'create',
                 'form' => $formView,
                 'object' => $object,
@@ -2543,8 +2483,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'create',
                 'form' => $formView,
                 'object' => $object,
@@ -2611,8 +2549,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'create',
                 'form' => $formView,
                 'object' => $object,
@@ -2671,8 +2607,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'create',
                 'form' => $formView,
                 'object' => $object,
@@ -2752,8 +2686,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/edit.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'create',
                 'form' => $formView,
                 'object' => $object,
@@ -3005,8 +2937,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/preview.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'create',
                 'form' => $formView,
                 'object' => $object,
@@ -3187,8 +3117,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/history.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'history',
                 'revisions' => [],
                 'object' => $object,
@@ -3318,8 +3246,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/acl.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'acl',
                 'permissions' => [],
                 'object' => $object,
@@ -3407,8 +3333,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/acl.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'acl',
                 'permissions' => [],
                 'object' => $object,
@@ -3676,8 +3600,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/show.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'show',
                 'object' => $objectRevision,
                 'elements' => $fieldDescriptionCollection,
@@ -3917,8 +3839,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/show_compare.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'show',
                 'object' => $objectRevision,
                 'object_compare' => $compareObjectRevision,
@@ -4195,8 +4115,6 @@ final class CRUDControllerTest extends TestCase
             ->expects(static::once())
             ->method('render')
             ->with('@SensioLabsAdmin/CRUD/batch_confirmation.html.twig', [
-                'admin' => $this->admin,
-                'base_template' => '@SensioLabsAdmin/standard_layout.html.twig',
                 'action' => 'list',
                 'datagrid' => $datagrid,
                 'form' => $formView,
@@ -4211,56 +4129,6 @@ final class CRUDControllerTest extends TestCase
 
         static::assertInstanceOf(Response::class, $this->controller->batchAction($this->request));
         static::assertSame([], $this->session->getFlashBag()->all());
-    }
-
-    #[DataProvider('provideBatchActionNonRelevantActionCases')]
-    #[IgnoreDeprecations] // NEXT_MAJOR: remove this test
-    public function testBatchActionNonRelevantAction(string $actionName): void
-    {
-        $controller = new BatchAdminController();
-        $controller->setContainer($this->container);
-        $controller->configureAdmin($this->request);
-
-        $batchActions = [$actionName => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
-
-        $this->admin->expects(static::exactly(2))
-            ->method('getBatchActions')
-            ->willReturn($batchActions);
-
-        $this->expectGetController();
-
-        $datagrid = $this->createMock(DatagridInterface::class);
-
-        $this->admin->expects(static::once())
-            ->method('getDatagrid')
-            ->willReturn($datagrid);
-
-        $this->expectTranslate('flash_batch_empty', [], 'SensioLabsAdminBundle');
-
-        $this->request->setMethod(Request::METHOD_POST);
-        $this->request->request->set('action', $actionName);
-        $this->request->request->set('idx', ['789']);
-        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
-
-        static::assertNull(BCHelper::getFromRequest($this->request, 'all_elements'));
-
-        $result = $controller->batchAction($this->request);
-
-        static::assertNull(BCHelper::getFromRequest($this->request, 'all_elements'), 'Ensure original request is not modified by calling `CRUDController::batchAction()`.');
-        static::assertInstanceOf(RedirectResponse::class, $result);
-        static::assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sensiolabs_flash_info'));
-        static::assertSame('list', $result->getTargetUrl());
-    }
-
-    /**
-     * @phpstan-return iterable<array-key, array{string}>
-     */
-    public static function provideBatchActionNonRelevantActionCases(): iterable
-    {
-        yield ['foo'];
-        yield ['foo_bar'];
-        yield ['foo-bar'];
-        yield ['foobar'];
     }
 
     public function testBatchActionWithCustomConfirmationTemplate(): void
@@ -4303,41 +4171,6 @@ final class CRUDControllerTest extends TestCase
         $this->controller->batchAction($this->request);
     }
 
-    #[IgnoreDeprecations] // NEXT_MAJOR: remove this test
-    public function testBatchActionNonRelevantAction2(): void
-    {
-        $controller = new BatchAdminController();
-        $controller->setContainer($this->container);
-        $controller->configureAdmin($this->request);
-
-        $batchActions = ['foo' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
-
-        $this->admin->expects(static::exactly(2))
-            ->method('getBatchActions')
-            ->willReturn($batchActions);
-
-        $this->expectGetController();
-
-        $datagrid = $this->createMock(DatagridInterface::class);
-
-        $this->admin->expects(static::once())
-            ->method('getDatagrid')
-            ->willReturn($datagrid);
-
-        $this->expectTranslate('flash_foo_error', [], 'SensioLabsAdminBundle');
-
-        $this->request->setMethod(Request::METHOD_POST);
-        $this->request->request->set('action', 'foo');
-        $this->request->request->set('idx', ['999']);
-        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
-
-        $result = $controller->batchAction($this->request);
-
-        static::assertInstanceOf(RedirectResponse::class, $result);
-        static::assertSame(['flash_foo_error'], $this->session->getFlashBag()->get('sensiolabs_flash_info'));
-        static::assertSame('list', $result->getTargetUrl());
-    }
-
     public function testBatchActionNoItems(): void
     {
         $batchActions = ['delete' => ['label' => 'Foo Bar', 'ask_confirmation' => true]];
@@ -4366,57 +4199,6 @@ final class CRUDControllerTest extends TestCase
         static::assertInstanceOf(RedirectResponse::class, $result);
         static::assertSame(['flash_batch_empty'], $this->session->getFlashBag()->get('sensiolabs_flash_info'));
         static::assertSame('list', $result->getTargetUrl());
-    }
-
-    #[IgnoreDeprecations] // NEXT_MAJOR: remove this test
-    public function testBatchActionNoItemsEmptyQuery(): void
-    {
-        $controller = new BatchAdminController();
-        $controller->setContainer($this->container);
-        $controller->configureAdmin($this->request);
-
-        $batchActions = ['bar' => ['label' => 'Foo Bar', 'ask_confirmation' => false]];
-
-        $this->admin->expects(static::exactly(2))
-            ->method('getBatchActions')
-            ->willReturn($batchActions);
-
-        $this->expectGetController();
-
-        $datagrid = $this->createMock(DatagridInterface::class);
-
-        $query = $this->createMock(ProxyQueryInterface::class);
-        $datagrid->expects(static::once())
-            ->method('getQuery')
-            ->willReturn($query);
-
-        $this->admin->expects(static::once())
-            ->method('getDatagrid')
-            ->willReturn($datagrid);
-
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-
-        $this->admin
-            ->method('getModelManager')
-            ->willReturn($modelManager);
-
-        $this->admin
-            ->method('getClass')
-            ->willReturn('Foo');
-
-        $this->request->setMethod(Request::METHOD_POST);
-        $this->request->request->set('action', 'bar');
-        $this->request->request->set('idx', []);
-        $this->request->request->set('_sensiolabs_csrf_token', 'csrf-token-123_sensiolabs.batch');
-
-        $this->expectTranslate('flash_batch_no_elements_processed', [], 'SensioLabsAdminBundle');
-        $result = $controller->batchAction($this->request);
-
-        static::assertInstanceOf(Response::class, $result);
-
-        $content = $result->getContent();
-        static::assertNotFalse($content);
-        static::assertMatchesRegularExpression('/Redirecting to list/', $content);
     }
 
     public function testBatchActionWithRequesData(): void

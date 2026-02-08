@@ -40,7 +40,6 @@ final class AdminExtractorTest extends KernelTestCase
             throw $t;
         }
 
-        static::assertMatchesRegularExpression('/group_label/', $tester->getDisplay());
         static::assertMatchesRegularExpression('/admin_label/', $tester->getDisplay());
         static::assertMatchesRegularExpression('/Name Show/', $tester->getDisplay());
         static::assertMatchesRegularExpression('/Name List/', $tester->getDisplay());

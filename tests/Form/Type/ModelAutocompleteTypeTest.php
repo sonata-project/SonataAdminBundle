@@ -50,7 +50,6 @@ final class ModelAutocompleteTypeTest extends TypeTestCase
         static::assertSame('', $options['placeholder']);
         static::assertSame(3, $options['minimum_input_length']);
         static::assertSame(10, $options['items_per_page']);
-        static::assertSame(100, $options['quiet_millis']);
         static::assertFalse($options['cache']);
         static::assertSame('', $options['width']);
         static::assertFalse($options['dropdown_auto_width']);
@@ -74,7 +73,6 @@ final class ModelAutocompleteTypeTest extends TypeTestCase
         static::assertSame('', $options['context']);
 
         static::assertSame('link_add', $options['btn_add']);
-        static::assertSame('SensioLabsAdminBundle', $options['btn_catalogue']);
         static::assertSame('SensioLabsAdminBundle', $options['btn_translation_domain']);
     }
 

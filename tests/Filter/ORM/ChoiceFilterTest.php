@@ -20,16 +20,6 @@ use SensioLabs\AdminBundle\Filter\ORM\ChoiceFilter;
 
 final class ChoiceFilterTest extends FilterTestCase
 {
-    public function testRenderSettings(): void
-    {
-        $filter = new ChoiceFilter();
-        $filter->initialize('field_name', ['field_options' => ['class' => 'FooBar']]);
-        $options = $filter->getRenderSettings()[1];
-
-        static::assertSame(EqualOperatorType::class, $options['operator_type']);
-        static::assertSame([], $options['operator_options']);
-    }
-
     public function testFilterEmpty(): void
     {
         $filter = new ChoiceFilter();

@@ -19,7 +19,6 @@ use Knp\Menu\ItemInterface;
 use PHPUnit\Framework\Attributes\CoversMethod;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
 use SensioLabs\AdminBundle\Admin\AbstractAdmin;
 use SensioLabs\AdminBundle\Admin\AbstractAdminExtension;
@@ -78,7 +77,6 @@ use SensioLabs\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use SensioLabs\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\Container;
-use Symfony\Component\ExpressionLanguage\Expression;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormFactory;
 use Symfony\Component\Form\FormRegistry;
@@ -121,21 +119,6 @@ final class AdminTest extends TestCase
         $this->cacheTempFolder = \sprintf('%s/sonata_test_route', sys_get_temp_dir());
         $filesystem = new Filesystem();
         $filesystem->remove($this->cacheTempFolder);
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     */
-    #[IgnoreDeprecations]
-    public function testConstructor(): void
-    {
-        $class = Post::class;
-        $baseControllerName = 'Sonata\NewsBundle\Controller\PostAdminController';
-
-        $admin = new PostAdmin('sensiolabs.post.admin.post', $class, $baseControllerName);
-        static::assertInstanceOf(AbstractAdmin::class, $admin);
-        static::assertSame($class, $admin->getClass());
-        static::assertSame($baseControllerName, $admin->getBaseControllerName());
     }
 
     public function testGetClass(): void
@@ -1226,26 +1209,6 @@ final class AdminTest extends TestCase
         $admin = new PostAdmin();
 
         static::assertFalse($admin->supportsPreviewMode());
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     */
-    #[IgnoreDeprecations]
-    public function testShowIn(): void
-    {
-        $admin = new PostAdmin();
-
-        $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
-        $securityHandler
-            ->method('isGranted')
-            ->willReturnCallback(static fn (AdminInterface $adminIn, string|Expression $attributes, ?object $object = null): bool => $admin === $adminIn && 'LIST' === $attributes);
-
-        $admin->setSecurityHandler($securityHandler);
-
-        static::assertTrue($admin->showIn(AbstractAdmin::CONTEXT_DASHBOARD));
-        static::assertTrue($admin->showIn(AbstractAdmin::CONTEXT_MENU));
-        static::assertTrue($admin->showIn('foo'));
     }
 
     public function testShowInDashboard(): void

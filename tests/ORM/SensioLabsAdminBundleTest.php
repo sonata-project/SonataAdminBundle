@@ -17,7 +17,7 @@ use PHPUnit\Framework\TestCase;
 use SensioLabs\AdminBundle\DependencyInjection\ORM\Compiler\AddAuditEntityCompilerPass;
 use SensioLabs\AdminBundle\DependencyInjection\ORM\Compiler\AddGuesserCompilerPass;
 use SensioLabs\AdminBundle\DependencyInjection\ORM\Compiler\AddTemplatesCompilerPass;
-use Sonata\DoctrineORMAdminBundle\SensioLabsAdminBundle;
+use SensioLabs\AdminBundle\SensioLabsAdminBundle;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 

@@ -44,10 +44,10 @@ final class FormTypeFieldExtensionTest extends TestCase
         $options = $resolver->resolve();
 
         static::assertArrayHasKey('sensiolabs_admin', $options);
-        static::assertArrayHasKey('sonata_field_description', $options);
+        static::assertArrayHasKey('sensiolabs_field_description', $options);
 
         static::assertNull($options['sensiolabs_admin']);
-        static::assertNull($options['sonata_field_description']);
+        static::assertNull($options['sensiolabs_field_description']);
     }
 
     public function testBuildViewWithNoSonataAdminArray(): void
@@ -94,7 +94,7 @@ final class FormTypeFieldExtensionTest extends TestCase
 
         $extension = new FormTypeFieldExtension([], []);
         $extension->buildForm($formBuilder, [
-            'sonata_field_description' => $fieldDescription,
+            'sensiolabs_field_description' => $fieldDescription,
         ]);
 
         static::assertTrue($formBuilder->getAttribute('sensiolabs_admin_enabled'));

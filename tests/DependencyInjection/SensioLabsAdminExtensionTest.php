@@ -27,7 +27,6 @@ use SensioLabs\AdminBundle\Model\AuditManagerInterface;
 use SensioLabs\AdminBundle\Model\AuditReaderInterface;
 use SensioLabs\AdminBundle\Model\ModelManagerInterface;
 use SensioLabs\AdminBundle\Translator\LabelTranslatorStrategyInterface;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Processor;
 
 /**
@@ -47,6 +46,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
     {
         parent::setUp();
         $this->container->setParameter('kernel.bundles', []);
+        $this->container->setParameter('kernel.bundles_metadata', []);
 
         /** @phpstan-var SonataAdminConfiguration $config */
         $config = (new Processor())->processConfiguration(new Configuration(), []);
@@ -137,7 +137,7 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
 
         $stylesheets = $options['stylesheets'];
         static::assertSame(
-            array_merge($this->getDefaultStylesheets(), $extraStylesheetsNormalized),
+            array_merge($this->defaultConfiguration['assets']['stylesheets'], $extraStylesheetsNormalized),
             $stylesheets
         );
     }
@@ -315,7 +315,6 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
             'layout' => '@SensioLabsAdmin/standard_layout.html.twig',
             'ajax' => '@SensioLabsAdmin/ajax_layout.html.twig',
             'dashboard' => '@SensioLabsAdmin/Core/dashboard.html.twig',
-            'search' => '@SensioLabsAdmin/Core/search.html.twig',
             'list' => '@SensioLabsAdmin/CRUD/list.html.twig',
             'filter' => '@SensioLabsAdmin/Form/filter_admin_fields.html.twig',
             'show' => '@SensioLabsAdmin/CRUD/show.html.twig',
@@ -327,8 +326,6 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
             'history_revision_timestamp' => '@SensioLabsAdmin/CRUD/history_revision_timestamp.html.twig',
             'action' => '@SensioLabsAdmin/CRUD/action.html.twig',
             'select' => '@SensioLabsAdmin/CRUD/list__select.html.twig',
-            'list_block' => '@SensioLabsAdmin/Block/block_admin_list.html.twig',
-            'search_result_block' => '@SensioLabsAdmin/Block/block_search_result.html.twig',
             'short_object_description' => '@SensioLabsAdmin/Helper/short-object-description.html.twig',
             'delete' => '@SensioLabsAdmin/CRUD/delete.html.twig',
             'batch' => '@SensioLabsAdmin/CRUD/list__batch.html.twig',
@@ -341,7 +338,6 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
             'pager_links' => '@SensioLabsAdmin/Pager/links.html.twig',
             'pager_results' => '@SensioLabsAdmin/Pager/results.html.twig',
             'tab_menu_template' => '@SensioLabsAdmin/Core/tab_menu_template.html.twig',
-            'knp_menu_template' => '@SensioLabsAdmin/Menu/sensiolabs_menu.html.twig',
             'action_create' => '@SensioLabsAdmin/CRUD/dashboard__action_create.html.twig',
             'button_acl' => '@SensioLabsAdmin/Button/acl_button.html.twig',
             'button_create' => '@SensioLabsAdmin/Button/create_button.html.twig',
@@ -367,71 +363,6 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
         static::assertSame('@SonataIntl/CRUD/history_revision_timestamp.html.twig', $templates['history_revision_timestamp']);
     }
 
-    public function testDefaultSkin(): void
-    {
-        $this->container->setParameter('kernel.bundles', []);
-        $this->load();
-
-        $options = $this->container->getDefinition('sensiolabs.admin.configuration')->getArgument(2);
-        static::assertIsArray($options);
-
-        $stylesheets = $options['stylesheets'];
-        static::assertSame($this->getDefaultStylesheets(), $stylesheets);
-
-        $skin = $options['skin'];
-        static::assertSame('skin-black', $skin);
-    }
-
-    public function testSetSkin(): void
-    {
-        $this->container->setParameter('kernel.bundles', []);
-        $this->load([
-            'options' => [
-                'skin' => 'skin-blue',
-            ],
-        ]);
-
-        $options = $this->container->getDefinition('sensiolabs.admin.configuration')->getArgument(2);
-        static::assertIsArray($options);
-
-        $stylesheets = $options['stylesheets'];
-        static::assertSame($this->getDefaultStylesheets('skin-blue'), $stylesheets);
-
-        $skin = $options['skin'];
-        static::assertSame('skin-blue', $skin);
-    }
-
-    public function testSetDefaultSkin(): void
-    {
-        $this->container->setParameter('kernel.bundles', []);
-        $this->load([
-            'options' => [
-                'skin' => 'skin-black',
-            ],
-        ]);
-
-        $options = $this->container->getDefinition('sensiolabs.admin.configuration')->getArgument(2);
-        static::assertIsArray($options);
-
-        $stylesheets = $options['stylesheets'];
-        static::assertSame($this->getDefaultStylesheets(), $stylesheets);
-
-        $skin = $options['skin'];
-        static::assertSame('skin-black', $skin);
-    }
-
-    public function testSetInvalidSkin(): void
-    {
-        $this->expectException(InvalidConfigurationException::class);
-        $this->expectExceptionMessage('The value "skin-invalid" is not allowed for path "sensiolabs_admin.options.skin". Permissible values: "skin-black", "skin-black-light", "skin-blue", "skin-blue-light", "skin-green", "skin-green-light", "skin-purple", "skin-purple-light", "skin-red", "skin-red-light", "skin-yellow", "skin-yellow-light"');
-        $this->container->setParameter('kernel.bundles', []);
-        $this->load([
-            'options' => [
-                'skin' => 'skin-invalid',
-            ],
-        ]);
-    }
-
     public function testAutoregisterAddingTagsToServices(): void
     {
         $this->load();
@@ -450,31 +381,4 @@ final class SensioLabsAdminExtensionTest extends AbstractExtensionTestCase
         return [new SensioLabsAdminExtension()];
     }
 
-    /**
-     * @return list<SonataAdminAsset>
-     */
-    private function getDefaultStylesheets(?string $skin = 'skin-black'): array
-    {
-        $this->load([
-            'options' => [
-                'skin' => $skin,
-            ],
-        ]);
-
-        $options = $this->container->getDefinition('sensiolabs.admin.configuration')->getArgument(2);
-        static::assertIsArray($options);
-
-        $skin = $options['skin'];
-
-        $defaultStylesheets = $this->defaultConfiguration['assets']['stylesheets'];
-        $defaultStylesheets[] = [
-            'path' => \sprintf(
-                'bundles/sonataadmin/admin-lte-skins/%s.min.css',
-                $skin
-            ),
-            'package_name' => 'sensiolabs_admin',
-        ];
-
-        return $defaultStylesheets;
-    }
 }

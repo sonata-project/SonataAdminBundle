@@ -549,21 +549,21 @@ final class ModelManagerTest extends TestCase
     public static function provideFailingBatchDeleteCases(): iterable
     {
         yield [
-            'Failed to delete object "Sonata\DoctrineORMAdminBundle\Tests\Fixtures\Entity\VersionedEntity" (id: 42) while'
+            'Failed to delete object "SensioLabs\AdminBundle\Tests\Fixtures\ORM\Entity\VersionedEntity" (id: 42) while'
             .' performing batch deletion (20 objects were successfully deleted before this error)',
             array_fill(0, 21, new VersionedEntity()),
             [null, new ConnectionException()],
         ];
 
         yield [
-            'Failed to delete object "Sonata\DoctrineORMAdminBundle\Tests\Fixtures\Entity\VersionedEntity" (id: 42) while'
+            'Failed to delete object "SensioLabs\AdminBundle\Tests\Fixtures\ORM\Entity\VersionedEntity" (id: 42) while'
             .' performing batch deletion',
             [new VersionedEntity(), new VersionedEntity()],
             [new ConnectionException()],
         ];
 
         yield [
-            'Failed to perform batch deletion for "Sonata\DoctrineORMAdminBundle\Tests\Fixtures\Entity\VersionedEntity" objects',
+            'Failed to perform batch deletion for "SensioLabs\AdminBundle\Tests\Fixtures\ORM\Entity\VersionedEntity" objects',
             null,
             [null],
         ];
@@ -768,7 +768,7 @@ final class ModelManagerTest extends TestCase
         $datagrid = static::createStub(ProxyQueryInterface::class);
 
         $this->expectException(\InvalidArgumentException::class);
-        $this->expectExceptionMessage('Array passed as argument 3 to "Sonata\DoctrineORMAdminBundle\Model\ModelManager::addIdentifiersToQuery()" must not be empty.');
+        $this->expectExceptionMessage('Array passed as argument 3 to "SensioLabs\AdminBundle\Model\ORM\ModelManager::addIdentifiersToQuery()" must not be empty.');
 
         // @phpstan-ignore-next-line
         $this->modelManager->addIdentifiersToQuery(\stdClass::class, $datagrid, []);

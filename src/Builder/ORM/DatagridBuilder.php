@@ -69,11 +69,6 @@ final class DatagridBuilder implements DatagridBuilderInterface
             ], $fieldDescription->getOption('field_options', [])));
         }
 
-        /*
-         * NEXT_MAJOR: Remove the ModelAutocompleteFilter::class check.
-         *
-         * @see https://github.com/sonata-project/SonataDoctrineORMAdminBundle/pull/1545
-         */
         if (
             ModelAutocompleteFilter::class === $fieldDescription->getType() && null === $fieldDescription->getOption('field_type')
             || ModelAutocompleteType::class === $fieldDescription->getOption('field_type')

@@ -59,7 +59,6 @@ final class ModelTypeTest extends TypeTestCase
         static::assertSame('link_add', $resolvedOptions['btn_add']);
         static::assertSame('link_list', $resolvedOptions['btn_list']);
         static::assertSame('link_delete', $resolvedOptions['btn_delete']);
-        static::assertSame('SensioLabsAdminBundle', $resolvedOptions['btn_catalogue']);
         static::assertSame('SensioLabsAdminBundle', $resolvedOptions['btn_translation_domain']);
         static::assertInstanceOf(ModelChoiceLoader::class, $resolvedOptions['choice_loader']);
 
@@ -102,7 +101,6 @@ final class ModelTypeTest extends TypeTestCase
         static::assertSame('link_add', $options['btn_add']);
         static::assertSame('link_list', $options['btn_list']);
         static::assertSame('link_delete', $options['btn_delete']);
-        static::assertSame('SensioLabsAdminBundle', $options['btn_catalogue']);
         static::assertSame('SensioLabsAdminBundle', $options['btn_translation_domain']);
         static::assertInstanceOf(ModelChoiceLoader::class, $options['choice_loader']);
     }

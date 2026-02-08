@@ -51,7 +51,6 @@ final class AdminTypeTest extends TypeTestCase
         static::assertSame('link_add', $options['btn_add']);
         static::assertSame('link_list', $options['btn_list']);
         static::assertSame('link_delete', $options['btn_delete']);
-        static::assertSame('SensioLabsAdminBundle', $options['btn_catalogue']);
         static::assertSame('SensioLabsAdminBundle', $options['btn_translation_domain']);
     }
 
@@ -93,7 +92,7 @@ final class AdminTypeTest extends TypeTestCase
             AdminType::class,
             null,
             [
-                'sonata_field_description' => $field,
+                'sensiolabs_field_description' => $field,
             ]
         );
         $form->submit($formData);
@@ -135,7 +134,7 @@ final class AdminTypeTest extends TypeTestCase
 
         try {
             $this->adminType->buildForm($this->builder, [
-                'sonata_field_description' => $field,
+                'sensiolabs_field_description' => $field,
                 'delete' => false, // not needed
                 'property_path' => 'bar', // actual test case
             ]);
@@ -177,7 +176,7 @@ final class AdminTypeTest extends TypeTestCase
 
         try {
             $this->adminType->buildForm($this->builder, [
-                'sonata_field_description' => $field,
+                'sensiolabs_field_description' => $field,
                 'delete' => false, // not needed
                 'property_path' => '[0]', // actual test case
             ]);
@@ -236,7 +235,7 @@ final class AdminTypeTest extends TypeTestCase
 
         try {
             $this->adminType->buildForm($this->builder, [
-                'sonata_field_description' => $field,
+                'sensiolabs_field_description' => $field,
                 'delete' => false, // not needed
                 'property_path' => '[0]', // actual test case
                 'collection_by_reference' => false,
@@ -302,7 +301,7 @@ final class AdminTypeTest extends TypeTestCase
 
         try {
             $this->adminType->buildForm($this->builder, [
-                'sonata_field_description' => $field,
+                'sensiolabs_field_description' => $field,
                 'delete' => false, // not needed
                 'property_path' => '[0]', // actual test case
                 'collection_by_reference' => true,

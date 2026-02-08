@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\DoctrineORMAdminBundle\Tests\Fixtures\Query;
+namespace SensioLabs\AdminBundle\Tests\Fixtures\ORM\Query;
 
 use Doctrine\ORM\Query\AST\OrderByClause;
 use Doctrine\ORM\Query\SqlOutputWalker;

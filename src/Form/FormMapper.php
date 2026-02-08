@@ -18,7 +18,6 @@ use SensioLabs\AdminBundle\Builder\FormContractorInterface;
 use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use SensioLabs\AdminBundle\Form\Type\CollectionType;
 use SensioLabs\AdminBundle\Mapper\BaseGroupedMapper;
-use Sonata\BlockBundle\Form\Mapper\FormMapper as BlockFormMapper;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType as SymfonyCollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormTypeInterface;
@@ -33,7 +32,7 @@ use Symfony\Component\Form\FormTypeInterface;
  * @phpstan-template T of object
  * @phpstan-extends BaseGroupedMapper<T>
  */
-final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
+final class FormMapper extends BaseGroupedMapper
 {
     /**
      * @param AdminInterface<object> $admin

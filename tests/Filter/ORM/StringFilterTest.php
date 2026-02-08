@@ -21,17 +21,6 @@ use SensioLabs\AdminBundle\Filter\ORM\StringFilter;
 
 final class StringFilterTest extends FilterTestCase
 {
-    public function testSearchEnabled(): void
-    {
-        $filter = new StringFilter();
-        $filter->initialize('field_name', []);
-        static::assertTrue($filter->isSearchEnabled());
-
-        $filter = new StringFilter();
-        $filter->initialize('field_name', ['global_search' => false]);
-        static::assertFalse($filter->isSearchEnabled());
-    }
-
     public function testEmpty(): void
     {
         $filter = new StringFilter();

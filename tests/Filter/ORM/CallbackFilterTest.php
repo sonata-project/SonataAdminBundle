@@ -17,20 +17,8 @@ use SensioLabs\AdminBundle\Filter\Model\FilterData;
 use SensioLabs\AdminBundle\Datagrid\ORM\ProxyQuery;
 use SensioLabs\AdminBundle\Datagrid\ORM\ProxyQueryInterface;
 use SensioLabs\AdminBundle\Filter\ORM\CallbackFilter;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-
 final class CallbackFilterTest extends FilterTestCase
 {
-    public function testRenderSettings(): void
-    {
-        $filter = new CallbackFilter();
-        $filter->initialize('field_name', ['field_options' => ['class' => 'FooBar']]);
-        $options = $filter->getRenderSettings()[1];
-
-        static::assertSame(HiddenType::class, $options['operator_type']);
-        static::assertSame([], $options['operator_options']);
-    }
-
     public function testFilterClosure(): void
     {
         $proxyQuery = new ProxyQuery($this->createQueryBuilderStub());

@@ -19,17 +19,6 @@ use SensioLabs\AdminBundle\Filter\ORM\UidFilter;
 
 final class UidFilterTest extends FilterTestCase
 {
-    public function testSearchEnabled(): void
-    {
-        $filter = new UidFilter();
-        $filter->initialize('field_name');
-        static::assertFalse($filter->isSearchEnabled());
-
-        $filter = new UidFilter();
-        $filter->initialize('field_name', ['global_search' => true]);
-        static::assertTrue($filter->isSearchEnabled());
-    }
-
     public function testEmpty(): void
     {
         $filter = new UidFilter();

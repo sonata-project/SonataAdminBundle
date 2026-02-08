@@ -46,7 +46,7 @@ final class FilterTest extends FilterTestCase
             )
             ->setParameter('parameter_1', 3);
 
-        static::assertSame('SELECT e FROM Sonata\DoctrineORMAdminBundle\Tests\Filter\MyEntity e WHERE 1 = 2 AND (:parameter_1 = 4 OR 5 = 6)', $queryBuilder->getDQL());
+        static::assertSame('SELECT e FROM SensioLabs\AdminBundle\Tests\Filter\ORM\MyEntity e WHERE 1 = 2 AND (:parameter_1 = 4 OR 5 = 6)', $queryBuilder->getDQL());
 
         $proxyQuery = new ProxyQuery($queryBuilder);
 
@@ -73,7 +73,7 @@ final class FilterTest extends FilterTestCase
     public static function provideOrExpressionCases(): iterable
     {
         yield 'Default behavior' => [
-            'SELECT e FROM Sonata\DoctrineORMAdminBundle\Tests\Filter\MyEntity e WHERE 1 = 2 AND (:parameter_1 = 4 OR 5 = 6)'
+            'SELECT e FROM SensioLabs\AdminBundle\Tests\Filter\ORM\MyEntity e WHERE 1 = 2 AND (:parameter_1 = 4 OR 5 = 6)'
             .' AND e.project LIKE :project_0 AND e.version LIKE :version_1 AND 7 = 8',
             [
                 [

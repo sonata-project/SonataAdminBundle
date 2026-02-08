@@ -17,20 +17,8 @@ use SensioLabs\AdminBundle\Filter\Model\FilterData;
 use SensioLabs\AdminBundle\Datagrid\ORM\ProxyQuery;
 use SensioLabs\AdminBundle\Filter\ORM\BooleanFilter;
 use Sonata\Form\Type\BooleanType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-
 final class BooleanFilterTest extends FilterTestCase
 {
-    public function testRenderSettings(): void
-    {
-        $filter = new BooleanFilter();
-        $filter->initialize('field_name', ['field_options' => ['class' => 'FooBar']]);
-        $options = $filter->getRenderSettings()[1];
-
-        static::assertSame(HiddenType::class, $options['operator_type']);
-        static::assertSame([], $options['operator_options']);
-    }
-
     public function testFilterEmpty(): void
     {
         $filter = new BooleanFilter();

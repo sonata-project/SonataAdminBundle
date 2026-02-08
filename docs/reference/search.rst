@@ -4,7 +4,7 @@ Search
 The admin comes with a basic global search available in the upper navigation menu. The search iterates over
 admin classes and looks for filters implementing the ``Sonata\AdminBundle\Search\SearchableFilterInterface`` interface with
 the method ``isSearchEnabled()`` returning true. If you are using ``SonataDoctrineORMBundle``, the
-``Sonata\DoctrineORMAdminBundle\Filter\StringFilter`` filter is searchable and relies on a ``global_search`` option.
+``SensioLabs\AdminBundle\Filter\ORM\StringFilter`` filter is searchable and relies on a ``global_search`` option.
 
 .. note::
 

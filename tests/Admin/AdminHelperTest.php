@@ -236,7 +236,7 @@ final class AdminHelperTest extends TestCase
         $eventDispatcher = static::createStub(EventDispatcherInterface::class);
         $formBuilder = new FormBuilder('test', $foo::class, $eventDispatcher, $formFactory);
         $childFormBuilder = new FormBuilder('bar', \stdClass::class, $eventDispatcher, $formFactory, [
-            'sonata_field_description' => $fieldDescription,
+            'sensiolabs_field_description' => $fieldDescription,
         ]);
         $childFormBuilder->setCompound(true);
         $childFormBuilder->setDataMapper($dataMapper);
@@ -773,19 +773,19 @@ final class AdminHelperTest extends TestCase
         $eventDispatcher = static::createStub(EventDispatcherInterface::class);
 
         $collectionFormBuilder = new FormBuilder('collection', null, $eventDispatcher, $formFactory, [
-            'sonata_field_description' => $collectionFieldDescription,
+            'sensiolabs_field_description' => $collectionFieldDescription,
         ]);
         $collectionFormBuilder->setCompound(true);
         $collectionFormBuilder->setDataMapper($dataMapper);
 
         $childCollectionFormBuilder = new FormBuilder('collection', null, $eventDispatcher, $formFactory, [
-            'sonata_field_description' => $subObjectCollectionFieldDescription,
+            'sensiolabs_field_description' => $subObjectCollectionFieldDescription,
         ]);
         $childCollectionFormBuilder->setCompound(true);
         $childCollectionFormBuilder->setDataMapper($dataMapper);
 
         $childFormBuilder = new FormBuilder('sub_object', $subObject::class, $eventDispatcher, $formFactory, [
-            'sonata_field_description' => $subObjectFieldDescription,
+            'sensiolabs_field_description' => $subObjectFieldDescription,
         ]);
         $childFormBuilder->setCompound(true);
         $childFormBuilder->setDataMapper($dataMapper);

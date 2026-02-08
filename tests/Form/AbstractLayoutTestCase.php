@@ -26,6 +26,9 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Test\FormIntegrationTestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\UX\Icons\IconRendererInterface;
+use Symfony\UX\Icons\Twig\UXIconExtension;
+use Symfony\UX\Icons\Twig\UXIconRuntime;
 use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
 use Symfony\UX\StimulusBundle\Twig\StimulusTwigExtension;
 use Twig\Environment;
@@ -58,6 +61,23 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
         $environment->addExtension(new RoutingExtension(static::createStub(UrlGeneratorInterface::class)));
         $environment->addExtension(new HttpKernelExtension());
         $environment->addExtension(new StimulusTwigExtension(new StimulusHelper(null)));
+        $environment->addExtension(new UXIconExtension());
+
+        $iconRenderer = new class implements IconRendererInterface {
+            public function renderIcon(string $name, array $attributes = []): string
+            {
+                $attrs = '';
+                foreach ($attributes as $key => $value) {
+                    if (\is_bool($value)) {
+                        $attrs .= $value ? \sprintf(' %s', $key) : '';
+                    } else {
+                        $attrs .= \sprintf(' %s="%s"', $key, $value);
+                    }
+                }
+
+                return \sprintf('<svg%s>%s</svg>', $attrs, $name);
+            }
+        };
 
         $rendererEngine = new TwigRendererEngine([
             'form_admin_fields.html.twig',
@@ -67,6 +87,7 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
 
         $environment->addRuntimeLoader(new FactoryRuntimeLoader([
             FormRenderer::class => static fn (): FormRendererInterface => new FormRenderer($rendererEngine, $csrfTokenManager),
+            UXIconRuntime::class => static fn (): UXIconRuntime => new UXIconRuntime($iconRenderer),
         ]));
 
         $renderer = $environment->getRuntime(FormRenderer::class);

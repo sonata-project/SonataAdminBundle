@@ -57,7 +57,7 @@ final class ValidatorsTest extends TestCase
     public static function provideValidateClassCases(): iterable
     {
         yield [AbstractAdmin::class, AbstractAdmin::class];
-        yield [AbstractAdmin::class, 'Sonata/AdminBundle/Admin/AbstractAdmin'];
+        yield [AbstractAdmin::class, 'SensioLabs/AdminBundle/Admin/AbstractAdmin'];
     }
 
     #[DataProvider('provideValidateClassWithExceptionCases')]

@@ -15,7 +15,6 @@ namespace SensioLabs\AdminBundle\Tests\DependencyInjection\Compiler;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
 use PHPUnit\Framework\Attributes\CoversMethod;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use SensioLabs\AdminBundle\Admin\AbstractAdmin;
 use SensioLabs\AdminBundle\Admin\Pool;
 use SensioLabs\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
@@ -23,7 +22,6 @@ use SensioLabs\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompil
 use SensioLabs\AdminBundle\DependencyInjection\SensioLabsAdminExtension;
 use SensioLabs\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
 use Symfony\Bundle\FrameworkBundle\Translation\Translator;
-use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\Compiler\ResolveChildDefinitionsPass;
 use Symfony\Component\DependencyInjection\Compiler\ResolveEnvPlaceholdersPass;
@@ -208,67 +206,6 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             'setListModes',
             [TaggedAdminInterface::DEFAULT_LIST_MODES]
         );
-    }
-
-    /**
-     * NEXT_MAJOR: Remove this test.
-     */
-    #[IgnoreDeprecations]
-    public function testProcessAbstractAdminServiceInServiceDefinition(): void
-    {
-        $this->setUpContainer();
-
-        $this->extension->load([$this->getConfig()], $this->container);
-
-        $this->container
-            ->register('sonata_abstract_post_admin')
-            ->setArguments(['', PostEntity::class, ''])
-            ->setAbstract(true);
-
-        $adminDefinition = new ChildDefinition('sonata_abstract_post_admin');
-        $adminDefinition
-            ->setPublic(true)
-            ->setClass(CustomAdmin::class)
-            ->setArguments([0 => 'extra_argument_1'])
-            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['manager_type' => 'orm']);
-
-        $adminTwoDefinition = new ChildDefinition('sonata_abstract_post_admin');
-        $adminTwoDefinition
-            ->setPublic(true)
-            ->setClass(CustomAdmin::class)
-            ->setArguments([0 => 'extra_argument_2', 'index_0' => 'should_not_override'])
-            ->addTag(TaggedAdminInterface::ADMIN_TAG, ['manager_type' => 'orm']);
-
-        $this->container->addDefinitions([
-            'sonata_post_one_admin' => $adminDefinition,
-            'sonata_post_two_admin' => $adminTwoDefinition,
-        ]);
-
-        $this->allowToResolveChildren();
-
-        $this->compile();
-
-        $pool = $this->container->findDefinition('sensiolabs.admin.pool');
-        $adminServiceIds = $pool->getArgument(1);
-
-        static::assertIsArray($adminServiceIds);
-        static::assertContains('sonata_post_one_admin', $adminServiceIds);
-        static::assertContains('sonata_post_two_admin', $adminServiceIds);
-
-        self::assertContainerBuilderHasService('sonata_post_one_admin');
-        self::assertContainerBuilderHasService('sonata_post_two_admin');
-
-        $definition = $this->container->findDefinition('sonata_post_one_admin');
-        static::assertSame('sonata_post_one_admin', $definition->getArgument(0));
-        static::assertSame(PostEntity::class, $definition->getArgument(1));
-        static::assertSame('sensiolabs.admin.controller.crud', $definition->getArgument(2));
-        static::assertSame('extra_argument_1', $definition->getArgument(3));
-
-        $definition = $this->container->findDefinition('sonata_post_two_admin');
-        static::assertSame('sonata_post_two_admin', $definition->getArgument(0));
-        static::assertSame(PostEntity::class, $definition->getArgument(1));
-        static::assertSame('sensiolabs.admin.controller.crud', $definition->getArgument(2));
-        static::assertSame('extra_argument_2', $definition->getArgument(3));
     }
 
     public function testDefaultControllerCanBeChanged(): void

@@ -14,9 +14,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use SensioLabs\AdminBundle\Twig\BreadcrumbsRuntime;
-use SensioLabs\AdminBundle\Twig\CanonicalizeRuntime;
 use SensioLabs\AdminBundle\Twig\Extension\BreadcrumbsExtension;
-use SensioLabs\AdminBundle\Twig\Extension\CanonicalizeExtension;
 use SensioLabs\AdminBundle\Twig\Extension\RenderElementExtension;
 use SensioLabs\AdminBundle\Twig\Extension\SecurityExtension;
 use SensioLabs\AdminBundle\Twig\Extension\SensioLabsAdminExtension;
@@ -61,15 +59,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('twig.runtime')
             ->args([
                 service('security.authorization_checker'),
-            ])
-
-        ->set('sensiolabs.admin.twig.canonicalize_extension', CanonicalizeExtension::class)
-            ->tag('twig.extension')
-
-        ->set('sensiolabs.admin.twig.canonicalize_runtime', CanonicalizeRuntime::class)
-            ->tag('twig.runtime')
-            ->args([
-                service('request_stack'),
             ])
 
         ->set('sensiolabs.admin.twig.xeditable_extension', XEditableExtension::class)

@@ -39,6 +39,9 @@ use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Translation\Loader\XliffFileLoader;
 use Symfony\Component\Translation\Translator;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\UX\Icons\IconRendererInterface;
+use Symfony\UX\Icons\Twig\UXIconExtension;
+use Symfony\UX\Icons\Twig\UXIconRuntime;
 use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
 use Symfony\UX\StimulusBundle\Twig\StimulusTwigExtension;
 use Twig\Environment;
@@ -93,7 +96,7 @@ final class RenderElementRuntimeTest extends TestCase
             __DIR__.'/../../src/Resources/views/CRUD',
             __DIR__.'/../Fixtures/Resources/views/CRUD',
         ]);
-        $loader->addPath(__DIR__.'/../../src/Resources/views/', 'SonataAdmin');
+        $loader->addPath(__DIR__.'/../../src/Resources/views/', 'SensioLabsAdmin');
         $loader->addPath(__DIR__.'/../Fixtures/Resources/views/', 'App');
 
         $this->environment = new Environment($loader, [
@@ -237,7 +240,7 @@ final class RenderElementRuntimeTest extends TestCase
             ->willReturn('@SensioLabsAdmin/CRUD/list_string.html.twig');
 
         static::assertSame(
-            static::removeExtraWhitespace('<td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> Extra value </td>'),
+            static::removeExtraWhitespace('<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-" data-object-id="12345"> Extra value </td>'),
             static::removeExtraWhitespace($this->renderElementRuntime->renderListElement(
                 $this->environment,
                 [$this->object, 'fd_name' => 'Extra value'],
@@ -274,10 +277,10 @@ final class RenderElementRuntimeTest extends TestCase
                 <<<'EOT'
                     <!-- START
                         fieldName: fd_name
-                        template: @SonataAdmin/CRUD/base_list_field.html.twig
-                        compiled template: @SonataAdmin/CRUD/base_list_field.html.twig
+                        template: @SensioLabsAdmin/CRUD/base_list_field.html.twig
+                        compiled template: @SensioLabsAdmin/CRUD/base_list_field.html.twig
                     -->
-                        <td class="sonata-ba-list-field sonata-ba-list-field-" objectId="12345"> foo </td>
+                        <td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-" data-object-id="12345"> foo </td>
                     <!-- END - fieldName: fd_name -->
                     EOT
             ),
@@ -491,43 +494,43 @@ final class RenderElementRuntimeTest extends TestCase
     {
         $elements = [
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> Example </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-string" data-object-id="12345"> Example </td>',
                 FieldDescriptionInterface::TYPE_STRING,
                 'Example',
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-string" data-object-id="12345"> </td>',
                 FieldDescriptionInterface::TYPE_STRING,
                 null,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> Example </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-string" data-object-id="12345"> Example </td>',
                 FieldDescriptionInterface::TYPE_STRING,
                 'Example',
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345"> </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-string" data-object-id="12345"> </td>',
                 FieldDescriptionInterface::TYPE_STRING,
                 null,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-textarea" objectId="12345"> Example </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-textarea" data-object-id="12345"> Example </td>',
                 FieldDescriptionInterface::TYPE_TEXTAREA,
                 'Example',
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-textarea" objectId="12345"> </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-textarea" data-object-id="12345"> </td>',
                 FieldDescriptionInterface::TYPE_TEXTAREA,
                 null,
                 [],
             ],
             'datetime field' => [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-datetime" data-object-id="12345">
                     <time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00">
                         December 24, 2013 10:11
                     </time>
@@ -537,7 +540,7 @@ final class RenderElementRuntimeTest extends TestCase
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-datetime" data-object-id="12345">
                     <time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00">
                         December 24, 2013 18:11
                     </time>
@@ -547,13 +550,13 @@ final class RenderElementRuntimeTest extends TestCase
                 ['timezone' => 'Asia/Hong_Kong'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345"> &nbsp; </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-datetime" data-object-id="12345"> &nbsp; </td>',
                 FieldDescriptionInterface::TYPE_DATETIME,
                 null,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-datetime" data-object-id="12345">
                     <time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00">
                         24.12.2013 10:11:12
                     </time>
@@ -563,13 +566,13 @@ final class RenderElementRuntimeTest extends TestCase
                 ['format' => 'd.m.Y H:i:s'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345"> &nbsp; </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-datetime" data-object-id="12345"> &nbsp; </td>',
                 FieldDescriptionInterface::TYPE_DATETIME,
                 null,
                 ['format' => 'd.m.Y H:i:s'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-datetime" data-object-id="12345">
                     <time datetime="2013-12-24T10:11:12+00:00" title="2013-12-24T10:11:12+00:00">
                         24.12.2013 18:11:12
                     </time>
@@ -579,13 +582,13 @@ final class RenderElementRuntimeTest extends TestCase
                 ['format' => 'd.m.Y H:i:s', 'timezone' => 'Asia/Hong_Kong'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-datetime" objectId="12345"> &nbsp; </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-datetime" data-object-id="12345"> &nbsp; </td>',
                 FieldDescriptionInterface::TYPE_DATETIME,
                 null,
                 ['format' => 'd.m.Y H:i:s', 'timezone' => 'Asia/Hong_Kong'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-date" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-date" data-object-id="12345">
                     <time datetime="2013-12-24" title="2013-12-24">
                         December 24, 2013
                     </time>
@@ -595,13 +598,13 @@ final class RenderElementRuntimeTest extends TestCase
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-date" objectId="12345"> &nbsp; </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-date" data-object-id="12345"> &nbsp; </td>',
                 FieldDescriptionInterface::TYPE_DATE,
                 null,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-date" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-date" data-object-id="12345">
                     <time datetime="2013-12-24" title="2013-12-24">
                         24.12.2013
                     </time>
@@ -611,13 +614,13 @@ final class RenderElementRuntimeTest extends TestCase
                 ['format' => 'd.m.Y'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-date" objectId="12345"> &nbsp; </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-date" data-object-id="12345"> &nbsp; </td>',
                 FieldDescriptionInterface::TYPE_DATE,
                 null,
                 ['format' => 'd.m.Y'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-time" data-object-id="12345">
                     <time datetime="10:11:12+00:00" title="10:11:12+00:00">
                         10:11:12
                     </time>
@@ -627,7 +630,7 @@ final class RenderElementRuntimeTest extends TestCase
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-time" data-object-id="12345">
                     <time datetime="10:11:12+00:00" title="10:11:12+00:00">
                         18:11:12
                     </time>
@@ -637,143 +640,143 @@ final class RenderElementRuntimeTest extends TestCase
                 ['timezone' => 'Asia/Hong_Kong'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-time" objectId="12345"> &nbsp; </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-time" data-object-id="12345"> &nbsp; </td>',
                 FieldDescriptionInterface::TYPE_TIME,
                 null,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-float" objectId="12345"> 10.746135 </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-float" data-object-id="12345"> 10.746135 </td>',
                 FieldDescriptionInterface::TYPE_FLOAT,
                 10.746135,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-float" objectId="12345"> </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-float" data-object-id="12345"> </td>',
                 FieldDescriptionInterface::TYPE_FLOAT,
                 null,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-integer" objectId="12345"> 5678 </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-integer" data-object-id="12345"> 5678 </td>',
                 FieldDescriptionInterface::TYPE_INTEGER,
                 5678,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-integer" objectId="12345"> </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-integer" data-object-id="12345"> </td>',
                 FieldDescriptionInterface::TYPE_INTEGER,
                 null,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-percent" objectId="12345"> 1074.6135 % </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-percent" data-object-id="12345"> 1074.6135 % </td>',
                 FieldDescriptionInterface::TYPE_PERCENT,
                 10.746135,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-percent" objectId="12345"> 0 % </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-percent" data-object-id="12345"> 0 % </td>',
                 FieldDescriptionInterface::TYPE_PERCENT,
                 0,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-percent" objectId="12345"> &nbsp; </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-percent" data-object-id="12345"> &nbsp; </td>',
                 FieldDescriptionInterface::TYPE_PERCENT,
                 null,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-currency" objectId="12345"> EUR 10.746135 </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-currency" data-object-id="12345"> EUR 10.746135 </td>',
                 FieldDescriptionInterface::TYPE_CURRENCY,
                 10.746135,
                 ['currency' => 'EUR'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-currency" objectId="12345"> EUR 0 </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-currency" data-object-id="12345"> EUR 0 </td>',
                 FieldDescriptionInterface::TYPE_CURRENCY,
                 0,
                 ['currency' => 'EUR'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-currency" objectId="12345"> GBP 51.23456 </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-currency" data-object-id="12345"> GBP 51.23456 </td>',
                 FieldDescriptionInterface::TYPE_CURRENCY,
                 51.23456,
                 ['currency' => 'GBP'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-currency" objectId="12345"> &nbsp; </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-currency" data-object-id="12345"> &nbsp; </td>',
                 FieldDescriptionInterface::TYPE_CURRENCY,
                 null,
                 ['currency' => 'GBP'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> &nbsp; </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-email" data-object-id="12345"> &nbsp; </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 null,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> <a href="mailto:admin@admin.com">admin@admin.com</a> </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-email" data-object-id="12345"> <a href="mailto:admin@admin.com">admin@admin.com</a> </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-email" data-object-id="12345">
                     <a href="mailto:admin@admin.com">admin@admin.com</a> </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['as_string' => false],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> admin@admin.com </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-email" data-object-id="12345"> admin@admin.com </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['as_string' => true],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-email" data-object-id="12345">
                     <a href="mailto:admin@admin.com?'.static::buildTwigLikeUrl(['subject' => 'Main Theme', 'body' => 'Message Body']).'">admin@admin.com</a>  </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['subject' => 'Main Theme', 'body' => 'Message Body'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-email" data-object-id="12345">
                     <a href="mailto:admin@admin.com?'.static::buildTwigLikeUrl(['subject' => 'Main Theme']).'">admin@admin.com</a>  </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['subject' => 'Main Theme'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-email" data-object-id="12345">
                     <a href="mailto:admin@admin.com?'.static::buildTwigLikeUrl(['body' => 'Message Body']).'">admin@admin.com</a>  </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['body' => 'Message Body'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> admin@admin.com </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-email" data-object-id="12345"> admin@admin.com </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['as_string' => true, 'subject' => 'Main Theme', 'body' => 'Message Body'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> admin@admin.com </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-email" data-object-id="12345"> admin@admin.com </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['as_string' => true, 'body' => 'Message Body'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-email" objectId="12345"> admin@admin.com </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-email" data-object-id="12345"> admin@admin.com </td>',
                 FieldDescriptionInterface::TYPE_EMAIL,
                 'admin@admin.com',
                 ['as_string' => true, 'subject' => 'Main Theme'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-array" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-array" data-object-id="12345">
                     [1&nbsp;=>&nbsp;First, 2&nbsp;=>&nbsp;Second]
                 </td>',
                 FieldDescriptionInterface::TYPE_ARRAY,
@@ -781,30 +784,45 @@ final class RenderElementRuntimeTest extends TestCase
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-array" objectId="12345"> [] </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-array" data-object-id="12345"> [] </td>',
                 FieldDescriptionInterface::TYPE_ARRAY,
                 null,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
-                    <span class="label label-success">yes</span>
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-boolean" data-object-id="12345">
+                    <span class="inline-flex items-center gap-1.5">
+                        <span class="flex items-center justify-center w-5 h-5 rounded-full bg-success-100 text-success-600">
+                            <svg class="w-3 h-3">lucide:check</svg>
+                        </span>
+                        <span class="text-sm font-medium text-success-700">yes</span>
+                    </span>
                 </td>',
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 true,
                 ['editable' => false],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
-                    <span class="label label-danger">no</span>
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-boolean" data-object-id="12345">
+                    <span class="inline-flex items-center gap-1.5">
+                        <span class="flex items-center justify-center w-5 h-5 rounded-full bg-gray-100 text-gray-400">
+                            <svg class="w-3 h-3">lucide:x</svg>
+                        </span>
+                        <span class="text-sm text-gray-500">no</span>
+                    </span>
                 </td>',
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 false,
                 ['editable' => false],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
-                    <span class="label label-danger">no</span>
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-boolean" data-object-id="12345">
+                    <span class="inline-flex items-center gap-1.5">
+                        <span class="flex items-center justify-center w-5 h-5 rounded-full bg-gray-100 text-gray-400">
+                            <svg class="w-3 h-3">lucide:x</svg>
+                        </span>
+                        <span class="text-sm text-gray-500">no</span>
+                    </span>
                 </td>',
                 FieldDescriptionInterface::TYPE_BOOLEAN,
                 null,
@@ -812,9 +830,9 @@ final class RenderElementRuntimeTest extends TestCase
             ],
             [
                 <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
+                    <td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-boolean" data-object-id="12345">
                         <span
-                            class="x-editable"
+                            class="x-editable editable-click"
                             data-type="select"
                             data-value="1"
                             data-title="Data"
@@ -822,7 +840,12 @@ final class RenderElementRuntimeTest extends TestCase
                             data-url="/core/set-object-field-value?_sensiolabs_admin=sensiolabs_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
                             data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]"
                         >
-                            <span class="label label-success">yes</span>
+                            <span class="inline-flex items-center gap-1.5">
+                                <span class="flex items-center justify-center w-5 h-5 rounded-full bg-success-100 text-success-600">
+                                    <svg class="w-3 h-3">lucide:check</svg>
+                                </span>
+                                <span class="text-sm font-medium text-success-700">yes</span>
+                            </span>
                         </span>
                     </td>
                     EOT,
@@ -832,9 +855,9 @@ final class RenderElementRuntimeTest extends TestCase
             ],
             [
                 <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
+                    <td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-boolean" data-object-id="12345">
                         <span
-                            class="x-editable"
+                            class="x-editable editable-click"
                             data-type="select"
                             data-value="0"
                             data-title="Data"
@@ -842,7 +865,13 @@ final class RenderElementRuntimeTest extends TestCase
                             data-url="/core/set-object-field-value?_sensiolabs_admin=sensiolabs_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
                             data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]"
                         >
-                        <span class="label label-danger">no</span> </span>
+                            <span class="inline-flex items-center gap-1.5">
+                                <span class="flex items-center justify-center w-5 h-5 rounded-full bg-gray-100 text-gray-400">
+                                    <svg class="w-3 h-3">lucide:x</svg>
+                                </span>
+                                <span class="text-sm text-gray-500">no</span>
+                            </span>
+                        </span>
                     </td>
                     EOT,
                 FieldDescriptionInterface::TYPE_BOOLEAN,
@@ -851,16 +880,23 @@ final class RenderElementRuntimeTest extends TestCase
             ],
             [
                 <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-boolean" objectId="12345">
+                    <td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-boolean" data-object-id="12345">
                         <span
-                            class="x-editable"
+                            class="x-editable editable-click"
                             data-type="select"
                             data-value="0"
                             data-title="Data"
                             data-pk="12345"
                             data-url="/core/set-object-field-value?_sensiolabs_admin=sensiolabs_admin_foo_service&amp;context=list&amp;field=fd_name&amp;objectId=12345"
-                            data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]" >
-                            <span class="label label-danger">no</span> </span>
+                            data-source="[{value: 0, text: 'no'},{value: 1, text: 'yes'}]"
+                        >
+                            <span class="inline-flex items-center gap-1.5">
+                                <span class="flex items-center justify-center w-5 h-5 rounded-full bg-gray-100 text-gray-400">
+                                    <svg class="w-3 h-3">lucide:x</svg>
+                                </span>
+                                <span class="text-sm text-gray-500">no</span>
+                            </span>
+                        </span>
                     </td>
                     EOT,
                 FieldDescriptionInterface::TYPE_BOOLEAN,
@@ -868,25 +904,25 @@ final class RenderElementRuntimeTest extends TestCase
                 ['editable' => true],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> Delete </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-trans" data-object-id="12345"> Delete </td>',
                 FieldDescriptionInterface::TYPE_TRANS,
                 'action_delete',
                 ['value_translation_domain' => 'SensioLabsAdminBundle'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-trans" data-object-id="12345"> </td>',
                 FieldDescriptionInterface::TYPE_TRANS,
                 null,
                 ['value_translation_domain' => 'SensioLabsAdminBundle'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345"> Delete </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-trans" data-object-id="12345"> Delete </td>',
                 FieldDescriptionInterface::TYPE_TRANS,
                 'action_delete',
                 ['format' => '%s', 'value_translation_domain' => 'SensioLabsAdminBundle'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-trans" data-object-id="12345">
                 action.action_delete
                 </td>',
                 FieldDescriptionInterface::TYPE_TRANS,
@@ -894,7 +930,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['format' => 'action.%s'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-trans" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-trans" data-object-id="12345">
                 action.action_delete
                 </td>',
                 FieldDescriptionInterface::TYPE_TRANS,
@@ -902,31 +938,31 @@ final class RenderElementRuntimeTest extends TestCase
                 ['format' => 'action.%s', 'value_translation_domain' => 'SensioLabsAdminBundle'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Status1 </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345"> Status1 </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'Status1',
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Status1 </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345"> Status1 </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
                 ['Status1'],
                 ['choices' => [], 'multiple' => true],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Alias1 </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345"> Alias1 </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'Status1',
                 ['choices' => ['Status1' => 'Alias1', 'Status2' => 'Alias2', 'Status3' => 'Alias3']],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345"> </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
                 null,
                 ['choices' => ['Status1' => 'Alias1', 'Status2' => 'Alias2', 'Status3' => 'Alias3']],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345">
                 NoValidKeyInChoices
                 </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
@@ -934,7 +970,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['choices' => ['Status1' => 'Alias1', 'Status2' => 'Alias2', 'Status3' => 'Alias3']],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Delete </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345"> Delete </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
                 'Foo',
                 ['choice_translation_domain' => 'SensioLabsAdminBundle', 'choices' => [
@@ -944,7 +980,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ]],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Alias1, Alias3 </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345"> Alias1, Alias3 </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
                 ['Status1', 'Status3'],
                 ['choices' => [
@@ -953,7 +989,7 @@ final class RenderElementRuntimeTest extends TestCase
                     'Status3' => 'Alias3',
                 ], 'multiple' => true], ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Alias1 | Alias3 </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345"> Alias1 | Alias3 </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
                 ['Status1', 'Status3'],
                 ['choices' => [
@@ -962,7 +998,7 @@ final class RenderElementRuntimeTest extends TestCase
                     'Status3' => 'Alias3',
                 ], 'multiple' => true, 'delimiter' => ' | '], ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345"> </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
                 null,
                 ['choices' => [
@@ -972,7 +1008,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ], 'multiple' => true],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345">
                 NoValidKeyInChoices
                 </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
@@ -984,7 +1020,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ], 'multiple' => true],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345">
                 NoValidKeyInChoices, Alias2
                 </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
@@ -996,7 +1032,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ], 'multiple' => true],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345"> Delete, Alias3 </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345"> Delete, Alias3 </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
                 ['Foo', 'Status3'],
                 ['choice_translation_domain' => 'SensioLabsAdminBundle', 'choices' => [
@@ -1006,7 +1042,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ], 'multiple' => true],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345">
                 &lt;b&gt;Alias1&lt;/b&gt;, &lt;b&gt;Alias3&lt;/b&gt;
             </td>',
                 FieldDescriptionInterface::TYPE_CHOICE,
@@ -1018,9 +1054,9 @@ final class RenderElementRuntimeTest extends TestCase
                 ], 'multiple' => true], ],
             [
                 <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                    <td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345">
                         <span
-                            class="x-editable"
+                            class="x-editable editable-click"
                             data-type="select"
                             data-value="Status1"
                             data-title="Data"
@@ -1038,9 +1074,9 @@ final class RenderElementRuntimeTest extends TestCase
             ],
             [
                 <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                    <td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345">
                         <span
-                            class="x-editable"
+                            class="x-editable editable-click"
                             data-type="select"
                             data-value="Status1"
                             data-title="Data"
@@ -1063,9 +1099,9 @@ final class RenderElementRuntimeTest extends TestCase
             ],
             [
                 <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                    <td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345">
                         <span
-                            class="x-editable"
+                            class="x-editable editable-click"
                             data-type="select"
                             data-value=""
                             data-title="Data"
@@ -1089,9 +1125,9 @@ final class RenderElementRuntimeTest extends TestCase
             ],
             [
                 <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                    <td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345">
                         <span
-                            class="x-editable"
+                            class="x-editable editable-click"
                             data-type="select"
                             data-value="NoValidKeyInChoices"
                             data-title="Data" data-pk="12345"
@@ -1114,9 +1150,9 @@ final class RenderElementRuntimeTest extends TestCase
             ],
             [
                 <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                    <td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345">
                         <span
-                            class="x-editable"
+                            class="x-editable editable-click"
                             data-type="select"
                             data-value="Foo"
                             data-title="Data"
@@ -1140,25 +1176,25 @@ final class RenderElementRuntimeTest extends TestCase
                 ],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> &nbsp; </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345"> &nbsp; </td>',
                 FieldDescriptionInterface::TYPE_URL,
                 null,
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> &nbsp; </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345"> &nbsp; </td>',
                 FieldDescriptionInterface::TYPE_URL,
                 null,
                 ['url' => 'http://example.com'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> &nbsp; </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345"> &nbsp; </td>',
                 FieldDescriptionInterface::TYPE_URL,
                 null,
                 ['route' => ['name' => 'sensiolabs_admin_foo']],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="http://example.com">http://example.com</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1166,7 +1202,7 @@ final class RenderElementRuntimeTest extends TestCase
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="https://example.com">https://example.com</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1174,7 +1210,7 @@ final class RenderElementRuntimeTest extends TestCase
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="https://example.com" target="_blank">https://example.com</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1182,7 +1218,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['attributes' => ['target' => '_blank']],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="https://example.com" target="_blank" class="fooLink">https://example.com</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1190,7 +1226,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['attributes' => ['target' => '_blank', 'class' => 'fooLink']],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="http://example.com">example.com</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1198,7 +1234,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['hide_protocol' => true],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="https://example.com">example.com</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1206,7 +1242,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['hide_protocol' => true],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="http://example.com">http://example.com</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1214,7 +1250,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['hide_protocol' => false],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="https://example.com">https://example.com</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1222,7 +1258,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['hide_protocol' => false],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="http://example.com">Foo</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1230,7 +1266,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['url' => 'http://example.com'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="http://example.com">&lt;b&gt;Foo&lt;/b&gt;</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1238,7 +1274,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['url' => 'http://example.com'],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="/foo">Foo</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1246,7 +1282,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['route' => ['name' => 'sensiolabs_admin_foo']],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="https://example.com">https://example.com</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1254,7 +1290,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['route' => ['name' => 'show']],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="http://localhost/foo">Foo</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1262,7 +1298,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['route' => ['name' => 'sensiolabs_admin_foo', 'absolute' => true]],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="/foo">foo/bar?a=b&amp;c=123456789</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1271,7 +1307,7 @@ final class RenderElementRuntimeTest extends TestCase
                     'hide_protocol' => true, ],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="http://localhost/foo">foo/bar?a=b&amp;c=123456789</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1282,7 +1318,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="/foo/abcd/efgh?param3=ijkl">Foo</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1293,7 +1329,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="http://localhost/foo/abcd/efgh?param3=ijkl">Foo</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1305,7 +1341,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1317,7 +1353,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-url" data-object-id="12345">
                 <a href="http://localhost/foo/obj/abcd/12345/efgh?param3=ijkl">Foo</a>
                 </td>',
                 FieldDescriptionInterface::TYPE_URL,
@@ -1330,7 +1366,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-html" data-object-id="12345">
                 <p><strong>Creating a Template for the Field</strong> and form</p>
                 </td>',
                 FieldDescriptionInterface::TYPE_HTML,
@@ -1338,7 +1374,7 @@ final class RenderElementRuntimeTest extends TestCase
                 [],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-html" data-object-id="12345">
                 Creating a Template for the Field and form
                 </td>',
                 FieldDescriptionInterface::TYPE_HTML,
@@ -1346,7 +1382,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['strip' => true],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-html" data-object-id="12345">
                 Creating a Template for the...
                 </td>',
                 FieldDescriptionInterface::TYPE_HTML,
@@ -1354,13 +1390,13 @@ final class RenderElementRuntimeTest extends TestCase
                 ['truncate' => true],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345"> Creatin... </td>',
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-html" data-object-id="12345"> Creatin... </td>',
                 FieldDescriptionInterface::TYPE_HTML,
                 '<p><strong>Creating a Template for the Field</strong> and form</p>',
                 ['truncate' => ['length' => 10]],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-html" data-object-id="12345">
                 Creating a Template for the Field...
                 </td>',
                 FieldDescriptionInterface::TYPE_HTML,
@@ -1368,7 +1404,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['truncate' => ['cut' => false]],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-html" data-object-id="12345">
                 Creating a Template for t etc.
                 </td>',
                 FieldDescriptionInterface::TYPE_HTML,
@@ -1376,7 +1412,7 @@ final class RenderElementRuntimeTest extends TestCase
                 ['truncate' => ['ellipsis' => ' etc.']],
             ],
             [
-                '<td class="sonata-ba-list-field sonata-ba-list-field-html" objectId="12345">
+                '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-html" data-object-id="12345">
                 Creating a Template[...]
                 </td>',
                 FieldDescriptionInterface::TYPE_HTML,
@@ -1392,17 +1428,17 @@ final class RenderElementRuntimeTest extends TestCase
 
             [
                 <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345">
-                        <div class="sonata-readmore"
-                             data-controller="sonata-readmore"
-                             data-sonata-readmore-collapsed-height-value="40"
-                             data-sonata-readmore-more-text-value="Read more"
-                             data-sonata-readmore-less-text-value="Close">
-                            <div class="sonata-readmore-content" data-sonata-readmore-target="content">A very long string</div>
+                    <td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-string" data-object-id="12345">
+                        <div class="sensiolabs-readmore"
+                             data-controller="sensiolabs-de--admin-bundle--readmore"
+                             data-sensiolabs-de--admin-bundle--readmore-collapsed-height-value="40"
+                             data-sensiolabs-de--admin-bundle--readmore-more-text-value="Read more"
+                             data-sensiolabs-de--admin-bundle--readmore-less-text-value="Close">
+                            <div class="sensiolabs-readmore-content" data-sensiolabs-de--admin-bundle--readmore-target="content">A very long string</div>
                             <button type="button"
-                                    class="sonata-readmore-btn btn-link"
-                                    data-sonata-readmore-target="button"
-                                    data-action="click->sonata-readmore#toggle"></button>
+                                    class="text-sm text-primary-600 hover:text-primary-700 mt-1"
+                                    data-sensiolabs-de--admin-bundle--readmore-target="button"
+                                    data-action="click->sensiolabs-de--admin-bundle--readmore#toggle"></button>
                         </div>
                     </td>
                     EOT,
@@ -1414,17 +1450,17 @@ final class RenderElementRuntimeTest extends TestCase
             ],
             [
                 <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-string" objectId="12345">
-                        <div class="sonata-readmore"
-                             data-controller="sonata-readmore"
-                             data-sonata-readmore-collapsed-height-value="10"
-                             data-sonata-readmore-more-text-value="More"
-                             data-sonata-readmore-less-text-value="Less">
-                            <div class="sonata-readmore-content" data-sonata-readmore-target="content">A very long string</div>
+                    <td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-string" data-object-id="12345">
+                        <div class="sensiolabs-readmore"
+                             data-controller="sensiolabs-de--admin-bundle--readmore"
+                             data-sensiolabs-de--admin-bundle--readmore-collapsed-height-value="10"
+                             data-sensiolabs-de--admin-bundle--readmore-more-text-value="More"
+                             data-sensiolabs-de--admin-bundle--readmore-less-text-value="Less">
+                            <div class="sensiolabs-readmore-content" data-sensiolabs-de--admin-bundle--readmore-target="content">A very long string</div>
                             <button type="button"
-                                    class="sonata-readmore-btn btn-link"
-                                    data-sonata-readmore-target="button"
-                                    data-action="click->sonata-readmore#toggle"></button>
+                                    class="text-sm text-primary-600 hover:text-primary-700 mt-1"
+                                    data-sensiolabs-de--admin-bundle--readmore-target="button"
+                                    data-action="click->sensiolabs-de--admin-bundle--readmore#toggle"></button>
                         </div>
                     </td>
                     EOT,
@@ -1440,9 +1476,9 @@ final class RenderElementRuntimeTest extends TestCase
             ],
             [
                 <<<'EOT'
-                    <td class="sonata-ba-list-field sonata-ba-list-field-choice" objectId="12345">
+                    <td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-choice" data-object-id="12345">
                         <span
-                            class="x-editable"
+                            class="x-editable editable-click"
                             data-type="checklist"
                             data-value="[&quot;Status1&quot;,&quot;Status2&quot;]"
                             data-title="Data"
@@ -1472,7 +1508,7 @@ final class RenderElementRuntimeTest extends TestCase
         ];
 
         $elements[] = [
-            '<td class="sonata-ba-list-field sonata-ba-list-field-enum" objectId="12345"> Hearts </td>',
+            '<td class="admin-table-cell sensiolabs-ba-list-field sensiolabs-ba-list-field-enum" data-object-id="12345"> Hearts </td>',
             FieldDescriptionInterface::TYPE_ENUM,
             Suit::Hearts,
             [],
@@ -1550,20 +1586,25 @@ final class RenderElementRuntimeTest extends TestCase
             ['safe' => false, 'inline' => true],
         ];
         yield [
-            '<th>Data</th> <td><span class="label label-success">yes</span></td>',
+            '<th>Data</th> <td><span class="inline-flex items-center gap-1.5"><span class="flex items-center justify-center w-5 h-5 rounded-full bg-success-100 text-success-600"><svg class="w-3 h-3">lucide:check</svg></span><span class="text-sm font-medium text-success-700">yes</span></span></td>',
             FieldDescriptionInterface::TYPE_BOOLEAN,
             true,
             [],
         ];
         yield [
-            '<th>Data</th> <td><span class="label label-danger">yes</span></td>',
+            '<th>Data</th> <td><span class="inline-flex items-center gap-1.5"><span class="flex items-center justify-center w-5 h-5 rounded-full bg-gray-100 text-gray-400"><svg class="w-3 h-3">lucide:x</svg></span><span class="text-sm text-gray-500">no</span></span></td>',
             FieldDescriptionInterface::TYPE_BOOLEAN,
             true,
             ['inverse' => true],
         ];
-        yield ['<th>Data</th> <td><span class="label label-danger">no</span></td>', FieldDescriptionInterface::TYPE_BOOLEAN, false, []];
         yield [
-            '<th>Data</th> <td><span class="label label-success">no</span></td>',
+            '<th>Data</th> <td><span class="inline-flex items-center gap-1.5"><span class="flex items-center justify-center w-5 h-5 rounded-full bg-gray-100 text-gray-400"><svg class="w-3 h-3">lucide:x</svg></span><span class="text-sm text-gray-500">no</span></span></td>',
+            FieldDescriptionInterface::TYPE_BOOLEAN,
+            false,
+            [],
+        ];
+        yield [
+            '<th>Data</th> <td><span class="inline-flex items-center gap-1.5"><span class="flex items-center justify-center w-5 h-5 rounded-full bg-success-100 text-success-600"><svg class="w-3 h-3">lucide:check</svg></span><span class="text-sm font-medium text-success-700">yes</span></span></td>',
             FieldDescriptionInterface::TYPE_BOOLEAN,
             false,
             ['inverse' => true],
@@ -1947,8 +1988,8 @@ final class RenderElementRuntimeTest extends TestCase
                     <div class="sonata-readmore"
                          data-controller="sonata-readmore"
                          data-sonata-readmore-collapsed-height-value="40"
-                         data-sonata-readmore-more-text-value="Read more"
-                         data-sonata-readmore-less-text-value="Close">
+                         data-sonata-readmore-more-text-value="read_more"
+                         data-sonata-readmore-less-text-value="read_less">
                         <div class="sonata-readmore-content" data-sonata-readmore-target="content"> A very long string </div>
                         <button type="button"
                                 class="sonata-readmore-btn btn-link"
@@ -2059,9 +2100,27 @@ final class RenderElementRuntimeTest extends TestCase
         $this->environment->addExtension(new TranslationExtension($this->translator));
         $this->environment->addExtension(new FakeTemplateRegistryExtension());
         $this->environment->addExtension(new StringExtension());
+        $this->environment->addExtension(new UXIconExtension());
+
+        $iconRenderer = new class implements IconRendererInterface {
+            public function renderIcon(string $name, array $attributes = []): string
+            {
+                $attrs = '';
+                foreach ($attributes as $key => $value) {
+                    if (\is_bool($value)) {
+                        $attrs .= $value ? \sprintf(' %s', $key) : '';
+                    } else {
+                        $attrs .= \sprintf(' %s="%s"', $key, $value);
+                    }
+                }
+
+                return \sprintf('<svg%s>%s</svg>', $attrs, $name);
+            }
+        };
 
         $this->environment->addRuntimeLoader(new FactoryRuntimeLoader([
             XEditableRuntime::class => fn (): XEditableRuntime => new XEditableRuntime($this->translator),
+            UXIconRuntime::class => static fn (): UXIconRuntime => new UXIconRuntime($iconRenderer),
         ]));
 
         $this->registerRoutingExtension();

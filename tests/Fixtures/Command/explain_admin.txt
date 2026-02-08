@@ -2,7 +2,7 @@ AdminBundle Information
 id                   : foo
 Admin                : %1$s
 Model                : Acme\Entity\Foo
-Controller           : Sonata\AdminBundle\Controller\CRUDController
+Controller           : SensioLabs\AdminBundle\Controller\CRUDController
 Model Manager        : %2$s
 Form Builder         : %3$s
 Datagrid Builder     : %4$s
@@ -14,18 +14,18 @@ Routes
   - fooBar_edit               /foo-bar/edit
 
 Datagrid Columns
-  - fooTextField               text            @SonataAdmin/CRUD/foo_text.html.twig
-  - barDateTimeField           datetime        @SonataAdmin/CRUD/bar_datetime.html.twig
+  - fooTextField               text            @SensioLabsAdmin/CRUD/foo_text.html.twig
+  - barDateTimeField           datetime        @SensioLabsAdmin/CRUD/bar_datetime.html.twig
 
 Datagrid Filters
-  - fooTextField               text            @SonataAdmin/CRUD/foo_text.html.twig
-  - barDateTimeField           datetime        @SonataAdmin/CRUD/bar_datetime.html.twig
+  - fooTextField               text            @SensioLabsAdmin/CRUD/foo_text.html.twig
+  - barDateTimeField           datetime        @SensioLabsAdmin/CRUD/bar_datetime.html.twig
 
 Form theme(s)
   - @Foo/bar.html.twig
 
 Form Fields
-  - fooTextField               text            @SonataAdmin/CRUD/foo_text.html.twig
-  - barDateTimeField           datetime        @SonataAdmin/CRUD/bar_datetime.html.twig
+  - fooTextField               text            @SensioLabsAdmin/CRUD/foo_text.html.twig
+  - barDateTimeField           datetime        @SensioLabsAdmin/CRUD/bar_datetime.html.twig
 
 done!

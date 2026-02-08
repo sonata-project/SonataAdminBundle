@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace SensioLabs\AdminBundle\Tests\Datagrid;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
@@ -25,7 +24,6 @@ use SensioLabs\AdminBundle\Datagrid\ProxyQueryInterface;
 use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionCollection;
 use SensioLabs\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use SensioLabs\AdminBundle\Filter\FilterInterface;
-use SensioLabs\AdminBundle\Form\Type\Filter\FilterDataType;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Form;
@@ -390,28 +388,6 @@ final class DatagridTest extends TestCase
     }
 
     /**
-     * NEXT_MAJOR: Remove this test.
-     */
-    #[DataProvider('applyFilterDataProvider')]
-    #[IgnoreDeprecations]
-    public function testLegacyApplyFilter(?string $type, ?string $value, int $applyCallNumber): void
-    {
-        $this->datagrid->setValue('fooFormName', $type, $value);
-
-        $filter = $this->createMock(FilterInterface::class);
-        $filter->expects(static::once())->method('getName')->willReturn('foo');
-        $filter->method('getFormName')->willReturn('fooFormName');
-        $filter->method('isActive')->willReturn(false);
-        $filter->method('getRenderSettings')
-            ->willReturn([FilterDataType::class, ['operator_options' => ['help' => 'baz2']]]);
-        $filter->expects(static::exactly($applyCallNumber))->method('apply');
-
-        $this->datagrid->addFilter($filter);
-
-        $this->datagrid->buildPager();
-    }
-
-    /**
      * @phpstan-return iterable<array-key, array{string|null, string|null, int}>
      */
     public static function applyFilterDataProvider(): iterable
@@ -453,7 +429,7 @@ final class DatagridTest extends TestCase
         $this->datagrid->setValue(DatagridInterface::SORT_BY, 'foo', 'baz');
 
         $this->expectException(UnexpectedTypeException::class);
-        $this->expectExceptionMessage('Expected argument of type "Sonata\\AdminBundle\\FieldDescription\\FieldDescriptionInterface", "array" given');
+        $this->expectExceptionMessage('Expected argument of type "SensioLabs\\AdminBundle\\FieldDescription\\FieldDescriptionInterface", "array" given');
 
         $this->datagrid->buildPager();
     }

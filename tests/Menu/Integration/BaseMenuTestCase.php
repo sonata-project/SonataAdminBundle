@@ -21,8 +21,12 @@ use PHPUnit\Framework\TestCase;
 use SensioLabs\AdminBundle\Tests\Fixtures\StubTranslator;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\UX\Icons\IconRendererInterface;
+use Symfony\UX\Icons\Twig\UXIconExtension;
+use Symfony\UX\Icons\Twig\UXIconRuntime;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
+use Twig\RuntimeLoader\FactoryRuntimeLoader;
 
 /**
  * Base class for tests checking rendering of twig templates.
@@ -42,6 +46,27 @@ abstract class BaseMenuTestCase extends TestCase
 
         $loader = new FilesystemLoader($twigPaths);
         $this->environment = new Environment($loader, ['strict_variables' => true]);
+        $this->environment->addExtension(new UXIconExtension());
+
+        $iconRenderer = new class implements IconRendererInterface {
+            public function renderIcon(string $name, array $attributes = []): string
+            {
+                $attrs = '';
+                foreach ($attributes as $key => $value) {
+                    if (\is_bool($value)) {
+                        $attrs .= $value ? \sprintf(' %s', $key) : '';
+                    } else {
+                        $attrs .= \sprintf(' %s="%s"', $key, $value);
+                    }
+                }
+
+                return \sprintf('<svg%s>%s</svg>', $attrs, $name);
+            }
+        };
+
+        $this->environment->addRuntimeLoader(new FactoryRuntimeLoader([
+            UXIconRuntime::class => static fn (): UXIconRuntime => new UXIconRuntime($iconRenderer),
+        ]));
     }
 
     abstract protected function getTemplate(): string;

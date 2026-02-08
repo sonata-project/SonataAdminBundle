@@ -19,7 +19,7 @@ final class RetrieveAutocompleteItemsActionTest extends BaseFunctionalTestCase
 {
     public function testAutocomplete(): void
     {
-        $this->client->request(Request::METHOD_GET, '/admin/core/get-autocomplete-items?q=autocompletion&_per_page=10&_page=1&uniqid=s608eac968661e&_sonata_admin=Sonata%5CDoctrineORMAdminBundle%5CTests%5CApp%5CAdmin%5CBookWithAuthorAutocompleteAdmin&field=author');
+        $this->client->request(Request::METHOD_GET, '/admin/core/get-autocomplete-items?q=autocompletion&_per_page=10&_page=1&uniqid=s608eac968661e&_sensiolabs_admin=SensioLabs%5CAdminBundle%5CTests%5CApp%5CORM%5CAdmin%5CBookWithAuthorAutocompleteAdmin&field=author');
 
         $content = $this->client->getResponse()->getContent();
         static::assertIsString($content);

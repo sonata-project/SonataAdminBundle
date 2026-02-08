@@ -85,7 +85,7 @@ final class AdminLayoutTest extends AbstractLayoutTestCase
         $fieldDescription = $this->createFieldDescriptionWithTranslationDomain('sonata_translation_domain');
 
         $form = $this->factory->createNamed('name', TextType::class, null, [
-            'sonata_field_description' => $fieldDescription,
+            'sensiolabs_field_description' => $fieldDescription,
         ]);
         $html = $this->renderLabel($form->createView());
 
@@ -123,7 +123,7 @@ final class AdminLayoutTest extends AbstractLayoutTestCase
 
         $form = $this->factory->createNamed('name', TextType::class, null, [
             'help' => 'Help text test!',
-            'sonata_field_description' => $fieldDescription,
+            'sensiolabs_field_description' => $fieldDescription,
         ]);
         $view = $form->createView();
         $html = $this->renderHelp($view);
@@ -181,14 +181,14 @@ final class AdminLayoutTest extends AbstractLayoutTestCase
                         [@class="list-unstyled"]
                         [
                             ./li
-                                [.=" [trans]Error 1[/trans]"]
+                                [contains(., "[trans]Error 1[/trans]")]
                                 [
-                                    ./i[@class="fas fa-exclamation-circle"]
+                                    ./svg[@class="w-4 h-4 inline-block"]
                                 ]
                             /following-sibling::li
-                                [.=" [trans]Error 2[/trans]"]
+                                [contains(., "[trans]Error 2[/trans]")]
                                 [
-                                    ./i[@class="fas fa-exclamation-circle"]
+                                    ./svg[@class="w-4 h-4 inline-block"]
                                 ]
                         ]
                         [count(./li)=2]

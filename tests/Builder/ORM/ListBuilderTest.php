@@ -65,7 +65,7 @@ final class ListBuilderTest extends TestCase
         $this->listBuilder->addField($list, 'actions', $fieldDescription);
 
         static::assertSame(
-            '@SonataAdmin/CRUD/list__action.html.twig',
+            '@SensioLabsAdmin/CRUD/list__action.html.twig',
             $list->get('foo')->getTemplate(),
             'Custom list action field has a default list action template assigned'
         );
@@ -95,7 +95,7 @@ final class ListBuilderTest extends TestCase
         static::assertIsArray($actions['test']);
         static::assertArrayHasKey('template', $actions['test']);
         static::assertSame(
-            '@SonataAdmin/CRUD/list__action_test.html.twig',
+            '@SensioLabsAdmin/CRUD/list__action_test.html.twig',
             $fieldDescription->getOption('actions')['test']['template']
         );
     }
@@ -122,19 +122,19 @@ final class ListBuilderTest extends TestCase
     {
         yield 'one-to-one' => [
             ClassMetadata::ONE_TO_ONE,
-            '@SonataAdmin/CRUD/Association/list_one_to_one.html.twig',
+            '@SensioLabsAdmin/CRUD/Association/list_one_to_one.html.twig',
         ];
         yield 'many-to-one' => [
             ClassMetadata::MANY_TO_ONE,
-            '@SonataAdmin/CRUD/Association/list_many_to_one.html.twig',
+            '@SensioLabsAdmin/CRUD/Association/list_many_to_one.html.twig',
         ];
         yield 'one-to-many' => [
             ClassMetadata::ONE_TO_MANY,
-            '@SonataAdmin/CRUD/Association/list_one_to_many.html.twig',
+            '@SensioLabsAdmin/CRUD/Association/list_one_to_many.html.twig',
         ];
         yield 'many-to-many' => [
             ClassMetadata::MANY_TO_MANY,
-            '@SonataAdmin/CRUD/Association/list_many_to_many.html.twig',
+            '@SensioLabsAdmin/CRUD/Association/list_many_to_many.html.twig',
         ];
     }
 

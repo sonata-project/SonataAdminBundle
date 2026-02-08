@@ -1,8 +1,8 @@
 admin_area:
-    resource: '@SonataAdminBundle/Resources/config/routing/sonata_admin.php'
+    resource: '@SensioLabsAdminBundle/Resources/config/routing/sensiolabs_admin.php'
     prefix: /admin
 
-_sonata_admin:
+_sensiolabs_admin:
     resource: .
-    type: sonata_admin
+    type: sensiolabs_admin
     prefix: /admin

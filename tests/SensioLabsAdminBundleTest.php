@@ -26,7 +26,7 @@ final class SensioLabsAdminBundleTest extends TestCase
     {
         $containerBuilder = $this->createMock(ContainerBuilder::class);
 
-        $containerBuilder->expects(static::exactly(11))
+        $containerBuilder->expects(static::exactly(14))
             ->method('addCompilerPass');
 
         $bundle = new SensioLabsAdminBundle();

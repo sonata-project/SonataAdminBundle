@@ -22,8 +22,12 @@ use SensioLabs\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use SensioLabs\AdminBundle\Tests\Fixtures\StubTranslator;
 use SensioLabs\AdminBundle\Twig\BreadcrumbsRuntime;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
+use Symfony\UX\Icons\IconRendererInterface;
+use Symfony\UX\Icons\Twig\UXIconExtension;
+use Symfony\UX\Icons\Twig\UXIconRuntime;
 use Twig\Environment;
 use Twig\Extra\String\StringExtension;
+use Twig\RuntimeLoader\FactoryRuntimeLoader;
 
 final class BreadcrumbsRuntimeTest extends TestCase
 {
@@ -39,7 +43,7 @@ final class BreadcrumbsRuntimeTest extends TestCase
     protected function setUp(): void
     {
         $loader = new StubFilesystemLoader();
-        $loader->addPath(__DIR__.'/../../src/Resources/views/', 'SonataAdmin');
+        $loader->addPath(__DIR__.'/../../src/Resources/views/', 'SensioLabsAdmin');
 
         $this->environment = new Environment($loader, [
             'strict_variables' => true,
@@ -49,6 +53,27 @@ final class BreadcrumbsRuntimeTest extends TestCase
         ]);
         $this->environment->addExtension(new TranslationExtension(new StubTranslator()));
         $this->environment->addExtension(new StringExtension());
+        $this->environment->addExtension(new UXIconExtension());
+
+        $iconRenderer = new class implements IconRendererInterface {
+            public function renderIcon(string $name, array $attributes = []): string
+            {
+                $attrs = '';
+                foreach ($attributes as $key => $value) {
+                    if (\is_bool($value)) {
+                        $attrs .= $value ? \sprintf(' %s', $key) : '';
+                    } else {
+                        $attrs .= \sprintf(' %s="%s"', $key, $value);
+                    }
+                }
+
+                return \sprintf('<svg%s>%s</svg>', $attrs, $name);
+            }
+        };
+
+        $this->environment->addRuntimeLoader(new FactoryRuntimeLoader([
+            UXIconRuntime::class => static fn (): UXIconRuntime => new UXIconRuntime($iconRenderer),
+        ]));
 
         $this->breadcrumbBuilder = static::createStub(BreadcrumbsBuilderInterface::class);
 
@@ -137,13 +162,13 @@ final class BreadcrumbsRuntimeTest extends TestCase
             ->willReturn([$item, $item2, $item3]);
 
         $expected =
-            '<li><span>Label for item 1</span></li>'
-            .'<li>'
-                .'<a href="https://sonata-project.org"> '
-                    .'[trans domain=custom_translation_domain]Label for item 2 with custom_parameter[/trans] '
-                .'</a>'
-            .'</li>'
-            .'<li class="active"><span>Label for item 3</span></li>';
+            '<span class="admin-breadcrumb-item">Label for item 1</span>'
+            .'<span class="admin-breadcrumb-separator"><svg class="w-4 h-4">lucide:chevron-right</svg></span>'
+            .'<a href="https://sonata-project.org" class="admin-breadcrumb-item">'
+                .' [trans domain=custom_translation_domain]Label for item 2 with custom_parameter[/trans] '
+            .'</a>'
+            .'<span class="admin-breadcrumb-separator"><svg class="w-4 h-4">lucide:chevron-right</svg></span>'
+            .'<span class="admin-breadcrumb-current">Label for item 3</span>';
 
         static::assertSame(
             $expected,

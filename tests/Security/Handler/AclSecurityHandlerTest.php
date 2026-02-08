@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace SensioLabs\AdminBundle\Tests\Security\Handler;
 
-use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
 use SensioLabs\AdminBundle\Admin\AdminInterface;
 use SensioLabs\AdminBundle\Security\Acl\Permission\MaskBuilder;
@@ -27,10 +25,6 @@ use Symfony\Component\Security\Core\Exception\AuthenticationCredentialsNotFoundE
 
 final class AclSecurityHandlerTest extends TestCase
 {
-    /**
-     * NEXT_MAJOR: Remove the group legacy.
-     */
-    #[IgnoreDeprecations]
     public function testAcl(): void
     {
         $admin = $this->createMock(AdminInterface::class);
@@ -47,8 +41,6 @@ final class AclSecurityHandlerTest extends TestCase
 
         $handler = new AclSecurityHandler($this->createMock(TokenStorageInterface::class), $authorizationChecker, $aclProvider, MaskBuilder::class, 'ROLE_SUPER_ADMIN');
 
-        // NEXT_MAJOR: Remove the next line.
-        static::assertTrue($handler->isGranted($admin, ['TOTO']));
         static::assertTrue($handler->isGranted($admin, 'TOTO'));
 
         $authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
@@ -58,8 +50,6 @@ final class AclSecurityHandlerTest extends TestCase
 
         $handler = new AclSecurityHandler($this->createMock(TokenStorageInterface::class), $authorizationChecker, $aclProvider, MaskBuilder::class, 'ROLE_SUPER_ADMIN');
 
-        // NEXT_MAJOR: Remove the next line.
-        static::assertFalse($handler->isGranted($admin, ['TOTO']));
         static::assertFalse($handler->isGranted($admin, 'TOTO'));
     }
 

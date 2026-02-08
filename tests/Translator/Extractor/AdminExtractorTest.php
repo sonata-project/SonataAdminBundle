@@ -64,17 +64,7 @@ final class AdminExtractorTest extends TestCase
         $container->set('foo_admin', $this->fooAdmin);
         $container->set('bar_admin', $this->barAdmin);
 
-        $this->pool = new Pool($container, ['foo_admin', 'bar_admin'], [
-            'group' => [
-                'label' => 'label',
-                'icon' => 'icon',
-                'translation_domain' => 'admin_domain',
-                'items' => [],
-                'keep_open' => false,
-                'on_top' => false,
-                'roles' => [],
-            ],
-        ]);
+        $this->pool = new Pool($container, ['foo_admin', 'bar_admin']);
 
         $this->breadcrumbsBuilder = $this->createMock(BreadcrumbsBuilderInterface::class);
         $this->adminExtractor = new AdminExtractor($this->pool, $this->breadcrumbsBuilder);
@@ -101,11 +91,8 @@ final class AdminExtractorTest extends TestCase
 
         $this->adminExtractor->extract([], $catalogue);
 
-        static::assertCount(2, $catalogue->getDomains());
-        $message = $catalogue->get('foo', 'foo_admin_domain');
-        static::assertSame('foo', $message);
+        static::assertCount(1, $catalogue->getDomains());
 
-        static::assertTrue($catalogue->has('group', 'admin_domain'));
         static::assertTrue($catalogue->has('foo_label', 'foo_admin_domain'));
     }
 

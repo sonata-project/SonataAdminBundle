@@ -39,8 +39,6 @@ final class DataSource implements DataSourceInterface
 
         // AddSelect is needed when exporting the results sorted by a column that is part of ManyToOne relation
         // For OneToMany the toIterable() doctrine method is not supported so the select is not added and the sort is removed.
-        //
-        // @see https://github.com/sonata-project/SonataDoctrineORMAdminBundle/issues/1586
         if (null !== $sortBy) {
             $rootAliasSortBy = strstr($sortBy, '.', true);
 

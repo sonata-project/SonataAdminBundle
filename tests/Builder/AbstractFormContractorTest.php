@@ -122,7 +122,7 @@ final class AbstractFormContractorTest extends TestCase
         // model types
         foreach ($modelTypes as $formType) {
             $options = $this->formContractor->getDefaultOptions($formType, $this->fieldDescription);
-            static::assertSame($this->fieldDescription, $options['sonata_field_description']);
+            static::assertSame($this->fieldDescription, $options['sensiolabs_field_description']);
             static::assertSame($modelClass, $options['class']);
             static::assertSame($modelManager, $options['model_manager']);
         }
@@ -133,7 +133,7 @@ final class AbstractFormContractorTest extends TestCase
             ->willReturn(true);
         foreach ($adminTypes as $formType) {
             $options = $this->formContractor->getDefaultOptions($formType, $this->fieldDescription);
-            static::assertSame($this->fieldDescription, $options['sonata_field_description']);
+            static::assertSame($this->fieldDescription, $options['sensiolabs_field_description']);
             static::assertSame($modelClass, $options['data_class']);
             static::assertFalse($options['btn_add']);
             static::assertFalse($options['delete']);
@@ -144,11 +144,11 @@ final class AbstractFormContractorTest extends TestCase
             $options = $this->formContractor->getDefaultOptions($formType, $this->fieldDescription, [
                 'by_reference' => false,
             ]);
-            static::assertSame($this->fieldDescription, $options['sonata_field_description']);
+            static::assertSame($this->fieldDescription, $options['sensiolabs_field_description']);
             static::assertSame(AdminType::class, $options['type']);
             static::assertTrue($options['modifiable']);
             static::assertIsArray($options['type_options']);
-            static::assertSame($this->fieldDescription, $options['type_options']['sonata_field_description']);
+            static::assertSame($this->fieldDescription, $options['type_options']['sensiolabs_field_description']);
             static::assertSame($modelClass, $options['type_options']['data_class']);
             static::assertFalse($options['type_options']['collection_by_reference']);
         }

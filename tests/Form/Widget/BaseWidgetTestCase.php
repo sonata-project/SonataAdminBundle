@@ -20,9 +20,13 @@ use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\UX\Icons\IconRendererInterface;
+use Symfony\UX\Icons\Twig\UXIconExtension;
+use Symfony\UX\Icons\Twig\UXIconRuntime;
 use Symfony\UX\StimulusBundle\Helper\StimulusHelper;
 use Symfony\UX\StimulusBundle\Twig\StimulusTwigExtension;
 use Twig\Environment;
+use Twig\RuntimeLoader\FactoryRuntimeLoader;
 
 /**
  * Base class for tests checking rendering of form widgets with form_admin_fields.html.twig and
@@ -66,6 +70,28 @@ abstract class BaseWidgetTestCase extends AbstractWidgetTestCase
             $environment->addExtension(new TranslationExtension(new StubTranslator()));
         }
 
+        $environment->addExtension(new UXIconExtension());
+
+        $iconRenderer = new class implements IconRendererInterface {
+            public function renderIcon(string $name, array $attributes = []): string
+            {
+                $attrs = '';
+                foreach ($attributes as $key => $value) {
+                    if (\is_bool($value)) {
+                        $attrs .= $value ? \sprintf(' %s', $key) : '';
+                    } else {
+                        $attrs .= \sprintf(' %s="%s"', $key, $value);
+                    }
+                }
+
+                return \sprintf('<svg%s>%s</svg>', $attrs, $name);
+            }
+        };
+
+        $environment->addRuntimeLoader(new FactoryRuntimeLoader([
+            UXIconRuntime::class => static fn (): UXIconRuntime => new UXIconRuntime($iconRenderer),
+        ]));
+
         return $environment;
     }
 
@@ -88,7 +114,7 @@ abstract class BaseWidgetTestCase extends AbstractWidgetTestCase
      */
     protected function getSonataAdmin(): array
     {
-        return $this->sonataAdmin;
+        return $this->sensiolabsAdmin;
     }
 
     protected function getTemplatePaths(): array

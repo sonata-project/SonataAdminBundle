@@ -16,7 +16,6 @@ namespace SensioLabs\AdminBundle\Tests\Security\Handler;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Group;
-use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use SensioLabs\AdminBundle\Admin\AdminInterface;
@@ -116,19 +115,12 @@ final class RoleSecurityHandlerTest extends TestCase
         yield 'with missing permission' => [['SHOW' => ['VIEW', 'SHOW']], ['ROLE_TEST_VIEW'], false];
     }
 
-    /**
-     * NEXT_MAJOR: Remove the group legacy and only keep string $superAdminRoles and string|Expression $operation in dataProvider.
-     *
-     * @param string|string[]                            $superAdminRoles
-     * @param string|Expression|array<string|Expression> $operation
-     */
     #[DataProvider('provideIsGrantedCases')]
-    #[IgnoreDeprecations]
     public function testIsGranted(
         bool $expected,
-        string|array $superAdminRoles,
+        string $superAdminRoles,
         string $adminCode,
-        string|Expression|array $operation,
+        string|Expression $operation,
         ?object $object = null,
     ): void {
         $handler = $this->getRoleSecurityHandler($superAdminRoles);
@@ -164,78 +156,49 @@ final class RoleSecurityHandlerTest extends TestCase
     }
 
     /**
-     * @phpstan-return iterable<array{0: bool, 1: string|array<string>, 2: string, 3: string|Expression|array<string|Expression>, 4?: object|null}>
+     * @phpstan-return iterable<array{0: bool, 1: string, 2: string, 3: string|Expression, 4?: object|null}>
      */
     public static function provideIsGrantedCases(): iterable
     {
         // empty
         yield [false, '', 'foo.bar', ''];
-        yield [false, '', 'foo.bar', ['']];
-        yield [false, '', 'foo.bar.abc', ['']];
-        yield [false, '', 'foo.bar.def', ['']];
         yield [false, '', 'foo.bar.baz.xyz', ''];
-        yield [false, '', 'foo.bar.baz.xyz', ['']];
         // superadmins
-        yield [true, ['ROLE_BATMAN', 'ROLE_IRONMAN'], 'foo.bar', 'BAZ'];
-        yield [true, ['ROLE_BATMAN', 'ROLE_IRONMAN'], 'foo.bar', 'ANYTHING'];
-        yield [true, ['ROLE_BATMAN', 'ROLE_IRONMAN'], 'foo.bar', ['BAZ', 'ANYTHING']];
         yield [true, 'ROLE_IRONMAN', 'foo.bar', 'BAZ'];
         yield [true, 'ROLE_IRONMAN', 'foo.bar', 'ANYTHING'];
         yield [true, 'ROLE_IRONMAN', 'foo.bar.baz.xyz', 'ANYTHING'];
         yield [true, 'ROLE_IRONMAN', 'foo.bar', ''];
-        yield [true, 'ROLE_IRONMAN', 'foo.bar', ['']];
         // operations
         yield [true, 'ROLE_SPIDERMAN', 'foo.bar', 'ABC'];
-        yield [true, 'ROLE_SPIDERMAN', 'foo.bar', ['ABC']];
-        yield [true, 'ROLE_SPIDERMAN', 'foo.bar', ['ABC', 'DEF']];
-        yield [true, 'ROLE_SPIDERMAN', 'foo.bar', ['BAZ', 'ABC']];
         yield [false, 'ROLE_SPIDERMAN', 'foo.bar', 'DEF'];
-        yield [false, 'ROLE_SPIDERMAN', 'foo.bar', ['DEF']];
         yield [false, 'ROLE_SPIDERMAN', 'foo.bar', 'BAZ'];
-        yield [false, 'ROLE_SPIDERMAN', 'foo.bar', ['BAZ']];
-        yield [true, [], 'foo.bar', 'ABC'];
-        yield [true, [], 'foo.bar', ['ABC']];
-        yield [false, [], 'foo.bar', 'DEF'];
-        yield [false, [], 'foo.bar', ['DEF']];
-        yield [false, [], 'foo.bar', 'BAZ'];
-        yield [false, [], 'foo.bar', ['BAZ']];
-        yield [false, [], 'foo.bar.baz.xyz', 'ABC'];
-        yield [false, [], 'foo.bar.baz.xyz', ['ABC']];
-        yield [false, [], 'foo.bar.baz.xyz', ['ABC', 'DEF']];
-        yield [false, [], 'foo.bar.baz.xyz', 'DEF'];
-        yield [false, [], 'foo.bar.baz.xyz', ['DEF']];
-        yield [false, [], 'foo.bar.baz.xyz', 'BAZ'];
-        yield [false, [], 'foo.bar.baz.xyz', ['BAZ']];
+        yield [true, '', 'foo.bar', 'ABC'];
+        yield [false, '', 'foo.bar', 'DEF'];
+        yield [false, '', 'foo.bar', 'BAZ'];
+        yield [false, '', 'foo.bar.baz.xyz', 'ABC'];
+        yield [false, '', 'foo.bar.baz.xyz', 'DEF'];
+        yield [false, '', 'foo.bar.baz.xyz', 'BAZ'];
         // objects
-        yield [true, 'ROLE_SPIDERMAN', 'foo.bar', ['DEF'], new \stdClass()];
-        yield [true, 'ROLE_SPIDERMAN', 'foo.bar', ['ABC'], new \stdClass()];
-        yield [true, 'ROLE_SPIDERMAN', 'foo.bar', ['ABC', 'DEF'], new \stdClass()];
-        yield [true, 'ROLE_SPIDERMAN', 'foo.bar', ['BAZ', 'DEF'], new \stdClass()];
         yield [true, 'ROLE_SPIDERMAN', 'foo.bar', 'DEF', new \stdClass()];
         yield [true, 'ROLE_SPIDERMAN', 'foo.bar', 'ABC', new \stdClass()];
         yield [false, 'ROLE_SPIDERMAN', 'foo.bar', 'BAZ', new \stdClass()];
         yield [false, 'ROLE_SPIDERMAN', 'foo.bar.baz.xyz', 'DEF', new \stdClass()];
         yield [false, 'ROLE_SPIDERMAN', 'foo.bar.baz.xyz', 'ABC', new \stdClass()];
-        yield [true, [], 'foo.bar', ['ABC'], new \stdClass()];
-        yield [true, [], 'foo.bar', 'ABC', new \stdClass()];
-        yield [true, [], 'foo.bar', ['DEF'], new \stdClass()];
-        yield [true, [], 'foo.bar', 'DEF', new \stdClass()];
-        yield [false, [], 'foo.bar', ['BAZ'], new \stdClass()];
-        yield [false, [], 'foo.bar', 'BAZ', new \stdClass()];
-        yield [false, [], 'foo.bar.baz.xyz', 'BAZ', new \stdClass()];
-        yield [false, [], 'foo.bar.baz.xyz', ['BAZ'], new \stdClass()];
-        yield [false, 'ROLE_AUTH_EXCEPTION', 'foo.bar.baz.xyz', ['BAZ'], new \stdClass()];
+        yield [true, '', 'foo.bar', 'ABC', new \stdClass()];
+        yield [true, '', 'foo.bar', 'DEF', new \stdClass()];
+        yield [false, '', 'foo.bar', 'BAZ', new \stdClass()];
+        yield [false, '', 'foo.bar.baz.xyz', 'BAZ', new \stdClass()];
+        yield [false, 'ROLE_AUTH_EXCEPTION', 'foo.bar.baz.xyz', 'BAZ', new \stdClass()];
         // role
-        yield [false, [], 'foo.bar', ['CUSTOM']];
-        yield [true, [], 'foo.bar', ['ROLE_CUSTOM']];
-        yield [false, [], 'foo.bar', ['ROLE_ANOTHER_CUSTOM']];
+        yield [false, '', 'foo.bar', 'CUSTOM'];
+        yield [true, '', 'foo.bar', 'ROLE_CUSTOM'];
+        yield [false, '', 'foo.bar', 'ROLE_ANOTHER_CUSTOM'];
         // expression
-        yield [false, [], 'foo.bar', [new Expression('CUSTOM')]];
-        yield [true, [], 'foo.bar', [new Expression('ROLE_CUSTOM')]];
-        yield [false, [], 'foo.bar', [new Expression('ROLE_ANOTHER_CUSTOM')]];
+        yield [false, '', 'foo.bar', new Expression('CUSTOM')];
+        yield [true, '', 'foo.bar', new Expression('ROLE_CUSTOM')];
+        yield [false, '', 'foo.bar', new Expression('ROLE_ANOTHER_CUSTOM')];
         // ALL role
-        yield [true, [], 'foo.bar.baz', 'LIST'];
-        yield [true, [], 'foo.bar.baz', ['LIST', 'EDIT']];
+        yield [true, '', 'foo.bar.baz', 'LIST'];
     }
 
     public function testIsGrantedWithException(): void
@@ -277,10 +240,7 @@ final class RoleSecurityHandlerTest extends TestCase
         static::assertSame([], $handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
-    /**
-     * @param string|string[] $superAdminRoles
-     */
-    private function getRoleSecurityHandler(string|array $superAdminRoles): RoleSecurityHandler
+    private function getRoleSecurityHandler(string $superAdminRoles): RoleSecurityHandler
     {
         return new RoleSecurityHandler($this->authorizationChecker, $superAdminRoles);
     }
