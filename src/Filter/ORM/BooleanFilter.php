@@ -15,7 +15,7 @@ namespace SensioLabs\AdminBundle\Filter\ORM;
 
 use SensioLabs\AdminBundle\Filter\Model\FilterData;
 use SensioLabs\AdminBundle\Datagrid\ORM\ProxyQueryInterface;
-use Sonata\Form\Type\BooleanType;
+use SensioLabs\AdminBundle\Form\Type\BooleanType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 final class BooleanFilter extends Filter

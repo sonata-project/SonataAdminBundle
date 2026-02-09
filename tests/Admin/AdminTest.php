@@ -75,7 +75,6 @@ use SensioLabs\AdminBundle\Tests\Fixtures\FieldDescription\FieldDescription;
 use SensioLabs\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use SensioLabs\AdminBundle\Translator\NoopLabelTranslatorStrategy;
 use SensioLabs\AdminBundle\Translator\UnderscoreLabelTranslatorStrategy;
-use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\FormFactory;
@@ -1605,7 +1604,7 @@ final class AdminTest extends TestCase
         yield ['azerty'];
         yield ['4f69bbb5f14a13347f000092'];
         yield ['0779ca8d-e2be-11e4-ac58-0242ac11000b'];
-        yield [\sprintf('123%smy_type', AdapterInterface::ID_SEPARATOR)];
+        yield ['123~my_type'];
     }
 
     #[DataProvider('provideGetSubject')]

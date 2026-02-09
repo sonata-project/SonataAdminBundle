@@ -30,10 +30,6 @@
         "knplabs/knp-menu-bundle": "^3.0",
         "psr/container": "^1.0 || ^2.0",
         "psr/log": "^2.0 || ^3.0",
-        "sonata-project/doctrine-extensions": "^2.0",
-        "sonata-project/exporter": "^3.1.1",
-        "sonata-project/form-extensions": "^2.0",
-        "sonata-project/twig-extensions": "^2.0",
         "symfony/asset": "^6.4 || ^7.3 || ^8.0",
         "symfony/config": "^6.4 || ^7.3 || ^8.0",
         "symfony/console": "^6.4 || ^7.3 || ^8.0",
@@ -80,6 +76,7 @@
         "phpunit/phpunit": "^11.5.38",
         "psr/event-dispatcher": "^1.0",
         "rector/rector": "^1.1 || ^2.0",
+        "sonata-project/exporter": "^3.1.1",
         "symfony/browser-kit": "^6.4 || ^7.3 || ^8.0",
         "symfony/css-selector": "^6.4 || ^7.3 || ^8.0",
         "symfony/filesystem": "^6.4 || ^7.3 || ^8.0",
@@ -91,6 +88,7 @@
         "symfony/security-acl": "<3.1 >=4.0"
     },
     "suggest": {
+        "sonata-project/exporter": "Required for export functionality",
         "twig/extra-bundle": "Auto configures the Twig Intl extension"
     },
     "minimum-stability": "dev",

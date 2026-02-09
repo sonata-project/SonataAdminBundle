@@ -25,7 +25,7 @@ file that was distributed with this source code.
             <div class="p-4">
                 {% block sensiolabs_admin_content %}
                     {% block notice %}
-                        {% include '@SonataTwig/FlashMessage/render.html.twig' %}
+                        {% include '@SensioLabsAdmin/FlashMessage/render.html.twig' %}
                     {% endblock notice %}
 
                     {% set _content = block('content') is defined ? block('content')|trim : null %}

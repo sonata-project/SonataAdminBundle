@@ -20,7 +20,7 @@ use SensioLabs\AdminBundle\Form\Type\ModelHiddenType;
 use SensioLabs\AdminBundle\Form\Type\ModelListType;
 use SensioLabs\AdminBundle\Form\Type\ModelReferenceType;
 use SensioLabs\AdminBundle\Form\Type\ModelType;
-use Sonata\Form\Type\CollectionType;
+use SensioLabs\AdminBundle\Form\Type\SensioLabsCollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
@@ -107,7 +107,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
                     .' You SHOULD use `%s` instead.',
                     AdminType::class,
                     $fieldDescription->getName(),
-                    CollectionType::class
+                    SensioLabsCollectionType::class
                 ));
             }
 
@@ -119,6 +119,7 @@ abstract class AbstractFormContractor implements FormContractorInterface
             $options['empty_data'] = static fn (): object => $fieldDescription->getAssociationAdmin()->getNewInstance();
             $fieldDescription->setOption('edit', $fieldDescription->getOption('edit', 'admin'));
         } elseif ($this->isAnyInstanceOf($type, [
+            SensioLabsCollectionType::class,
             CollectionType::class,
         ])) {
             if (!$fieldDescription->hasAssociationAdmin()) {

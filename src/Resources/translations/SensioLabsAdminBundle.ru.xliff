@@ -510,6 +510,14 @@
         <source>logout</source>
         <target>Выйти</target>
       </trans-unit>
+      <trans-unit id="date_range_start">
+        <source>date_range_start</source>
+        <target>С</target>
+      </trans-unit>
+      <trans-unit id="date_range_end">
+        <source>date_range_end</source>
+        <target>По</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

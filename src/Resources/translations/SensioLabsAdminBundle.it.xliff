@@ -510,6 +510,14 @@
         <source>logout</source>
         <target>Esci</target>
       </trans-unit>
+      <trans-unit id="date_range_start">
+        <source>date_range_start</source>
+        <target>da</target>
+      </trans-unit>
+      <trans-unit id="date_range_end">
+        <source>date_range_end</source>
+        <target>a</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

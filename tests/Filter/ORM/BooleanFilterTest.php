@@ -16,7 +16,7 @@ namespace SensioLabs\AdminBundle\Tests\Filter\ORM;
 use SensioLabs\AdminBundle\Filter\Model\FilterData;
 use SensioLabs\AdminBundle\Datagrid\ORM\ProxyQuery;
 use SensioLabs\AdminBundle\Filter\ORM\BooleanFilter;
-use Sonata\Form\Type\BooleanType;
+use SensioLabs\AdminBundle\Form\Type\BooleanType;
 final class BooleanFilterTest extends FilterTestCase
 {
     public function testFilterEmpty(): void

@@ -17,7 +17,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use SensioLabs\AdminBundle\Filter\Model\FilterData;
 use SensioLabs\AdminBundle\Datagrid\ORM\ProxyQuery;
 use SensioLabs\AdminBundle\Filter\ORM\EmptyFilter;
-use Sonata\Form\Type\BooleanType;
+use SensioLabs\AdminBundle\Form\Type\BooleanType;
 
 final class EmptyFilterTest extends FilterTestCase
 {

@@ -510,6 +510,14 @@
         <source>logout</source>
         <target>Wyloguj</target>
       </trans-unit>
+      <trans-unit id="date_range_start">
+        <source>date_range_start</source>
+        <target>od</target>
+      </trans-unit>
+      <trans-unit id="date_range_end">
+        <source>date_range_end</source>
+        <target>do</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace SensioLabs\AdminBundle\Filter\ORM;
 
-use Sonata\Form\Type\DateRangeType;
+use SensioLabs\AdminBundle\Form\Type\DateRangeType;
 
 final class DateRangeFilter extends AbstractDateFilter
 {

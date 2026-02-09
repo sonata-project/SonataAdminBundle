@@ -510,6 +510,14 @@
         <source>logout</source>
         <target>Cerrar sesión</target>
       </trans-unit>
+      <trans-unit id="date_range_start">
+        <source>date_range_start</source>
+        <target>Fecha inicial</target>
+      </trans-unit>
+      <trans-unit id="date_range_end">
+        <source>date_range_end</source>
+        <target>Fecha final</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

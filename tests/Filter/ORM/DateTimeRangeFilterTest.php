@@ -17,7 +17,7 @@ use SensioLabs\AdminBundle\Filter\Model\FilterData;
 use SensioLabs\AdminBundle\Form\Type\Operator\DateRangeOperatorType;
 use SensioLabs\AdminBundle\Datagrid\ORM\ProxyQuery;
 use SensioLabs\AdminBundle\Filter\ORM\DateTimeRangeFilter;
-use Sonata\Form\Type\DateTimeRangeType;
+use SensioLabs\AdminBundle\Form\Type\DateTimeRangeType;
 
 /**
  * @author Marko Kunic <kunicmarko20@gmail.com>

@@ -26,7 +26,7 @@ use SensioLabs\AdminBundle\Show\ShowMapper;
 use SensioLabs\AdminBundle\Tests\App\Model\Bar;
 use SensioLabs\AdminBundle\Tests\App\Model\Foo;
 use SensioLabs\AdminBundle\Tests\Fixtures\Controller\BatchOtherController;
-use Sonata\Form\Type\ImmutableArrayType;
+use SensioLabs\AdminBundle\Form\Type\ImmutableArrayType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\Collection;
 use Symfony\Component\Validator\Constraints\Count;

@@ -510,6 +510,14 @@
         <source>logout</source>
         <target>Logga ut</target>
       </trans-unit>
+      <trans-unit id="date_range_start">
+        <source>date_range_start</source>
+        <target>From</target>
+      </trans-unit>
+      <trans-unit id="date_range_end">
+        <source>date_range_end</source>
+        <target>To</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

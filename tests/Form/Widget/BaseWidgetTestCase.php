@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace SensioLabs\AdminBundle\Tests\Form\Widget;
 
 use SensioLabs\AdminBundle\Tests\Fixtures\StubTranslator;
-use Sonata\Form\Test\AbstractWidgetTestCase;
+use SensioLabs\AdminBundle\Tests\Form\Test\AbstractWidgetTestCase;
 use Symfony\Bridge\Twig\Extension\HttpKernelExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;

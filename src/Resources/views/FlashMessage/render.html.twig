@@ -1,0 +1,15 @@
+{% for type in app.flashes|keys %}
+    {% for message in app.flashes(type) %}
+        <div class="alert alert-{{ type }} alert-dismissable">
+            <button
+                type="button"
+                class="close"
+                data-dismiss="alert"
+                aria-hidden="true"
+                aria-label="Close">
+                &times;
+            </button>
+            {{ message|trans({}, 'SensioLabsAdminBundle') }}
+        </div>
+    {% endfor %}
+{% endfor %}

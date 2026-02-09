@@ -37,17 +37,17 @@ final class FormSensioLabsFilterChoiceWidgetTest extends BaseWidgetTestCase
         $html = $this->cleanHtmlAttributeWhitespace($html);
 
         static::assertStringContainsString(
-            '<option value="1">[trans]label_type_contains[/trans]</option>',
+            '<option value="1">[trans domain=SensioLabsAdminBundle]label_type_contains[/trans]</option>',
             $html
         );
 
         static::assertStringContainsString(
-            '<option value="2">[trans]label_type_not_contains[/trans]</option>',
+            '<option value="2">[trans domain=SensioLabsAdminBundle]label_type_not_contains[/trans]</option>',
             $html
         );
 
         static::assertStringContainsString(
-            '<option value="3">[trans]label_type_equals[/trans]</option></select>',
+            '<option value="3">[trans domain=SensioLabsAdminBundle]label_type_equals[/trans]</option></select>',
             $html
         );
     }
