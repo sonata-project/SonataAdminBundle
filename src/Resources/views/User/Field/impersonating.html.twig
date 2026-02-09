@@ -1,0 +1,18 @@
+{#
+
+This file is part of the SensioLabs Admin Bundle package.
+
+(c) SensioLabs
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% if object is defined and object.email is defined %}
+    <a href="{{ path(app.request.pathinfo, {'_switch_user': object.email}) }}"
+       class="inline-flex items-center gap-1 text-sm text-primary-600 hover:text-primary-700 dark:text-primary-400">
+        {{ ux_icon('lucide:user-round-cog', {class: 'w-4 h-4'}) }}
+        <span>{{ 'switch_user'|trans({}, 'SensioLabsAdminBundle') }}</span>
+    </a>
+{% endif %}

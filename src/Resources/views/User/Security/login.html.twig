@@ -1,0 +1,84 @@
+{#
+
+This file is part of the SensioLabs Admin Bundle package.
+
+(c) SensioLabs
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% extends '@SensioLabsAdmin/empty_layout.html.twig' %}
+
+{% block content %}
+    <div class="flex min-h-screen items-center justify-center bg-gray-50 dark:bg-gray-900 px-4 py-12 sm:px-6 lg:px-8">
+        <div class="w-full max-w-md space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
+                    {{ 'title_user_authentication'|trans({}, 'SensioLabsAdminBundle') }}
+                </h2>
+            </div>
+
+            {% if error %}
+                <div class="rounded-md bg-red-50 p-4 dark:bg-red-900/30">
+                    <div class="flex">
+                        <div class="ml-3">
+                            <p class="text-sm font-medium text-red-800 dark:text-red-200">
+                                {{ error.messageKey|trans(error.messageData, 'security') }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            <form action="{{ path('sensiolabs_admin_user_security_check') }}" method="post" class="space-y-6">
+                <div>
+                    <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {{ 'security.login.username'|trans({}, 'SensioLabsAdminBundle') }}
+                    </label>
+                    <div class="mt-1">
+                        <input id="email" name="_username" type="email" autocomplete="email" required
+                               value="{{ last_username }}"
+                               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                        {{ 'security.login.password'|trans({}, 'SensioLabsAdminBundle') }}
+                    </label>
+                    <div class="mt-1">
+                        <input id="password" name="_password" type="password" autocomplete="current-password" required
+                               class="block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm dark:bg-gray-800 dark:border-gray-600 dark:text-white">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <input id="remember_me" name="_remember_me" type="checkbox" value="on"
+                               class="h-4 w-4 rounded border-gray-300 text-primary-600 focus:ring-primary-500">
+                        <label for="remember_me" class="ml-2 block text-sm text-gray-900 dark:text-gray-300">
+                            {{ 'security.login.remember_me'|trans({}, 'SensioLabsAdminBundle') }}
+                        </label>
+                    </div>
+
+                    <div class="text-sm">
+                        <a href="{{ path(reset_route) }}" class="font-medium text-primary-600 hover:text-primary-500">
+                            {{ 'forgotten_password'|trans({}, 'SensioLabsAdminBundle') }}
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit"
+                            class="flex w-full justify-center rounded-md border border-transparent bg-primary-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2">
+                        {{ 'security.login.submit'|trans({}, 'SensioLabsAdminBundle') }}
+                    </button>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            </form>
+        </div>
+    </div>
+{% endblock %}

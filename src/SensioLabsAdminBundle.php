@@ -28,6 +28,8 @@ use SensioLabs\AdminBundle\DependencyInjection\ORM\Compiler\AddAuditEntityCompil
 use SensioLabs\AdminBundle\DependencyInjection\ORM\Compiler\AddGuesserCompilerPass;
 use SensioLabs\AdminBundle\DependencyInjection\ORM\Compiler\AddTemplatesCompilerPass;
 use SensioLabs\AdminBundle\DependencyInjection\SensioLabsAdminExtension;
+use SensioLabs\AdminBundle\User\DependencyInjection\Compiler\RolesMatrixCompilerPass;
+use SensioLabs\AdminBundle\User\DependencyInjection\Compiler\UserGlobalVariablesCompilerPass;
 use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
@@ -58,5 +60,9 @@ final class SensioLabsAdminBundle extends Bundle
         $container->addCompilerPass(new AddGuesserCompilerPass());
         $container->addCompilerPass(new AddTemplatesCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, -1);
         $container->addCompilerPass(new AddAuditEntityCompilerPass());
+
+        // User management compiler passes
+        $container->addCompilerPass(new UserGlobalVariablesCompilerPass());
+        $container->addCompilerPass(new RolesMatrixCompilerPass());
     }
 }

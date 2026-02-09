@@ -47,18 +47,57 @@ final class SensioLabsAdminExtension extends Extension implements PrependExtensi
     public function prepend(ContainerBuilder $container): void
     {
         // Register the bundle's assets with AssetMapper for importmap support
-        if (!$this->isAssetMapperAvailable($container)) {
+        if ($this->isAssetMapperAvailable($container)) {
+            // Go up from src/DependencyInjection to bundle root, then into assets/
+            $bundleAssetsPath = \dirname(__DIR__, 2).'/assets';
+
+            $container->prependExtensionConfig('framework', [
+                'asset_mapper' => [
+                    'paths' => [
+                        // The namespace must match the package name in assets/package.json
+                        $bundleAssetsPath => '@sensiolabs-de/admin-bundle',
+                    ],
+                ],
+            ]);
+        }
+
+        // Prepend Doctrine ORM mapping for user entities when user management is enabled
+        $this->prependUserDoctrineMapping($container);
+    }
+
+    private function prependUserDoctrineMapping(ContainerBuilder $container): void
+    {
+        $configs = $container->getExtensionConfig($this->getAlias());
+
+        $userEnabled = false;
+        foreach ($configs as $config) {
+            if (isset($config['user']['enabled']) && true === $config['user']['enabled']) {
+                $userEnabled = true;
+
+                break;
+            }
+        }
+
+        if (!$userEnabled) {
             return;
         }
 
-        // Go up from src/DependencyInjection to bundle root, then into assets/
-        $bundleAssetsPath = \dirname(__DIR__, 2).'/assets';
+        $bundles = $container->getParameter('kernel.bundles');
+        \assert(\is_array($bundles));
 
-        $container->prependExtensionConfig('framework', [
-            'asset_mapper' => [
-                'paths' => [
-                    // The namespace must match the package name in assets/package.json
-                    $bundleAssetsPath => '@sensiolabs-de/admin-bundle',
+        if (!isset($bundles['DoctrineBundle'])) {
+            return;
+        }
+
+        $container->prependExtensionConfig('doctrine', [
+            'orm' => [
+                'mappings' => [
+                    'SensioLabsAdminUserBundle' => [
+                        'type' => 'attribute',
+                        'dir' => \dirname(__DIR__).'/User/Entity',
+                        'prefix' => 'SensioLabs\AdminBundle\User\Entity',
+                        'is_bundle' => false,
+                    ],
                 ],
             ],
         ]);
@@ -85,15 +124,6 @@ final class SensioLabsAdminExtension extends Extension implements PrependExtensi
     {
         $bundles = $container->getParameter('kernel.bundles');
         \assert(\is_array($bundles));
-
-        if (isset($bundles['SonataUserBundle'])) {
-            // integrate the SonataUserBundle if the bundle exists
-            array_unshift($configs, [
-                'templates' => [
-                    'user_block' => '@SonataUser/Admin/Core/user_block.html.twig',
-                ],
-            ]);
-        }
 
         if (isset($bundles['SonataIntlBundle'])) {
             // integrate the SonataIntlBundle if the bundle exists
@@ -262,6 +292,11 @@ final class SensioLabsAdminExtension extends Extension implements PrependExtensi
         if (isset($bundles['DoctrineBundle'])) {
             $this->loadORMConfiguration($configs, $container, $bundles);
         }
+
+        // Load User management configuration
+        if (true === ($config['user']['enabled'] ?? false)) {
+            $this->loadUserConfiguration($config['user'], $container);
+        }
     }
 
     /**
@@ -379,5 +414,47 @@ final class SensioLabsAdminExtension extends Extension implements PrependExtensi
 
         $modelChoice = $container->getDefinition('sensiolabs.admin.form.type.model_choice');
         $modelChoice->replaceArgument(0, new Reference('form.property_accessor'));
+    }
+
+    /**
+     * @param array<string, mixed> $config
+     */
+    private function loadUserConfiguration(array $config, ContainerBuilder $container): void
+    {
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+
+        // Set parameters
+        $container->setParameter('sensiolabs.admin.user.class.user', $config['class']['user']);
+        $container->setParameter('sensiolabs.admin.user.class.group', $config['class']['group']);
+
+        $container->setParameter('sensiolabs.admin.user.admin.user.class', $config['admin']['user']['class']);
+        $container->setParameter('sensiolabs.admin.user.admin.user.controller', $config['admin']['user']['controller']);
+        $container->setParameter('sensiolabs.admin.user.admin.user.translation_domain', $config['admin']['user']['translation_domain']);
+
+        $container->setParameter('sensiolabs.admin.user.admin.group.class', $config['admin']['group']['class']);
+        $container->setParameter('sensiolabs.admin.user.admin.group.controller', $config['admin']['group']['controller']);
+        $container->setParameter('sensiolabs.admin.user.admin.group.translation_domain', $config['admin']['group']['translation_domain']);
+
+        $container->setParameter('sensiolabs.admin.user.resetting.ttl', $config['resetting']['ttl']);
+        $container->setParameter('sensiolabs.admin.user.resetting.from_email', $config['resetting']['from_email']);
+        $container->setParameter('sensiolabs.admin.user.resetting.email_template', $config['resetting']['email_template']);
+
+        $container->setParameter('sensiolabs.admin.user.profile.default_avatar', $config['profile']['default_avatar']);
+
+        // Override user_block template to use the user-aware version
+        $templates = $container->getParameter('sensiolabs.admin.configuration.templates');
+        \assert(\is_array($templates));
+        $templates['user_block'] = '@SensioLabsAdmin/User/Core/user_block.html.twig';
+        $container->setParameter('sensiolabs.admin.configuration.templates', $templates);
+
+        // Load service configurations
+        $loader->load('user.php');
+        $loader->load('user_actions.php');
+        $loader->load('user_admin.php');
+        $loader->load('user_mailer.php');
+
+        // Wire user admin service ID into global variables
+        $globalDef = $container->getDefinition('sensiolabs.admin.user.twig.global');
+        $globalDef->addMethodCall('setUserAdminServiceId', ['sensiolabs.admin.user.admin.user']);
     }
 }

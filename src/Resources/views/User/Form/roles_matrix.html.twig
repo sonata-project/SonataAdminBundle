@@ -1,0 +1,50 @@
+{#
+
+This file is part of the SensioLabs Admin Bundle package.
+
+(c) SensioLabs
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% if admin_groups is not empty %}
+    <div class="overflow-x-auto">
+        <table class="admin-table w-full">
+            <thead class="admin-table-header">
+                <tr>
+                    <th class="admin-table-header-cell">Admin</th>
+                    {% for permission in permission_labels|keys %}
+                        <th class="admin-table-header-cell text-center">{{ permission }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for admin_code, group in admin_groups %}
+                    <tr class="border-b border-gray-200 dark:border-gray-700">
+                        <td class="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-200">
+                            {{ group.label|trans({}, group.translation_domain) }}
+                        </td>
+                        {% for permission in permission_labels|keys %}
+                            <td class="px-4 py-3 text-center">
+                                {% set role_key = null %}
+                                {% for role, attrs in group.roles %}
+                                    {% if attrs.label == permission %}
+                                        {% set role_key = role %}
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if role_key and form[role_key] is defined %}
+                                    {{ form_widget(form[role_key]) }}
+                                {% else %}
+                                    <span class="text-gray-300 dark:text-gray-600">-</span>
+                                {% endif %}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}

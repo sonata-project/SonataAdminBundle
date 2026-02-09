@@ -518,6 +518,154 @@
         <source>date_range_end</source>
         <target>По</target>
       </trans-unit>
+      <trans-unit id="title_user_authentication">
+        <source>title_user_authentication</source>
+        <target>Authentication</target>
+      </trans-unit>
+      <trans-unit id="security.login.username">
+        <source>security.login.username</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="security.login.password">
+        <source>security.login.password</source>
+        <target>Password</target>
+      </trans-unit>
+      <trans-unit id="security.login.remember_me">
+        <source>security.login.remember_me</source>
+        <target>Remember me</target>
+      </trans-unit>
+      <trans-unit id="security.login.submit">
+        <source>security.login.submit</source>
+        <target>Log in</target>
+      </trans-unit>
+      <trans-unit id="forgotten_password">
+        <source>forgotten_password</source>
+        <target>Forgotten password?</target>
+      </trans-unit>
+      <trans-unit id="resetting.request.title">
+        <source>resetting.request.title</source>
+        <target>Reset password</target>
+      </trans-unit>
+      <trans-unit id="resetting.request.submit">
+        <source>resetting.request.submit</source>
+        <target>Reset password</target>
+      </trans-unit>
+      <trans-unit id="resetting.request.email">
+        <source>resetting.request.email</source>
+        <target>Email address</target>
+      </trans-unit>
+      <trans-unit id="resetting.check_email">
+        <source>resetting.check_email</source>
+        <target>An email has been sent. It contains a link you must click to reset your password. The link will expire in %tokenLifetime% hour(s).</target>
+      </trans-unit>
+      <trans-unit id="resetting.reset.submit">
+        <source>resetting.reset.submit</source>
+        <target>Change password</target>
+      </trans-unit>
+      <trans-unit id="resetting.email.subject">
+        <source>resetting.email.subject</source>
+        <target>Password Reset</target>
+      </trans-unit>
+      <trans-unit id="resetting.email.message">
+        <source>resetting.email.message</source>
+        <target>Hello %name%, to reset your password please visit the link below.</target>
+      </trans-unit>
+      <trans-unit id="form.new_password">
+        <source>form.new_password</source>
+        <target>New password</target>
+      </trans-unit>
+      <trans-unit id="form.new_password_confirmation">
+        <source>form.new_password_confirmation</source>
+        <target>Repeat new password</target>
+      </trans-unit>
+      <trans-unit id="user_block_logout">
+        <source>user_block_logout</source>
+        <target>Logout</target>
+      </trans-unit>
+      <trans-unit id="user_block_profile">
+        <source>user_block_profile</source>
+        <target>Profile</target>
+      </trans-unit>
+      <trans-unit id="switch_user">
+        <source>switch_user</source>
+        <target>Impersonate</target>
+      </trans-unit>
+      <trans-unit id="switch_user_exit">
+        <source>switch_user_exit</source>
+        <target>Exit impersonation</target>
+      </trans-unit>
+      <trans-unit id="users">
+        <source>users</source>
+        <target>Users</target>
+      </trans-unit>
+      <trans-unit id="groups">
+        <source>groups</source>
+        <target>Groups</target>
+      </trans-unit>
+      <trans-unit id="sensiolabs_user">
+        <source>sensiolabs_user</source>
+        <target>User Management</target>
+      </trans-unit>
+      <trans-unit id="form.label_roles">
+        <source>form.label_roles</source>
+        <target>Roles</target>
+      </trans-unit>
+      <trans-unit id="form.label_email">
+        <source>form.label_email</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="form.label_plain_password">
+        <source>form.label_plain_password</source>
+        <target>Password</target>
+      </trans-unit>
+      <trans-unit id="form.label_enabled">
+        <source>form.label_enabled</source>
+        <target>Enabled</target>
+      </trans-unit>
+      <trans-unit id="form.label_firstname">
+        <source>form.label_firstname</source>
+        <target>First name</target>
+      </trans-unit>
+      <trans-unit id="form.label_lastname">
+        <source>form.label_lastname</source>
+        <target>Last name</target>
+      </trans-unit>
+      <trans-unit id="form.label_phone">
+        <source>form.label_phone</source>
+        <target>Phone</target>
+      </trans-unit>
+      <trans-unit id="form.label_locale">
+        <source>form.label_locale</source>
+        <target>Locale</target>
+      </trans-unit>
+      <trans-unit id="form.label_timezone">
+        <source>form.label_timezone</source>
+        <target>Timezone</target>
+      </trans-unit>
+      <trans-unit id="list.label_email">
+        <source>list.label_email</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="list.label_enabled">
+        <source>list.label_enabled</source>
+        <target>Enabled</target>
+      </trans-unit>
+      <trans-unit id="list.label_created_at">
+        <source>list.label_created_at</source>
+        <target>Created at</target>
+      </trans-unit>
+      <trans-unit id="list.label_impersonating">
+        <source>list.label_impersonating</source>
+        <target>Impersonate</target>
+      </trans-unit>
+      <trans-unit id="filter.label_id">
+        <source>filter.label_id</source>
+        <target>ID</target>
+      </trans-unit>
+      <trans-unit id="filter.label_email">
+        <source>filter.label_email</source>
+        <target>Email</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

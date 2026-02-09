@@ -1,0 +1,48 @@
+{#
+
+This file is part of the SensioLabs Admin Bundle package.
+
+(c) SensioLabs
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{% if app.user %}
+    <div class="flex items-center gap-3">
+        <img src="{{ sensiolabs_user.defaultAvatar }}" alt="" class="h-8 w-8 rounded-full bg-gray-200">
+
+        <div class="text-sm">
+            <div class="font-medium text-gray-900 dark:text-white">
+                {% if app.user.fullname is defined and app.user.fullname %}
+                    {{ app.user.fullname }}
+                {% else %}
+                    {{ app.user.userIdentifier }}
+                {% endif %}
+            </div>
+        </div>
+
+        {% if sensiolabs_user.impersonating %}
+            <a href="{{ path(app.request.pathinfo, {'_switch_user': '_exit'}) }}"
+               class="inline-flex items-center gap-1 rounded-md bg-yellow-50 px-2 py-1 text-xs font-medium text-yellow-700 ring-1 ring-inset ring-yellow-600/20">
+                {{ ux_icon('lucide:user-x', {class: 'w-3 h-3'}) }}
+                {{ 'switch_user_exit'|trans({}, 'SensioLabsAdminBundle') }}
+            </a>
+        {% endif %}
+
+        {% if sensiolabs_user.userAdmin %}
+            <a href="{{ sensiolabs_user.userAdmin.generateUrl('show', {id: app.user.id}) }}"
+               class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+               title="{{ 'user_block_profile'|trans({}, 'SensioLabsAdminBundle') }}">
+                {{ ux_icon('lucide:settings', {class: 'w-4 h-4'}) }}
+            </a>
+        {% endif %}
+
+        <a href="{{ path('sensiolabs_admin_user_security_logout') }}"
+           class="text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+           title="{{ 'user_block_logout'|trans({}, 'SensioLabsAdminBundle') }}">
+            {{ ux_icon('lucide:log-out', {class: 'w-4 h-4'}) }}
+        </a>
+    </div>
+{% endif %}
