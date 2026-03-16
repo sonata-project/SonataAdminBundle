@@ -29,13 +29,13 @@ final class FormErrorIteratorToConstraintViolationList
     /**
      * @param FormErrorIterator<FormError> $errors
      */
-    public static function transform(FormErrorIterator $errors): ConstraintViolationListInterface
+    public static function transform(FormErrorIterator $errors, bool $removeSensitiveData = false): ConstraintViolationListInterface
     {
         $form = $errors->getForm();
         $list = new ConstraintViolationList();
 
         foreach ($errors as $error) {
-            $violation = static::buildViolation($error, $form);
+            $violation = static::buildViolation($error, $form, $removeSensitiveData);
 
             if (null === $violation) {
                 continue;
@@ -47,7 +47,7 @@ final class FormErrorIteratorToConstraintViolationList
         return $list;
     }
 
-    private static function buildViolation(FormError $error, FormInterface $form): ?ConstraintViolationInterface
+    private static function buildViolation(FormError $error, FormInterface $form, bool $removeSensitiveData): ?ConstraintViolationInterface
     {
         $cause = $error->getCause();
 
@@ -57,8 +57,8 @@ final class FormErrorIteratorToConstraintViolationList
 
         return new ConstraintViolation(
             $cause->getMessage(),
-            $cause->getMessageTemplate(),
-            $cause->getParameters(),
+            $removeSensitiveData ? null : $cause->getMessageTemplate(),
+            $removeSensitiveData ? [] : $cause->getParameters(),
             $cause->getRoot(),
             self::buildName($error->getOrigin() ?? $form),
             $cause->getInvalidValue(),
