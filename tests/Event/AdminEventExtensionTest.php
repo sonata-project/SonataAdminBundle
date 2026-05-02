@@ -140,7 +140,7 @@ final class AdminEventExtensionTest extends TestCase
         $this->getExtension([
             static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_PRE_UPDATE)),
             static::equalTo('sonata.admin.event.persistence.pre_update'),
-        ])->preUpdate($this->createMock(AdminInterface::class), new \stdClass());
+        ])->preUpdate(static::createStub(AdminInterface::class), new \stdClass());
     }
 
     public function testConfigureQuery(): void
@@ -148,7 +148,7 @@ final class AdminEventExtensionTest extends TestCase
         $this->getExtension([
             static::isInstanceOf(ConfigureQueryEvent::class),
             static::equalTo('sonata.admin.event.configure.query'),
-        ])->configureQuery($this->createMock(AdminInterface::class), $this->createMock(ProxyQueryInterface::class));
+        ])->configureQuery(static::createStub(AdminInterface::class), static::createStub(ProxyQueryInterface::class));
     }
 
     public function testPostUpdate(): void
@@ -156,7 +156,7 @@ final class AdminEventExtensionTest extends TestCase
         $this->getExtension([
             static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_UPDATE)),
             static::equalTo('sonata.admin.event.persistence.post_update'),
-        ])->postUpdate($this->createMock(AdminInterface::class), new \stdClass());
+        ])->postUpdate(static::createStub(AdminInterface::class), new \stdClass());
     }
 
     public function testPrePersist(): void
@@ -164,7 +164,7 @@ final class AdminEventExtensionTest extends TestCase
         $this->getExtension([
             static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_PRE_PERSIST)),
             static::equalTo('sonata.admin.event.persistence.pre_persist'),
-        ])->prePersist($this->createMock(AdminInterface::class), new \stdClass());
+        ])->prePersist(static::createStub(AdminInterface::class), new \stdClass());
     }
 
     public function testPostPersist(): void
@@ -172,7 +172,7 @@ final class AdminEventExtensionTest extends TestCase
         $this->getExtension([
             static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_PERSIST)),
             static::equalTo('sonata.admin.event.persistence.post_persist'),
-        ])->postPersist($this->createMock(AdminInterface::class), new \stdClass());
+        ])->postPersist(static::createStub(AdminInterface::class), new \stdClass());
     }
 
     public function testPreRemove(): void
@@ -180,7 +180,7 @@ final class AdminEventExtensionTest extends TestCase
         $this->getExtension([
             static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_PRE_REMOVE)),
             static::equalTo('sonata.admin.event.persistence.pre_remove'),
-        ])->preRemove($this->createMock(AdminInterface::class), new \stdClass());
+        ])->preRemove(static::createStub(AdminInterface::class), new \stdClass());
     }
 
     public function testPostRemove(): void
@@ -188,13 +188,13 @@ final class AdminEventExtensionTest extends TestCase
         $this->getExtension([
             static::callback($this->getConfigurePersistenceClosure(PersistenceEvent::TYPE_POST_REMOVE)),
             static::equalTo('sonata.admin.event.persistence.post_remove'),
-        ])->postRemove($this->createMock(AdminInterface::class), new \stdClass());
+        ])->postRemove(static::createStub(AdminInterface::class), new \stdClass());
     }
 
     public function testPreBatchAction(): void
     {
-        $admin = $this->createMock(AdminInterface::class);
-        $proxyQuery = $this->createMock(ProxyQueryInterface::class);
+        $admin = static::createStub(AdminInterface::class);
+        $proxyQuery = static::createStub(ProxyQueryInterface::class);
         $idx = [1, 2, 3];
 
         $this->getExtension([

@@ -50,8 +50,8 @@ final class ObjectAclManipulatorTest extends TestCase
         $this->output = $this->createMock(OutputInterface::class);
         $this->admin = $this->createMock(AdminInterface::class);
         $this->oids = new \ArrayIterator([
-            $this->createMock(ObjectIdentityInterface::class),
-            $this->createMock(ObjectIdentityInterface::class),
+            static::createStub(ObjectIdentityInterface::class),
+            static::createStub(ObjectIdentityInterface::class),
         ]);
         $this->securityIdentity = new UserSecurityIdentity('Michael', \stdClass::class);
     }

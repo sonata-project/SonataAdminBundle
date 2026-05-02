@@ -696,7 +696,7 @@ final class AdminHelperTest extends TestCase
             }
         };
 
-        $collectionObject = $this->createMock(\stdClass::class);
+        $collectionObject = static::createStub(\stdClass::class);
 
         $admin = $this->createMock(AdminInterface::class);
         $admin->method('hasFormFieldDescription')->with('collection')->willReturn(true);
@@ -757,7 +757,7 @@ final class AdminHelperTest extends TestCase
         $collectionFieldDescription->method('getParentAssociationMappings')->willReturn([]);
         $collectionFieldDescription->expects(static::never())->method('getValue');
 
-        $admin->method('getFormFieldDescription')->willReturnMap([
+        $admin->expects(static::exactly(2))->method('getFormFieldDescription')->willReturnMap([
             ['sub_object', $subObjectFieldDescription],
             ['collection', $collectionFieldDescription],
         ]);

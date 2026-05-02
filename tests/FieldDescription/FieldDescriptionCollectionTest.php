@@ -66,7 +66,7 @@ final class FieldDescriptionCollectionTest extends TestCase
 
         $collection = new FieldDescriptionCollection();
 
-        $collection['foo'] = $this->createMock(FieldDescriptionInterface::class);
+        $collection['foo'] = static::createStub(FieldDescriptionInterface::class);
     }
 
     public function testReorderListWithoutBatchField(): void

@@ -82,7 +82,7 @@ final class ModelTypeTest extends TypeTestCase
     #[DataProvider('provideCompoundOptionCases')]
     public function testCompoundOption(bool $expectedCompound, bool $multiple, bool $expanded): void
     {
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
         $optionResolver = new OptionsResolver();
 
         $this->type->configureOptions($optionResolver);

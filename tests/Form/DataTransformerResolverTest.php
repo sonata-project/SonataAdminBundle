@@ -101,7 +101,7 @@ final class DataTransformerResolverTest extends TestCase
     #[DataProvider('provideResolveDateDataTransformerCases')]
     public function testResolveDateDataTransformer(mixed $timezone, \DateTimeZone $expectedTimezone): void
     {
-        $this->fieldDescription->method('getOption')->willReturnMap([
+        $this->fieldDescription->expects(static::exactly(2))->method('getOption')->willReturnMap([
             ['data_transformer', null, null],
             ['timezone', null, $timezone],
         ]);
@@ -137,7 +137,7 @@ final class DataTransformerResolverTest extends TestCase
 
     public function testResolveChoiceBadClassName(): void
     {
-        $this->fieldDescription->method('getOption')->willReturnMap([
+        $this->fieldDescription->expects(static::exactly(2))->method('getOption')->willReturnMap([
             ['data_transformer', null, null],
             ['class', null, \stdClass::class],
         ]);
@@ -153,7 +153,7 @@ final class DataTransformerResolverTest extends TestCase
         $className = Entity::class;
         $object = new Entity(1);
 
-        $this->fieldDescription->method('getOption')->willReturnMap([
+        $this->fieldDescription->expects(static::exactly(2))->method('getOption')->willReturnMap([
             ['data_transformer', null, null],
             ['class', null, $className],
         ]);
@@ -174,7 +174,7 @@ final class DataTransformerResolverTest extends TestCase
         $className = AbstractEntity::class;
         $object = new Entity(2);
 
-        $this->fieldDescription->method('getOption')->willReturnMap([
+        $this->fieldDescription->expects(static::exactly(2))->method('getOption')->willReturnMap([
             ['data_transformer', null, null],
             ['class', null, $className],
         ]);

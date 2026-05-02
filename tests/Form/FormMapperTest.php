@@ -57,10 +57,9 @@ final class FormMapperTest extends TestCase
         $this->contractor->method('getDefaultOptions')->willReturn([]);
 
         $formFactory = $this->createMock(FormFactoryInterface::class);
-        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
 
-        $formBuilder = new FormBuilder('test', \stdClass::class, $eventDispatcher, $formFactory);
-        $formBuilder2 = new FormBuilder('test', \stdClass::class, $eventDispatcher, $formFactory);
+        $formBuilder = new FormBuilder('test', \stdClass::class, static::createStub(EventDispatcherInterface::class), $formFactory);
+        $formBuilder2 = new FormBuilder('test', \stdClass::class, static::createStub(EventDispatcherInterface::class), $formFactory);
 
         $formFactory->method('createNamedBuilder')->willReturn($formBuilder);
         $this->contractor->method('getFormBuilder')->willReturn($formBuilder2);
@@ -68,9 +67,7 @@ final class FormMapperTest extends TestCase
         $this->admin = new CleanAdmin();
         $this->admin->setModelClass(\stdClass::class);
         $this->admin->setSubject(new \stdClass());
-
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-        $this->admin->setModelManager($modelManager);
+        $this->admin->setModelManager(static::createStub(ModelManagerInterface::class));
 
         $securityHandler = static::createStub(SecurityHandlerInterface::class);
         $securityHandler

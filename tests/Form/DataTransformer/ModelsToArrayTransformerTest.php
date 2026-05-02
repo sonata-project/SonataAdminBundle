@@ -37,7 +37,7 @@ final class ModelsToArrayTransformerTest extends TestCase
 
     public function testReverseTransformWithNull(): void
     {
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
 
         $transformer = new ModelsToArrayTransformer(
             $modelManager,
@@ -85,7 +85,7 @@ final class ModelsToArrayTransformerTest extends TestCase
         $modelManager
             ->method('executeQuery')
             ->willReturn([$object1, $object2, $object3]);
-        $modelManager
+        $modelManager->expects(static::exactly(3))
             ->method('getNormalizedIdentifier')
             ->willReturnMap([
                 [$object1, '1'],
@@ -136,7 +136,7 @@ final class ModelsToArrayTransformerTest extends TestCase
             ->method('executeQuery')
             ->with(static::equalTo($proxyQuery))
             ->willReturn([$object1]);
-        $modelManager
+        $modelManager->expects(static::exactly(2))
             ->method('getNormalizedIdentifier')
             ->willReturnMap([
                 [$object1, '1'],

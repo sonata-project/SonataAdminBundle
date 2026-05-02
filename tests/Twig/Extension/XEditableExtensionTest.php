@@ -37,7 +37,7 @@ final class XEditableExtensionTest extends TestCase
         $twigExtension = new XEditableExtension(new XEditableRuntime(new Translator('en')));
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription
+        $fieldDescription->expects(static::exactly(5))
             ->method('getOption')
             ->willReturnMap([
                 ['choices', [], $options['choices']],

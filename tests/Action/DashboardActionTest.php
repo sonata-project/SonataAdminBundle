@@ -34,12 +34,10 @@ final class DashboardActionTest extends TestCase
     {
         $this->templateRegistry = static::createStub(MutableTemplateRegistryInterface::class);
 
-        $twig = $this->createMock(Environment::class);
-
         $this->action = new DashboardAction(
             [],
             $this->templateRegistry,
-            $twig
+            static::createStub(Environment::class)
         );
     }
 

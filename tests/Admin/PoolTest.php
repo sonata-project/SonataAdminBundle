@@ -127,7 +127,7 @@ final class PoolTest extends TestCase
     {
         $class = \stdClass::class;
 
-        $this->container->set('sonata.user.admin.group1', $this->createMock(AdminInterface::class));
+        $this->container->set('sonata.user.admin.group1', static::createStub(AdminInterface::class));
 
         $pool = new Pool($this->container, ['sonata.user.admin.group1'], [], [
             $class => [Pool::DEFAULT_ADMIN_KEY => 'sonata.user.admin.group1', 'sonata.user.admin.group2'],
@@ -141,7 +141,7 @@ final class PoolTest extends TestCase
     {
         $class = \stdClass::class;
 
-        $this->container->set('sonata.user.admin.group1', $this->createMock(AdminInterface::class));
+        $this->container->set('sonata.user.admin.group1', static::createStub(AdminInterface::class));
 
         $pool = new Pool($this->container, ['sonata.user.admin.group1'], [], [$class => ['sonata.user.admin.group1']]);
 
@@ -172,7 +172,7 @@ final class PoolTest extends TestCase
 
     public function testGetAdminByAdminCode(): void
     {
-        $this->container->set('sonata.news.admin.post', $this->createMock(AdminInterface::class));
+        $this->container->set('sonata.news.admin.post', static::createStub(AdminInterface::class));
 
         $pool = new Pool($this->container, ['sonata.news.admin.post']);
 
@@ -186,7 +186,7 @@ final class PoolTest extends TestCase
             ->method('hasChild')
             ->willReturn(true);
 
-        $childAdmin = $this->createMock(AdminInterface::class);
+        $childAdmin = static::createStub(AdminInterface::class);
 
         $adminMock->expects(static::once())
             ->method('getChild')

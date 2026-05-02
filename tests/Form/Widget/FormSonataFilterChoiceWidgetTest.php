@@ -66,8 +66,7 @@ final class FormSonataFilterChoiceWidgetTest extends BaseWidgetTestCase
     protected function getExtensions(): array
     {
         $extensions = parent::getExtensions();
-        $guesser = $this->createMock(FormTypeGuesserInterface::class);
-        $extension = new TestExtension($guesser);
+        $extension = new TestExtension(static::createStub(FormTypeGuesserInterface::class));
         $type = new FilterDataType();
         $extension->addType($type);
 

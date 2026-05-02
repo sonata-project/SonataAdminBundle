@@ -134,7 +134,7 @@ final class DefaultRouteGeneratorTest extends TestCase
         $admin->method('getExtensions')->willReturn([]);
         $admin->method('getCode')->willReturn('Code');
 
-        $router = $this->createMock(RouterInterface::class);
+        $router = static::createStub(RouterInterface::class);
 
         $cache = new RoutesCache($this->cacheTempFolder, true);
 

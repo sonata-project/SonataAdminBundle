@@ -71,7 +71,7 @@ final class TabMenuTest extends BaseMenuTestCase
     public function testLabelTranslationDomainOverride(): void
     {
         $this->translator = $this->createMock(TranslatorInterface::class);
-        $this->translator->method('trans')->willReturnMap([
+        $this->translator->expects(static::exactly(2))->method('trans')->willReturnMap([
             ['some-label', [], 'my_local_domain', null, 'my-translation'],
             ['some-other-label', [], 'my_global_domain', null, 'my-other-translation'],
         ]);

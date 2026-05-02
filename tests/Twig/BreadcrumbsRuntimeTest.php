@@ -57,12 +57,12 @@ final class BreadcrumbsRuntimeTest extends TestCase
 
     public function testBreadcrumbsForTitle(): void
     {
-        $item = $this->createMock(ItemInterface::class);
+        $item = static::createStub(ItemInterface::class);
         $item2 = $this->createMock(ItemInterface::class);
         $item2
             ->method('getLabel')
             ->willReturn('Label for item 2');
-        $item2
+        $item2->expects(static::exactly(2))
             ->method('getExtra')
             ->willReturnMap([
                 ['translation_domain', 'messages', false],
@@ -73,7 +73,7 @@ final class BreadcrumbsRuntimeTest extends TestCase
         $item3
             ->method('getLabel')
             ->willReturn('Label for item 3 with %parameter%');
-        $item3
+        $item3->expects(static::exactly(2))
             ->method('getExtra')
             ->willReturnMap([
                 ['translation_domain', 'messages', 'custom_translation_domain'],
@@ -100,7 +100,7 @@ final class BreadcrumbsRuntimeTest extends TestCase
         $item
             ->method('getLabel')
             ->willReturn('Label for item 1');
-        $item
+        $item->expects(static::exactly(2))
             ->method('getExtra')
             ->willReturnMap([
                 ['translation_domain', 'messages', false],
@@ -114,7 +114,7 @@ final class BreadcrumbsRuntimeTest extends TestCase
         $item2
             ->method('getUri')
             ->willReturn('https://sonata-project.org');
-        $item2
+        $item2->expects(static::exactly(2))
             ->method('getExtra')
             ->willReturnMap([
                 ['translation_domain', 'messages', 'custom_translation_domain'],
@@ -125,7 +125,7 @@ final class BreadcrumbsRuntimeTest extends TestCase
         $item3
             ->method('getLabel')
             ->willReturn('Label for item 3');
-        $item3
+        $item3->expects(static::exactly(2))
             ->method('getExtra')
             ->willReturnMap([
                 ['translation_domain', 'messages', false],

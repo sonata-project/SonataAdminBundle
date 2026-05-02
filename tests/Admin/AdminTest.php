@@ -143,7 +143,7 @@ final class AdminTest extends TestCase
         $admin = new PostAdmin();
         $admin->setModelClass(Post::class);
 
-        $admin->setModelManager($this->createMock(ModelManagerInterface::class));
+        $admin->setModelManager(static::createStub(ModelManagerInterface::class));
 
         $admin->setSubject(new BlogPost());
         static::assertSame(BlogPost::class, $admin->getClass());
@@ -663,11 +663,11 @@ final class AdminTest extends TestCase
     {
         $postAdmin = new PostAdmin();
 
-        $postAdmin->setSecurityHandler($this->createMock(SecurityHandlerInterface::class));
+        $postAdmin->setSecurityHandler(static::createStub(SecurityHandlerInterface::class));
         static::assertFalse($postAdmin->isAclEnabled());
 
         $commentAdmin = new CommentAdmin();
-        $commentAdmin->setSecurityHandler($this->createMock(AclSecurityHandlerInterface::class));
+        $commentAdmin->setSecurityHandler(static::createStub(AclSecurityHandlerInterface::class));
         static::assertTrue($commentAdmin->isAclEnabled());
     }
 
@@ -734,7 +734,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
         $admin->setModelClass(Post::class);
-        $admin->setModelManager($this->createMock(ModelManagerInterface::class));
+        $admin->setModelManager(static::createStub(ModelManagerInterface::class));
 
         $admin->setRequest(new Request(['subclass' => 'inject']));
 
@@ -779,7 +779,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
 
-        $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
+        $labelTranslatorStrategy = static::createStub(LabelTranslatorStrategyInterface::class);
         $admin->setLabelTranslatorStrategy($labelTranslatorStrategy);
         static::assertSame($labelTranslatorStrategy, $admin->getLabelTranslatorStrategy());
     }
@@ -801,7 +801,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
 
-        $routeBuilder = $this->createMock(RouteBuilderInterface::class);
+        $routeBuilder = static::createStub(RouteBuilderInterface::class);
         $admin->setRouteBuilder($routeBuilder);
         static::assertSame($routeBuilder, $admin->getRouteBuilder());
     }
@@ -810,7 +810,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
 
-        $menuFactory = $this->createMock(FactoryInterface::class);
+        $menuFactory = static::createStub(FactoryInterface::class);
         $admin->setMenuFactory($menuFactory);
         static::assertSame($menuFactory, $admin->getMenuFactory());
     }
@@ -821,8 +821,8 @@ final class AdminTest extends TestCase
 
         static::assertSame([], $admin->getExtensions());
 
-        $adminExtension1 = $this->createMock(AdminExtensionInterface::class);
-        $adminExtension2 = $this->createMock(AdminExtensionInterface::class);
+        $adminExtension1 = static::createStub(AdminExtensionInterface::class);
+        $adminExtension2 = static::createStub(AdminExtensionInterface::class);
 
         $admin->addExtension($adminExtension1);
         $admin->addExtension($adminExtension2);
@@ -838,7 +838,7 @@ final class AdminTest extends TestCase
 
         static::assertSame([], $admin->getExtensions());
 
-        $adminExtension1 = $this->createMock(AdminExtensionInterface::class);
+        $adminExtension1 = static::createStub(AdminExtensionInterface::class);
 
         $this->expectException(\InvalidArgumentException::class);
         $admin->removeExtension($adminExtension1);
@@ -869,7 +869,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
 
-        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
+        $securityHandler = static::createStub(SecurityHandlerInterface::class);
         $admin->setSecurityHandler($securityHandler);
         static::assertSame($securityHandler, $admin->getSecurityHandler());
     }
@@ -901,7 +901,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
 
         $admin->setModelManager($modelManager);
         static::assertSame($modelManager, $admin->getModelManager());
@@ -942,7 +942,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
 
-        $routeGenerator = $this->createMock(RouteGeneratorInterface::class);
+        $routeGenerator = static::createStub(RouteGeneratorInterface::class);
 
         $admin->setRouteGenerator($routeGenerator);
         static::assertSame($routeGenerator, $admin->getRouteGenerator());
@@ -982,7 +982,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
 
-        $showBuilder = $this->createMock(ShowBuilderInterface::class);
+        $showBuilder = static::createStub(ShowBuilderInterface::class);
 
         $admin->setShowBuilder($showBuilder);
         static::assertSame($showBuilder, $admin->getShowBuilder());
@@ -992,7 +992,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
 
-        $listBuilder = $this->createMock(ListBuilderInterface::class);
+        $listBuilder = static::createStub(ListBuilderInterface::class);
 
         $admin->setListBuilder($listBuilder);
         static::assertSame($listBuilder, $admin->getListBuilder());
@@ -1002,7 +1002,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
 
-        $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
+        $datagridBuilder = static::createStub(DatagridBuilderInterface::class);
 
         $admin->setDatagridBuilder($datagridBuilder);
         static::assertSame($datagridBuilder, $admin->getDatagridBuilder());
@@ -1012,7 +1012,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
 
-        $formContractor = $this->createMock(FormContractorInterface::class);
+        $formContractor = static::createStub(FormContractorInterface::class);
 
         $admin->setFormContractor($formContractor);
         static::assertSame($formContractor, $admin->getFormContractor());
@@ -1054,7 +1054,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
 
-        $translator = $this->createMock(TranslatorInterface::class);
+        $translator = static::createStub(TranslatorInterface::class);
 
         $admin->setTranslator($translator);
         static::assertSame($translator, $admin->getTranslator());
@@ -1277,7 +1277,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
 
-        $filterPersister = $this->createMock(FilterPersisterInterface::class);
+        $filterPersister = static::createStub(FilterPersisterInterface::class);
 
         $admin->setFilterPersister($filterPersister);
     }
@@ -1562,7 +1562,7 @@ final class AdminTest extends TestCase
         $modelManager = static::createStub(ModelManagerInterface::class);
         $modelAdmin->setModelManager($modelManager);
 
-        $pager = $this->createMock(PagerInterface::class);
+        $pager = static::createStub(PagerInterface::class);
 
         $datagrid = $this->createMock(DatagridInterface::class);
         $datagrid->expects(static::once())
@@ -1839,7 +1839,7 @@ final class AdminTest extends TestCase
             ],
         ];
 
-        $pathInfo = new PathInfoBuilder($this->createMock(AuditManagerInterface::class));
+        $pathInfo = new PathInfoBuilder(static::createStub(AuditManagerInterface::class));
 
         $labelTranslatorStrategy = $this->createMock(LabelTranslatorStrategyInterface::class);
         $labelTranslatorStrategy
@@ -1871,8 +1871,8 @@ final class AdminTest extends TestCase
     {
         $expected = [];
 
-        $pathInfo = new PathInfoBuilder($this->createMock(AuditManagerInterface::class));
-        $routerMock = $this->createMock(RouterInterface::class);
+        $pathInfo = new PathInfoBuilder(static::createStub(AuditManagerInterface::class));
+        $routerMock = static::createStub(RouterInterface::class);
 
         $routeGenerator = new DefaultRouteGenerator(
             $routerMock,
@@ -1972,7 +1972,7 @@ final class AdminTest extends TestCase
     #[DataProvider('provideGetBaseRouteName')]
     public function testDefaultDashboardActionsArePresent(string $objFqn, string $expected): void
     {
-        $pathInfo = new PathInfoBuilder($this->createMock(AuditManagerInterface::class));
+        $pathInfo = new PathInfoBuilder(static::createStub(AuditManagerInterface::class));
         $routerMock = $this->createMock(RouterInterface::class);
 
         $routerMock->method('generate')->willReturn('/admin/post');

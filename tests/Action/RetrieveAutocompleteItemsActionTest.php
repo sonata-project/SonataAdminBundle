@@ -59,7 +59,7 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
             '_sonata_admin' => 'foo.admin',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $this->admin->method('hasAccess')->willReturnMap([
+        $this->admin->expects(static::exactly(2))->method('hasAccess')->willReturnMap([
             ['create', null, false],
             ['edit', null, false],
         ]);
@@ -170,11 +170,11 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $filter2 = new FooFilter();
         $filter2->initialize('entity2.property2');
 
-        $datagrid->method('hasFilter')->willReturnMap([
+        $datagrid->expects(static::exactly(2))->method('hasFilter')->willReturnMap([
             ['entity.property', true],
             ['entity2.property2', true],
         ]);
-        $datagrid->method('getFilter')->willReturnMap([
+        $datagrid->expects(static::exactly(2))->method('getFilter')->willReturnMap([
             ['entity.property', $filter],
             ['entity2.property2', $filter2],
         ]);

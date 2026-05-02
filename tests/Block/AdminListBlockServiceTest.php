@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Block;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminListBlockService;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
@@ -27,22 +26,16 @@ final class AdminListBlockServiceTest extends BlockServiceTestCase
 {
     private Pool $pool;
 
-    /**
-     * @var TemplateRegistryInterface&MockObject
-     */
-    private TemplateRegistryInterface $templateRegistry;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->pool = new Pool(new Container());
-        $this->templateRegistry = $this->createMock(TemplateRegistryInterface::class);
     }
 
     public function testDefaultSettings(): void
     {
-        $blockService = new AdminListBlockService($this->twig, $this->pool, $this->templateRegistry);
+        $blockService = new AdminListBlockService($this->twig, $this->pool, static::createStub(TemplateRegistryInterface::class));
         $blockContext = $this->getBlockContext($blockService);
 
         self::assertSettings([

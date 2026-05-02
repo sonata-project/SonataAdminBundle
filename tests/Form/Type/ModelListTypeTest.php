@@ -36,7 +36,7 @@ final class ModelListTypeTest extends TypeTestCase
     public function testGetDefaultOptions(): void
     {
         $type = new ModelListType();
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
         $optionResolver = new OptionsResolver();
 
         $type->configureOptions($optionResolver);

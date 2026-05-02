@@ -32,7 +32,7 @@ final class ModelAutocompleteTypeTest extends TypeTestCase
 
     public function testGetDefaultOptions(): void
     {
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
         $optionResolver = new OptionsResolver();
 
         $this->type->configureOptions($optionResolver);

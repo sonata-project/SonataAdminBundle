@@ -55,15 +55,9 @@ final class DatagridMapperTest extends TestCase
     protected function setUp(): void
     {
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
-
-        /** @var ProxyQueryInterface<object>&MockObject $proxyQuery */
-        $proxyQuery = $this->createMock(ProxyQueryInterface::class);
-        /** @var PagerInterface<ProxyQueryInterface<object>>&MockObject $pager */
-        $pager = $this->createMock(PagerInterface::class);
         $fieldDescriptionCollection = new FieldDescriptionCollection();
-        $formBuilder = $this->createMock(FormBuilder::class);
 
-        $this->datagrid = new Datagrid($proxyQuery, $fieldDescriptionCollection, $pager, $formBuilder, []);
+        $this->datagrid = new Datagrid(static::createStub(ProxyQueryInterface::class), $fieldDescriptionCollection, static::createStub(PagerInterface::class), static::createStub(FormBuilder::class), []);
 
         $this->admin = $this->createMock(AdminInterface::class);
 

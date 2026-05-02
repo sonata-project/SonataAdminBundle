@@ -68,17 +68,17 @@ final class BreadcrumbsBuilderTest extends TestCase
         $childAdmin->method('getSubject')->willReturn($childSubject);
         $childAdmin->method('toString')->with($childSubject)->willReturn('My subject');
 
-        $admin->method('hasRoute')->willReturnMap([
+        $admin->expects(static::exactly(3))->method('hasRoute')->willReturnMap([
             ['show', true],
             ['list', true],
             ['edit', true],
         ]);
-        $admin->method('hasAccess')->willReturnMap([
+        $admin->expects(static::exactly(3))->method('hasAccess')->willReturnMap([
             ['show', $subject, true],
             ['list', null, true],
             ['edit', null, true],
         ]);
-        $admin->method('generateUrl')->willReturnMap([
+        $admin->expects(static::exactly(3))->method('generateUrl')->willReturnMap([
             ['show', ['slug' => 'my-object'], UrlGeneratorInterface::ABSOLUTE_PATH, '/myadmin/my-object'],
             ['edit', ['slug' => 'my-object'], UrlGeneratorInterface::ABSOLUTE_PATH, '/myadmin/my-object'],
             ['list', [], UrlGeneratorInterface::ABSOLUTE_PATH, '/myadmin/list'],
@@ -162,7 +162,7 @@ final class BreadcrumbsBuilderTest extends TestCase
         $routeGenerator->method('generate')->with('sonata_admin_dashboard')->willReturn('/dashboard');
         $admin->method('getRouteGenerator')->willReturn($routeGenerator);
 
-        $menu->method('addChild')->willReturnMap([
+        $menu->expects(static::exactly(7))->method('addChild')->willReturnMap([
             ['link_breadcrumb_dashboard', [
                 'uri' => '/dashboard',
                 'extras' => ['translation_domain' => 'SonataAdminBundle'],
@@ -207,7 +207,7 @@ final class BreadcrumbsBuilderTest extends TestCase
         $childAdmin->method('getCurrentChildAdmin')->willReturn(null);
         $childAdmin->method('hasSubject')->willReturn(false);
 
-        $admin->method('hasRoute')->willReturnMap([
+        $admin->expects(static::exactly(2))->method('hasRoute')->willReturnMap([
             ['list', true],
             ['show', false],
         ]);

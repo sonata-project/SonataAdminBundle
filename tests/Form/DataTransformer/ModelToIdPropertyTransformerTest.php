@@ -70,7 +70,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
     {
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $transformer = new ModelToIdPropertyTransformer($modelManager, Foo::class, 'bar', true);
-        $proxyQuery = $this->createMock(ProxyQueryInterface::class);
+        $proxyQuery = static::createStub(ProxyQueryInterface::class);
         $modelManager
             ->expects(static::exactly(null !== $params ? 1 : 0))
             ->method('createQuery')
@@ -97,7 +97,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
 
                 return $collection;
             });
-        $modelManager
+        $modelManager->expects(static::exactly(3))
             ->method('getNormalizedIdentifier')
             ->willReturnMap([
                 [$entity1, '123'],
@@ -270,7 +270,7 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('A multiple selection must be passed a collection not a single value. Make sure that form option "multiple=false" is set for many-to-one relation and "multiple=true" is set for many-to-many or one-to-many relations.');
 
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
         $model = new FooArrayAccess();
         $model->setBar('example');
         $transformer = new ModelToIdPropertyTransformer($modelManager, FooArrayAccess::class, 'bar', true);

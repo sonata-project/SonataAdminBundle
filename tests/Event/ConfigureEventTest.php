@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Event;
 
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Event\ConfigureEvent;
@@ -26,22 +25,9 @@ final class ConfigureEventTest extends TestCase
      */
     private ConfigureEvent $event;
 
-    /**
-     * @var AdminInterface<object>&MockObject
-     */
-    private AdminInterface $admin;
-
-    /**
-     * @var MapperInterface<object>&MockObject
-     */
-    private MapperInterface $mapper;
-
     protected function setUp(): void
     {
-        $this->admin = $this->createMock(AdminInterface::class);
-        $this->mapper = $this->createMock(MapperInterface::class);
-
-        $this->event = new ConfigureEvent($this->admin, $this->mapper, 'Foo');
+        $this->event = new ConfigureEvent(static::createStub(AdminInterface::class), static::createStub(MapperInterface::class), 'Foo');
     }
 
     public function testGetType(): void
@@ -54,7 +40,7 @@ final class ConfigureEventTest extends TestCase
         $result = $this->event->getAdmin();
 
         static::assertInstanceOf(AdminInterface::class, $result);
-        static::assertSame($this->admin, $result);
+        static::assertSame(static::createStub(AdminInterface::class), $result);
     }
 
     public function testGetMapper(): void
@@ -62,6 +48,6 @@ final class ConfigureEventTest extends TestCase
         $result = $this->event->getMapper();
 
         static::assertInstanceOf(MapperInterface::class, $result);
-        static::assertSame($this->mapper, $result);
+        static::assertSame(static::createStub(MapperInterface::class), $result);
     }
 }

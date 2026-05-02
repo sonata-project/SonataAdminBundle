@@ -30,7 +30,7 @@ final class SecurityExtensionTest extends TestCase
         $securityChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $twigExtension = new SecurityExtension(new SecurityRuntime($securityChecker));
 
-        $securityChecker
+        $securityChecker->expects(static::exactly(2))
             ->method('isGranted')
             ->willReturnMap([
                 ['foo', null, false],

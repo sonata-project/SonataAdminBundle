@@ -65,7 +65,7 @@ abstract class BaseMenuTestCase extends TestCase
         $renderer = new TwigRenderer(
             $this->environment,
             $this->getTemplate(),
-            $this->createMock(MatcherInterface::class)
+            static::createStub(MatcherInterface::class)
         );
 
         return $renderer->render($item, $options);

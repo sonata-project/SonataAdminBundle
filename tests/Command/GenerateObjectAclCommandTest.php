@@ -81,7 +81,7 @@ final class GenerateObjectAclCommandTest extends TestCase
         $admin->setManagerType('bar');
 
         $aclObjectManipulators = [
-            'bar' => $this->createMock(ObjectAclManipulatorInterface::class),
+            'bar' => static::createStub(ObjectAclManipulatorInterface::class),
         ];
 
         $command = new GenerateObjectAclCommand($pool, $aclObjectManipulators);

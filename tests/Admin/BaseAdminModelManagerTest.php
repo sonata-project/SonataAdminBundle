@@ -22,7 +22,7 @@ final class BaseAdminModelManagerTest extends TestCase
 {
     public function testHook(): void
     {
-        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
+        $securityHandler = static::createStub(SecurityHandlerInterface::class);
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager->expects(static::once())->method('create');
@@ -61,7 +61,7 @@ final class BaseAdminModelManagerTest extends TestCase
 
     public function testCreateQuery(): void
     {
-        $query = $this->createMock(ProxyQueryInterface::class);
+        $query = static::createStub(ProxyQueryInterface::class);
         $modelManager = $this->createMock(ModelManagerInterface::class);
         $modelManager
             ->expects(static::once())
