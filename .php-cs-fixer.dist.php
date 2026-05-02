@@ -36,6 +36,7 @@ $rules = [
     '@Symfony:risky' => true,
     'combine_consecutive_issets' => true,
     'combine_consecutive_unsets' => true,
+    'declare_strict_types' => true,
     'global_namespace_import' => ['import_classes' => false, 'import_constants' => false, 'import_functions' => false],
     'header_comment' => ['header' => $header],
     'list_syntax' => ['syntax' => 'short'],
