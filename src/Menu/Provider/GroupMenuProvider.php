@@ -156,6 +156,7 @@ final class GroupMenuProvider implements MenuProviderInterface
                 'label_catalogue' => $admin->getTranslationDomain(), // NEXT_MAJOR: Remove this line.
                 'translation_domain' => $admin->getTranslationDomain(),
                 'admin' => $admin,
+                'icon' => $item['icon'],
             ];
 
             return $this->menuFactory->createItem($admin->getLabel() ?? '', $options);

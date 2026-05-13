@@ -200,6 +200,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     'route_params' => [],
                     'route_absolute' => false,
                     'priority' => $attributes['priority'] ?? 0,
+                    'icon' => $attributes['icon'] ?? null,
                 ];
 
                 if (true === $groupDefaults[$resolvedGroupName]['on_top']
