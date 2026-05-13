@@ -27,12 +27,14 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  *     roles: list<string>,
  *     route: string,
  *     route_absolute: bool,
- *     route_params: array<string, string>
+ *     route_params: array<string, string>,
+ *     icon?: string
  * }|array{
  *     admin: string,
  *     roles: list<string>,
  *     route_absolute: bool,
- *     route_params: array<string, string>
+ *     route_params: array<string, string>,
+ *     icon?: string
  * }
  * NEXT_MAJOR: Remove the label_catalogue key.
  * @phpstan-type Group = array{
