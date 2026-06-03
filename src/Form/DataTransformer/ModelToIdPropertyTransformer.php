@@ -35,7 +35,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
     /**
      * @var callable|null
      *
-     * @phpstan-var null|callable(T, P): string
+     * @phpstan-var callable(T, P): string|null
      */
     private $toStringCallback;
 
