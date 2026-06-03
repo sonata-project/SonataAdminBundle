@@ -560,7 +560,7 @@ This code manages the many-to-[one|many] association field popup
             if (undefined === objectId || null === objectId || '' === objectId) {
                 jQuery('#field_widget_{{ id }}').html('{{ 'short_object_description_placeholder'|trans({}, 'SonataAdminBundle') }}');
 
-                {% if btn_edit %}
+                {% if associationadmin.hasroute('edit') and associationadmin.hasAccess('edit') and btn_edit %}
                     jQuery('#field_actions_{{ id }} a.btn-warning').addClass('hidden');
                 {% endif %}
 
@@ -587,7 +587,7 @@ This code manages the many-to-[one|many] association field popup
                 }
             });
 
-            {% if btn_edit %}
+            {% if associationadmin.hasroute('edit') and associationadmin.hasAccess('edit') and btn_edit %}
                 var edit_button_url = '{{
                     associationadmin.generateUrl('edit', {(associationadmin.idParameter) : 'OBJECT_ID'})
                 }}'.replace('OBJECT_ID', objectId);
