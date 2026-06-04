@@ -56,7 +56,7 @@
         "symfony/security-core": "^6.4 || ^7.3 || ^8.0",
         "symfony/security-csrf": "^6.4 || ^7.3 || ^8.0",
         "symfony/serializer": "^6.4 || ^7.3 || ^8.0",
-        "symfony/stimulus-bundle": "^2.22",
+        "symfony/stimulus-bundle": "^2.22 || ^3.0",
         "symfony/string": "^6.4 || ^7.3 || ^8.0",
         "symfony/translation": "^6.4 || ^7.3 || ^8.0",
         "symfony/translation-contracts": "^2.3 || ^3.0",

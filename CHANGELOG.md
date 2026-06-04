@@ -2,6 +2,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.43.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.42.0...4.43.0) - 2026-06-03
+### Added
+- [[#8381](https://github.com/sonata-project/SonataAdminBundle/pull/8381)] Support for symfony/stimulus-bundle 3. ([@virtualize](https://github.com/virtualize))
+- [[#8373](https://github.com/sonata-project/SonataAdminBundle/pull/8373)] Added optional flag to `FormErrorIteratorToConstraintViolationList::transform()` to sanitize error messages and prevent leaking sensitive information (e.g. internal file system paths) ([@micbis](https://github.com/micbis))
+- [[#8371](https://github.com/sonata-project/SonataAdminBundle/pull/8371)] Support for `doctrine/collections` 3 ([@dmaicher](https://github.com/dmaicher))
+
+### Fixed
+- [[#8382](https://github.com/sonata-project/SonataAdminBundle/pull/8382)] Do not generate the edit button URL in `edit_many_script` when the associated admin has no accessible `edit` route ([@EmmanuelVella](https://github.com/EmmanuelVella))
+
+### Removed
+- [[#8371](https://github.com/sonata-project/SonataAdminBundle/pull/8371)] Support for `doctrine/collections` < 2 ([@dmaicher](https://github.com/dmaicher))
+
+### Security
+- [[#8373](https://github.com/sonata-project/SonataAdminBundle/pull/8373)] Added opt-in protection against exposing sensitive system information (e.g. temporary upload paths) in validation error payloads ([@micbis](https://github.com/micbis))
+
 ## [4.42.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.41.0...4.42.0) - 2026-01-05
 ### Changed
 - [[#8369](https://github.com/sonata-project/SonataAdminBundle/pull/8369)] The `symfony/security-acl` dependency is now optional. You need to explicitly require it as a dependency if you are using ACL. ([@dmaicher](https://github.com/dmaicher))
