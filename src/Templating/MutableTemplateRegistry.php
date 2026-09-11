@@ -25,7 +25,7 @@ final class MutableTemplateRegistry extends AbstractTemplateRegistry implements 
     public function setTemplates(array $templates, string $theme = TemplateRegistryInterface::DEFAULT_THEME): void
     {
         // NEXT_MAJOR: remove if
-        if ('default' === $theme) {
+        if (TemplateRegistryInterface::DEFAULT_THEME === $theme) {
             $this->templates = $templates + $this->templates;
         }
 

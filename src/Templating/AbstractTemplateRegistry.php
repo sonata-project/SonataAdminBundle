@@ -34,9 +34,9 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
      */
     public function __construct(array $templates = [], array $themedTemplates = [])
     {
-        $this->templates = $templates;
         $this->themedTemplates = $themedTemplates;
         $this->themedTemplates[TemplateRegistryInterface::DEFAULT_THEME] = $templates + ($this->themedTemplates[TemplateRegistryInterface::DEFAULT_THEME] ?? []);
+        $this->templates = $this->themedTemplates[TemplateRegistryInterface::DEFAULT_THEME];
     }
 
     /**
