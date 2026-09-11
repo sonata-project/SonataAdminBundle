@@ -98,4 +98,19 @@ final class MutableTemplateRegistryTest extends TestCase
 
         static::assertFalse($this->templateRegistry->hasTemplate('nonexist_template', 'second_theme'));
     }
+
+    public function testSetThemedTemplatesOnNewThem(): void
+    {
+        $templates = [
+            'show' => '@FooAdmin/CRUD/show.html.twig',
+            'edit' => '@FooAdmin/CRUD/edit.html.twig',
+        ];
+
+        $this->templateRegistry->setTemplates($templates, 'empty_theme');
+
+        static::assertTrue($this->templateRegistry->hasTemplate('edit', 'empty_theme'));
+        static::assertSame('@FooAdmin/CRUD/edit.html.twig', $this->templateRegistry->getTemplate('edit', 'empty_theme'));
+
+        static::assertFalse($this->templateRegistry->hasTemplate('nonexist_template', 'empty_theme'));
+    }
 }

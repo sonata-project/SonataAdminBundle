@@ -32,7 +32,7 @@ final class MutableTemplateRegistry extends AbstractTemplateRegistry implements 
             return;
         }
 
-        $this->themedTemplates[$theme] = $templates + $this->themedTemplates[$theme];
+        $this->themedTemplates[$theme] = $templates + ($this->themedTemplates[$theme] ?? []);
     }
 
     /**

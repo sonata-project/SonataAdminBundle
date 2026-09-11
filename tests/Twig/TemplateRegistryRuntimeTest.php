@@ -32,7 +32,7 @@ final class TemplateRegistryRuntimeTest extends TestCase
         $globalTemplateRegistry
             ->method('getTemplate')
             ->willReturnMap([
-                ['edit', 'default', '@SonataAdmin/CRUD/edit.html.twig'],
+                ['edit', '@SonataAdmin/CRUD/edit.html.twig'],
                 ['show', 'custom_theme', '@SonataAdmin/custom_theme/CRUD/show.html.twig'],
             ]);
 
@@ -40,7 +40,7 @@ final class TemplateRegistryRuntimeTest extends TestCase
         $adminTemplateRegistry
             ->method('getTemplate')
             ->willReturnMap([
-                ['edit', 'default', '@SonataAdmin/CRUD/edit.html.twig'],
+                ['edit', '@SonataAdmin/CRUD/edit.html.twig'],
                 ['show', 'custom_theme', '@SonataAdmin/custom_theme/CRUD/show.html.twig'],
             ]);
 
