@@ -52,15 +52,10 @@ final class TemplateRegistryTest extends TestCase
         ];
 
         static::assertSame($templates, $this->templateRegistry->getTemplates());
+    }
 
-        $templates = [
-            'list' => '@FooAdmin/CRUD/list.html.twig',
-            'show' => '@FooAdmin/CRUD/show.html.twig',
-            'edit' => '@FooAdmin/CRUD/edit.html.twig',
-        ];
-
-        static::assertSame($templates, $this->templateRegistry->getTemplates('default'));
-
+    public function testGetThemedTemplates(): void
+    {
         $templates = [
             'list' => '@FooAdmin/CRUD_v2/list.html.twig',
             'show' => '@FooAdmin/CRUD_v2/show.html.twig',
@@ -78,12 +73,15 @@ final class TemplateRegistryTest extends TestCase
         static::assertFalse($this->templateRegistry->hasTemplate('foo'));
 
         $this->templateRegistry->getTemplate('foo');
+    }
 
+    public function testThrowExceptionIfTheThemedTemplateDoesNotExist(): void
+    {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('Template named "foo" doesn\'t exist for "second_theme" theme.');
 
         static::assertFalse($this->templateRegistry->hasTemplate('foo', 'second_theme'));
 
-        $this->templateRegistry->getTemplate('foo');
+        $this->templateRegistry->getTemplate('foo', 'second_theme');
     }
 }
