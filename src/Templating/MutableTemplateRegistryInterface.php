@@ -19,11 +19,11 @@ namespace Sonata\AdminBundle\Templating;
 interface MutableTemplateRegistryInterface extends TemplateRegistryInterface
 {
     /**
+     * NEXT_MAJOR: uncomment extra arg.
      * @param array<string, string> $templates 'name' => 'file_path.html.twig'
-     *                                         NEXT_MAJOR: uncomment extra arg
      */
     public function setTemplates(array $templates/* , string $theme = TemplateRegistryInterface::DEFAULT_THEME */): void;
 
-    // NEXT_MAJOR: uncomment extra arg
+    // NEXT_MAJOR: uncomment extra arg.
     public function setTemplate(string $name, string $template/* , string $theme = TemplateRegistryInterface::DEFAULT_THEME */): void;
 }

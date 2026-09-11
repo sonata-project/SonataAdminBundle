@@ -76,14 +76,14 @@ interface TemplateRegistryInterface
     ];
 
     /**
+     * NEXT_MAJOR: uncomment extra arg.
      * @return array<string, string> 'name' => 'file_path.html.twig'
-     *                               NEXT_MAJOR: uncomment extra arg
      */
     public function getTemplates(/* string $theme = self::DEFAULT_THEME */): array;
 
-    // NEXT_MAJOR: uncomment extra arg
+    // NEXT_MAJOR: uncomment extra arg.
     public function getTemplate(string $name/* , string $theme = self::DEFAULT_THEME */): string;
 
-    // NEXT_MAJOR: uncomment extra arg
+    // NEXT_MAJOR: uncomment extra arg.
     public function hasTemplate(string $name/* , string $theme = self::DEFAULT_THEME */): bool;
 }

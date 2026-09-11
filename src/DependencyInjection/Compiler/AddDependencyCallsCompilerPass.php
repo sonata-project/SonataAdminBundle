@@ -17,7 +17,6 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistry;
-use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
