@@ -35,14 +35,14 @@ final class TemplateRegistryRuntime implements RuntimeExtensionInterface
      * @throws ServiceNotFoundException
      * @throws ServiceCircularReferenceException
      */
-    public function getAdminTemplate(string $name, string $adminCode): string
+    public function getAdminTemplate(string $name, string $adminCode, string $theme = 'default'): string
     {
-        return $this->getTemplateRegistry($adminCode)->getTemplate($name);
+        return $this->getTemplateRegistry($adminCode)->getTemplate($name, $theme);
     }
 
-    public function getGlobalTemplate(string $name): string
+    public function getGlobalTemplate(string $name, string $theme = 'default'): string
     {
-        return $this->globalTemplateRegistry->getTemplate($name);
+        return $this->globalTemplateRegistry->getTemplate($name, $theme);
     }
 
     /**

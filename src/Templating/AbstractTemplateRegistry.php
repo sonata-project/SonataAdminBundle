@@ -17,33 +17,63 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
 {
     /**
      * @var array<string, string>
+     *
+     * @deprecated since sonata-project/admin-bundle x.x, will be removed in x.x.
+     * NEXT_MAJOR: remove this property
      */
     protected $templates = [];
 
     /**
-     * @param string[] $templates
+     * @var array<string, array<string, string>>
      */
-    public function __construct(array $templates = [])
+    protected $themedTemplates = [];
+
+    /**
+     * @param array<string, string>                $templates       ['template_name' => 'template']
+     * @param array<string, array<string, string>> $themedTemplates ['theme_name' => ['template_name' => 'template']]
+     */
+    public function __construct(array $templates = [], array $themedTemplates = [])
     {
         $this->templates = $templates;
+        $this->themedTemplates = $themedTemplates;
+        $this->themedTemplates['default'] = $templates + ($this->themedTemplates['default'] ?? []);
     }
 
-    final public function getTemplates(): array
+    final public function getTemplates(string $theme = 'default'): array
     {
-        return $this->templates;
-    }
-
-    final public function hasTemplate(string $name): bool
-    {
-        return isset($this->templates[$name]);
-    }
-
-    final public function getTemplate(string $name): string
-    {
-        if ($this->hasTemplate($name)) {
-            return $this->templates[$name];
+        // NEXT_MAJOR: remove if
+        if ('default' === $theme) {
+            return $this->templates;
         }
 
-        throw new \InvalidArgumentException(\sprintf('Template named "%s" doesn\'t exist.', $name));
+        return $this->themedTemplates[$theme] ?? [];
+    }
+
+    final public function hasTemplate(string $name, string $theme = 'default'): bool
+    {
+        // NEXT_MAJOR: remove if
+        if ('default' === $theme) {
+            return isset($this->templates[$name]);
+        }
+
+        return isset($this->themedTemplates[$theme][$name]);
+    }
+
+    final public function getTemplate(string $name, string $theme = 'default'): string
+    {
+        // NEXT_MAJOR: remove if
+        if ('default' === $theme) {
+            if ($this->hasTemplate($name)) {
+                return $this->templates[$name];
+            }
+
+            throw new \InvalidArgumentException(\sprintf('Template named "%s" doesn\'t exist.', $name));
+        }
+
+        if ($this->hasTemplate($name, $theme)) {
+            return $this->themedTemplates[$theme][$name];
+        }
+
+        throw new \InvalidArgumentException(\sprintf('Template named "%s" doesn\'t exist for "%s" theme.', $name, $theme));
     }
 }

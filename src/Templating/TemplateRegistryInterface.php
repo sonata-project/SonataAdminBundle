@@ -76,10 +76,13 @@ interface TemplateRegistryInterface
 
     /**
      * @return array<string, string> 'name' => 'file_path.html.twig'
+     *                               NEXT_MAJOR: uncomment extra arg
      */
-    public function getTemplates(): array;
+    public function getTemplates(/* string $theme = 'default' */): array;
 
-    public function getTemplate(string $name): string;
+    // NEXT_MAJOR: uncomment extra arg
+    public function getTemplate(string $name/* , string $theme = 'default' */): string;
 
-    public function hasTemplate(string $name): bool;
+    // NEXT_MAJOR: uncomment extra arg
+    public function hasTemplate(string $name/* , string $theme = 'default' */): bool;
 }

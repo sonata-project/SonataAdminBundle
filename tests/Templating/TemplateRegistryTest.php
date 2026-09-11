@@ -22,11 +22,25 @@ final class TemplateRegistryTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->templateRegistry = new TemplateRegistry([
-            'list' => '@FooAdmin/CRUD/list.html.twig',
-            'show' => '@FooAdmin/CRUD/show.html.twig',
-            'edit' => '@FooAdmin/CRUD/edit.html.twig',
-        ]);
+        $this->templateRegistry = new TemplateRegistry(
+            [
+                'list' => '@FooAdmin/CRUD/list.html.twig',
+                'show' => '@FooAdmin/CRUD/show.html.twig',
+                'edit' => '@FooAdmin/CRUD/edit.html.twig',
+            ],
+            [
+                'default' => [
+                    'list' => '@FooAdmin/CRUD/list.html.twig',
+                    'show' => '@FooAdmin/CRUD/show.html.twig',
+                    'edit' => '@FooAdmin/CRUD/edit.html.twig',
+                ],
+                'second_theme' => [
+                    'list' => '@FooAdmin/CRUD_v2/list.html.twig',
+                    'show' => '@FooAdmin/CRUD_v2/show.html.twig',
+                    'edit' => '@FooAdmin/CRUD_v2/edit.html.twig',
+                ],
+            ]
+        );
     }
 
     public function testGetTemplates(): void
@@ -38,6 +52,22 @@ final class TemplateRegistryTest extends TestCase
         ];
 
         static::assertSame($templates, $this->templateRegistry->getTemplates());
+
+        $templates = [
+            'list' => '@FooAdmin/CRUD/list.html.twig',
+            'show' => '@FooAdmin/CRUD/show.html.twig',
+            'edit' => '@FooAdmin/CRUD/edit.html.twig',
+        ];
+
+        static::assertSame($templates, $this->templateRegistry->getTemplates('default'));
+
+        $templates = [
+            'list' => '@FooAdmin/CRUD_v2/list.html.twig',
+            'show' => '@FooAdmin/CRUD_v2/show.html.twig',
+            'edit' => '@FooAdmin/CRUD_v2/edit.html.twig',
+        ];
+
+        static::assertSame($templates, $this->templateRegistry->getTemplates('second_theme'));
     }
 
     public function testThrowExceptionIfTheTemplateDoesNotExist(): void
@@ -46,6 +76,13 @@ final class TemplateRegistryTest extends TestCase
         $this->expectExceptionMessage('Template named "foo" doesn\'t exist.');
 
         static::assertFalse($this->templateRegistry->hasTemplate('foo'));
+
+        $this->templateRegistry->getTemplate('foo');
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Template named "foo" doesn\'t exist for "second_theme" theme.');
+
+        static::assertFalse($this->templateRegistry->hasTemplate('foo', 'second_theme'));
 
         $this->templateRegistry->getTemplate('foo');
     }

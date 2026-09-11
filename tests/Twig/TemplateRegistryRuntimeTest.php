@@ -28,11 +28,21 @@ final class TemplateRegistryRuntimeTest extends TestCase
 
     protected function setUp(): void
     {
-        $templateRegistry = $this->createMock(TemplateRegistryInterface::class);
-        $templateRegistry->method('getTemplate')->with('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
+        $globalTemplateRegistry = $this->createMock(TemplateRegistryInterface::class);
+        $globalTemplateRegistry
+            ->method('getTemplate')
+            ->willReturnMap([
+                ['edit', 'default', '@SonataAdmin/CRUD/edit.html.twig'],
+                ['show', 'custom_theme', '@SonataAdmin/custom_theme/CRUD/show.html.twig'],
+            ]);
 
         $adminTemplateRegistry = $this->createMock(MutableTemplateRegistryInterface::class);
-        $adminTemplateRegistry->method('getTemplate')->with('edit')->willReturn('@SonataAdmin/CRUD/edit.html.twig');
+        $adminTemplateRegistry
+            ->method('getTemplate')
+            ->willReturnMap([
+                ['edit', 'default', '@SonataAdmin/CRUD/edit.html.twig'],
+                ['show', 'custom_theme', '@SonataAdmin/custom_theme/CRUD/show.html.twig'],
+            ]);
 
         $admin = static::createStub(AdminInterface::class);
         $admin
@@ -44,7 +54,7 @@ final class TemplateRegistryRuntimeTest extends TestCase
         $pool = new Pool($container, ['admin.post']);
 
         $this->templateRegistryRuntime = new TemplateRegistryRuntime(
-            $templateRegistry,
+            $globalTemplateRegistry,
             $pool
         );
     }
@@ -54,6 +64,10 @@ final class TemplateRegistryRuntimeTest extends TestCase
         static::assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
             $this->templateRegistryRuntime->getAdminTemplate('edit', 'admin.post')
+        );
+        static::assertSame(
+            '@SonataAdmin/custom_theme/CRUD/show.html.twig',
+            $this->templateRegistryRuntime->getAdminTemplate('show', 'admin.post', 'custom_theme')
         );
     }
 
@@ -74,6 +88,10 @@ final class TemplateRegistryRuntimeTest extends TestCase
         static::assertSame(
             '@SonataAdmin/CRUD/edit.html.twig',
             $this->templateRegistryRuntime->getGlobalTemplate('edit')
+        );
+        static::assertSame(
+            '@SonataAdmin/custom_theme/CRUD/show.html.twig',
+            $this->templateRegistryRuntime->getGlobalTemplate('show', 'custom_theme')
         );
     }
 }

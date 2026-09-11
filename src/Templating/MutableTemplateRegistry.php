@@ -18,13 +18,29 @@ namespace Sonata\AdminBundle\Templating;
  */
 final class MutableTemplateRegistry extends AbstractTemplateRegistry implements MutableTemplateRegistryInterface
 {
-    public function setTemplates(array $templates): void
+    public function setTemplates(array $templates, string $theme = 'default'): void
     {
-        $this->templates = $templates + $this->templates;
+        // NEXT_MAJOR: remove if
+        if ('default' === $theme) {
+            $this->templates = $templates + $this->templates;
+            $this->themedTemplates['default'] = $templates + $this->themedTemplates['default'];
+
+            return;
+        }
+
+        $this->themedTemplates[$theme] = $templates + $this->themedTemplates[$theme];
     }
 
-    public function setTemplate(string $name, string $template): void
+    public function setTemplate(string $name, string $template, string $theme = 'default'): void
     {
-        $this->templates[$name] = $template;
+        // NEXT_MAJOR: remove if
+        if ('default' === $theme) {
+            $this->templates[$name] = $template;
+            $this->themedTemplates['default'][$name] = $template;
+
+            return;
+        }
+
+        $this->themedTemplates[$theme][$name] = $template;
     }
 }
