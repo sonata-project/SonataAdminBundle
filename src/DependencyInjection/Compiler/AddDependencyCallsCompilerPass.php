@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Datagrid\Pager;
 use Sonata\AdminBundle\DependencyInjection\Admin\TaggedAdminInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistry;
+use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Compiler\ServiceLocatorTagPass;
@@ -477,10 +478,9 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         $pos = 0;
         foreach ($definition->getMethodCalls() as [$method, $args]) {
             if ('setTemplates' === $method) {
-                if (isset($args[1]) && 'default' === $args[1]) {
+                if (isset($args[1]) && \is_string($args['1'])) {
                     $definedThemedTemplates[$args[1]] = $args[0] + ($definedThemedTemplates[$args[1]] ?? []);
                 } else {
-
                     $definedTemplates = array_merge($definedTemplates, $args[0]);
                 }
 
@@ -488,7 +488,11 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             }
 
             if ('setTemplate' === $method) {
-                $definedTemplates[$args[0]] = $args[1];
+                if (isset($args[2]) && \is_string($args['2'])) {
+                    $definedThemedTemplates[$args[2]][$args[0]] = $args[1];
+                } else {
+                    $definedTemplates[$args[0]] = $args[1];
+                }
 
                 continue;
             }
@@ -522,6 +526,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
             $templateRegistryDefinition->addArgument('%sonata.admin.configuration.templates%');
         }
 
+        $templateRegistryDefinition->addArgument($definedThemedTemplates);
         $definition->addMethodCall('setTemplateRegistry', [new Reference($templateRegistryId)]);
     }
 
