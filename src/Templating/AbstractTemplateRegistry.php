@@ -39,9 +39,12 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
         $this->themedTemplates['default'] = $templates + ($this->themedTemplates['default'] ?? []);
     }
 
+    /**
+     * @phpstan-ignore arguments.count
+     * NEXT_MAJOR: remove phpstan-ignore and if section
+     */
     final public function getTemplates(string $theme = 'default'): array
     {
-        // NEXT_MAJOR: remove if
         if ('default' === $theme) {
             return $this->templates;
         }
@@ -49,9 +52,12 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
         return $this->themedTemplates[$theme] ?? [];
     }
 
+    /**
+     * @phpstan-ignore arguments.count
+     * NEXT_MAJOR: remove phpstan-ignore and if section
+     */
     final public function hasTemplate(string $name, string $theme = 'default'): bool
     {
-        // NEXT_MAJOR: remove if
         if ('default' === $theme) {
             return isset($this->templates[$name]);
         }
@@ -59,9 +65,12 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
         return isset($this->themedTemplates[$theme][$name]);
     }
 
+    /**
+     * @phpstan-ignore arguments.count
+     * NEXT_MAJOR: remove phpstan-ignore and if section
+     */
     final public function getTemplate(string $name, string $theme = 'default'): string
     {
-        // NEXT_MAJOR: remove if
         if ('default' === $theme) {
             if ($this->hasTemplate($name)) {
                 return $this->templates[$name];

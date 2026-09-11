@@ -18,6 +18,10 @@ namespace Sonata\AdminBundle\Templating;
  */
 final class MutableTemplateRegistry extends AbstractTemplateRegistry implements MutableTemplateRegistryInterface
 {
+    /**
+     * @phpstan-ignore arguments.count
+     * NEXT_MAJOR: remove phpstan-ignore and if section
+     */
     public function setTemplates(array $templates, string $theme = 'default'): void
     {
         // NEXT_MAJOR: remove if
@@ -31,9 +35,12 @@ final class MutableTemplateRegistry extends AbstractTemplateRegistry implements 
         $this->themedTemplates[$theme] = $templates + $this->themedTemplates[$theme];
     }
 
+    /**
+     * @phpstan-ignore arguments.count
+     * NEXT_MAJOR: remove phpstan-ignore and if section
+     */
     public function setTemplate(string $name, string $template, string $theme = 'default'): void
     {
-        // NEXT_MAJOR: remove if
         if ('default' === $theme) {
             $this->templates[$name] = $template;
             $this->themedTemplates['default'][$name] = $template;
