@@ -22,7 +22,7 @@ interface MutableTemplateRegistryInterface extends TemplateRegistryInterface
      * @param array<string, string> $templates 'name' => 'file_path.html.twig'
      *                                         NEXT_MAJOR: uncomment extra arg
      */
-    public function setTemplates(array $templates/* , string $theme = 'default */): void;
+    public function setTemplates(array $templates/* , string $theme = 'default' */): void;
 
     // NEXT_MAJOR: uncomment extra arg
     public function setTemplate(string $name, string $template/* , string $theme = 'default' */): void;

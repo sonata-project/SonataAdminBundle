@@ -41,7 +41,7 @@ final class TemplateRegistryRuntime implements RuntimeExtensionInterface
             return $this->getTemplateRegistry($adminCode)->getTemplate($name);
         }
 
-        /**
+        /*
          * NEXT_MAJOR: remove phpstan-ignore
          * @phpstan-ignore arguments.count
          */
@@ -54,7 +54,7 @@ final class TemplateRegistryRuntime implements RuntimeExtensionInterface
             return $this->globalTemplateRegistry->getTemplate($name);
         }
 
-        /**
+        /*
          * NEXT_MAJOR: remove phpstan-ignore
          * @phpstan-ignore arguments.count
          */

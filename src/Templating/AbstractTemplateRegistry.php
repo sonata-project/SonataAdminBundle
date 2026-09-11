@@ -79,7 +79,7 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
             throw new \InvalidArgumentException(\sprintf('Template named "%s" doesn\'t exist.', $name));
         }
 
-        /**
+        /*
          * @phpstan-ignore arguments.count
          * NEXT_MAJOR: remove phpstan-ignore
          */
