@@ -29,6 +29,7 @@ interface MutableTemplateRegistryAwareInterface
 
     /**
      * NEXT_MAJOR: uncomment extra arg.
+     *
      * @param array<string, string> $templates
      */
     public function setTemplates(array $templates/* , string $theme = TemplateRegistryInterface::DEFAULT_THEME */): void;

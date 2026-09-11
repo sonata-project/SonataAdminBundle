@@ -77,6 +77,7 @@ interface TemplateRegistryInterface
 
     /**
      * NEXT_MAJOR: uncomment extra arg.
+     *
      * @return array<string, string> 'name' => 'file_path.html.twig'
      */
     public function getTemplates(/* string $theme = self::DEFAULT_THEME */): array;
