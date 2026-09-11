@@ -22,14 +22,11 @@ final class MutableTemplateRegistry extends AbstractTemplateRegistry implements 
      * @phpstan-ignore arguments.count
      * NEXT_MAJOR: remove phpstan-ignore and if section
      */
-    public function setTemplates(array $templates, string $theme = 'default'): void
+    public function setTemplates(array $templates, string $theme = TemplateRegistryInterface::DEFAULT_THEME): void
     {
         // NEXT_MAJOR: remove if
         if ('default' === $theme) {
             $this->templates = $templates + $this->templates;
-            $this->themedTemplates['default'] = $templates + $this->themedTemplates['default'];
-
-            return;
         }
 
         $this->themedTemplates[$theme] = $templates + ($this->themedTemplates[$theme] ?? []);
@@ -39,13 +36,10 @@ final class MutableTemplateRegistry extends AbstractTemplateRegistry implements 
      * @phpstan-ignore arguments.count
      * NEXT_MAJOR: remove phpstan-ignore and if section
      */
-    public function setTemplate(string $name, string $template, string $theme = 'default'): void
+    public function setTemplate(string $name, string $template, string $theme = TemplateRegistryInterface::DEFAULT_THEME): void
     {
-        if ('default' === $theme) {
+        if (TemplateRegistryInterface::DEFAULT_THEME === $theme) {
             $this->templates[$name] = $template;
-            $this->themedTemplates['default'][$name] = $template;
-
-            return;
         }
 
         $this->themedTemplates[$theme][$name] = $template;

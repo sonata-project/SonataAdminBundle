@@ -36,16 +36,16 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
     {
         $this->templates = $templates;
         $this->themedTemplates = $themedTemplates;
-        $this->themedTemplates['default'] = $templates + ($this->themedTemplates['default'] ?? []);
+        $this->themedTemplates[TemplateRegistryInterface::DEFAULT_THEME] = $templates + ($this->themedTemplates[TemplateRegistryInterface::DEFAULT_THEME] ?? []);
     }
 
     /**
      * @phpstan-ignore arguments.count
      * NEXT_MAJOR: remove phpstan-ignore and if section
      */
-    final public function getTemplates(string $theme = 'default'): array
+    final public function getTemplates(string $theme = TemplateRegistryInterface::DEFAULT_THEME): array
     {
-        if ('default' === $theme) {
+        if (TemplateRegistryInterface::DEFAULT_THEME === $theme) {
             return $this->templates;
         }
 
@@ -56,9 +56,9 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
      * @phpstan-ignore arguments.count
      * NEXT_MAJOR: remove phpstan-ignore and if section
      */
-    final public function hasTemplate(string $name, string $theme = 'default'): bool
+    final public function hasTemplate(string $name, string $theme = TemplateRegistryInterface::DEFAULT_THEME): bool
     {
-        if ('default' === $theme) {
+        if (TemplateRegistryInterface::DEFAULT_THEME === $theme) {
             return isset($this->templates[$name]);
         }
 
@@ -69,9 +69,9 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
      * @phpstan-ignore arguments.count
      * NEXT_MAJOR: remove phpstan-ignore and if section
      */
-    final public function getTemplate(string $name, string $theme = 'default'): string
+    final public function getTemplate(string $name, string $theme = TemplateRegistryInterface::DEFAULT_THEME): string
     {
-        if ('default' === $theme) {
+        if (TemplateRegistryInterface::DEFAULT_THEME === $theme) {
             if ($this->hasTemplate($name)) {
                 return $this->templates[$name];
             }

@@ -468,13 +468,21 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         Definition $definition,
     ): void {
         $definedTemplates = $container->getParameter('sonata.admin.configuration.templates');
+        $definedThemedTemplates = [];
+        $definedThemedTemplates['default'] = $container->getParameter('sonata.admin.configuration.templates');
         \assert(\is_array($definedTemplates));
+        \assert(\is_array($definedThemedTemplates));
 
         $methods = [];
         $pos = 0;
         foreach ($definition->getMethodCalls() as [$method, $args]) {
             if ('setTemplates' === $method) {
-                $definedTemplates = array_merge($definedTemplates, $args[0]);
+                if (isset($args[1]) && 'default' === $args[1]) {
+                    $definedThemedTemplates[$args[1]] = $args[0] + ($definedThemedTemplates[$args[1]] ?? []);
+                } else {
+
+                    $definedTemplates = array_merge($definedTemplates, $args[0]);
+                }
 
                 continue;
             }
