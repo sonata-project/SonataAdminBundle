@@ -9,3 +9,18 @@ parameters:
         - # The phpstan-param is less precise than the psalm-param https://github.com/phpstan/phpstan/issues/4703
             message: '#^Parameter \#1 \$value of method Sonata\\AdminBundle\\Form\\DataTransformer\\ModelsToArrayTransformer\<T of object\>\:\:reverseTransform\(\) expects array\<int\|string\>\|null, array\<mixed, array\<string\>\|int\|string\> given\.$#'
             path: src/Form/DataTransformer/ModelToIdPropertyTransformer.php
+        - # https://github.com/sonata-project/SonataAdminBundle/pull/8390
+            message: '#Method Sonata\\AdminBundle\\Templating\\TemplateRegistryInterface::getTemplates\(\) invoked with 1 parameter, 0 required\.#'
+            path: .
+        - # https://github.com/sonata-project/SonataAdminBundle/pull/8390
+            message: '#Method Sonata\\AdminBundle\\Templating\\TemplateRegistryInterface::getTemplate\(\) invoked with 2 parameters, 1 required\.#'
+            path: .
+        - # https://github.com/sonata-project/SonataAdminBundle/pull/8390
+            message: '#Method Sonata\\AdminBundle\\Templating\\TemplateRegistryInterface::hasTemplate\(\) invoked with 2 parameters, 1 required\.#'
+            path: .
+        - # https://github.com/sonata-project/SonataAdminBundle/pull/8390
+            message: '#Method Sonata\\AdminBundle\\Templating\\MutableTemplateRegistryInterface::setTemplates\(\) invoked with 2 parameters, 1 required\.#'
+            path: .
+        - # https://github.com/sonata-project/SonataAdminBundle/pull/8390
+            message: '#Method Sonata\\AdminBundle\\Templating\\MutableTemplateRegistryInterface::setTemplate\(\) invoked with 3 parameters, 2 required\.#'
+            path: .
