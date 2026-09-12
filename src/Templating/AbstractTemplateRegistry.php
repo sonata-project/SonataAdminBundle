@@ -50,7 +50,6 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
         return $this->themedTemplates[$theme] ?? [];
     }
 
-
     final public function hasTemplate(string $name, string $theme = TemplateRegistryInterface::DEFAULT_THEME): bool
     {
         // NEXT_MAJOR: Remove if section.
@@ -61,11 +60,9 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
         return isset($this->themedTemplates[$theme][$name]);
     }
 
-    /**
-     * NEXT_MAJOR: remove phpstan-ignore line and if section.
-     */
     final public function getTemplate(string $name, string $theme = TemplateRegistryInterface::DEFAULT_THEME): string
     {
+        // NEXT_MAJOR: Remove if section.
         if (TemplateRegistryInterface::DEFAULT_THEME === $theme) {
             if ($this->hasTemplate($name)) {
                 return $this->templates[$name];
@@ -74,6 +71,10 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
             throw new \InvalidArgumentException(\sprintf('Template named "%s" doesn\'t exist.', $name));
         }
 
+        /*
+         * NEXT_MAJOR: Remove phpstan-ignore line.
+         * @phpstan-ignore arguments.count
+         */
         if ($this->hasTemplate($name, $theme)) {
             return $this->themedTemplates[$theme][$name];
         }
