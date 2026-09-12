@@ -42,7 +42,7 @@ final class TemplateRegistryRuntime implements RuntimeExtensionInterface
         }
 
         /*
-         * NEXT_MAJOR: remove phpstan-ignore
+         * NEXT_MAJOR: Remove phpstan-ignore line.
          * @phpstan-ignore arguments.count
          */
         return $this->getTemplateRegistry($adminCode)->getTemplate($name, $theme);
@@ -55,7 +55,7 @@ final class TemplateRegistryRuntime implements RuntimeExtensionInterface
         }
 
         /*
-         * NEXT_MAJOR: remove phpstan-ignore
+         * NEXT_MAJOR: Remove phpstan-ignore line.
          * @phpstan-ignore arguments.count
          */
         return $this->globalTemplateRegistry->getTemplate($name, $theme);
