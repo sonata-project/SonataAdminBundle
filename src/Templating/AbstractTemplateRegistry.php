@@ -73,7 +73,6 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
 
         /*
          * NEXT_MAJOR: Remove phpstan-ignore line.
-         * @phpstan-ignore arguments.count
          */
         if ($this->hasTemplate($name, $theme)) {
             return $this->themedTemplates[$theme][$name];
