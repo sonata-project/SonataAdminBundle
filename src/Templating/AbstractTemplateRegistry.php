@@ -19,6 +19,7 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
      * @var array<string, string>
      *
      * @deprecated since sonata-project/admin-bundle x.x, will be removed in x.x.
+     *
      * NEXT_MAJOR: Remove this property.
      */
     protected $templates = [];
@@ -41,6 +42,7 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
 
     /**
      * NEXT_MAJOR: Remove phpstan-ignore line and if section.
+     *
      * @phpstan-ignore arguments.count
      */
     final public function getTemplates(string $theme = TemplateRegistryInterface::DEFAULT_THEME): array
@@ -54,6 +56,7 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
 
     /**
      * NEXT_MAJOR: Remove phpstan-ignore line and if section.
+     *
      * @phpstan-ignore arguments.count
      */
     final public function hasTemplate(string $name, string $theme = TemplateRegistryInterface::DEFAULT_THEME): bool
@@ -67,6 +70,7 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
 
     /**
      * NEXT_MAJOR: remove phpstan-ignore line and if section.
+     *
      * @phpstan-ignore arguments.count
      */
     final public function getTemplate(string $name, string $theme = TemplateRegistryInterface::DEFAULT_THEME): string
@@ -81,6 +85,7 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
 
         /*
          * NEXT_MAJOR: Remove phpstan-ignore line.
+         *
          * @phpstan-ignore arguments.count
          */
         if ($this->hasTemplate($name, $theme)) {

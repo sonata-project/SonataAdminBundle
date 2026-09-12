@@ -20,6 +20,7 @@ final class MutableTemplateRegistry extends AbstractTemplateRegistry implements 
 {
     /**
      * NEXT_MAJOR: Remove phpstan-ignore line and if section.
+     *
      * @phpstan-ignore arguments.count
      */
     public function setTemplates(array $templates, string $theme = TemplateRegistryInterface::DEFAULT_THEME): void
@@ -33,6 +34,7 @@ final class MutableTemplateRegistry extends AbstractTemplateRegistry implements 
 
     /**
      * NEXT_MAJOR: Remove phpstan-ignore line and if section.
+     *
      * @phpstan-ignore arguments.count
      */
     public function setTemplate(string $name, string $template, string $theme = TemplateRegistryInterface::DEFAULT_THEME): void
