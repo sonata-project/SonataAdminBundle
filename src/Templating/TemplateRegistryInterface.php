@@ -84,14 +84,14 @@ interface TemplateRegistryInterface
      */
     public function getTemplates(/* string $theme = self::DEFAULT_THEME */): array;
 
-    /*
+    /**
      * NEXT_MAJOR: Remove phpstan-ignore line and uncomment extra arg.
      *
      * @phpstan-ignore arguments.count
      */
     public function getTemplate(string $name/* , string $theme = self::DEFAULT_THEME */): string;
 
-    /*
+    /**
      * NEXT_MAJOR: Remove phpstan-ignore line and uncomment extra arg.
      *
      * @phpstan-ignore arguments.count

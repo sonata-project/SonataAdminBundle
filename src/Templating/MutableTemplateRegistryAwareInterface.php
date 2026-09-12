@@ -24,13 +24,19 @@ interface MutableTemplateRegistryAwareInterface
 
     public function hasTemplateRegistry(): bool;
 
-    // NEXT_MAJOR: Uncomment extra arg.
+    /**
+     * NEXT_MAJOR: Remove phpstan-ignore line and uncomment extra arg.
+     *
+     * @phpstan-ignore arguments.count
+     */
     public function setTemplate(string $name, string $template/* , string $theme = TemplateRegistryInterface::DEFAULT_THEME */): void;
 
     /**
-     * NEXT_MAJOR: Uncomment extra arg.
+     * NEXT_MAJOR: Remove phpstan-ignore line and uncomment extra arg.
      *
-     * @param array<string, string> $templates
+     * @param array<string, string> $templates 'name' => 'file_path.html.twig'
+     *
+     * @phpstan-ignore arguments.count
      */
     public function setTemplates(array $templates/* , string $theme = TemplateRegistryInterface::DEFAULT_THEME */): void;
 }
