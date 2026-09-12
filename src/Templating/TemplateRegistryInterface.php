@@ -76,16 +76,16 @@ interface TemplateRegistryInterface
     ];
 
     /**
-     * NEXT_MAJOR: Uncomment extra arg.
+     * NEXT_MAJOR: Uncomment extra arg and remove dependent record from phpstan-baseline.neon.
      *
      * @return array<string, string> 'name' => 'file_path.html.twig'
      */
     public function getTemplates(/* string $theme = self::DEFAULT_THEME */): array;
 
-    // NEXT_MAJOR: Uncomment extra arg.
+    // NEXT_MAJOR: Uncomment extra arg and remove dependent record from phpstan-baseline.neon.
     public function getTemplate(string $name/* , string $theme = self::DEFAULT_THEME */): string;
 
 
-    // NEXT_MAJOR: Uncomment extra arg.
+    // NEXT_MAJOR: Uncomment extra arg and remove dependent record from phpstan-baseline.neon.
     public function hasTemplate(string $name/* , string $theme = self::DEFAULT_THEME */): bool;
 }

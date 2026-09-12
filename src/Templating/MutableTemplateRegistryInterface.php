@@ -19,14 +19,13 @@ namespace Sonata\AdminBundle\Templating;
 interface MutableTemplateRegistryInterface extends TemplateRegistryInterface
 {
     /**
-     * NEXT_MAJOR: Uncomment extra arg.
+     * NEXT_MAJOR: Uncomment extra arg and remove dependent record from phpstan-baseline.neon.
      *
      * @param array<string, string> $templates 'name' => 'file_path.html.twig'
      */
     public function setTemplates(array $templates/* , string $theme = TemplateRegistryInterface::DEFAULT_THEME */): void;
 
-    /**
-     * NEXT_MAJOR: Uncomment extra arg.
-     */
+
+    // NEXT_MAJOR: Uncomment extra arg and remove dependent record from phpstan-baseline.neon.
     public function setTemplate(string $name, string $template/* , string $theme = TemplateRegistryInterface::DEFAULT_THEME */): void;
 }
