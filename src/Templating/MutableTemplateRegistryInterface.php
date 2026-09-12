@@ -25,7 +25,6 @@ interface MutableTemplateRegistryInterface extends TemplateRegistryInterface
      */
     public function setTemplates(array $templates/* , string $theme = TemplateRegistryInterface::DEFAULT_THEME */): void;
 
-
     // NEXT_MAJOR: Uncomment extra arg and remove dependent record from phpstan-baseline.neon.
     public function setTemplate(string $name, string $template/* , string $theme = TemplateRegistryInterface::DEFAULT_THEME */): void;
 }
