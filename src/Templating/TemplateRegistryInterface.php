@@ -76,15 +76,25 @@ interface TemplateRegistryInterface
     ];
 
     /**
-     * NEXT_MAJOR: Uncomment extra arg.
+     * NEXT_MAJOR: Remove phpstan-ignore line and uncomment extra arg.
      *
      * @return array<string, string> 'name' => 'file_path.html.twig'
+     *
+     * @phpstan-ignore arguments.count
      */
     public function getTemplates(/* string $theme = self::DEFAULT_THEME */): array;
 
-    // NEXT_MAJOR: Uncomment extra arg.
+    /*
+     * NEXT_MAJOR: Remove phpstan-ignore line and uncomment extra arg.
+     *
+     * @phpstan-ignore arguments.count
+     */
     public function getTemplate(string $name/* , string $theme = self::DEFAULT_THEME */): string;
 
-    // NEXT_MAJOR: Uncomment extra arg.
+    /*
+     * NEXT_MAJOR: Remove phpstan-ignore line and uncomment extra arg.
+     *
+     * @phpstan-ignore arguments.count
+     */
     public function hasTemplate(string $name/* , string $theme = self::DEFAULT_THEME */): bool;
 }

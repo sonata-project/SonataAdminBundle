@@ -30,8 +30,8 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
     protected $themedTemplates = [];
 
     /**
-     * @param array<string, string>                $templates       ['template_name' => 'template']
-     * @param array<string, array<string, string>> $themedTemplates ['theme_name' => ['template_name' => 'template']]
+     * @param array<string, string>                $templates       ['name' => 'file_path.html.twig']
+     * @param array<string, array<string, string>> $themedTemplates ['theme_name' => ['name' => 'file_path.html.twig']]
      */
     public function __construct(array $templates = [], array $themedTemplates = [])
     {
@@ -40,11 +40,7 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
         $this->templates = $this->themedTemplates[TemplateRegistryInterface::DEFAULT_THEME];
     }
 
-    /**
-     * NEXT_MAJOR: Remove phpstan-ignore line and if section.
-     *
-     * @phpstan-ignore arguments.count
-     */
+    // NEXT_MAJOR: Remove phpstan-ignore line and if section.
     final public function getTemplates(string $theme = TemplateRegistryInterface::DEFAULT_THEME): array
     {
         if (TemplateRegistryInterface::DEFAULT_THEME === $theme) {
@@ -54,11 +50,7 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
         return $this->themedTemplates[$theme] ?? [];
     }
 
-    /**
-     * NEXT_MAJOR: Remove phpstan-ignore line and if section.
-     *
-     * @phpstan-ignore arguments.count
-     */
+    // NEXT_MAJOR: Remove phpstan-ignore line and if section.
     final public function hasTemplate(string $name, string $theme = TemplateRegistryInterface::DEFAULT_THEME): bool
     {
         if (TemplateRegistryInterface::DEFAULT_THEME === $theme) {
@@ -83,11 +75,6 @@ abstract class AbstractTemplateRegistry implements TemplateRegistryInterface
             throw new \InvalidArgumentException(\sprintf('Template named "%s" doesn\'t exist.', $name));
         }
 
-        /*
-         * NEXT_MAJOR: Remove phpstan-ignore line.
-         *
-         * @phpstan-ignore arguments.count
-         */
         if ($this->hasTemplate($name, $theme)) {
             return $this->themedTemplates[$theme][$name];
         }

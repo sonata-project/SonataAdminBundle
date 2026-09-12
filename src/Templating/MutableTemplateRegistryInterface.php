@@ -25,6 +25,10 @@ interface MutableTemplateRegistryInterface extends TemplateRegistryInterface
      */
     public function setTemplates(array $templates/* , string $theme = TemplateRegistryInterface::DEFAULT_THEME */): void;
 
-    // NEXT_MAJOR: Uncomment extra arg.
+    /**
+     * NEXT_MAJOR: Uncomment extra arg.
+     *
+     * @phpstan-ignore arguments.count
+     */
     public function setTemplate(string $name, string $template/* , string $theme = TemplateRegistryInterface::DEFAULT_THEME */): void;
 }
