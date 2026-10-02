@@ -143,7 +143,7 @@ final class ListMapperTest extends TestCase
         static::assertSame('fooName', $fieldDescription->getName());
         static::assertSame('fooName', $fieldDescription->getOption('label'));
         static::assertSame('Foo Bar', $fieldLabelBar->getOption('label'));
-        static::assertEmpty($fieldLabelFalse->getOption('label'));
+        static::assertSame('', $fieldLabelFalse->getOption('label'));
     }
 
     public function testAddViewInlineAction(): void

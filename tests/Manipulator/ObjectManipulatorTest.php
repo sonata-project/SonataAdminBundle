@@ -39,7 +39,9 @@ final class ObjectManipulatorTest extends TestCase
             public function removeFooBar(object $fooBar): void
             {
                 $key = array_search($fooBar, $this->fooBars, true);
-                unset($this->fooBars[$key]);
+                if (false !== $key) {
+                    unset($this->fooBars[$key]);
+                }
             }
 
             /** @return object[] */
@@ -74,7 +76,9 @@ final class ObjectManipulatorTest extends TestCase
             public function removeFooBar(object $fooBar): void
             {
                 $key = array_search($fooBar, $this->fooBars, true);
-                unset($this->fooBars[$key]);
+                if (false !== $key) {
+                    unset($this->fooBars[$key]);
+                }
             }
 
             /** @return object[] */
@@ -124,7 +128,9 @@ final class ObjectManipulatorTest extends TestCase
             public function removeEntry(object $entry): void
             {
                 $key = array_search($entry, $this->entries, true);
-                unset($this->entries[$key]);
+                if (false !== $key) {
+                    unset($this->entries[$key]);
+                }
             }
 
             /** @return object[] */

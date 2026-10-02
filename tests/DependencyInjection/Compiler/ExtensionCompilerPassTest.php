@@ -96,13 +96,13 @@ final class ExtensionCompilerPassTest extends TestCase
         static::assertArrayHasKey('instanceof', $extensionMap);
         static::assertArrayHasKey('uses', $extensionMap);
 
-        static::assertEmpty($extensionMap['global']);
-        static::assertEmpty($extensionMap['admins']);
-        static::assertEmpty($extensionMap['excludes']);
-        static::assertEmpty($extensionMap['implements']);
-        static::assertEmpty($extensionMap['extends']);
-        static::assertEmpty($extensionMap['instanceof']);
-        static::assertEmpty($extensionMap['uses']);
+        static::assertSame([], $extensionMap['global']);
+        static::assertSame([], $extensionMap['admins']);
+        static::assertSame([], $extensionMap['excludes']);
+        static::assertSame([], $extensionMap['implements']);
+        static::assertSame([], $extensionMap['extends']);
+        static::assertSame([], $extensionMap['instanceof']);
+        static::assertSame([], $extensionMap['uses']);
     }
 
     public function testFlattenExtensionConfiguration(): void

@@ -89,7 +89,7 @@ final class ConfigurationTest extends TestCase
         static::assertIsArray($config['dashboard']);
         static::assertIsArray($config['dashboard']['blocks']);
         static::assertIsArray($config['dashboard']['blocks'][0]);
-        static::assertEmpty($config['dashboard']['blocks'][0]['roles']);
+        static::assertSame([], $config['dashboard']['blocks'][0]['roles']);
     }
 
     public function testDashboardWithRoles(): void

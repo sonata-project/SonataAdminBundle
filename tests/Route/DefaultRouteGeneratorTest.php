@@ -21,7 +21,6 @@ use Sonata\AdminBundle\Route\DefaultRouteGenerator;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RoutesCache;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -180,18 +179,7 @@ final class DefaultRouteGeneratorTest extends TestCase
         // no request attached in this test, so this will not be used
         $parentAdmin->expects(static::never())->method('getPersistentParameters')->willReturn(['from' => 'parent']);
 
-        $request = new Request();
-        $request->attributes = $this->createMock(ParameterBag::class);
-        $request->attributes->method('has')->willReturn(true);
-        $request->attributes
-            ->method('get')
-            ->willReturnCallback(static function (string $key): ?string {
-                if ('childId' === $key) {
-                    return '987654';
-                }
-
-                return null;
-            });
+        $request = new Request([], [], ['childId' => '987654']);
 
         $admin->method('getRequest')->willReturn($request);
         $admin->method('getParent')->willReturn($parentAdmin);
@@ -340,18 +328,7 @@ final class DefaultRouteGeneratorTest extends TestCase
         // no request attached in this test, so this will not be used
         $parentAdmin->expects(static::never())->method('getPersistentParameters')->willReturn(['from' => 'parent']);
 
-        $request = new Request();
-        $request->attributes = $this->createMock(ParameterBag::class);
-        $request->attributes->method('has')->willReturn(true);
-        $request->attributes
-            ->method('get')
-            ->willReturnCallback(static function (string $key): ?string {
-                if ('childId' === $key) {
-                    return '987654';
-                }
-
-                return null;
-            });
+        $request = new Request([], [], ['childId' => '987654']);
 
         $admin->method('getRequest')->willReturn($request);
         $admin->method('getParent')->willReturn($parentAdmin);

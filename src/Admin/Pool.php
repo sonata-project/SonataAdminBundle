@@ -22,7 +22,10 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
+ * NEXT_MAJOR: Remove the admin key of the first shape and the label and route keys of the second shape.
+ *
  * @phpstan-type Item = array{
+ *     admin?: '',
  *     label: string,
  *     roles: list<string>,
  *     route: string,
@@ -30,7 +33,9 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  *     route_params: array<string, string>
  * }|array{
  *     admin: string,
- *     roles: list<string>,
+ *     label?: string,
+ *     roles?: list<string>,
+ *     route?: string,
  *     route_absolute: bool,
  *     route_params: array<string, string>
  * }
@@ -96,7 +101,6 @@ final class Pool
                 $admin = $this->getInstance($item['admin']);
 
                 // NEXT_MAJOR: Keep the "if" part.
-                // @phpstan-ignore-next-line
                 if (method_exists($admin, 'showInDashboard')) {
                     if (!$admin->showInDashboard()) {
                         continue;
