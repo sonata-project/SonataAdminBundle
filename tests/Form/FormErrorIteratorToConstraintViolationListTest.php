@@ -28,39 +28,39 @@ use Symfony\Component\Validator\ConstraintViolationList;
 final class FormErrorIteratorToConstraintViolationListTest extends TestCase
 {
     /**
-     * @param FormErrorIterator<FormError> $formErrors
+     * @param list<FormError> $errors
      */
     #[DataProvider('provideTransformCases')]
-    public function testTransform(int $expectedCount, FormErrorIterator $formErrors): void
+    public function testTransform(int $expectedCount, array $errors): void
     {
-        $violationList = FormErrorIteratorToConstraintViolationList::transform($formErrors);
+        $form = static::createStub(FormInterface::class);
+        $form->method('getName')->willReturn('name');
+
+        $violationList = FormErrorIteratorToConstraintViolationList::transform(new FormErrorIterator($form, $errors));
 
         static::assertInstanceOf(ConstraintViolationList::class, $violationList);
         static::assertCount($expectedCount, $violationList);
     }
 
     /**
-     * @phpstan-return iterable<array{int, FormErrorIterator<FormError>}>
+     * @phpstan-return iterable<array{int, list<FormError>}>
      */
     public static function provideTransformCases(): iterable
     {
-        $form = static::createStub(FormInterface::class);
-        $form->method('getName')->willReturn('name');
+        yield [0, []];
 
-        yield [0, new FormErrorIterator($form, [])];
-
-        yield [0, new FormErrorIterator($form, [
+        yield [0, [
             new FormError('error'),
-        ])];
+        ]];
 
-        yield [1, new FormErrorIterator($form, [
+        yield [1, [
             new FormError(
                 'error',
                 null,
                 [],
                 null,
-                new ConstraintViolation('error', null, [], $form, 'path', 'invalid value')
+                new ConstraintViolation('error', null, [], null, 'path', 'invalid value')
             ),
-        ])];
+        ]];
     }
 }

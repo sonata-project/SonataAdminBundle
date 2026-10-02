@@ -653,7 +653,7 @@ final class AdminTest extends TestCase
 
         $s = new \stdClass();
 
-        static::assertNotEmpty($admin->toString($s));
+        static::assertNotSame('', $admin->toString($s));
 
         $s = new FooToString();
         static::assertSame('salut', $admin->toString($s));
@@ -1340,7 +1340,7 @@ final class AdminTest extends TestCase
     {
         $admin = new PostAdmin();
 
-        static::assertEmpty($admin->getPersistentParameters());
+        static::assertSame([], $admin->getPersistentParameters());
     }
 
     public function testGetPersistentParametersWithValidExtension(): void
