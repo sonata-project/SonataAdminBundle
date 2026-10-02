@@ -32,16 +32,15 @@ final class SetupAclCommandTest extends TestCase
     protected function setUp(): void
     {
         $this->container = new Container();
-        $admin = $this->createMock(AdminInterface::class);
 
-        $this->container->set('acme.admin.foo', $admin);
+        $this->container->set('acme.admin.foo', static::createStub(AdminInterface::class));
     }
 
     public function testExecute(): void
     {
         $pool = new Pool($this->container, ['acme.admin.foo']);
 
-        $command = new SetupAclCommand($pool, $this->createMock(AdminAclManipulatorInterface::class));
+        $command = new SetupAclCommand($pool, static::createStub(AdminAclManipulatorInterface::class));
 
         $application = new Application();
         CommandHelper::addCommandToApplication($application, $command);
@@ -58,7 +57,7 @@ final class SetupAclCommandTest extends TestCase
         $this->container->set('acme.admin.foo', null);
         $pool = new Pool($this->container, ['acme.admin.foo']);
 
-        $command = new SetupAclCommand($pool, $this->createMock(AdminAclManipulatorInterface::class));
+        $command = new SetupAclCommand($pool, static::createStub(AdminAclManipulatorInterface::class));
 
         $application = new Application();
         CommandHelper::addCommandToApplication($application, $command);

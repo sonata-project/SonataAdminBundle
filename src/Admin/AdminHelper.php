@@ -146,9 +146,7 @@ final class AdminHelper
             // retrieve the posted data
             $data = BCHelper::getFromRequest($admin->getRequest(), $formBuilder->getName());
 
-            if (!isset($data[$childFormBuilder->getName()])) {
-                $data[$childFormBuilder->getName()] = [];
-            }
+            $data[$childFormBuilder->getName()] ??= [];
 
             $objectCount = null === $value ? 0 : \count($value);
             $postCount = \count($data[$childFormBuilder->getName()]);

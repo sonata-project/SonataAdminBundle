@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Event;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Event\PersistenceEvent;
@@ -26,7 +26,7 @@ final class PersistenceEventTest extends TestCase
     private PersistenceEvent $event;
 
     /**
-     * @var AdminInterface<object>&MockObject
+     * @var AdminInterface<object>&Stub
      */
     private AdminInterface $admin;
 
@@ -36,7 +36,7 @@ final class PersistenceEventTest extends TestCase
     {
         $object = new \stdClass();
 
-        $this->admin = $this->createMock(AdminInterface::class);
+        $this->admin = static::createStub(AdminInterface::class);
         $this->object = $object;
 
         $this->event = new PersistenceEvent($this->admin, $this->object, 'Foo');

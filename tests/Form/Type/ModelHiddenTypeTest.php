@@ -24,7 +24,7 @@ final class ModelHiddenTypeTest extends TypeTestCase
     public function testGetDefaultOptions(): void
     {
         $type = new ModelHiddenType();
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
         $optionResolver = new OptionsResolver();
 
         $type->configureOptions($optionResolver);

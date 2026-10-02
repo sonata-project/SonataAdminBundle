@@ -126,7 +126,7 @@ final class PagerTest extends TestCase
 
     public function testGetQuery(): void
     {
-        $query = $this->createMock(ProxyQueryInterface::class);
+        $query = static::createStub(ProxyQueryInterface::class);
 
         $this->pager->setQuery($query);
         static::assertSame($query, $this->pager->getQuery());

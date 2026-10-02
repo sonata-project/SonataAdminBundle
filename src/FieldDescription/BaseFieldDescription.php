@@ -141,9 +141,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
     ) {
         $this->setName($name);
 
-        if (null === $fieldName) {
-            $fieldName = $name;
-        }
+        $fieldName ??= $name;
 
         $this->fieldName = $fieldName;
 
@@ -313,9 +311,7 @@ abstract class BaseFieldDescription implements FieldDescriptionInterface
 
     final public function mergeOption(string $name, array $options = []): void
     {
-        if (!isset($this->options[$name])) {
-            $this->options[$name] = [];
-        }
+        $this->options[$name] ??= [];
 
         if (!\is_array($this->options[$name])) {
             throw new \RuntimeException(\sprintf('The key `%s` does not point to an array value', $name));

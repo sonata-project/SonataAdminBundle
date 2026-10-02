@@ -176,9 +176,7 @@ final class AdminObjectAclManipulator
         // Retrieve object identity
         $objectIdentity = ObjectIdentity::fromDomainObject($data->getObject());
         $acl = $data->getSecurityHandler()->getObjectAcl($objectIdentity);
-        if (null === $acl) {
-            $acl = $data->getSecurityHandler()->createAcl($objectIdentity);
-        }
+        $acl ??= $data->getSecurityHandler()->createAcl($objectIdentity);
 
         $data->setAcl($acl);
 

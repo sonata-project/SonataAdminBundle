@@ -1403,9 +1403,7 @@ abstract class AbstractAdmin extends BaseAbstractAdmin implements AdminInterface
 
     final public function getUniqId(): string
     {
-        if (null === $this->uniqId) {
-            $this->uniqId = \sprintf('s%s', uniqid());
-        }
+        $this->uniqId ??= \sprintf('s%s', uniqid());
 
         return $this->uniqId;
     }

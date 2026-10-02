@@ -92,19 +92,13 @@ final class ListMapper implements MapperInterface
 
         // Default sort on "associated_property"
         if (isset($fieldDescriptionOptions['associated_property'])) {
-            if (!isset($fieldDescriptionOptions['sortable'])) {
-                $fieldDescriptionOptions['sortable'] = !\is_callable($fieldDescriptionOptions['associated_property']);
-            }
-            if (!isset($fieldDescriptionOptions['sort_parent_association_mappings'])) {
-                $fieldDescriptionOptions['sort_parent_association_mappings'] = [[
-                    'fieldName' => $name,
-                ]];
-            }
-            if (!isset($fieldDescriptionOptions['sort_field_mapping'])) {
-                $fieldDescriptionOptions['sort_field_mapping'] = [
-                    'fieldName' => $fieldDescriptionOptions['associated_property'],
-                ];
-            }
+            $fieldDescriptionOptions['sortable'] ??= !\is_callable($fieldDescriptionOptions['associated_property']);
+            $fieldDescriptionOptions['sort_parent_association_mappings'] ??= [[
+                'fieldName' => $name,
+            ]];
+            $fieldDescriptionOptions['sort_field_mapping'] ??= [
+                'fieldName' => $fieldDescriptionOptions['associated_property'],
+            ];
         }
 
         // Type-guess the action field here because it is not a model property.

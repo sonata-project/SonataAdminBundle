@@ -92,9 +92,7 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
             $fieldDescriptionOptions['type'] = $type;
         }
 
-        if (!isset($fieldDescriptionOptions['translation_domain'])) {
-            $fieldDescriptionOptions['translation_domain'] = $group['translation_domain'] ?? null;
-        }
+        $fieldDescriptionOptions['translation_domain'] ??= $group['translation_domain'] ?? null;
 
         $fieldDescription = $this->getAdmin()->createFieldDescription(
             $name,
@@ -112,18 +110,12 @@ final class FormMapper extends BaseGroupedMapper implements BlockFormMapper
 
         // be compatible with mopa if not installed, avoid generating an exception for invalid option
         // force the default to false ...
-        if (!isset($options['label_render'])) {
-            $options['label_render'] = false;
-        }
+        $options['label_render'] ??= false;
 
-        if (!isset($options['label'])) {
-            $options['label'] = $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'form', 'label');
-        }
+        $options['label'] ??= $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'form', 'label');
 
         // "Dot" notation is not allowed as form name, but can be used as property path to access nested data.
-        if (!isset($options['property_path'])) {
-            $options['property_path'] = $name;
-        }
+        $options['property_path'] ??= $name;
 
         $this->getAdmin()->addFormFieldDescription($fieldDescription->getName(), $fieldDescription);
         $this->formBuilder->add($sanitizedName, $type, $options);

@@ -53,7 +53,7 @@ final class AdminObjectAclDataTest extends TestCase
 
     public function testSetAcl(): AdminObjectAclData
     {
-        $acl = $this->createMock(Acl::class);
+        $acl = static::createStub(Acl::class);
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAcl($acl);
 
@@ -80,7 +80,7 @@ final class AdminObjectAclDataTest extends TestCase
 
     public function testSetForm(): AdminObjectAclData
     {
-        $form = $this->createMock(Form::class);
+        $form = static::createStub(Form::class);
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAclUsersForm($form);
 
@@ -97,7 +97,7 @@ final class AdminObjectAclDataTest extends TestCase
 
     public function testSetAclUsersForm(): AdminObjectAclData
     {
-        $form = $this->createMock(Form::class);
+        $form = static::createStub(Form::class);
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAclUsersForm($form);
 
@@ -114,7 +114,7 @@ final class AdminObjectAclDataTest extends TestCase
 
     public function testSetAclRolesForm(): AdminObjectAclData
     {
-        $form = $this->createMock(Form::class);
+        $form = static::createStub(Form::class);
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAclRolesForm($form);
 

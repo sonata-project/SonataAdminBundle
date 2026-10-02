@@ -76,9 +76,7 @@ final class Datagrid implements DatagridInterface
     {
         $this->buildPager();
 
-        if (null === $this->results) {
-            $this->results = $this->pager->getCurrentPageResults();
-        }
+        $this->results ??= $this->pager->getCurrentPageResults();
 
         return $this->results;
     }

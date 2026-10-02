@@ -133,9 +133,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
 
                 // NEXT_MAJOR: Remove the fallback to $arguments[1].
                 $modelClass = $attributes['model_class'] ?? $arguments[1];
-                if (!isset($classes[$modelClass])) {
-                    $classes[$modelClass] = [];
-                }
+                $classes[$modelClass] ??= [];
 
                 $default = (bool) (isset($attributes['default']) ? $parameterBag->resolveValue($attributes['default']) : false);
                 if ($default) {
@@ -179,18 +177,16 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $onTop = $attributes['on_top'] ?? false;
                 $keepOpen = $attributes['keep_open'] ?? false;
 
-                if (!isset($groupDefaults[$resolvedGroupName])) {
-                    $groupDefaults[$resolvedGroupName] = [
-                        'label' => $resolvedGroupName,
-                        'translation_domain' => $groupTranslationDomain,
-                        'label_catalogue' => $labelCatalogue, // NEXT_MAJOR: Remove this line.
-                        'icon' => $icon,
-                        'items' => [],
-                        'roles' => [],
-                        'on_top' => false,
-                        'keep_open' => false,
-                    ];
-                }
+                $groupDefaults[$resolvedGroupName] ??= [
+                    'label' => $resolvedGroupName,
+                    'translation_domain' => $groupTranslationDomain,
+                    'label_catalogue' => $labelCatalogue, // NEXT_MAJOR: Remove this line.
+                    'icon' => $icon,
+                    'items' => [],
+                    'roles' => [],
+                    'on_top' => false,
+                    'keep_open' => false,
+                ];
 
                 $groupDefaults[$resolvedGroupName]['priority'] = max($groupDefaults[$resolvedGroupName]['priority'] ?? 0, $attributes['priority'] ?? 0);
                 $groupDefaults[$resolvedGroupName]['items'][] = [
@@ -226,18 +222,16 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 $resolvedGroupName = $parameterBag->resolveValue($groupName);
                 \assert(\is_string($resolvedGroupName));
 
-                if (!isset($groupDefaults[$resolvedGroupName])) {
-                    $groupDefaults[$resolvedGroupName] = [
-                        'items' => [],
-                        'label' => $resolvedGroupName,
-                        'translation_domain' => $defaultValues['translation_domain'],
-                        'label_catalogue' => $defaultValues['label_catalogue'], // NEXT_MAJOR: Remove this line.
-                        'icon' => $defaultValues['icon'],
-                        'roles' => [],
-                        'on_top' => false,
-                        'keep_open' => false,
-                    ];
-                }
+                $groupDefaults[$resolvedGroupName] ??= [
+                    'items' => [],
+                    'label' => $resolvedGroupName,
+                    'translation_domain' => $defaultValues['translation_domain'],
+                    'label_catalogue' => $defaultValues['label_catalogue'], // NEXT_MAJOR: Remove this line.
+                    'icon' => $defaultValues['icon'],
+                    'roles' => [],
+                    'on_top' => false,
+                    'keep_open' => false,
+                ];
 
                 if (!isset($group['items']) || [] === $group['items']) {
                     $groups[$resolvedGroupName]['items'] = $groupDefaults[$resolvedGroupName]['items'];

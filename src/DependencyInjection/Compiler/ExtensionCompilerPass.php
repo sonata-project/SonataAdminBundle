@@ -113,9 +113,7 @@ final class ExtensionCompilerPass implements CompilerPassInterface
             }
             \assert(class_exists($adminClass));
 
-            if (!isset($targets[$id])) {
-                $targets[$id] = new \SplPriorityQueue();
-            }
+            $targets[$id] ??= new \SplPriorityQueue();
 
             // NEXT_MAJOR: Remove this line.
             $defaultModelClass = $admin->getArguments()[1] ?? null;
