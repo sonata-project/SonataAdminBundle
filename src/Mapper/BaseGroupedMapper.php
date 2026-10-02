@@ -107,9 +107,7 @@ abstract class BaseGroupedMapper implements MapperInterface
                 throw new \LogicException(\sprintf('You should open tab before adding new group "%s".', $name));
             }
 
-            if (!isset($tabs[$name])) {
-                $tabs[$name] = [];
-            }
+            $tabs[$name] ??= [];
 
             $tabs[$code] = array_merge($defaultOptions, [
                 'auto_created' => false,
@@ -143,9 +141,7 @@ abstract class BaseGroupedMapper implements MapperInterface
             }
 
             $groups = $this->getGroups();
-            if (!isset($groups[$code])) {
-                $groups[$code] = [];
-            }
+            $groups[$code] ??= [];
 
             $groups[$code] = array_merge($defaultOptions, [
                 'fields' => [],

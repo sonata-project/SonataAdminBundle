@@ -138,25 +138,25 @@ final class ExplainAdminCommandTest extends TestCase
 
     public function testExecute(): void
     {
-        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager = static::createStub(ModelManagerInterface::class);
 
         $this->admin
             ->method('getModelManager')
             ->willReturn($modelManager);
 
-        $formBuilder = $this->createMock(FormBuilderInterface::class);
+        $formBuilder = static::createStub(FormBuilderInterface::class);
 
         $this->admin
              ->method('getFormBuilder')
              ->willReturn($formBuilder);
 
-        $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
+        $datagridBuilder = static::createStub(DatagridBuilderInterface::class);
 
         $this->admin
             ->method('getDatagridBuilder')
             ->willReturn($datagridBuilder);
 
-        $listBuilder = $this->createMock(ListBuilderInterface::class);
+        $listBuilder = static::createStub(ListBuilderInterface::class);
 
         $this->admin
             ->method('getListBuilder')

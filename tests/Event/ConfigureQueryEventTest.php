@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Event;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
@@ -24,19 +24,19 @@ final class ConfigureQueryEventTest extends TestCase
     private ConfigureQueryEvent $event;
 
     /**
-     * @var AdminInterface<object>&MockObject
+     * @var AdminInterface<object>&Stub
      */
     private AdminInterface $admin;
 
     /**
-     * @var ProxyQueryInterface<object>&MockObject
+     * @var ProxyQueryInterface<object>&Stub
      */
     private ProxyQueryInterface $proxyQuery;
 
     protected function setUp(): void
     {
-        $this->admin = $this->createMock(AdminInterface::class);
-        $this->proxyQuery = $this->createMock(ProxyQueryInterface::class);
+        $this->admin = static::createStub(AdminInterface::class);
+        $this->proxyQuery = static::createStub(ProxyQueryInterface::class);
 
         $this->event = new ConfigureQueryEvent($this->admin, $this->proxyQuery, 'Foo');
     }

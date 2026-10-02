@@ -26,7 +26,7 @@ final class AclMatrixTypeTest extends TypeTestCase
     public function testGetDefaultOptions(): void
     {
         $type = new AclMatrixType();
-        $user = $this->createMock(UserInterface::class);
+        $user = static::createStub(UserInterface::class);
 
         $permissions = [
             'OWNER' => [

@@ -32,7 +32,7 @@ final class XEditableRuntimeTest extends TestCase
         $xEditableRuntime = new XEditableRuntime(new Translator('en'));
 
         $fieldDescription = $this->createMock(FieldDescriptionInterface::class);
-        $fieldDescription
+        $fieldDescription->expects(static::atLeastOnce())
             ->method('getOption')
             ->willReturnMap([
                 ['choices', [], $options['choices']],

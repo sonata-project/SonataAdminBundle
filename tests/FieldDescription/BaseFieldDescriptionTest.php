@@ -108,7 +108,7 @@ final class BaseFieldDescriptionTest extends TestCase
     {
         $description = new FieldDescription('name');
 
-        $admin = $this->createMock(AdminInterface::class);
+        $admin = static::createStub(AdminInterface::class);
         $description->setAdmin($admin);
         static::assertInstanceOf(AdminInterface::class, $description->getAdmin());
 
@@ -120,7 +120,7 @@ final class BaseFieldDescriptionTest extends TestCase
         static::assertTrue($description->hasAssociationAdmin());
         static::assertInstanceOf(AdminInterface::class, $description->getAssociationAdmin());
 
-        $parent = $this->createMock(AdminInterface::class);
+        $parent = static::createStub(AdminInterface::class);
         $description->setParent($parent);
         static::assertInstanceOf(AdminInterface::class, $description->getParent());
     }

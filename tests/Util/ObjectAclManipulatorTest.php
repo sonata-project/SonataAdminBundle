@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Util;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
@@ -39,7 +40,7 @@ final class ObjectAclManipulatorTest extends TestCase
     private AdminInterface $admin;
 
     /**
-     * @var \Traversable<int, MockObject&ObjectIdentityInterface>
+     * @var \Traversable<int, ObjectIdentityInterface&Stub>
      */
     private \Traversable $oids;
 
@@ -50,8 +51,8 @@ final class ObjectAclManipulatorTest extends TestCase
         $this->output = $this->createMock(OutputInterface::class);
         $this->admin = $this->createMock(AdminInterface::class);
         $this->oids = new \ArrayIterator([
-            $this->createMock(ObjectIdentityInterface::class),
-            $this->createMock(ObjectIdentityInterface::class),
+            static::createStub(ObjectIdentityInterface::class),
+            static::createStub(ObjectIdentityInterface::class),
         ]);
         $this->securityIdentity = new UserSecurityIdentity('Michael', \stdClass::class);
     }

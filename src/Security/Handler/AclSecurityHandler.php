@@ -148,9 +148,7 @@ final class AclSecurityHandler implements AclSecurityHandlerInterface
         // retrieving the ACL for the object identity
         $objectIdentity = ObjectIdentity::fromDomainObject($object);
         $acl = $this->getObjectAcl($objectIdentity);
-        if (null === $acl) {
-            $acl = $this->createAcl($objectIdentity);
-        }
+        $acl ??= $this->createAcl($objectIdentity);
 
         // retrieving the security identity of the currently logged-in user
         $token = $this->tokenStorage->getToken();

@@ -58,9 +58,7 @@ final class TestExtension implements FormExtensionInterface
     public function addTypeExtension(FormTypeExtensionInterface $extension): void
     {
         foreach ($extension::getExtendedTypes() as $type) {
-            if (!isset($this->extensions[$type])) {
-                $this->extensions[$type] = [];
-            }
+            $this->extensions[$type] ??= [];
 
             $this->extensions[$type][] = $extension;
         }

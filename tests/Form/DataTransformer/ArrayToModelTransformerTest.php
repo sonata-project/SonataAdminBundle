@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Form\DataTransformer;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -24,19 +23,13 @@ use Sonata\AdminBundle\Model\ModelManagerInterface;
  */
 final class ArrayToModelTransformerTest extends TestCase
 {
-    /**
-     * @var MockObject&ModelManagerInterface<\stdClass>
-     */
-    private ModelManagerInterface $modelManager;
-
     protected function setUp(): void
     {
-        $this->modelManager = $this->createMock(ModelManagerInterface::class);
     }
 
     public function testReverseTransformEntity(): void
     {
-        $transformer = new ArrayToModelTransformer($this->modelManager, \stdClass::class);
+        $transformer = new ArrayToModelTransformer(static::createStub(ModelManagerInterface::class), \stdClass::class);
 
         $model = new \stdClass();
         static::assertSame($model, $transformer->reverseTransform($model));
@@ -48,7 +41,7 @@ final class ArrayToModelTransformerTest extends TestCase
     #[DataProvider('provideReverseTransformCases')]
     public function testReverseTransform(\stdClass|array|null $value): void
     {
-        $transformer = new ArrayToModelTransformer($this->modelManager, \stdClass::class);
+        $transformer = new ArrayToModelTransformer(static::createStub(ModelManagerInterface::class), \stdClass::class);
 
         static::assertInstanceOf(\stdClass::class, $transformer->reverseTransform($value));
     }
@@ -67,7 +60,7 @@ final class ArrayToModelTransformerTest extends TestCase
     #[DataProvider('provideTransformCases')]
     public function testTransform(?\stdClass $expected, ?\stdClass $value): void
     {
-        $transformer = new ArrayToModelTransformer($this->modelManager, \stdClass::class);
+        $transformer = new ArrayToModelTransformer(static::createStub(ModelManagerInterface::class), \stdClass::class);
 
         static::assertSame($expected, $transformer->transform($value));
     }

@@ -24,7 +24,7 @@ final class SecurityRuntimeTest extends TestCase
         $securityChecker = $this->createMock(AuthorizationCheckerInterface::class);
         $securityRuntime = new SecurityRuntime($securityChecker);
 
-        $securityChecker
+        $securityChecker->expects(static::atLeast(2))
             ->method('isGranted')
             ->willReturnMap([
                 ['foo', null, false],

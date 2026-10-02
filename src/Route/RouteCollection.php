@@ -63,9 +63,7 @@ final class RouteCollection implements RouteCollectionInterface
             $defaults['_controller'] = $this->baseControllerName.$actionJoiner.$this->actionify($code);
         }
 
-        if (!isset($defaults['_sonata_admin'])) {
-            $defaults['_sonata_admin'] = $this->baseCodeRoute;
-        }
+        $defaults['_sonata_admin'] ??= $this->baseCodeRoute;
 
         $defaults['_sonata_name'] = $this->getRouteName($name);
 

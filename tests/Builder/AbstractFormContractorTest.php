@@ -83,7 +83,7 @@ final class AbstractFormContractorTest extends TestCase
     public function testGetFormBuilder(): void
     {
         $this->formFactory->expects(static::once())->method('createNamedBuilder')
-            ->willReturn($this->createMock(FormBuilderInterface::class));
+            ->willReturn(static::createStub(FormBuilderInterface::class));
 
         static::assertInstanceOf(
             FormBuilderInterface::class,

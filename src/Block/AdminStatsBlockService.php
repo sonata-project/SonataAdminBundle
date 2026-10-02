@@ -44,9 +44,7 @@ final class AdminStatsBlockService extends AbstractBlockService
         /** @var array<string, array{type?: string|null, value: mixed}> $filters */
         $filters = $blockContext->getSetting('filters');
 
-        if (!isset($filters[DatagridInterface::PER_PAGE])) {
-            $filters[DatagridInterface::PER_PAGE] = ['value' => $blockContext->getSetting('limit')];
-        }
+        $filters[DatagridInterface::PER_PAGE] ??= ['value' => $blockContext->getSetting('limit')];
 
         foreach ($filters as $name => $data) {
             $datagrid->setValue($name, $data['type'] ?? null, $data['value']);

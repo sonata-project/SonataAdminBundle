@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Datagrid;
 
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
@@ -56,14 +57,13 @@ final class DatagridMapperTest extends TestCase
     {
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
-        /** @var ProxyQueryInterface<object>&MockObject $proxyQuery */
-        $proxyQuery = $this->createMock(ProxyQueryInterface::class);
-        /** @var PagerInterface<ProxyQueryInterface<object>>&MockObject $pager */
-        $pager = $this->createMock(PagerInterface::class);
+        /** @var ProxyQueryInterface<object>&Stub $proxyQuery */
+        $proxyQuery = static::createStub(ProxyQueryInterface::class);
+        /** @var PagerInterface<ProxyQueryInterface<object>>&Stub $pager */
+        $pager = static::createStub(PagerInterface::class);
         $fieldDescriptionCollection = new FieldDescriptionCollection();
-        $formBuilder = $this->createMock(FormBuilder::class);
 
-        $this->datagrid = new Datagrid($proxyQuery, $fieldDescriptionCollection, $pager, $formBuilder, []);
+        $this->datagrid = new Datagrid($proxyQuery, $fieldDescriptionCollection, $pager, static::createStub(FormBuilder::class), []);
 
         $this->admin = $this->createMock(AdminInterface::class);
 

@@ -68,9 +68,7 @@ final class FormMapperTest extends TestCase
         $this->admin = new CleanAdmin();
         $this->admin->setModelClass(\stdClass::class);
         $this->admin->setSubject(new \stdClass());
-
-        $modelManager = $this->createMock(ModelManagerInterface::class);
-        $this->admin->setModelManager($modelManager);
+        $this->admin->setModelManager(static::createStub(ModelManagerInterface::class));
 
         $securityHandler = static::createStub(SecurityHandlerInterface::class);
         $securityHandler

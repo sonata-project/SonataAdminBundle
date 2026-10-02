@@ -115,9 +115,7 @@ final class AdminPreviewBlockService extends AbstractBlockService
             unset($filters[DatagridInterface::SORT_BY]);
         }
 
-        if (!isset($filters[DatagridInterface::PER_PAGE])) {
-            $filters[DatagridInterface::PER_PAGE] = ['value' => $blockContext->getSetting('limit')];
-        }
+        $filters[DatagridInterface::PER_PAGE] ??= ['value' => $blockContext->getSetting('limit')];
 
         $datagrid = $admin->getDatagrid();
 

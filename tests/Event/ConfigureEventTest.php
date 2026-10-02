@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Event;
 
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Event\ConfigureEvent;
@@ -27,19 +27,19 @@ final class ConfigureEventTest extends TestCase
     private ConfigureEvent $event;
 
     /**
-     * @var AdminInterface<object>&MockObject
+     * @var AdminInterface<object>&Stub
      */
     private AdminInterface $admin;
 
     /**
-     * @var MapperInterface<object>&MockObject
+     * @var MapperInterface<object>&Stub
      */
     private MapperInterface $mapper;
 
     protected function setUp(): void
     {
-        $this->admin = $this->createMock(AdminInterface::class);
-        $this->mapper = $this->createMock(MapperInterface::class);
+        $this->admin = static::createStub(AdminInterface::class);
+        $this->mapper = static::createStub(MapperInterface::class);
 
         $this->event = new ConfigureEvent($this->admin, $this->mapper, 'Foo');
     }
