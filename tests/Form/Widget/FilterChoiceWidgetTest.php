@@ -96,6 +96,7 @@ final class FilterChoiceWidgetTest extends BaseWidgetTestCase
     {
         return [
             'placeholder' => 'Choose an option',
+            'placeholder_attr' => [],
         ];
     }
 }
