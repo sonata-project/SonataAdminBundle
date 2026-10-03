@@ -9,6 +9,7 @@
 
 const Encore = require('@symfony/webpack-encore');
 const StyleLintPlugin = require('stylelint-webpack-plugin');
+const path = require('path');
 
 Encore.setOutputPath('./src/Resources/public')
   .setPublicPath('.')
@@ -50,6 +51,13 @@ Encore.setOutputPath('./src/Resources/public')
       output: { comments: false },
     };
     options.extractComments = false;
+  })
+
+  .addAliases({
+    bootstrap: path.resolve(
+      __dirname,
+      'assets/vendor/twitter-bootstrap3_3.4.1+dfsg/bootstrap-3.4.1'
+    ),
   })
 
   .copyFiles([
