@@ -35,14 +35,32 @@ final class TemplateRegistryRuntime implements RuntimeExtensionInterface
      * @throws ServiceNotFoundException
      * @throws ServiceCircularReferenceException
      */
-    public function getAdminTemplate(string $name, string $adminCode): string
+    public function getAdminTemplate(string $name, string $adminCode, string $theme = TemplateRegistryInterface::DEFAULT_THEME): string
     {
-        return $this->getTemplateRegistry($adminCode)->getTemplate($name);
+        if (TemplateRegistryInterface::DEFAULT_THEME === $theme) {
+            return $this->getTemplateRegistry($adminCode)->getTemplate($name);
+        }
+
+        /*
+         * NEXT_MAJOR: Remove phpstan-ignore line.
+         *
+         * @phpstan-ignore arguments.count
+         */
+        return $this->getTemplateRegistry($adminCode)->getTemplate($name, $theme);
     }
 
-    public function getGlobalTemplate(string $name): string
+    public function getGlobalTemplate(string $name, string $theme = TemplateRegistryInterface::DEFAULT_THEME): string
     {
-        return $this->globalTemplateRegistry->getTemplate($name);
+        if (TemplateRegistryInterface::DEFAULT_THEME === $theme) {
+            return $this->globalTemplateRegistry->getTemplate($name);
+        }
+
+        /*
+         * NEXT_MAJOR: Remove phpstan-ignore line.
+         *
+         * @phpstan-ignore arguments.count
+         */
+        return $this->globalTemplateRegistry->getTemplate($name, $theme);
     }
 
     /**
