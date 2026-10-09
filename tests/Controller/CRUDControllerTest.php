@@ -691,9 +691,9 @@ final class CRUDControllerTest extends TestCase
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
         $exception = new ModelManagerException(
-            $message = 'message',
+            'message',
             1234,
-            new \Exception($previousExceptionMessage = 'very useful message')
+            new \Exception('very useful message')
         );
 
         $modelManager->expects(static::once())
@@ -729,9 +729,9 @@ final class CRUDControllerTest extends TestCase
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
         $exception = new ModelManagerException(
-            $message = 'message',
+            'message',
             1234,
-            new \Exception($previousExceptionMessage = 'very useful message')
+            new \Exception('very useful message')
         );
 
         $modelManager->expects(static::once())
@@ -1434,9 +1434,9 @@ final class CRUDControllerTest extends TestCase
         $this->translator->expects(static::never())->method('trans');
 
         $exception = new ModelManagerException(
-            $message = 'message',
+            'message',
             1234,
-            new \Exception($previousExceptionMessage = 'very useful message')
+            new \Exception('very useful message')
         );
 
         $this->admin->expects(static::once())
@@ -1471,9 +1471,9 @@ final class CRUDControllerTest extends TestCase
         $this->translator->expects(static::never())->method('trans');
 
         $exception = new ModelManagerException(
-            $message = 'message',
+            'message',
             1234,
-            new \Exception($previousExceptionMessage = 'very useful message')
+            new \Exception('very useful message')
         );
 
         $this->admin->expects(static::once())
@@ -1858,9 +1858,9 @@ final class CRUDControllerTest extends TestCase
         $customController->configureAdmin($this->request);
 
         $exception = new ModelManagerException(
-            $message = 'message',
+            'message',
             1234,
-            new \Exception($previousExceptionMessage = 'very useful message')
+            new \Exception('very useful message')
         );
 
         $this->admin->expects(static::once())
@@ -1943,9 +1943,9 @@ final class CRUDControllerTest extends TestCase
         $customController->configureAdmin($this->request);
 
         $exception = new ModelManagerException(
-            $message = 'message',
+            'message',
             1234,
-            new \Exception($previousExceptionMessage = 'very useful message')
+            new \Exception('very useful message')
         );
 
         $this->admin->expects(static::once())
@@ -2684,9 +2684,9 @@ final class CRUDControllerTest extends TestCase
         $customController->configureAdmin($this->request);
 
         $exception = new ModelManagerException(
-            $message = 'message',
+            'message',
             1234,
-            new \Exception($previousExceptionMessage = 'very useful message')
+            new \Exception('very useful message')
         );
 
         $this->admin->expects(static::once())
@@ -2765,9 +2765,9 @@ final class CRUDControllerTest extends TestCase
         $customController->configureAdmin($this->request);
 
         $exception = new ModelManagerException(
-            $message = 'message',
+            'message',
             1234,
-            new \Exception($previousExceptionMessage = 'very useful message')
+            new \Exception('very useful message')
         );
 
         $this->admin->expects(static::once())
