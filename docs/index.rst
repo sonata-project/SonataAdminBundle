@@ -49,6 +49,7 @@ Admin Bundle
    reference/console
    reference/troubleshooting
    reference/breadcrumbs
+   reference/webpack
 
 .. toctree::
    :caption: Advanced Options
