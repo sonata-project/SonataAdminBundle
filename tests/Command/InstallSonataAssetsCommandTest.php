@@ -45,8 +45,9 @@ final class InstallSonataAssetsCommandTest extends TestCase
         $command = $application->find('sonata:admin:install-assets');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
+        $output = preg_replace('/\s+/', ' ', trim($commandTester->getDisplay()));
 
-        static::assertMatchesRegularExpression('@The SonataAdmin assets source files have been successfully copied to "./assets/sonata_admin" directory.@', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('@The SonataAdmin assets source files have been successfully copied to "./assets/sonata_admin" directory.@', $output);
     }
 
     public function testExecuteWithWrongDirection(): void
@@ -69,8 +70,9 @@ final class InstallSonataAssetsCommandTest extends TestCase
         $command = $application->find('sonata:admin:install-assets');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
+        $output = preg_replace('/\s+/', ' ', trim($commandTester->getDisplay()));
 
-        static::assertMatchesRegularExpression('@Source directory not found: @', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('@Source directory not found: @', $output);
     }
 
     public function testExecuteWithError(): void
@@ -87,7 +89,8 @@ final class InstallSonataAssetsCommandTest extends TestCase
         $command = $application->find('sonata:admin:install-assets');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
+        $output = preg_replace('/\s+/', ' ', trim($commandTester->getDisplay()));
 
-        static::assertMatchesRegularExpression('@An error occurred while copying files: @', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('@An error occurred while copying files: @', $output);
     }
 }
