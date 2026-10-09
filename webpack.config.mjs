@@ -7,11 +7,11 @@
  * file that was distributed with this source code.
  */
 
-const Encore = require('@symfony/webpack-encore');
-const StyleLintPlugin = require('stylelint-webpack-plugin');
+import Encore from "@symfony/webpack-encore";
+import StyleLintPlugin from "stylelint-webpack-plugin";
 
 Encore.setOutputPath('./src/Resources/public')
-  .setPublicPath('.')
+  .setPublicPath('/')
   .setManifestKeyPrefix('bundles/sonataadmin')
 
   .cleanupOutputBeforeBuild()
@@ -22,7 +22,7 @@ Encore.setOutputPath('./src/Resources/public')
   .autoProvidejQuery()
   .disableSingleRuntimeChunk()
 
-  .enableStimulusBridge('./assets/js/controllers.json')
+  .enableStimulusBridge('./assets/shared/controllers.json')
 
   .configureCssMinimizerPlugin((options) => {
     options.minimizerOptions = {
@@ -40,12 +40,12 @@ Encore.setOutputPath('./src/Resources/public')
 
   .addPlugin(
     new StyleLintPlugin({
-      context: 'assets/scss',
+      context: 'assets/theme/adminlte2/scss',
       emitWarning: true,
     })
   )
 
-  .configureTerserPlugin((options) => {
+  .configureJsMinimizerPlugin((options) => {
     options.terserOptions = {
       output: { comments: false },
     };
@@ -53,19 +53,19 @@ Encore.setOutputPath('./src/Resources/public')
   })
 
   .copyFiles([
-    { from: './assets/images/', pattern: /\.(png|gif)$/, to: 'images/[name].[ext]' },
+    { from: './assets/theme/adminlte2/images/', pattern: /\.(png|gif)$/, to: 'images/[name].[ext]' },
     {
-      from: './node_modules/admin-lte/dist/css/skins/',
+      from: './assets/theme/adminlte2/node_modules/admin-lte/dist/css/skins/',
       pattern: /skin-.*\.min.css/,
       to: 'admin-lte-skins/[name].[ext]',
     },
     {
-      from: './node_modules/select2/dist/js/i18n/',
+      from: './assets/theme/adminlte2/node_modules/select2/dist/js/i18n/',
       pattern: /\.js/,
       to: 'select2-locale/[name].[ext]',
     },
   ])
 
-  .addEntry('app', './assets/js/app.js');
+  .addEntry('app', './assets/theme/adminlte2/js/app.js');
 
-module.exports = Encore.getWebpackConfig();
+export default await Encore.getWebpackConfig();
