@@ -123,9 +123,7 @@ final class AdminHelper
         $form->setData($subject);
         $form->handleRequest($admin->getRequest());
 
-        $childFieldDescription = null !== $childFormBuilder
-            ? $childFormBuilder->getOption('sonata_field_description')
-            : null;
+        $childFieldDescription = $childFormBuilder?->getOption('sonata_field_description');
 
         if (
             null !== $childFormBuilder

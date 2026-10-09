@@ -8,7 +8,7 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import { activateScriptElement, createDocumentFragment } from '../core/utils';
+import { activateScriptElement, createDocumentFragment } from '../core/utils.js';
 
 export default class extends Controller {
   static targets = ['item'];

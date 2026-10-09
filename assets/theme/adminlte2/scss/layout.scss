@@ -125,7 +125,7 @@ th {
 
 .sonata-search-result-list {
   > li {
-    word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 }
 
@@ -387,7 +387,9 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
   margin-left: -15px;
   position: fixed;
   top: 50px;
-  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  transition:
+    transform 0.3s ease-in-out,
+    width 0.3s ease-in-out;
   width: calc(100% - 230px);
   z-index: 5;
 }
@@ -398,7 +400,9 @@ legend.sonata-ba-fieldset-collapsed-description + .sonata-ba-collapsed-fields {
   margin-bottom: 0;
   margin-left: -15px;
   position: fixed;
-  transition: transform 0.3s ease-in-out, width 0.3s ease-in-out;
+  transition:
+    transform 0.3s ease-in-out,
+    width 0.3s ease-in-out;
   width: calc(100% - 230px);
   z-index: 5;
 }

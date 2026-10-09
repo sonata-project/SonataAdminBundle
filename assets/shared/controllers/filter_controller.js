@@ -9,7 +9,7 @@
 
 import qs from 'qs';
 import { Controller } from '@hotwired/stimulus';
-import { controlReset, controlValue, convertQueryStringToObject } from '../core/utils';
+import { controlReset, controlValue, convertQueryStringToObject } from '../core/utils.js';
 
 export default class extends Controller {
   static targets = ['form', 'group', 'advanced', 'submitter'];
@@ -33,7 +33,7 @@ export default class extends Controller {
     const defaults = convertQueryStringToObject(
       qs.stringify({
         filter: this.defaultValuesValue,
-      })
+      }),
     );
 
     const changed = [];

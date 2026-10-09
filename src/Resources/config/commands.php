@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Sonata\AdminBundle\Command\ExplainAdminCommand;
+use Sonata\AdminBundle\Command\InstallSonataAssetsCommand;
 use Sonata\AdminBundle\Command\ListAdminCommand;
 
 return static function (ContainerConfigurator $containerConfigurator): void {
@@ -29,5 +30,11 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->tag('console.command')
             ->args([
                 service('sonata.admin.pool'),
+            ])
+
+        ->set('sonata.admin.command.assets', InstallSonataAssetsCommand::class)
+            ->tag('console.command')
+            ->args([
+                service('filesystem'),
             ]);
 };

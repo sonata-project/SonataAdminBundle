@@ -1,54 +1,42 @@
 {
-  "dependencies": {
-    "@fontsource/source-sans-pro": "^4.5",
-    "@fortawesome/fontawesome-free": "^5.15",
-    "@hotwired/stimulus": "^3.2",
-    "@symfony/stimulus-bridge": "^3.2",
-    "admin-lte": "^2.4",
-    "bootstrap": "^3.3",
-    "icheck": "^1.0",
-    "jquery": "^3.7.0",
-    "jquery-form": "^4.3",
-    "jquery-slimscroll": "^1.3",
-    "jquery-ui": "^1.13",
-    "jquery.scrollto": "^2.1",
-    "masonry-layout": "^4.2",
-    "qs": "^6.13.1",
-    "select2": "^4.0",
-    "select2-bootstrap-theme": "^0.1.0-beta.10",
-    "x-editable": "^1.5"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.21",
-    "@babel/eslint-parser": "^7.21",
-    "@babel/preset-env": "^7.21",
-    "@symfony/webpack-encore": "^5.2",
-    "autoprefixer": "^10.4",
-    "eslint": "^8.39",
-    "eslint-config-airbnb-base": "^15.0",
-    "eslint-config-prettier": "^8.8",
-    "eslint-plugin-header": "^3.1",
-    "eslint-plugin-import": "^2.27",
-    "eslint-webpack-plugin": "^4.0",
-    "file-loader": "^6.2",
-    "postcss": "^8.5",
-    "postcss-loader": "^7.2",
-    "postcss-scss": "^4.0",
-    "prettier": "^2.8",
-    "sass-embedded": "^1.62",
-    "sass-loader": "^16.0",
-    "stylelint": "^15.6",
-    "stylelint-config-standard-scss": "^9.0",
-    "stylelint-order": "^6.0",
-    "stylelint-webpack-plugin": "^4.1",
-    "webpack": "^5.98",
-    "webpack-cli": "^5.0"
-  },
-  "engines": {
-    "node": ">=18"
-  },
   "license": "MIT",
   "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@babel/core": "^8.0.7",
+    "@babel/eslint-parser": "^8.0.7",
+    "@babel/preset-env": "^8.0.7",
+    "@hotwired/stimulus": "^3.2.2",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "@symfony/webpack-encore": "^7.2.0",
+    "autoprefixer": "^10.6.1",
+    "cssnano": "^9.4.0",
+    "eslint": "^9.39.5",
+    "eslint-config-airbnb-extended": "^3.3.0",
+    "eslint-config-prettier": "^8.8",
+    "eslint-plugin-header": "^3.1",
+    "eslint-plugin-import-x": "^4.17.1",
+    "eslint-webpack-plugin": "^4.0",
+    "file-loader": "^6.2",
+    "globals": "^17.13.0",
+    "postcss": "^8.5.29",
+    "postcss-loader": "^8.2",
+    "postcss-scss": "^4.0",
+    "prettier": "^3.9.9",
+    "sass-embedded": "^1.105",
+    "sass-loader": "^17.0",
+    "sass-migrator": "^2.6",
+    "stylelint": "^17.16.0",
+    "stylelint-config-standard-scss": "^17.0.0",
+    "stylelint-order": "^8.1.1",
+    "stylelint-webpack-plugin": "^5.1.0",
+    "typescript": "^6.0.0",
+    "webpack": "^5.98",
+    "webpack-cli": "^7.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev-server": "encore dev-server",
     "dev": "encore dev",
@@ -57,5 +45,12 @@
   },
   "browserslist": [
     "defaults"
-  ]
+  ],
+  "workspaces": [
+    "assets/theme/adminlte2"
+  ],
+  "dependencies": {
+    "jquery": "^3.7.1",
+    "qs": "^6.16.0"
+  }
 }

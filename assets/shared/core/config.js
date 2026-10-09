@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { getMetaContent } from './utils';
+import { getMetaContent } from './utils.js';
 
 class Config {
   params = null;
@@ -18,7 +18,7 @@ class Config {
         this.params = JSON.parse(getMetaContent('sonata-config'));
       } catch (e) {
         throw new Error(
-          `An error has occurred resolving the "sonata-config" meta tag: ${e.message}.`
+          `An error has occurred resolving the "sonata-config" meta tag: ${e.message}.`,
         );
       }
     }

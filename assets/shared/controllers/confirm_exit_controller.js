@@ -8,8 +8,8 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import Config from '../core/config';
-import Translation from '../core/translation';
+import Config from '../core/config.js';
+import Translation from '../core/translation.js';
 
 export default class extends Controller {
   static values = {

@@ -1,0 +1,53 @@
+{
+  "name": "@sonata-project/admin-theme-admin-lte-2",
+  "version": "1.0.0",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@fontsource/source-sans-pro": "^4.5",
+    "@fortawesome/fontawesome-free": "^5.15",
+    "@hotwired/stimulus": "^3.2.2",
+    "@hotwired/stimulus-webpack-helpers": "^1.0.1",
+    "@symfony/stimulus-bridge": "^4.0",
+    "@symfony/webpack-encore": "^7.2",
+    "admin-lte": "^2.4",
+    "bootstrap": "^3.4.1",
+    "icheck": "^1.0",
+    "jquery": "^3.7.1",
+    "jquery-form": "^4.3",
+    "jquery-slimscroll": "^1.3",
+    "jquery-ui": "^1.13",
+    "jquery.scrollto": "^2.1",
+    "masonry-layout": "^4.2",
+    "qs": "^6.13.1",
+    "select2": "^4.0",
+    "select2-bootstrap-theme": "^0.1.0-beta.10",
+    "stylelint-webpack-plugin": "^5.1.0",
+    "x-editable": "^1.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^8.0.0",
+    "@babel/preset-env": "^8.0.0",
+    "babel-plugin-polyfill-corejs3": "^1.0.0",
+    "core-js": "^3.49.0",
+    "postcss-loader": "^8.1.1",
+    "sass": "^1.105.1",
+    "sass-loader": "^17.0.0",
+    "sass-migrator": "^2.6.1",
+    "webpack": "^5.98",
+    "webpack-cli": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev-server": "encore dev-server",
+    "dev": "encore dev",
+    "watch": "encore dev --watch",
+    "build": "encore production"
+  },
+  "browserslist": [
+    "defaults"
+  ]
+}
