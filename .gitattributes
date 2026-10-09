@@ -13,8 +13,8 @@ rector.php export-ignore
 phpstan.neon.dist export-ignore
 phpstan-baseline.neon export-ignore
 phpstan-console-application.php export-ignore
-package.json export-ignore
+/package.json export-ignore
 package-lock.json export-ignore
 postcss.config.js export-ignore
 prettier.config.js export-ignore
-webpack.config.js export-ignore
+/webpack.config.js export-ignore
