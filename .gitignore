@@ -4,6 +4,7 @@
 
 /build/
 /node_modules/
+/assets/theme/*/node_modules/
 /vendor/
 .php-cs-fixer.cache
 composer.lock
