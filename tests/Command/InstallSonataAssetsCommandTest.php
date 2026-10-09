@@ -31,11 +31,11 @@ final class InstallSonataAssetsCommandTest extends TestCase
 
         $filesystem = $this->createMock(Filesystem::class);
         $filesystem
-            ->expects($this->exactly(1))
+            ->expects(static::exactly(1))
             ->method('exists')
             ->willReturn(true);
         $filesystem
-            ->expects($this->exactly(1))
+            ->expects(static::exactly(1))
             ->method('mirror');
 
         $command = new InstallSonataAssetsCommand($filesystem);
@@ -55,11 +55,11 @@ final class InstallSonataAssetsCommandTest extends TestCase
 
         $filesystem = $this->createMock(Filesystem::class);
         $filesystem
-            ->expects($this->exactly(1))
+            ->expects(static::exactly(1))
             ->method('exists')
             ->willReturn(false);
         $filesystem
-            ->expects($this->exactly(0))
+            ->expects(static::exactly(0))
             ->method('mirror');
 
         $command = new InstallSonataAssetsCommand($filesystem);
