@@ -1,3 +1,6 @@
+@use "sass:meta";
+@use 'styles';
+
 /*!
  * This file is part of the Sonata Project package.
  *
@@ -39,9 +42,8 @@
 @import '~x-editable/dist/bootstrap3-editable/css/bootstrap-editable.css';
 
 // SonataAdmin custom styles
-@import './styles';
-@import './layout';
-@import './tree';
-@import './flashmessage';
-@import './admin-lte-fas';
-@import './readmore';
+@include meta.load-css('layout');
+@include meta.load-css('tree');
+@include meta.load-css('flashmessage');
+@include meta.load-css('admin-lte-fas');
+@include meta.load-css('readmore');

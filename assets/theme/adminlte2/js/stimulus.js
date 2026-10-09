@@ -8,15 +8,14 @@
  */
 
 // eslint-disable-next-line import/no-extraneous-dependencies
+import { Application } from '@hotwired/stimulus';
 import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
-import { startStimulusApp } from '@symfony/stimulus-bridge';
 
-// eslint-disable-next-line import/prefer-default-export
-export const sonataApplication = startStimulusApp();
+export const sonataApplication = Application.start();
 
 const definitions = definitionsFromContext(
   require.context(
-    '@symfony/stimulus-bridge/lazy-controller-loader!./controllers',
+    '@symfony/stimulus-bridge/lazy-controller-loader!../../../shared/controllers',
     true,
     /\.[jt]sx?$/
   )

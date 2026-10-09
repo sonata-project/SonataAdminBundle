@@ -18,18 +18,18 @@ import $ from 'jquery';
 import 'jquery.scrollto';
 
 // Only using sortable widget from jQuery UI library
-import 'jquery-ui/ui/widget';
-import 'jquery-ui/ui/widgets/sortable';
+import 'jquery-ui/ui/widget.js';
+import 'jquery-ui/ui/widgets/sortable.js';
 import 'bootstrap';
 
 import 'jquery-form';
 
 // Boostrap 3 JavaScript for the X-editable library
-import 'x-editable/dist/bootstrap3-editable/js/bootstrap-editable';
+import 'x-editable/dist/bootstrap3-editable/js/bootstrap-editable.js';
 
 // Full version of Select2, needed because SonataAdmin needs
 // compat dropdownCss and it only comes on the full version
-import 'select2/dist/js/select2.full';
+import 'select2/dist/js/select2.full.js';
 import 'admin-lte';
 import 'icheck';
 
@@ -38,14 +38,14 @@ import 'jquery-slimscroll';
 import 'masonry-layout';
 
 // SonataAdmin custom scripts
-import './admin';
-import './treeview';
-import './sidebar';
-import './base';
+import './admin.js';
+import './treeview.js';
+import './sidebar.js';
+import './base.js';
 
 import * as stimulus from '@hotwired/stimulus';
 
-import { sonataApplication } from './stimulus';
+import { sonataApplication } from './stimulus.js';
 
 // Create global variables to be used outside this script
 global.$ = $;

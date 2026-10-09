@@ -7,7 +7,7 @@
  * file that was distributed with this source code.
  */
 
-import { getMetaContent } from './utils';
+import { getMetaContent } from './utils.js';
 
 class Config {
   params = null;

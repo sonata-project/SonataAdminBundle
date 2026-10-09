@@ -7,8 +7,8 @@
  * file that was distributed with this source code.
  */
 
-import Config from './core/config';
-import Translation from './core/translation';
+import Config from '../../../shared/core/config.js';
+import Translation from '../../../shared/core/translation.js';
 
 const Admin = {
   /**
