@@ -45,10 +45,10 @@ import './base.js';
 
 import * as stimulus from '@hotwired/stimulus';
 
-import { sonataApplication } from './stimulus.js';
+import sonataApplication from './stimulus.js';
 
 // Create global variables to be used outside this script
-global.$ = $;
-global.jQuery = $;
-global.stimulus = stimulus;
-global.sonataApplication = sonataApplication;
+window.$ = $;
+window.jQuery = $;
+window.stimulus = stimulus;
+window.sonataApplication = sonataApplication;

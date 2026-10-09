@@ -7,18 +7,19 @@
  * file that was distributed with this source code.
  */
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { Application } from '@hotwired/stimulus';
 import { definitionsFromContext } from '@hotwired/stimulus-webpack-helpers';
 
-export const sonataApplication = Application.start();
+const sonataApplication = Application.start();
 
 const definitions = definitionsFromContext(
-  require.context(
+  import.meta.webpackContext(
     '@symfony/stimulus-bridge/lazy-controller-loader!../../../shared/controllers',
-    true,
-    /\.[jt]sx?$/
-  )
+    {
+      recursive: true,
+      regExp: /\.[jt]sx?$/,
+    },
+  ),
 );
 
 definitions.forEach((definition) => {
@@ -26,3 +27,5 @@ definitions.forEach((definition) => {
 });
 
 sonataApplication.load(definitions);
+
+export default sonataApplication;

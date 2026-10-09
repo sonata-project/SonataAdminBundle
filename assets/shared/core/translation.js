@@ -18,7 +18,7 @@ class Translation {
         this.messages = JSON.parse(getMetaContent('sonata-translations'));
       } catch (e) {
         throw new Error(
-          `An error has occurred resolving the "sonata-translations" meta tag: ${e.message}.`
+          `An error has occurred resolving the "sonata-translations" meta tag: ${e.message}.`,
         );
       }
     }

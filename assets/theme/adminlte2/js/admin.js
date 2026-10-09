@@ -96,7 +96,9 @@ const Admin = {
           theme: 'bootstrap',
           dropdownAutoWidth: true,
           minimumResultsForSearch,
-          placeholder: allowClearEnabled ? ' ' : '', // allowClear needs placeholder to work properly
+
+          // allowClear needs placeholder to work properly
+          placeholder: allowClearEnabled ? ' ' : '',
           allowClear: allowClearEnabled,
           maximumSelectionLength,
           tags: allowTags,
@@ -113,8 +115,9 @@ const Admin = {
       Admin.log('[core|setup_icheck] configure iCheck on', subject);
 
       const inputs = jQuery(
-        'input[type="checkbox"]:not(label.btn > input, [data-sonata-icheck="false"]), input[type="radio"]:not(label.btn > input, [data-sonata-icheck="false"])',
-        subject
+        'input[type="checkbox"]:not(label.btn > input, [data-sonata-icheck="false"]), ' +
+          'input[type="radio"]:not(label.btn > input, [data-sonata-icheck="false"])',
+        subject,
       );
       inputs.iCheck({
         checkboxClass: 'icheckbox_square-blue',
@@ -141,7 +144,7 @@ const Admin = {
   setup_checkbox_range_selection(subject) {
     Admin.log(
       '[core|setup_checkbox_range_selection] configure checkbox range selection on',
-      subject
+      subject,
     );
 
     let previousIndex;
@@ -163,7 +166,7 @@ const Admin = {
         if (event.shiftKey && previousIndex >= 0) {
           const isChecked = jQuery(
             `tbody input[type="checkbox"]:nth(${currentIndex})`,
-            subject
+            subject,
           ).prop('checked');
 
           // Check all checkbox between previous and current one clicked
@@ -299,7 +302,7 @@ const Admin = {
     for (let i = 0; i < data.length; i += 1) {
       if (idLookupTable[data[i].label]) {
         Admin.log(
-          '[setup_sortable_select2] error: sortable requires all option labels to be unique'
+          '[setup_sortable_select2] error: sortable requires all option labels to be unique',
         );
       }
       idLookupTable[data[i].label] = data[i].data;

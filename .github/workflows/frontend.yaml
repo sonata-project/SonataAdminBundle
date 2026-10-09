@@ -29,16 +29,19 @@ jobs:
             - name: Install Node
               uses: actions/setup-node@v4
               with:
-                  node-version: '20'
+                  node-version: '22'
+                  cache: 'npm'
 
             - name: Install NPM dependencies
-              uses: bahmutov/npm-install@v1
+              run: npm ci --install-strategy=nested
 
             - name: Run Eslint
-              run: npx eslint assets/js
+              env:
+                  ESLINT_USE_FLAT_CONFIG: true
+              run: npx eslint "assets/theme/*/js/**/*.js" --config .eslintrc.mjs
 
             - name: Run Stylelint
-              run: npx stylelint assets/scss
+              run: npx stylelint "assets/theme/*/scss/**/*.scss"
 
             - name: Run Prettier
               run: npx prettier --check assets

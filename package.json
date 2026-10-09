@@ -3,32 +3,39 @@
   "private": true,
   "type": "module",
   "devDependencies": {
-    "@babel/core": "^8.0.0",
-    "@babel/preset-env": "^8.0.0",
-    "@symfony/webpack-encore": "^7.0.0",
-    "autoprefixer": "^10.4",
-    "eslint": "^8.39",
-    "eslint-config-airbnb-base": "^15.0",
+    "@babel/core": "^8.0.7",
+    "@babel/eslint-parser": "^8.0.7",
+    "@babel/preset-env": "^8.0.7",
+    "@hotwired/stimulus": "^3.2.2",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "@symfony/webpack-encore": "^7.2.0",
+    "autoprefixer": "^10.6.1",
+    "cssnano": "^9.4.0",
+    "eslint": "^9.39.5",
+    "eslint-config-airbnb-extended": "^3.3.0",
     "eslint-config-prettier": "^8.8",
     "eslint-plugin-header": "^3.1",
-    "eslint-plugin-import": "^2.27",
+    "eslint-plugin-import-x": "^4.17.1",
     "eslint-webpack-plugin": "^4.0",
     "file-loader": "^6.2",
-    "postcss": "^8.5",
+    "globals": "^17.13.0",
+    "postcss": "^8.5.29",
     "postcss-loader": "^8.2",
     "postcss-scss": "^4.0",
-    "prettier": "^2.8",
-    "sass-embedded": "^1.62",
-    "sass-loader": "^16.0",
-    "stylelint": "^15.6",
-    "stylelint-config-standard-scss": "^9.0",
-    "stylelint-order": "^6.0",
-    "stylelint-webpack-plugin": "^4.1",
+    "prettier": "^3.9.9",
+    "sass-embedded": "^1.105",
+    "sass-loader": "^17.0",
+    "sass-migrator": "^2.6",
+    "stylelint": "^17.16.0",
+    "stylelint-config-standard-scss": "^17.0.0",
+    "stylelint-order": "^8.1.1",
+    "stylelint-webpack-plugin": "^5.1.0",
+    "typescript": "^6.0.0",
     "webpack": "^5.98",
     "webpack-cli": "^7.0"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=22"
   },
   "scripts": {
     "dev-server": "encore dev-server",
@@ -39,7 +46,11 @@
   "browserslist": [
     "defaults"
   ],
+  "workspaces": [
+    "assets/theme/adminlte2"
+  ],
   "dependencies": {
-    "sass-migrator": "^2.6.1"
+    "jquery": "^3.7.1",
+    "qs": "^6.16.0"
   }
 }

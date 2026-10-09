@@ -24,7 +24,8 @@ Encore.setOutputPath('./src/Resources/public')
 
   .enableStimulusBridge('./assets/shared/controllers.json')
 
-  .configureCssMinimizerPlugin((options) => {
+  .configureCssMinimizerPlugin((options, MinimizerPlugin) => {
+    options.minify = MinimizerPlugin.cssnanoMinify;
     options.minimizerOptions = {
       preset: ['default', { discardComments: { removeAll: true } }],
     };

@@ -8,8 +8,8 @@
  */
 
 import { Controller } from '@hotwired/stimulus';
-import { wrap } from '../core/utils';
-import Config from '../core/config';
+import { wrap } from '../core/utils.js';
+import Config from '../core/config.js';
 
 export default class extends Controller {
   static targets = ['topNavbar', 'navbar', 'action'];
