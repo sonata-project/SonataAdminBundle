@@ -21,7 +21,7 @@ web-accessible directory, run the official installation command. This will copy 
 
 .. code-block:: bash
 
-    php bin/console sonata:admin:install-assets [target_path] # by default path is "./assets"
+    bin/console sonata:admin:install-assets [target_path] # by default path is "./assets"
 
 Add Configuration to webpack
 ----------------------------
