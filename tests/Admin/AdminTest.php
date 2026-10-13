@@ -1480,16 +1480,19 @@ final class AdminTest extends TestCase
         $admin->setFormGroups($formGroups);
 
         $admin->removeFieldFromFormGroup('foo');
-        static::assertSame($admin->getFormGroups(), [
-            'foobar' => [
-                'fields' => [
-                    'bar' => 'bar',
+        static::assertSame(
+            [
+                'foobar' => [
+                    'fields' => [
+                        'bar' => 'bar',
+                    ],
                 ],
             ],
-        ]);
+            $admin->getFormGroups()
+        );
 
         $admin->removeFieldFromFormGroup('bar');
-        static::assertSame($admin->getFormGroups(), []);
+        static::assertSame([], $admin->getFormGroups());
     }
 
     public function testGetFilterParameters(): void
@@ -2262,6 +2265,7 @@ final class AdminTest extends TestCase
 final class PostExtended1
 {
 }
+
 final class PostExtended2
 {
 }

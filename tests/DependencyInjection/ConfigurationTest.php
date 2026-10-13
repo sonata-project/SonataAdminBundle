@@ -106,7 +106,7 @@ final class ConfigurationTest extends TestCase
         static::assertIsArray($config['dashboard']);
         static::assertIsArray($config['dashboard']['blocks']);
         static::assertIsArray($config['dashboard']['blocks'][0]);
-        static::assertSame($config['dashboard']['blocks'][0]['roles'], ['ROLE_ADMIN']);
+        static::assertSame(['ROLE_ADMIN'], $config['dashboard']['blocks'][0]['roles']);
     }
 
     public function testDashboardGroups(): void
@@ -142,42 +142,42 @@ final class ConfigurationTest extends TestCase
         static::assertIsArray($config['dashboard']['groups']['bar']['items']);
         static::assertCount(4, $config['dashboard']['groups']['bar']['items']);
         static::assertSame(
-            $config['dashboard']['groups']['bar']['items'][0],
             [
                 'admin' => 'item1',
                 'roles' => [],
                 'route_params' => [],
                 'route_absolute' => false,
-            ]
+            ],
+            $config['dashboard']['groups']['bar']['items'][0]
         );
         static::assertSame(
-            $config['dashboard']['groups']['bar']['items'][1],
             [
                 'admin' => 'item2',
                 'roles' => [],
                 'route_params' => [],
                 'route_absolute' => false,
-            ]
+            ],
+            $config['dashboard']['groups']['bar']['items'][1]
         );
         static::assertSame(
-            $config['dashboard']['groups']['bar']['items'][2],
             [
                 'label' => 'fooLabel',
                 'route' => 'fooRoute',
                 'route_params' => ['bar' => 'foo'],
                 'route_absolute' => true,
                 'roles' => [],
-            ]
+            ],
+            $config['dashboard']['groups']['bar']['items'][2]
         );
         static::assertSame(
-            $config['dashboard']['groups']['bar']['items'][3],
             [
                 'label' => 'barLabel',
                 'route' => 'barRoute',
                 'roles' => [],
                 'route_params' => [],
                 'route_absolute' => false,
-            ]
+            ],
+            $config['dashboard']['groups']['bar']['items'][3]
         );
     }
 
