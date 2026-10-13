@@ -122,7 +122,7 @@ const Admin = {
           radioClass: 'iradio_square-blue',
         });
 
-        jQuery(input).on('ifChanged', function syncICheckWithStimulus(){
+        jQuery(input).on('ifChanged', function syncICheckWithStimulus() {
           this.dispatchEvent(new Event('change', { bubbles: true }));
           jQuery(inputs).iCheck('update');
         });
