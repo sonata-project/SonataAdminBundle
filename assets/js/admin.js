@@ -119,7 +119,7 @@ const Admin = {
       inputs.each((index, input) => {
         jQuery(input).iCheck({
           checkboxClass: 'icheckbox_square-blue',
-          radioClass: 'iradio_square-blue'
+          radioClass: 'iradio_square-blue',
         });
 
         jQuery(input).on('ifChanged', () => {
