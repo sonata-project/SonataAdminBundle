@@ -20,6 +20,7 @@ use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
  */
 interface TemplateRegistryInterface
 {
+    public const DEFAULT_THEME = 'default';
     /**
      * @internal
      */
@@ -75,11 +76,15 @@ interface TemplateRegistryInterface
     ];
 
     /**
+     * NEXT_MAJOR: Uncomment extra arg and remove dependent record from phpstan-baseline.neon.
+     *
      * @return array<string, string> 'name' => 'file_path.html.twig'
      */
-    public function getTemplates(): array;
+    public function getTemplates(/* string $theme = self::DEFAULT_THEME */): array;
 
-    public function getTemplate(string $name): string;
+    // NEXT_MAJOR: Uncomment extra arg and remove dependent record from phpstan-baseline.neon.
+    public function getTemplate(string $name/* , string $theme = self::DEFAULT_THEME */): string;
 
-    public function hasTemplate(string $name): bool;
+    // NEXT_MAJOR: Uncomment extra arg and remove dependent record from phpstan-baseline.neon.
+    public function hasTemplate(string $name/* , string $theme = self::DEFAULT_THEME */): bool;
 }
