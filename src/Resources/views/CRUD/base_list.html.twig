@@ -149,6 +149,10 @@ file that was distributed with this source code.
                                 <div class="pull-left">
                                     {% if admin.hasRoute('batch') and batchactions|length > 0 %}
                                         {% block batch %}
+                                            <script>
+                                                {% block batch_javascript %}{% endblock %}
+                                            </script>
+
                                             {% block batch_actions %}
                                                 <span style="margin-right: 20px" {{ stimulus_target('sonata-batch_select', 'summary') }}></span>
                                                 <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
