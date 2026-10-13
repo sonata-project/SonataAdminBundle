@@ -116,9 +116,16 @@ const Admin = {
         'input[type="checkbox"]:not(label.btn > input, [data-sonata-icheck="false"]), input[type="radio"]:not(label.btn > input, [data-sonata-icheck="false"])',
         subject
       );
-      inputs.iCheck({
-        checkboxClass: 'icheckbox_square-blue',
-        radioClass: 'iradio_square-blue',
+      inputs.each((index, input) => {
+        jQuery(input).iCheck({
+          checkboxClass: 'icheckbox_square-blue',
+          radioClass: 'iradio_square-blue',
+        });
+
+        jQuery(input).on('ifChanged', function syncICheckWithStimulus() {
+          this.dispatchEvent(new Event('change', { bubbles: true }));
+          jQuery(inputs).iCheck('update');
+        });
       });
 
       // In case some checkboxes were already checked (for instance after moving

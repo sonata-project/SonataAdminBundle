@@ -463,6 +463,31 @@ body.sonata-icheck .radio label {
 }
 
 /**
+ * Add indeterminate for iCheck checkboxes
+ */
+.icheckbox_square-blue:has(input.indeterminate) {
+  background-color: #3c8dbc;
+  background-image: none !important;
+  border: 1px solid #3c8dbc;
+  position: relative;
+}
+
+.icheckbox_square-blue:has(input.indeterminate)::after {
+  background-color: #fff;
+  content: '';
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+}
+
+.icheckbox_square-blue:has(input.indeterminate).hover {
+  border: 2px solid #23527c;
+}
+
+/**
  * The iCheck checkboxes & radios have 0 margin by default,
  * add some space for the label text.
  */

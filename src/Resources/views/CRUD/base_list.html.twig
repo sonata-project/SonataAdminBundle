@@ -42,7 +42,7 @@ file that was distributed with this source code.
         {% endif %}
 
         {# Add a margin if no pager to prevent dropdown cropping on window #}
-        <div class="box box-primary"{% if admin.datagrid.pager.lastPage == 1 %} style="margin-bottom: 100px;"{% endif %}>
+        <div class="box box-primary"{% if admin.datagrid.pager.lastPage == 1 %} style="margin-bottom: 100px;"{% endif %} {{ stimulus_controller('sonata-batch_select') }}>
             <div class="box-body{% if datagrid_has_results %} table-responsive no-padding{% endif %}">
                 {{ sonata_block_render_event('sonata.admin.list.table.top', { 'admin': admin }) }}
 
@@ -57,7 +57,7 @@ file that was distributed with this source code.
                                     {% for field_description in admin.list.getElements() %}
                                         {% if admin.hasRoute('batch') and field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_BATCH') and batchactions|length > 0 %}
                                             <th class="sonata-ba-list-field-header sonata-ba-list-field-header-batch">
-                                              <input type="checkbox" id="list_batch_checkbox">
+                                              <input type="checkbox" id="list_batch_checkbox" {{ stimulus_target('sonata-batch_select', 'checkboxAll') }}>
                                             </th>
                                         {% elseif field_description.name == constant('Sonata\\AdminBundle\\Datagrid\\ListMapper::NAME_SELECT') %}
                                             <th class="sonata-ba-list-field-header sonata-ba-list-field-header-select"></th>
@@ -150,55 +150,29 @@ file that was distributed with this source code.
                                     {% if admin.hasRoute('batch') and batchactions|length > 0 %}
                                         {% block batch %}
                                             <script>
-                                                {% block batch_javascript %}
-                                                    jQuery(document).ready(function ($) {
-                                                        // Toggle individual checkboxes when the batch checkbox is changed
-                                                        $('#list_batch_checkbox').on('ifChanged change', function () {
-                                                            var checkboxes = $(this)
-                                                                .closest('table')
-                                                                .find('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
-                                                            ;
-
-                                                            if (Admin.get_config('USE_ICHECK')) {
-                                                                checkboxes.iCheck($(this).is(':checked') ? 'check' : 'uncheck');
-                                                            } else {
-                                                                checkboxes.prop('checked', this.checked);
-                                                            }
-                                                        });
-
-                                                        // Add a CSS class to rows when they are selected
-                                                        $('td.sonata-ba-list-field-batch input[type="checkbox"], div.sonata-ba-list-field-batch input[type="checkbox"]')
-                                                            .on('ifChanged change', function () {
-                                                                $(this)
-                                                                    .closest('tr, div.sonata-ba-list-field-batch')
-                                                                    .toggleClass('sonata-ba-list-row-selected', $(this).is(':checked'))
-                                                                ;
-                                                            })
-                                                            .trigger('ifChanged')
-                                                        ;
-                                                    });
-                                                {% endblock %}
+                                                {% block batch_javascript %}{% endblock %}
                                             </script>
 
-                                        {% block batch_actions %}
-                                            <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
-                                                <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements">
-                                                {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
-                                                ({{ admin.datagrid.pager.countResults() }})
-                                            </label>
+                                            {% block batch_actions %}
+                                                <span style="margin-right: 20px" {{ stimulus_target('sonata-batch_select', 'summary') }}></span>
+                                                <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
+                                                    <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements" {{ stimulus_target('sonata-batch_select', 'allElements') }}>
+                                                    {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
+                                                    ({{ admin.datagrid.pager.countResults() }})
+                                                </label>
 
-                                            <select name="action" style="width: auto; height: auto" class="form-control">
-                                                {% for action, options in batchactions %}
-                                                    <option value="{{ action }}">
-                                                        {% if options.translation_domain is defined and options.translation_domain is same as(false) %}
-                                                            {{ options.label }}
-                                                        {% else %}
-                                                            {{ options.label|trans({}, options.translation_domain ?? admin.translationDomain) }}
-                                                        {% endif %}
-                                                    </option>
-                                                {% endfor %}
-                                            </select>
-                                        {% endblock %}
+                                                <select name="action" style="width: auto; height: auto" class="form-control">
+                                                    {% for action, options in batchactions %}
+                                                        <option value="{{ action }}">
+                                                            {% if options.translation_domain is defined and options.translation_domain is same as(false) %}
+                                                                {{ options.label }}
+                                                            {% else %}
+                                                                {{ options.label|trans({}, options.translation_domain ?? admin.translationDomain) }}
+                                                            {% endif %}
+                                                        </option>
+                                                    {% endfor %}
+                                                </select>
+                                            {% endblock %}
 
                                             <input type="submit" class="btn btn-small btn-primary" value="{{ 'btn_batch'|trans({}, 'SonataAdminBundle') }}">
                                         {% endblock %}
