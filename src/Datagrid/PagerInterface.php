@@ -16,6 +16,8 @@ namespace Sonata\AdminBundle\Datagrid;
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
+ * @method bool isDeterministic()
+ *
  * @phpstan-template T of ProxyQueryInterface
  */
 interface PagerInterface
@@ -99,4 +101,7 @@ interface PagerInterface
      * Returns the maximum number of page numbers.
      */
     public function getMaxPageLinks(): int;
+
+    // NEXT_MAJOR: Uncomment this method and remove the `@method` annotation above.
+    // public function isDeterministic(): bool;
 }

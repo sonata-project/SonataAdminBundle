@@ -166,6 +166,11 @@ final class PagerTest extends TestCase
         static::assertFalse($this->pager->isLastPage());
     }
 
+    public function testIsDeterministic(): void
+    {
+        static::assertTrue($this->pager->isDeterministic());
+    }
+
     public function testGetLinks(): void
     {
         static::assertSame([], $this->pager->getLinks());

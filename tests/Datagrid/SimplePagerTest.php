@@ -63,6 +63,7 @@ final class SimplePagerTest extends TestCase
 
         // We're not knowing exactly the result number, at least 13 (the result found)
         static::assertSame(13, $this->pager->countResults());
+        static::assertFalse($this->pager->isDeterministic());
     }
 
     public function testInitOffset(): void
@@ -113,6 +114,7 @@ final class SimplePagerTest extends TestCase
 
         // We're knowing exactly the result number: 10 (first page) + 9 (this page)
         static::assertSame(19, $this->pager->countResults());
+        static::assertTrue($this->pager->isDeterministic());
     }
 
     public function testNoPagesPerConfig(): void
@@ -152,6 +154,7 @@ final class SimplePagerTest extends TestCase
         $this->pager->init();
         static::assertSame(1, $this->pager->getLastPage());
         static::assertSame(0, $this->pager->countResults());
+        static::assertTrue($this->pager->isDeterministic());
     }
 
     public function testInitNoQuery(): void
