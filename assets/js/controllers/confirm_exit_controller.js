@@ -22,8 +22,20 @@ export default class extends Controller {
   }
 
   connect() {
-    this.snapshotValue = this.snapshot;
+    if (document.readyState === 'complete') {
+      this.takeSnapshot();
+    } else {
+      window.addEventListener('load', this.takeSnapshot);
+    }
   }
+
+  disconnect() {
+    window.removeEventListener('load', this.takeSnapshot);
+  }
+
+  takeSnapshot = () => {
+    this.snapshotValue = this.snapshot;
+  };
 
   skip() {
     this.skipValue = true;
