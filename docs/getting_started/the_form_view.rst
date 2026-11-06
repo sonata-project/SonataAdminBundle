@@ -125,7 +125,7 @@ dialog with the admin of the referenced model in it::
     // src/Admin/BlogPostAdmin.php
 
     use App\Entity\Category;
-    use Sonata\AdminBundle\Form\Type\ModelType
+    use Sonata\AdminBundle\Form\Type\ModelType;
 
     protected function configureFormFields(FormMapper $formMapper)
     {
@@ -233,13 +233,7 @@ While it's very friendly of the SonataAdminBundle to notify the admin of a
 successful creation, the classname and some sort of hash aren't really nice to
 read. This is the default string representation of an object in the
 SonataAdminBundle. You can change it by defining a ``toString()`` method in the
-Admin class. This receives the object to transform to a string as the first parameter:
-
-.. note::
-
-    No underscore prefix! ``toString()`` is correct!
-
-.. code-block:: php
+Admin class. This receives the object to transform to a string as the first parameter::
 
     // src/Admin/BlogPostAdmin.php
 
@@ -255,6 +249,10 @@ Admin class. This receives the object to transform to a string as the first para
         }
     }
 
+.. note::
+
+    No underscore prefix! ``toString()`` is correct!
+
 Round Up
 --------
 
@@ -265,8 +263,7 @@ started by creating a form and ended up with a nice edit page for your admin.
 In the :doc:`next chapter <the_list_view>`, you're going to look at the list
 and datagrid actions.
 
-.. _`Symfony Form component`: http://symfony.com/doc/current/book/forms.html
-.. _`field type reference`: http://symfony.com/doc/current/reference/forms/types.html
-.. _`entity field type`: http://symfony.com/doc/current/reference/forms/types/entity.html
-.. _`choice_label`: http://symfony.com/doc/current/reference/forms/types/entity.html#choice-label
-.. _`property`: http://symfony.com/doc/2.6/reference/forms/types/entity.html#property
+.. _`Symfony Form component`: https://symfony.com/doc/4.4/forms.html
+.. _`field type reference`: https://symfony.com/doc/4.4/reference/forms/types.html
+.. _`entity field type`: https://symfony.com/doc/4.4/reference/forms/types/entity.html
+.. _`choice_label`: https://symfony.com/doc/4.4/reference/forms/types/entity.html#choice-label

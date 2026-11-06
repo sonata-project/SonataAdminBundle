@@ -24,17 +24,24 @@ use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
 abstract class ObjectAclManipulator implements ObjectAclManipulatorInterface
 {
     /**
+     * @final since sonata-project/admin-bundle 3.99.
+     *
      * Configure the object ACL for the passed object identities.
+     *
+     * @param AdminInterface<object> $admin
+     * @param \Traversable<object>   $oids
      *
      * @throws \Exception
      *
-     * @return array [countAdded, countUpdated]
+     * @return array<int, int> [countAdded, countUpdated]
+     *
+     * @phpstan-return array{0: int, 1: int}
      */
     public function configureAcls(
         OutputInterface $output,
         AdminInterface $admin,
         \Traversable $oids,
-        UserSecurityIdentity $securityIdentity = null
+        ?UserSecurityIdentity $securityIdentity = null
     ) {
         $countAdded = 0;
         $countUpdated = 0;

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type;
 
-@trigger_error(
-    'The '.__NAMESPACE__.'\ModelTypeList class is deprecated since version 3.5 and will be removed in 4.0.'
-    .' Use '.__NAMESPACE__.'\ModelListType instead.',
-    E_USER_DEPRECATED
-);
+@trigger_error(sprintf(
+    'The %s1$\ModelTypeList class is deprecated since version 3.5 and will be removed in 4.0.'
+    .' Use %1$s\ModelListType instead.',
+    __NAMESPACE__
+), \E_USER_DEPRECATED);
 
 /**
  * This type is used to render an hidden input text and 3 links
@@ -27,7 +27,7 @@ namespace Sonata\AdminBundle\Form\Type;
  *
  * NEXT_MAJOR: remove this class.
  *
- * @deprecated since version 3.5, to be removed in 4.0. Use ModelListType instead
+ * @deprecated since sonata-project/admin-bundle 3.5, to be removed in 4.0. Use ModelListType instead
  */
 class ModelTypeList extends ModelListType
 {

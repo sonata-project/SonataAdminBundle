@@ -17,28 +17,32 @@ use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * This class injects available admin managers to the AdminMaker.
+ * NEXT_MAJOR: Remove the "since" part of the internal annotation.
  *
- * @author Gaurav Singh Faudjdar <faujdar@gmail.com>
+ * @internal since sonata-project/admin-bundle version 4.0
  */
 final class AdminMakerCompilerPass implements CompilerPassInterface
 {
-    public const MANAGERS = [
-        'sonata.admin.manager.orm',
-        'sonata.admin.manager.doctrine_mongodb',
-        'sonata.admin.manager.doctrine_phpcr',
-    ];
-
     public function process(ContainerBuilder $container): void
     {
-        $availableManagers = [];
-        foreach (self::MANAGERS as $manager) {
-            if ($container->hasDefinition($manager)) {
-                $availableManagers[$manager] = $container->getDefinition($manager);
-            }
+        if (!$container->hasDefinition('sonata.admin.maker')) {
+            return;
         }
 
-        $definition = $container->getDefinition('sonata.admin.maker');
-        $definition->replaceArgument(1, $availableManagers);
+        if (!$container->hasParameter('sonata.admin.configuration.default_controller')) {
+            return;
+        }
+
+        $defaultController = $container->getParameter('sonata.admin.configuration.default_controller');
+        \assert(\is_string($defaultController));
+
+        if (!$container->hasDefinition($defaultController)) {
+            return;
+        }
+
+        $adminMaker = $container->getDefinition('sonata.admin.maker');
+        $controllerDefinition = $container->getDefinition($defaultController);
+
+        $adminMaker->replaceArgument(2, $controllerDefinition->getClass());
     }
 }

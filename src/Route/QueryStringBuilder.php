@@ -18,6 +18,12 @@ use Sonata\AdminBundle\Builder\RouteBuilderInterface;
 use Sonata\AdminBundle\Model\AuditManagerInterface;
 
 /**
+ * NEXT_MAJOR: remove this class.
+ *
+ * @final since sonata-project/admin-bundle 3.52
+ *
+ * @deprecated since sonata-project/admin-bundle 3.62, to be removed with 4.0
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class QueryStringBuilder implements RouteBuilderInterface
@@ -49,11 +55,11 @@ class QueryStringBuilder implements RouteBuilderInterface
         }
 
         if ($admin->isAclEnabled()) {
-            $collection->add('acl', $admin->getRouterIdParameter().'/acl');
+            $collection->add('acl', sprintf('%s/acl', $admin->getRouterIdParameter()));
         }
 
         // an admin can have only one level of nested child
-        if ($admin->getParent()) {
+        if ($admin->isChild()) {
             return;
         }
 

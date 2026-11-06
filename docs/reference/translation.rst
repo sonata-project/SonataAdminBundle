@@ -148,8 +148,8 @@ The ``AdminBundle`` comes with different key label generation strategies:
 
 ``sonata.admin.label.strategy.underscore`` will be better for i18n applications
 and ``sonata.admin.label.strategy.native`` will be better for native (single) language
-apps based on the field name. It is reasonable to start with the ``native`` strategy
-and then, when the application needs to be translated using generic keys, the
+applications based on the field name. It is reasonable to start with the ``native``
+strategy and then, when the application needs to be translated using generic keys, the
 configuration can be switched to ``underscore``.
 
 The strategy can be quickly configured when the Admin class is registered in

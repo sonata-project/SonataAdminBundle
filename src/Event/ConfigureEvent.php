@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Event;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Mapper\BaseMapper;
-use Symfony\Component\EventDispatcher\Event;
+use Sonata\AdminBundle\Mapper\MapperInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * This event is sent by hook:
@@ -28,7 +28,11 @@ use Symfony\Component\EventDispatcher\Event;
  *   - sonata.admin.event.configure.[form|list|datagrid|show]
  *   - sonata.admin.event.configure.[admin_code].[form|list|datagrid|show] (not implemented yet)
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 class ConfigureEvent extends Event
 {
@@ -39,11 +43,13 @@ class ConfigureEvent extends Event
 
     /**
      * @var AdminInterface
+     * @phpstan-var AdminInterface<T>
      */
     protected $admin;
 
     /**
-     * @var BaseMapper
+     * @var MapperInterface
+     * @phpstan-var MapperInterface<T>
      */
     protected $mapper;
 
@@ -54,8 +60,11 @@ class ConfigureEvent extends Event
 
     /**
      * @param string $type
+     *
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param MapperInterface<T> $mapper
      */
-    public function __construct(AdminInterface $admin, BaseMapper $mapper, $type)
+    public function __construct(AdminInterface $admin, MapperInterface $mapper, $type)
     {
         $this->admin = $admin;
         $this->mapper = $mapper;
@@ -63,7 +72,7 @@ class ConfigureEvent extends Event
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getType()
     {
@@ -72,6 +81,7 @@ class ConfigureEvent extends Event
 
     /**
      * @return AdminInterface
+     * @phpstan-return AdminInterface<T>
      */
     public function getAdmin()
     {
@@ -79,7 +89,8 @@ class ConfigureEvent extends Event
     }
 
     /**
-     * @return BaseMapper
+     * @return MapperInterface
+     * @phpstan-return MapperInterface<T>
      */
     public function getMapper()
     {

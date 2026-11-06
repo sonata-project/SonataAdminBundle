@@ -13,109 +13,29 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Admin;
 
-/**
- * Implementations should provide arrays of FieldDescriptionInterface instances.
- *
- * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+// NEXT_MAJOR: Remove this file.
+if (!interface_exists(\Sonata\AdminBundle\FieldDescription\FieldDescriptionRegistryInterface::class, false)) {
+    @trigger_error(sprintf(
+        'The %s\FieldDescriptionRegistryInterface class is deprecated since sonata-project/admin-bundle 3.92 and will be removed in 4.0.'
+        .' Use \Sonata\AdminBundle\FieldDescription\FieldDescriptionRegistryInterface instead.',
+        __NAMESPACE__
+    ), \E_USER_DEPRECATED);
+}
+
+class_alias(
+    \Sonata\AdminBundle\FieldDescription\FieldDescriptionRegistryInterface::class,
+    __NAMESPACE__.'\FieldDescriptionRegistryInterface'
+);
+
+/*
+ * @phpstan-ignore-next-line
  */
-interface FieldDescriptionRegistryInterface
-{
+if (false) {
     /**
-     * Return FormFieldDescription.
-     *
-     * @param string $name
-     *
-     * @return FieldDescriptionInterface
+     * @deprecated since sonata-project/admin-bundle 3.95, to be removed in 4.0.
+     * Use Sonata\AdminBundle\FieldDescription\FieldDescriptionRegistryInterface instead.
      */
-    public function getFormFieldDescription($name);
-
-    /**
-     * Build and return the collection of form FieldDescription.
-     *
-     * @return FieldDescriptionInterface[] collection of form FieldDescription
-     */
-    public function getFormFieldDescriptions();
-
-    /**
-     * Returns true if the admin has a FieldDescription with the given $name.
-     *
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function hasShowFieldDescription($name);
-
-    /**
-     * Adds a FieldDescription.
-     *
-     * @param string $name
-     */
-    public function addShowFieldDescription($name, FieldDescriptionInterface $fieldDescription);
-
-    /**
-     * Removes a ShowFieldDescription.
-     *
-     * @param string $name
-     */
-    public function removeShowFieldDescription($name);
-
-    /**
-     * Adds a list FieldDescription.
-     *
-     * @param string $name
-     */
-    public function addListFieldDescription($name, FieldDescriptionInterface $fieldDescription);
-
-    /**
-     * Removes a list FieldDescription.
-     *
-     * @param string $name
-     */
-    public function removeListFieldDescription($name);
-
-    /**
-     * Returns a list depend on the given $object.
-     *
-     * @return FieldDescriptionCollection
-     */
-    public function getList();
-
-    /**
-     * Returns true if the filter FieldDescription exists.
-     *
-     * @param string $name
-     *
-     * @return bool
-     */
-    public function hasFilterFieldDescription($name);
-
-    /**
-     * Adds a filter FieldDescription.
-     *
-     * @param string $name
-     */
-    public function addFilterFieldDescription($name, FieldDescriptionInterface $fieldDescription);
-
-    /**
-     * Removes a filter FieldDescription.
-     *
-     * @param string $name
-     */
-    public function removeFilterFieldDescription($name);
-
-    /**
-     * Returns the filter FieldDescription collection.
-     *
-     * @return FieldDescriptionInterface[]
-     */
-    public function getFilterFieldDescriptions();
-
-    /**
-     * Returns a filter FieldDescription.
-     *
-     * @param string $name
-     *
-     * @return FieldDescriptionInterface|null
-     */
-    public function getFilterFieldDescription($name);
+    interface FieldDescriptionRegistryInterface extends \Sonata\AdminBundle\FieldDescription\FieldDescriptionRegistryInterface
+    {
+    }
 }

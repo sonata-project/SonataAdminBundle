@@ -14,14 +14,19 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AdminAddInitializeCallCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AdminSearchCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AliasDeprecatedPublicServicesCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\TwigStringExtensionCompilerPass;
 use Sonata\AdminBundle\SonataAdminBundle;
-use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
@@ -31,94 +36,24 @@ class SonataAdminBundleTest extends TestCase
 {
     public function testBuild(): void
     {
-        $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)
-            ->setMethods(['addCompilerPass', 'getParameter'])
-            ->getMock();
+        $containerBuilder = $this->createMock(ContainerBuilder::class);
 
-        $containerBuilder->expects($this->exactly(4))
+        $containerBuilder->expects(static::exactly(12))
             ->method('addCompilerPass')
-            ->will($this->returnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
-                if ($pass instanceof AddDependencyCallsCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof AddFilterTypeCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof ExtensionCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof GlobalVariablesCompilerPass) {
-                    return;
-                }
-
-                $this->fail(sprintf(
-                    'CompilerPass is not one of the expected types. Expects "%s", "%s", "%s" or "%s", but got "%s".',
-                    AddDependencyCallsCompilerPass::class,
-                    AddFilterTypeCompilerPass::class,
-                    ExtensionCompilerPass::class,
-                    GlobalVariablesCompilerPass::class,
-                    \get_class($pass)
-                ));
-            }));
-
-        $containerBuilder
-            ->expects($this->once())
-            ->method('getParameter')
-            ->with('kernel.bundles')
-            ->willReturn([]);
-
-        $bundle = new SonataAdminBundle();
-        $bundle->build($containerBuilder);
-    }
-
-    public function testBuildWithMakerBundle(): void
-    {
-        $containerBuilder = $this->getMockBuilder(ContainerBuilder::class)
-            ->setMethods(['addCompilerPass', 'getParameter'])
-            ->getMock();
-
-        $containerBuilder->expects($this->exactly(5))
-            ->method('addCompilerPass')
-            ->will($this->returnCallback(function (CompilerPassInterface $pass, $type = PassConfig::TYPE_BEFORE_OPTIMIZATION): void {
-                if ($pass instanceof AddDependencyCallsCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof AddFilterTypeCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof ExtensionCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof GlobalVariablesCompilerPass) {
-                    return;
-                }
-
-                if ($pass instanceof AdminMakerCompilerPass) {
-                    return;
-                }
-
-                $this->fail(sprintf(
-                    'CompilerPass is not one of the expected types. Expects "%s", "%s", "%s", "%s" or "%s", but got "%s".',
-                    AddDependencyCallsCompilerPass::class,
-                    AddFilterTypeCompilerPass::class,
-                    ExtensionCompilerPass::class,
-                    GlobalVariablesCompilerPass::class,
-                    AdminMakerCompilerPass::class,
-                    \get_class($pass)
-                ));
-            }));
-
-        $containerBuilder
-            ->expects($this->once())
-            ->method('getParameter')
-            ->with('kernel.bundles')
-            ->willReturn(['MakerBundle' => 'foo']);
+            ->withConsecutive(
+                [new AddDependencyCallsCompilerPass()],
+                [new AddFilterTypeCompilerPass()],
+                [new AdminSearchCompilerPass()],
+                [new ExtensionCompilerPass()],
+                [new GlobalVariablesCompilerPass()],
+                [new ModelManagerCompilerPass()],
+                [new ObjectAclManipulatorCompilerPass()],
+                [new TwigStringExtensionCompilerPass()],
+                [new AdminMakerCompilerPass()],
+                [new AddAuditReadersCompilerPass()],
+                [new AliasDeprecatedPublicServicesCompilerPass()],
+                [new AdminAddInitializeCallCompilerPass()],
+            );
 
         $bundle = new SonataAdminBundle();
         $bundle->build($containerBuilder);

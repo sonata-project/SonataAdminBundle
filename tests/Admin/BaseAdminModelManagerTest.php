@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\Admin;
 
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 
@@ -24,9 +25,9 @@ class BaseAdminModelManagerTest extends TestCase
         $securityHandler = $this->getMockForAbstractClass(SecurityHandlerInterface::class);
 
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('create');
-        $modelManager->expects($this->once())->method('update');
-        $modelManager->expects($this->once())->method('delete');
+        $modelManager->expects(static::once())->method('create');
+        $modelManager->expects(static::once())->method('update');
+        $modelManager->expects(static::once())->method('delete');
 
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);
@@ -42,7 +43,7 @@ class BaseAdminModelManagerTest extends TestCase
     public function testObject(): void
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('find')->will($this->returnCallback(function ($class, $id): void {
+        $modelManager->expects(static::once())->method('find')->willReturnCallback(static function (string $class, int $id): void {
             if ('class' !== $class) {
                 throw new \RuntimeException('Invalid class argument');
             }
@@ -50,7 +51,7 @@ class BaseAdminModelManagerTest extends TestCase
             if (10 !== $id) {
                 throw new \RuntimeException('Invalid id argument');
             }
-        }));
+        });
 
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);
@@ -59,12 +60,13 @@ class BaseAdminModelManagerTest extends TestCase
 
     public function testCreateQuery(): void
     {
+        $query = $this->createMock(ProxyQueryInterface::class);
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->once())->method('createQuery')->will($this->returnCallback(function ($class): void {
-            if ('class' !== $class) {
-                throw new \RuntimeException('Invalid class argument');
-            }
-        }));
+        $modelManager
+            ->expects(static::once())
+            ->method('createQuery')
+            ->with('class')
+            ->willReturn($query);
 
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);
@@ -74,7 +76,7 @@ class BaseAdminModelManagerTest extends TestCase
     public function testId(): void
     {
         $modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
-        $modelManager->expects($this->exactly(2))->method('getNormalizedIdentifier');
+        $modelManager->expects(static::exactly(2))->method('getNormalizedIdentifier');
 
         $admin = new BaseAdminModelManager_Admin('code', 'class', 'controller');
         $admin->setModelManager($modelManager);

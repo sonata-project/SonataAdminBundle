@@ -17,31 +17,36 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\MenuFactory;
 use Knp\Menu\MenuItem;
 use Knp\Menu\Provider\MenuProviderInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Event\ConfigureMenuEvent;
 use Sonata\AdminBundle\Menu\MenuBuilder;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class MenuBuilderTest extends TestCase
+final class MenuBuilderTest extends TestCase
 {
-    private $pool;
-    private $provider;
-    private $factory;
-    private $eventDispatcher;
     /**
-     * @var MenuBuilder
+     * @var MenuProviderInterface&MockObject
      */
-    private $builder;
+    private $provider;
+
+    /**
+     * @var MenuFactory
+     */
+    private $factory;
+
+    /**
+     * @var MockObject&EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     protected function setUp(): void
     {
-        $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
         $this->provider = $this->getMockForAbstractClass(MenuProviderInterface::class);
         $this->factory = new MenuFactory();
         $this->eventDispatcher = $this->getMockForAbstractClass(EventDispatcherInterface::class);
-
-        $this->builder = new MenuBuilder($this->pool, $this->factory, $this->provider, $this->eventDispatcher);
     }
 
     public function testGetKnpMenuWithDefaultProvider(): void
@@ -55,28 +60,28 @@ class MenuBuilderTest extends TestCase
         ];
 
         $this->provider
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('get')
             ->with('sonata_group_menu')
-            ->will($this->returnValue($this->factory->createItem('bar')->addChild('foo')->getParent()));
+            ->willReturn($this->factory->createItem('bar')->addChild('foo')->getParent());
 
-        $this->preparePool($adminGroups);
-        $menu = $this->builder->createSidebarMenu();
+        $builder = $this->createMenuBuilder($adminGroups);
+        $menu = $builder->createSidebarMenu();
 
-        $this->assertInstanceOf(ItemInterface::class, $menu);
-        $this->assertArrayHasKey('bar', $menu->getChildren());
+        static::assertInstanceOf(ItemInterface::class, $menu);
+        static::assertArrayHasKey('bar', $menu->getChildren());
 
         foreach ($menu->getChildren() as $key => $child) {
-            $this->assertInstanceOf(MenuItem::class, $child);
-            $this->assertSame('bar', $child->getName());
-            $this->assertSame('bar', $child->getLabel());
+            static::assertInstanceOf(MenuItem::class, $child);
+            static::assertSame('bar', $child->getName());
+            static::assertSame('bar', $child->getLabel());
 
             // menu items
             $children = $child->getChildren();
-            $this->assertCount(1, $children);
-            $this->assertArrayHasKey('foo', $children);
-            $this->assertInstanceOf(MenuItem::class, $child['foo']);
-            $this->assertSame('foo', $child['foo']->getLabel());
+            static::assertCount(1, $children);
+            static::assertArrayHasKey('foo', $children);
+            static::assertInstanceOf(MenuItem::class, $child['foo']);
+            static::assertSame('foo', $child['foo']->getLabel());
         }
     }
 
@@ -92,28 +97,28 @@ class MenuBuilderTest extends TestCase
         ];
 
         $this->provider
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('get')
             ->with('my_menu')
-            ->will($this->returnValue($this->factory->createItem('bar')->addChild('foo')->getParent()));
+            ->willReturn($this->factory->createItem('bar')->addChild('foo')->getParent());
 
-        $this->preparePool($adminGroups);
-        $menu = $this->builder->createSidebarMenu();
+        $builder = $this->createMenuBuilder($adminGroups);
+        $menu = $builder->createSidebarMenu();
 
-        $this->assertInstanceOf(ItemInterface::class, $menu);
-        $this->assertArrayHasKey('bar', $menu->getChildren());
+        static::assertInstanceOf(ItemInterface::class, $menu);
+        static::assertArrayHasKey('bar', $menu->getChildren());
 
         foreach ($menu->getChildren() as $key => $child) {
-            $this->assertInstanceOf(MenuItem::class, $child);
-            $this->assertSame('bar', $child->getName());
-            $this->assertSame('bar', $child->getLabel());
+            static::assertInstanceOf(MenuItem::class, $child);
+            static::assertSame('bar', $child->getName());
+            static::assertSame('bar', $child->getLabel());
 
             // menu items
             $children = $child->getChildren();
-            $this->assertCount(1, $children);
-            $this->assertArrayHasKey('foo', $children);
-            $this->assertInstanceOf(MenuItem::class, $child['foo']);
-            $this->assertSame('foo', $child['foo']->getLabel());
+            static::assertCount(1, $children);
+            static::assertArrayHasKey('foo', $children);
+            static::assertInstanceOf(MenuItem::class, $child['foo']);
+            static::assertSame('foo', $child['foo']->getLabel());
         }
     }
 
@@ -130,30 +135,27 @@ class MenuBuilderTest extends TestCase
             ],
         ];
 
-        $this->preparePool($adminGroups);
+        $builder = $this->createMenuBuilder($adminGroups);
 
         $this->eventDispatcher
-            ->expects($this->once())
+            ->expects(static::once())
             ->method('dispatch')
             ->with(
-                $this->equalTo('sonata.admin.event.configure.menu.sidebar'),
-                $this->isInstanceOf(ConfigureMenuEvent::class)
+                static::isInstanceOf(ConfigureMenuEvent::class),
+                static::equalTo('sonata.admin.event.configure.menu.sidebar')
             );
 
-        $this->builder->createSidebarMenu();
+        $this->provider
+            ->expects(static::once())
+            ->method('get')
+            ->with('sonata_group_menu')
+            ->willReturn($this->factory->createItem('bar'));
+
+        $builder->createSidebarMenu();
     }
 
-    private function preparePool(array $adminGroups, ?AdminInterface $admin = null)
+    private function createMenuBuilder(array $adminGroups): MenuBuilder
     {
-        $this->pool->expects($this->once())
-            ->method('getAdminGroups')
-            ->will($this->returnValue($adminGroups));
-
-        if (null !== $admin) {
-            $this->pool->expects($this->once())
-                ->method('getInstance')
-                ->with($this->equalTo('sonata_admin_foo_service'))
-                ->will($this->returnValue($admin));
-        }
+        return new MenuBuilder(new Pool(new Container(), [], $adminGroups), $this->factory, $this->provider, $this->eventDispatcher);
     }
 }

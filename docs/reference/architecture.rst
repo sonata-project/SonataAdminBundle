@@ -38,7 +38,8 @@ injected by the bundle:
 Class                           Description
 =========================       =========================================================================
 ConfigurationPool               configuration pool where all Admin class instances are stored
-ModelManager                    service which handles specific code relating to your persistence layer (e.g. Doctrine ORM)
+ModelManager                    handles specific code relating to your persistence layer (e.g. Doctrine ORM)
+DataSource                      handles code related to the sonata exporter
 FormContractor                  builds the forms for the edit/create views using the Symfony ``FormBuilder``
 ShowBuilder                     builds the show fields
 ListBuilder                     builds the list fields
@@ -196,8 +197,20 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
                     'class' => User::class
                 ])
 
+                // "privateNotes" field will be rendered only if the authenticated
+                // user is granted with the "ROLE_ADMIN_MODERATOR" role
+                ->add('privateNotes', null, [], [
+                    'role' => 'ROLE_ADMIN_MODERATOR'
+                ])
+
                 // if no type is specified, SonataAdminBundle tries to guess it
                 ->add('body')
+
+                // conditionally add "status" field if the subject already exists
+                // `ifFalse()` is also available to build this kind of condition
+                ->ifTrue($this->hasSubject())
+                    ->add('status')
+                ->ifEnd()
 
                 // ...
             ;
@@ -209,6 +222,9 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
             $datagridMapper
                 ->add('title')
                 ->add('author')
+                ->add('privateNotes', null, [], [
+                    'role' => 'ROLE_ADMIN_MODERATOR'
+                ])
             ;
         }
 
@@ -219,6 +235,9 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
                 ->addIdentifier('title')
                 ->add('slug')
                 ->add('author')
+                ->add('privateNotes', null, [
+                    'role' => 'ROLE_ADMIN_MODERATOR'
+                ])
             ;
         }
 
@@ -230,6 +249,9 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
                 ->add('title')
                 ->add('slug')
                 ->add('author')
+                ->add('privateNotes', null, [
+                    'role' => 'ROLE_ADMIN_MODERATOR'
+                ])
             ;
         }
     }
@@ -237,14 +259,14 @@ which stores instances of ``FieldDescriptionInterface``. Picking up on our previ
 Internally, the provided ``Admin`` class will use these three functions to create three
 ``FieldDescriptionCollection`` instances:
 
-* ``$formFieldDescriptions``, containing three ``FieldDescriptionInterface`` instances
-  for title, author and body
-* ``$filterFieldDescriptions``, containing two ``FieldDescriptionInterface`` instances
-  for title and author
-* ``$listFieldDescriptions``, containing three ``FieldDescriptionInterface`` instances
-  for title, slug and author
-* ``$showFieldDescriptions``, containing four ``FieldDescriptionInterface`` instances
-  for id, title, slug and author
+* ``$formFieldDescriptions``, containing four (and conditionally five) ``FieldDescriptionInterface``
+  instances for title, author, body and privateNotes (and status, if the condition is met)
+* ``$filterFieldDescriptions``, containing three ``FieldDescriptionInterface`` instances
+  for title, author and privateNotes
+* ``$listFieldDescriptions``, containing four ``FieldDescriptionInterface`` instances
+  for title, slug, author and privateNotes
+* ``$showFieldDescriptions``, containing five ``FieldDescriptionInterface`` instances
+  for id, title, slug, author and privateNotes
 
 The actual ``FieldDescription`` implementation is provided by the storage abstraction
 bundle that you choose during the installation process, based on the
@@ -308,5 +330,5 @@ DIC, handles the ``Admin`` classes, lazy-loading them on demand (to reduce overh
 and matching each of them to a group. It is also responsible for handling the top level
 template files, administration panel title and logo.
 
-.. _`Django Project Website`: http://www.djangoproject.com/
-.. _`CRUD`: http://en.wikipedia.org/wiki/CRUD
+.. _`Django Project Website`: https://www.djangoproject.com/
+.. _`CRUD`: https://en.wikipedia.org/wiki/CRUD

@@ -20,116 +20,59 @@ use Sonata\AdminBundle\Command\SetupAclCommand;
 use Sonata\AdminBundle\Util\AdminAclManipulatorInterface;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
 class SetupAclCommandTest extends TestCase
 {
+    /**
+     * @var Container
+     */
+    private $container;
+
+    protected function setUp(): void
+    {
+        $this->container = new Container();
+        $admin = $this->createMock(AdminInterface::class);
+
+        $this->container->set('acme.admin.foo', $admin);
+    }
+
     public function testExecute(): void
     {
+        $pool = new Pool($this->container, ['acme.admin.foo']);
+
+        $command = new SetupAclCommand($pool, $this->createMock(AdminAclManipulatorInterface::class));
+
         $application = new Application();
-        $command = new SetupAclCommand();
-
-        $container = $this->createMock(ContainerInterface::class);
-        $admin = $this->createMock(AdminInterface::class);
-        $aclManipulator = $this->createMock(AdminAclManipulatorInterface::class);
-
-        $container->expects($this->any())
-            ->method('get')
-            ->will($this->returnCallback(function ($id) use ($container, $admin, $aclManipulator) {
-                switch ($id) {
-                    case 'sonata.admin.pool':
-                        $pool = new Pool($container, '', '');
-                        $pool->setAdminServiceIds(['acme.admin.foo']);
-
-                        return $pool;
-
-                    case 'sonata.admin.manipulator.acl.admin':
-                        return $aclManipulator;
-
-                    case 'acme.admin.foo':
-                        return $admin;
-                }
-            }));
-
-        $command->setContainer($container);
-
         $application->add($command);
 
         $command = $application->find('sonata:admin:setup-acl');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertRegExp('/Starting ACL AdminBundle configuration/', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('/Starting ACL AdminBundle configuration/', $commandTester->getDisplay());
     }
 
     public function testExecuteWithException1(): void
     {
+        $this->container->set('acme.admin.foo', null);
+        $pool = new Pool($this->container, ['acme.admin.foo']);
+
+        $command = new SetupAclCommand($pool, $this->createMock(AdminAclManipulatorInterface::class));
+
         $application = new Application();
-        $command = new SetupAclCommand();
-
-        $container = $this->createMock(ContainerInterface::class);
-
-        $container->expects($this->any())
-            ->method('get')
-            ->will($this->returnCallback(function ($id) use ($container) {
-                if ('sonata.admin.pool' === $id) {
-                    $pool = new Pool($container, '', '');
-                    $pool->setAdminServiceIds(['acme.admin.foo']);
-
-                    return $pool;
-                }
-
-                throw new \Exception('Foo Exception');
-            }));
-
-        $command->setContainer($container);
-
         $application->add($command);
 
         $command = $application->find('sonata:admin:setup-acl');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertRegExp('@Starting ACL AdminBundle configuration\s+Warning : The admin class cannot be initiated from the command line\s+Foo Exception@', $commandTester->getDisplay());
-    }
-
-    public function testExecuteWithException2(): void
-    {
-        $application = new Application();
-        $command = new SetupAclCommand();
-
-        $container = $this->createMock(ContainerInterface::class);
-        $admin = $this->createMock(AdminInterface::class);
-
-        $container->expects($this->any())
-            ->method('get')
-            ->will($this->returnCallback(function ($id) use ($container, $admin) {
-                switch ($id) {
-                    case 'sonata.admin.pool':
-                        $pool = new Pool($container, '', '');
-                        $pool->setAdminServiceIds(['acme.admin.foo']);
-
-                        return $pool;
-
-                    case 'sonata.admin.manipulator.acl.admin':
-                        return new \stdClass();
-
-                    case 'acme.admin.foo':
-                        return $admin;
-                }
-            }));
-
-        $command->setContainer($container);
-
-        $application->add($command);
-
-        $command = $application->find('sonata:admin:setup-acl');
-        $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName()]);
-
-        $this->assertRegExp('@Starting ACL AdminBundle configuration\s+The interface "AdminAclManipulatorInterface" is not implemented for stdClass: ignoring@', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression(
+            '@Starting ACL AdminBundle configuration\s+Warning : The admin class cannot be initiated from the command line\s+You have requested a non-existent service "acme.admin.foo".@',
+            $commandTester->getDisplay()
+        );
     }
 }

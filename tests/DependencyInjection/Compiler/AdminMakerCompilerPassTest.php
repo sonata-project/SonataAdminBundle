@@ -11,53 +11,90 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\DependencyInjection;
+namespace Sonata\AdminBundle\Tests\DependencyInjection\Compiler;
 
-use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
+use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractCompilerPassTestCase;
+use Sonata\AdminBundle\Controller\CRUDController;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
 use Sonata\AdminBundle\Maker\AdminMaker;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 
-/**
- * @author Gaurav Singh Faujdar <faujdar@gmail.com>
- */
-class AdminMakerCompilerPassTest extends TestCase
+final class AdminMakerCompilerPassTest extends AbstractCompilerPassTestCase
 {
-    /**
-     * @var AdminMaker
-     */
-    private $adminMaker;
-
-    public function setUp(): void
+    public function testDoesNothingWithoutAdminMaker(): void
     {
-        if (!class_exists('Symfony\Component\Console\CommandLoader\CommandLoaderInterface')) {
-            $this->markTestSkipped('Test only available for SF 3.4');
-        }
+        $this->compile();
 
-        parent::setUp();
-        $this->adminMaker = $this->prophesize(Definition::class);
-        $this->adminMaker->replaceArgument(Argument::type('integer'), Argument::any())->shouldBeCalledTimes(2);
+        $this->assertContainerBuilderNotHasService('sonata.admin.maker');
     }
 
-    public function testProcess(): void
+    public function testDoesNothingWithoutDefaultControllerParameter(): void
     {
-        $containerBuilderMock = $this->prophesize(ContainerBuilder::class);
+        $definition = new Definition(AdminMaker::class);
+        $definition->setArguments([
+            'dir',
+            [],
+            CRUDController::class,
+        ]);
+        $this->container->setDefinition('sonata.admin.maker', $definition);
 
-        $containerBuilderMock->getDefinition(Argument::exact('sonata.admin.maker'))
-            ->willReturn($this->adminMaker);
+        $this->compile();
 
-        $containerBuilderMock->hasDefinition(Argument::containingString('sonata.admin.manager'))
-            ->willReturn(null);
-        $containerBuilderMock->getDefinition(Argument::containingString('sonata.admin.manager'))
-            ->willReturn(null);
-        $containerBuilderMock->getParameter(Argument::containingString('kernel.project_dir'))
-            ->willReturn(null);
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+            'sonata.admin.maker',
+            2,
+            CRUDController::class
+        );
+    }
 
-        $compilerPass = new AdminMakerCompilerPass();
-        $compilerPass->process($containerBuilderMock->reveal());
+    public function testDoesNothingWithoutDefaultControllerNotBeingAService(): void
+    {
+        $definition = new Definition(AdminMaker::class);
+        $definition->setArguments([
+            'dir',
+            [],
+            CRUDController::class,
+        ]);
+        $this->container->setDefinition('sonata.admin.maker', $definition);
 
-        $this->verifyMockObjects();
+        $this->container->setParameter('sonata.admin.configuration.default_controller', CRUDController::class);
+
+        $this->compile();
+
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+            'sonata.admin.maker',
+            2,
+            CRUDController::class
+        );
+    }
+
+    public function testReplacesTheServiceArgumentWithClassName(): void
+    {
+        $definition = new Definition(AdminMaker::class);
+        $definition->setArguments([
+            'dir',
+            [],
+            'sonata.admin.controller.crud',
+        ]);
+        $this->container->setDefinition('sonata.admin.maker', $definition);
+
+        $definition = new Definition(CRUDController::class);
+        $this->container->setDefinition('sonata.admin.controller.crud', $definition);
+
+        $this->container->setParameter('sonata.admin.configuration.default_controller', 'sonata.admin.controller.crud');
+
+        $this->compile();
+
+        $this->assertContainerBuilderHasServiceDefinitionWithArgument(
+            'sonata.admin.maker',
+            2,
+            CRUDController::class
+        );
+    }
+
+    protected function registerCompilerPass(ContainerBuilder $container): void
+    {
+        $container->addCompilerPass(new AdminMakerCompilerPass());
     }
 }

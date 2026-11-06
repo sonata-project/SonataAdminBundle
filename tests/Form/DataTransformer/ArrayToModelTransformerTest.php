@@ -23,9 +23,9 @@ use Sonata\AdminBundle\Tests\Fixtures\Entity\Form\FooEntity;
  */
 class ArrayToModelTransformerTest extends TestCase
 {
-    private $modelManager = null;
+    private $modelManager;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
     }
@@ -34,8 +34,8 @@ class ArrayToModelTransformerTest extends TestCase
     {
         $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
 
-        $entity = new FooEntity();
-        $this->assertSame($entity, $transformer->reverseTransform($entity));
+        $model = new FooEntity();
+        static::assertSame($model, $transformer->reverseTransform($model));
     }
 
     /**
@@ -45,11 +45,11 @@ class ArrayToModelTransformerTest extends TestCase
     {
         $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
 
-        $this->modelManager->expects($this->any())
+        $this->modelManager
             ->method('modelReverseTransform')
-            ->will($this->returnValue(new FooEntity()));
+            ->willReturn(new FooEntity());
 
-        $this->assertInstanceOf(FooEntity::class, $transformer->reverseTransform($value));
+        static::assertInstanceOf(FooEntity::class, $transformer->reverseTransform($value));
     }
 
     public function getReverseTransformTests()
@@ -72,7 +72,7 @@ class ArrayToModelTransformerTest extends TestCase
     {
         $transformer = new ArrayToModelTransformer($this->modelManager, FooEntity::class);
 
-        $this->assertSame($expected, $transformer->transform($value));
+        static::assertSame($expected, $transformer->transform($value));
     }
 
     public function getTransformTests()

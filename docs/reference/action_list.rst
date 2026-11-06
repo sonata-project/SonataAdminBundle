@@ -51,7 +51,7 @@ Here is an example::
 
             // you may specify the field type directly as the
             // second argument instead of in the options
-            ->add('isVariation', 'boolean')
+            ->add('isVariation', FieldDescriptionInterface::TYPE_BOOLEAN)
 
             // if null, the type will be guessed
             ->add('enabled', null, [
@@ -59,7 +59,7 @@ Here is an example::
             ])
 
             // editable association field
-            ->add('status', 'choice', [
+            ->add('status', FieldDescriptionInterface::TYPE_CHOICE, [
                 'editable' => true,
                 'class' => 'Vendor\ExampleBundle\Entity\ExampleStatus',
                 'choices' => [
@@ -69,25 +69,56 @@ Here is an example::
                 ],
             ])
 
+            // editable multiple field
+            ->add('winner', FieldDescriptionInterface::TYPE_CHOICE, [
+                'editable' => true,
+                'multiple' => true,
+                'choices' => [
+                    'jury' => 'Jury',
+                    'voting' => 'Voting',
+                    'encouraging' => 'Encouraging',
+                ],
+            ])
+
             // we can add options to the field depending on the type
-            ->add('price', 'currency', [
+            ->add('price', FieldDescriptionInterface::TYPE_CURRENCY, [
                 'currency' => $this->currencyDetector->getCurrency()->getLabel()
             ])
 
             // Here we specify which property is used to render the label of each entity in the list
             ->add('productCategories', null, [
                 'associated_property' => 'name'
+                // By default, sorting will be done on the associated property.
+                // To sort on another property, add the following:
+                'sort_field_mapping' => [
+                    'fieldName' => 'weight',
+                ],
             ])
 
             // you may also use dotted-notation to access
             // specific properties of a relation to the entity
             ->add('image.name')
 
+            // you may also use a custom accessor
+            ->add('description1', null, [
+                'accessor' => 'description'
+            ])
+            ->add('description2', null, [
+                'accessor' => function ($subject) {
+                    return $this->customService->formatDescription($subject);
+                }
+            ])
+
             // You may also specify the actions you want to be displayed in the list
             ->add('_action', null, [
                 'actions' => [
                     'show' => [],
-                    'edit' => [],
+                    'edit' => [
+                        // You may add custom link parameters used to generate the action url
+                        'link_parameters' => [
+                            'full' => true,
+                        ]
+                    ],
                     'delete' => [],
                 ]
             ])
@@ -110,104 +141,163 @@ Options
 - ``link_parameters`` (o): add link parameter to the related Admin class
   when the ``Admin::generateUrl`` is called
 - ``code`` (o): the method name to retrieve the related value (for example,
-  if you have an `array` type field, you would like to show info prettier
+  if you have an ``array`` type field, you would like to show info prettier
   than `[0] => 'Value'`; useful when a getter is not enough).
   Notice: works with string-like types (string, text, html)
 - ``associated_property`` (o): property path to retrieve the "string"
   representation of the collection element, or a closure with the element
   as argument and return a string.
+- ``sort_field_mapping`` (o): property of the collection element to sort on.
 - ``identifier`` (o): if set to true a link appears on the value to edit the element
 
 Available types and associated options
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. note::
++---------------------------------------+---------------------+-----------------------------------------------------------------------+
+| Type                                  | Options             | Description                                                           |
++=======================================+=====================+=======================================================================+
+| ``ListMapper::TYPE_ACTIONS``          | actions             | List of available actions                                             |
++                                       +                     +                                                                       +
+|                                       |   edit              | Name of the action (``show``, ``edit``, ``history``, ``delete``, etc) |
++                                       +                     +                                                                       +
+|                                       |     link_parameters | Route parameters                                                      |
++---------------------------------------+---------------------+-----------------------------------------------------------------------+
+| ``ListMapper::TYPE_BATCH``            |                     | Renders a checkbox                                                    |
++---------------------------------------+---------------------+-----------------------------------------------------------------------+
+| ``ListMapper::TYPE_SELECT``           |                     | Renders a select box                                                  |
++---------------------------------------+---------------------+-----------------------------------------------------------------------+
+| ``FieldDescriptionInterface::TYPE_*`` |                     | See :doc:`Field Types <field_types>`                                  |
++---------------------------------------+---------------------+-----------------------------------------------------------------------+
 
-    ``(m)`` means that option is mandatory
+Symfony Data Transformers
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
-+-----------+----------------+-----------------------------------------------------------------------+
-| Type      | Options        | Description                                                           |
-+===========+================+=======================================================================+
-| actions   | actions        | List of available actions                                             |
-+-----------+----------------+-----------------------------------------------------------------------+
-| batch     |                | Renders a checkbox                                                    |
-+-----------+----------------+-----------------------------------------------------------------------+
-| select    |                | Renders a select box                                                  |
-+-----------+----------------+-----------------------------------------------------------------------+
-| array     |                | Displays an array                                                     |
-+-----------+----------------+-----------------------------------------------------------------------+
-| boolean   | ajax_hidden    | Yes/No; ajax_hidden allows to hide list field during an AJAX context. |
-+           +----------------+-----------------------------------------------------------------------+
-|           | editable       | Yes/No; editable allows to edit directly from the list if authorized. |
-+           +----------------+-----------------------------------------------------------------------+
-|           | inverse        | Yes/No; reverses the background color (green for false, red for true) |
-+-----------+----------------+-----------------------------------------------------------------------+
-| choice    | choices        | Possible choices                                                      |
-+           +----------------+-----------------------------------------------------------------------+
-|           | multiple       | Is it a multiple choice option? Defaults to false.                    |
-+           +----------------+-----------------------------------------------------------------------+
-|           | delimiter      | Separator of values if multiple.                                      |
-+           +----------------+-----------------------------------------------------------------------+
-|           | catalogue      | Translation catalogue.                                                |
-+           +----------------+-----------------------------------------------------------------------+
-|           | class          | Class path for editable association field.                            |
-+-----------+----------------+-----------------------------------------------------------------------+
-| currency  | currency (m)   | A currency string (EUR or USD for instance).                          |
-+-----------+----------------+-----------------------------------------------------------------------+
-| date      | format         | A format understandable by Twig's ``date`` function.                  |
-+-----------+----------------+-----------------------------------------------------------------------+
-| datetime  | format         | A format understandable by Twig's ``date`` function.                  |
-+-----------+----------------+-----------------------------------------------------------------------+
-| email     | as_string      | Renders the email as string, without any link.                        |
-+           +----------------+-----------------------------------------------------------------------+
-|           | subject        | Add subject parameter to email link.                                  |
-+           +----------------+-----------------------------------------------------------------------+
-|           | body           | Add body parameter to email link.                                     |
-+-----------+----------------+-----------------------------------------------------------------------+
-| percent   |                | Renders value as a percentage.                                        |
-+-----------+----------------+-----------------------------------------------------------------------+
-| string    |                | Renders a string.                                                     |
-+-----------+----------------+-----------------------------------------------------------------------+
-| text      |                | See 'string'                                                          |
-+-----------+----------------+-----------------------------------------------------------------------+
-| html      |                | Renders string as html                                                |
-+-----------+----------------+-----------------------------------------------------------------------+
-| time      |                | Renders a datetime's time with format ``H:i:s``.                      |
-+-----------+----------------+-----------------------------------------------------------------------+
-| trans     | catalogue      | Translates the value with catalogue ``catalogue`` if defined.         |
-+-----------+----------------+-----------------------------------------------------------------------+
-| url       | url            | Adds a link with url ``url`` to the displayed value                   |
-+           +----------------+-----------------------------------------------------------------------+
-|           | route          | Give a route to generate the url                                      |
-+           +                +                                                                       +
-|           |   name         | Route name                                                            |
-+           +                +                                                                       +
-|           |   parameters   | Route parameters                                                      |
-+           +----------------+-----------------------------------------------------------------------+
-|           | hide_protocol  | Hide http:// or https:// (default: false)                             |
-+-----------+----------------+-----------------------------------------------------------------------+
+If the model field has a limited list of values (enumeration), it is convenient to use a value object to control
+the available values. For example, consider the value object of moderation status with the following values:
+``awaiting``, ``approved``, ``rejected``::
 
-If you have the SonataDoctrineORMAdminBundle installed, you have access
-to more field types, see `SonataDoctrineORMAdminBundle Documentation`_.
+    final class ModerationStatus
+    {
+        public const AWAITING = 'awaiting';
+        public const APPROVED = 'approved';
+        public const REJECTED = 'rejected';
 
-.. note::
+        private static $instances = [];
 
-    It is better to prefer non negative notions when possible for boolean
-    values so use the ``inverse`` option if you really cannot find a good enough
-    antonym for the name you have.
+        private string $value;
+
+        private function __construct(string $value)
+        {
+            if (!array_key_exists($value, self::choices())) {
+                throw new \DomainException(sprintf('The value "%s" is not a valid moderation status.', $value));
+            }
+
+            $this->value = $value;
+        }
+
+        public static function byValue(string $value): ModerationStatus
+        {
+            // limitation of count object instances
+            if (!isset(self::$instances[$value])) {
+                self::$instances[$value] = new static($value);
+            }
+
+            return self::$instances[$value];
+        }
+
+        public function getValue(): string
+        {
+            return $this->value;
+        }
+
+        public static function choices(): array
+        {
+            return [
+                self::AWAITING => 'moderation_status.awaiting',
+                self::APPROVED => 'moderation_status.approved',
+                self::REJECTED => 'moderation_status.rejected',
+            ];
+        }
+
+        public function __toString(): string
+        {
+            return self::choices()[$this->value];
+        }
+    }
+
+To use this Value Object in the _`Symfony Form`: https://symfony.com/doc/current/forms.html component, we need a
+_`Data Transformer`: https://symfony.com/doc/current/form/data_transformers.html ::
+
+    use Symfony\Component\Form\DataTransformerInterface;
+    use Symfony\Component\Form\Exception\TransformationFailedException;
+
+    final class ModerationStatusDataTransformer implements DataTransformerInterface
+    {
+        public function transform($value): ?string
+        {
+            $status = $this->reverseTransform($value);
+
+            return $status instanceof ModerationStatus ? $status->value() : null;
+        }
+
+        public function reverseTransform($value): ?ModerationStatus
+        {
+            if (null === $value || '' === $value) {
+                return null;
+            }
+
+            if ($value instanceof ModerationStatus) {
+                return $value;
+            }
+
+            try {
+                return ModerationStatus::byValue($value);
+            } catch (\Throwable $e) {
+                throw new TransformationFailedException($e->getMessage(), $e->getCode(), $e);
+            }
+        }
+    }
+
+For quick moderation of objects, it is convenient to do this on the page for viewing all objects. But if we just
+indicate the field as editable, then when editing we get in the object a string with the value itself (``awaiting``,
+``approved``, ``rejected``), and not the Value Object (``ModerationStatus``). To solve this problem, you must specify
+the Data Transformer in the ``data_transformer`` field so that it correctly converts the input data into the data
+expected by your object::
+
+    // ...
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->add('moderation_status', 'choice', [
+                'editable' => true,
+                'choices' => ModerationStatus::choices(),
+                'data_transformer' => new ModerationStatusDataTransformer(),
+            ])
+        ;
+    }
+
 
 Customizing the query used to generate the list
 -----------------------------------------------
 
-You can customize the list query thanks to the ``createQuery`` method::
+.. versionadded:: 3.63
 
-    public function createQuery($context = 'list')
+    The ``configureQuery`` method was introduced in 3.63.
+
+You can customize the list query thanks to the ``configureQuery`` method::
+
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
     {
-        $query = parent::createQuery($context);
+        $query = parent::configureQuery($query);
+
+        $rootAlias = current($query->getRootAliases());
+
         $query->andWhere(
-            $query->expr()->eq($query->getRootAliases()[0] . '.my_field', ':my_param')
+            $query->expr()->eq($rootAlias . '.my_field', ':my_param')
         );
         $query->setParameter('my_param', 'my_value');
+
         return $query;
     }
 
@@ -218,39 +308,76 @@ Configure the default ordering in the list view
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Configuring the default ordering column can be achieved by overriding the
-``datagridValues`` array property. All three keys ``_page``, ``_sort_order`` and
-``_sort_by`` can be omitted::
+``configureDefaultSortValues()`` method. All three keys ``DatagridInterface::PAGE``,
+``DatagridInterface::SORT_ORDER`` and ``DatagridInterface::SORT_BY`` can be omitted::
 
     // src/Admin/PostAdmin.php
 
     use Sonata\AdminBundle\Admin\AbstractAdmin;
+    use Sonata\AdminBundle\Datagrid\DatagridInterface;
 
     final class PostAdmin extends AbstractAdmin
     {
         // ...
 
-        protected $datagridValues = [
-
+        protected function configureDefaultSortValues(array &$sortValues): void
+        {
             // display the first page (default = 1)
-            '_page' => 1,
+            $sortValues[DatagridInterface::PAGE] = 1;
 
             // reverse order (default = 'ASC')
-            '_sort_order' => 'DESC',
+            $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
 
             // name of the ordered field (default = the model's id field, if any)
-            '_sort_by' => 'updatedAt',
-        ];
+            $sortValues[DatagridInterface::SORT_BY] = 'updatedAt';
+        }
 
         // ...
     }
 
 .. note::
 
-    The ``_sort_by`` key can be of the form ``mySubModel.mySubSubModel.myField``.
+    The ``DatagridInterface::SORT_BY`` key can be of the form ``mySubModel.mySubSubModel.myField``.
 
 .. note::
 
-    **TODO**: how to sort by multiple fields (this might be a separate recipe?)
+    For UI reason, it's not possible to sort by multiple fields. However, this behavior can be simulate by
+    adding some default orders in the ``configureQuery()`` method. The following example is using
+    ``SonataAdminBundle`` with ``SonataDoctrineORMAdminBundle``::
+
+        // src/Admin/PostAdmin.php
+
+        use Sonata\AdminBundle\Admin\AbstractAdmin;
+        use Sonata\AdminBundle\Datagrid\DatagridInterface;
+
+        final class PostAdmin extends AbstractAdmin
+        {
+            // ...
+
+            protected function configureDefaultSortValues(array &$sortValues): void
+            {
+                // display the first page (default = 1)
+                $sortValues[DatagridInterface::PAGE] = 1;
+
+                // reverse order (default = 'ASC')
+                $sortValues[DatagridInterface::SORT_ORDER] = 'DESC';
+
+                // name of the ordered field (default = the model's id field, if any)
+                $sortValues[DatagridInterface::SORT_BY] = 'updatedAt';
+            }
+
+            protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+            {
+                $rootAlias = current($query->getRootAliases());
+
+                $query->addOrderBy($rootAlias.'.author', 'ASC');
+                $query->addOrderBy($rootAlias.'.createdAt', 'ASC');
+
+                return $query;
+            }
+
+            // ...
+        }
 
 Filters
 -------
@@ -363,12 +490,13 @@ This is an example using these constants for an ``boolean`` type::
 
     class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        protected $datagridValues = [
-            'enabled' => [
+        protected function configureDefaultFilterValues(array &$filterValues)
+        {
+            $filterValues['enabled'] = [
                 'type'  => EqualType::TYPE_IS_EQUAL, // => 1
                 'value' => BooleanType::TYPE_YES     // => 1
-            ]
-        ];
+            ];
+        }
     }
 
 Please note that setting a ``false`` value on a the ``boolean`` type
@@ -383,46 +511,21 @@ as defined in the class constants::
         const TYPE_NO = 2;
     }
 
-Default filters can also be added to the datagrid values by overriding
-the ``getFilterParameters`` method::
-
-    use Sonata\Form\Type\EqualType;
-    use Sonata\Form\Type\BooleanType;
-
-    class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
-    {
-        public function getFilterParameters()
-        {
-            $this->datagridValues = array_merge([
-                'enabled' => [
-                    'type'  => EqualType::TYPE_IS_EQUAL,
-                    'value' => BooleanType::TYPE_YES
-                ]
-            ], $this->datagridValues);
-
-            return parent::getFilterParameters();
-        }
-    }
-
-This approach is useful when you need to create dynamic filters::
+This approach allow to create dynamic filters::
 
     class PostAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        public function getFilterParameters()
+        protected function configureDefaultFilterValues(array &$filterValues)
         {
             // Assuming security context injected
             if (!$this->securityContext->isGranted('ROLE_ADMIN')) {
                 $user = $this->securityContext->getToken()->getUser();
 
-                $this->datagridValues = array_merge([
-                    'author' => [
-                        'type'  => EqualType::TYPE_IS_EQUAL,
-                        'value' => $user->getId()
-                    ]
-                ], $this->datagridValues);
+                $filterValues['author'] = [
+                    'type'  => EqualType::TYPE_IS_EQUAL,
+                    'value' => $user->getId()
+                ];
             }
-
-            return parent::getFilterParameters();
         }
     }
 
@@ -446,26 +549,28 @@ If you have the **SonataDoctrineORMAdminBundle** installed you can use the
             $datagridMapper
                 ->add('full_text', CallbackFilter::class, [
                     'callback' => [$this, 'getFullTextFilter'],
-                    'field_type' => 'text'
+                    'field_type' => TextType::class,
                 ]);
         }
 
-        public function getFullTextFilter($queryBuilder, $alias, $field, $value)
+        public function getFullTextFilter($query, $alias, $field, $value)
         {
             if (!$value['value']) {
-                return;
+                return false;
             }
 
             // Use `andWhere` instead of `where` to prevent overriding existing `where` conditions
-            $queryBuilder->andWhere($queryBuilder->expr()->orX(
-                $queryBuilder->expr()->like($alias.'.username', $queryBuilder->expr()->literal('%' . $value['value'] . '%')),
-                $queryBuilder->expr()->like($alias.'.firstName', $queryBuilder->expr()->literal('%' . $value['value'] . '%')),
-                $queryBuilder->expr()->like($alias.'.lastName', $queryBuilder->expr()->literal('%' . $value['value'] . '%'))
+            $query->andWhere($query->expr()->orX(
+                $query->expr()->like($alias.'.username', $query->expr()->literal('%' . $value['value'] . '%')),
+                $query->expr()->like($alias.'.firstName', $query->expr()->literal('%' . $value['value'] . '%')),
+                $query->expr()->like($alias.'.lastName', $query->expr()->literal('%' . $value['value'] . '%'))
             ));
 
             return true;
         }
     }
+
+The callback function should return a boolean indicating whether it is active.
 
 You can also get the filter type which can be helpful to change the operator
 type of your condition(s)::
@@ -474,7 +579,7 @@ type of your condition(s)::
 
     final class UserAdmin extends Sonata\UserBundle\Admin\Model\UserAdmin
     {
-        public function getFullTextFilter($queryBuilder, $alias, $field, $value)
+        public function getFullTextFilter($query, $alias, $field, $value)
         {
             if (!$value['value']) {
                 return;
@@ -482,7 +587,7 @@ type of your condition(s)::
 
             $operator = $value['type'] == EqualType::TYPE_IS_EQUAL ? '=' : '!=';
 
-            $queryBuilder
+            $query
                 ->andWhere($alias.'.username '.$operator.' :username')
                 ->setParameter('username', $value['value'])
             ;
@@ -496,7 +601,6 @@ type of your condition(s)::
     **TODO**:
     * basic filter configuration and options
     * targeting submodel fields using dot-separated notation
-    * advanced filter options (global_search)
 
 Visual configuration
 --------------------
@@ -521,10 +625,10 @@ Example::
                 'header_style' => 'width: 5%; text-align: center',
                 'row_align' => 'center'
             ])
-            ->add('name', 'text', [
+            ->add('name', FieldDescriptionInterface::TYPE_STRING, [
                 'header_style' => 'width: 35%'
             ])
-            ->add('description', 'text', [
+            ->add('description', FieldDescriptionInterface::TYPE_STRING, [
                 'header_style' => 'width: 35%',
                 'collapse' => true
             ])
@@ -538,7 +642,7 @@ Example::
         ;
     }
 
-If you want to customise the `collapse` option, you can also give an array
+If you want to customise the ``collapse`` option, you can also give an array
 to override the default parameters::
 
             ->add('description', TextType::class, [
@@ -555,7 +659,7 @@ to override the default parameters::
                 ]
             ])
 
-If you want to show only the `label_icon`::
+If you want to show only the ``label_icon``::
 
             ->add('upvotes', null, [
                 'label' => false,
@@ -594,6 +698,20 @@ You need to add option ``show_mosaic_button`` in your admin services:
         tags:
             - { name: sonata.admin, manager_type: orm, group: admin, label: News, show_mosaic_button: false }
 
+Show Icons on Action Buttons
+----------------------------
+
+You can choose if the action buttons on the list-page show an icon, text or both.
+
+.. code-block:: yaml
+
+    # config/packages/sonata_admin.yaml
+
+    sonata_admin:
+        options:
+            # Choices are: text, icon or all (default)
+            list_action_button_content: icon
+
 Checkbox range selection
 ------------------------
 
@@ -602,5 +720,76 @@ Checkbox range selection
     You can check / uncheck a range of checkboxes by clicking a first one,
     then a second one with shift + click.
 
-.. _`SonataDoctrineORMAdminBundle Documentation`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/list_field_definition.html
-.. _`here`: https://github.com/sonata-project/SonataCoreBundle/tree/3.x/src/Form/Type
+Displaying a non-model field
+----------------------------
+
+.. versionadded:: 3.73
+
+  Support for displaying fields not part of the model class was introduced in version 3.73.
+
+The list view can also display fields that are not part of the model class.
+
+In some situations you can add a new getter to your model class to calculate
+a field based on the other fields of your model::
+
+    // src/Entity/User.php
+
+    public function getFullName(): string
+    {
+        return $this->getGivenName().' '.$this->getFamilyName();
+    }
+
+    // src/Admin/UserAdmin.php
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper->addIdentifier('fullName');
+    }
+
+In situations where the data are not available in the model or it is more performant
+to have the database calculate the value you can override the ``configureQuery()`` Admin
+class method to add fields to the result set.
+In ``configureListFields()`` these fields can be added using the alias given
+in the query.
+
+In the following example the number of comments for a post is added to the
+query and displayed::
+
+    // src/Admin/PostAdmin.php
+
+    protected function configureQuery(ProxyQueryInterface $query): ProxyQueryInterface
+    {
+        $query = parent::configureQuery($query);
+
+        $query
+            ->leftJoin('n.Comments', 'c')
+            ->addSelect('COUNT(c.id) numberofcomments')
+            ->addGroupBy('n');
+
+        return $query;
+    }
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper->addIdentifier('numberofcomments');
+    }
+
+
+Lastly, you can also define your list fields as ``virtual``.
+This way, Sonata's FieldDescription will always return a value of null, as documented here:
+https://symfony.com/doc/current/bundles/SonataAdminBundle/cookbook/recipe_virtual_field.html
+
+Combine this with configuring a custom template and you'll have a list column fully customizable in what it eventually renders. ::
+
+    // src/Admin/PostAdmin.php
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper->add('thisPropertyDoesNotExist', null, [
+            'virtual_field' => true,
+            'template' => 'path/to/your/template.html.twig'
+        ]);
+    }
+
+.. _`SonataDoctrineORMAdminBundle Documentation`: https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/3.x/reference/list_field_definition
+.. _`here`: https://github.com/sonata-project/form-extensions/tree/1.x/src/Type

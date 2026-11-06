@@ -19,31 +19,32 @@ use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Controller\CoreController;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistryInterface;
-use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 class CoreControllerTest extends TestCase
 {
     /**
-     * @doesNotPerformAssertions
      * @group legacy
      */
     public function testdashboardActionStandardRequest(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = new Container();
 
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplate('ajax')->willReturn('ajax.html');
-        $templateRegistry->getTemplate('dashboard')->willReturn('dashboard.html');
-        $templateRegistry->getTemplate('layout')->willReturn('layout.html');
+        $templateRegistry = $this->createStub(MutableTemplateRegistryInterface::class);
+        $templateRegistry->method('getTemplate')->willReturnMap([
+            ['ajax', 'ajax.html'],
+            ['dashboard', 'dashboard.html'],
+            ['layout', 'layout.html'],
+        ]);
 
-        $pool = new Pool($container, 'title', 'logo.png');
-        $pool->setTemplateRegistry($templateRegistry->reveal());
+        $pool = new Pool($container);
+        $pool->setTemplateRegistry($templateRegistry);
 
-        $templating = $this->createMock(EngineInterface::class);
+        $twig = $this->createMock(Environment::class);
         $request = new Request();
 
         $requestStack = new RequestStack();
@@ -51,85 +52,60 @@ class CoreControllerTest extends TestCase
 
         $breadcrumbsBuilder = $this->getMockForAbstractClass(BreadcrumbsBuilderInterface::class);
 
-        $values = [
-            DashboardAction::class => $dashboardAction = new DashboardAction(
-                [],
-                $breadcrumbsBuilder,
-                $templateRegistry->reveal(),
-                $pool
-            ),
-            'templating' => $templating,
-            'request_stack' => $requestStack,
-        ];
-        $dashboardAction->setContainer($container);
-
-        $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($values) {
-            return $values[$id];
-        }));
-
-        $container->expects($this->any())
-            ->method('has')
-            ->will($this->returnCallback(function ($id) {
-                return 'templating' === $id;
-            }));
+        $container->set(DashboardAction::class, new DashboardAction(
+            [],
+            $breadcrumbsBuilder,
+            $templateRegistry,
+            $pool,
+            $twig
+        ));
+        $container->set('request_stack', $requestStack);
 
         $controller = new CoreController();
         $controller->setContainer($container);
 
-        $this->isInstanceOf(Response::class, $controller->dashboardAction());
+        static::assertInstanceOf(Response::class, $controller->dashboardAction());
     }
 
     /**
-     * @doesNotPerformAssertions
      * @group legacy
      */
     public function testdashboardActionAjaxLayout(): void
     {
-        $container = $this->createMock(ContainerInterface::class);
+        $container = new Container();
 
-        $templateRegistry = $this->prophesize(MutableTemplateRegistryInterface::class);
-        $templateRegistry->getTemplate('ajax')->willReturn('ajax.html');
-        $templateRegistry->getTemplate('dashboard')->willReturn('dashboard.html');
-        $templateRegistry->getTemplate('layout')->willReturn('layout.html');
-        $breadcrumbsBuilder = $this->getMockForAbstractClass(BreadcrumbsBuilderInterface::class);
+        $templateRegistry = $this->createStub(MutableTemplateRegistryInterface::class);
+        $templateRegistry->method('getTemplate')->willReturnMap([
+            ['ajax', 'ajax.html'],
+            ['dashboard', 'dashboard.html'],
+            ['layout', 'layout.html'],
+        ]);
+        $breadcrumbsBuilder = $this->createStub(BreadcrumbsBuilderInterface::class);
 
-        $pool = new Pool($container, 'title', 'logo.png');
-        $pool->setTemplateRegistry($templateRegistry->reveal());
+        $pool = new Pool($container);
+        $pool->setTemplateRegistry($templateRegistry);
 
-        $templating = $this->createMock(EngineInterface::class);
+        $twig = $this->createMock(Environment::class);
         $request = new Request();
         $request->headers->set('X-Requested-With', 'XMLHttpRequest');
 
         $requestStack = new RequestStack();
         $requestStack->push($request);
 
-        $values = [
-            DashboardAction::class => $dashboardAction = new DashboardAction(
-                [],
-                $breadcrumbsBuilder,
-                $templateRegistry->reveal(),
-                $pool
-            ),
-            'templating' => $templating,
-            'request_stack' => $requestStack,
-        ];
-        $dashboardAction->setContainer($container);
-
-        $container->expects($this->any())->method('get')->will($this->returnCallback(function ($id) use ($values) {
-            return $values[$id];
-        }));
-
-        $container->expects($this->any())
-            ->method('has')
-            ->will($this->returnCallback(function ($id) {
-                return 'templating' === $id;
-            }));
+        $container->set(DashboardAction::class, new DashboardAction(
+            [],
+            $breadcrumbsBuilder,
+            $templateRegistry,
+            $pool,
+            $twig
+        ));
+        $container->set('request_stack', $requestStack);
 
         $controller = new CoreController();
         $controller->setContainer($container);
 
-        $response = $controller->dashboardAction($request);
+        $response = $controller->dashboardAction();
 
-        $this->isInstanceOf(Response::class, $response);
+        static::assertInstanceOf(Response::class, $response);
     }
 }

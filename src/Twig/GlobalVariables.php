@@ -18,6 +18,12 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @deprecated since sonata-project/admin-bundle 3.83, will be removed in 4.0.
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class GlobalVariables
@@ -25,7 +31,7 @@ class GlobalVariables
     /**
      * @var ContainerInterface
      *
-     * @deprecated Since version 3.5, will be removed in 4.0.
+     * @deprecated since sonata-project/admin-bundle 3.5, will be removed in 4.0.
      * NEXT_MAJOR : remove this property
      */
     protected $container;
@@ -49,22 +55,23 @@ class GlobalVariables
 
         // NEXT_MAJOR : remove this block and set adminPool from parameter.
         if ($adminPool instanceof ContainerInterface) {
-            @trigger_error(
-                'Using an instance of Symfony\Component\DependencyInjection\ContainerInterface is deprecated since
-                version 3.5 and will be removed in 4.0. Use Sonata\AdminBundle\Admin\Pool instead.',
-                E_USER_DEPRECATED
-            );
+            @trigger_error(sprintf(
+                'Using an instance of %s is deprecated since version 3.5 and will be removed in 4.0. Use %s instead.',
+                ContainerInterface::class,
+                Pool::class
+            ), \E_USER_DEPRECATED);
 
+            /** @psalm-suppress UndefinedMethod */
             $adminPool = $adminPool->get('sonata.admin.pool');
         }
+
         if ($adminPool instanceof Pool) {
             $this->adminPool = $adminPool;
 
             return;
         }
-        throw new \InvalidArgumentException(
-            '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
-        );
+
+        throw new \InvalidArgumentException(sprintf('$adminPool should be an instance of %s', Pool::class));
     }
 
     /**
@@ -72,6 +79,13 @@ class GlobalVariables
      */
     public function getAdminPool()
     {
+        if ('sonata_deprecation_mute' !== (\func_get_args()[0] ?? null)) {
+            @trigger_error(sprintf(
+                'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
         return $this->adminPool;
     }
 
@@ -79,44 +93,63 @@ class GlobalVariables
      * @param string $code
      * @param string $action
      * @param array  $parameters
-     * @param int    $absolute
+     * @param int    $referenceType
      *
      * @return string
      */
-    public function url($code, $action, $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function url($code, $action, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        list($action, $code) = $this->getCodeAction($code, $action);
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
+            __METHOD__
+        ), \E_USER_DEPRECATED);
 
-        return $this->getAdminPool()->getAdminByAdminCode($code)->generateUrl($action, $parameters, $absolute);
+        [$action, $code] = $this->getCodeAction($code, $action);
+
+        return $this->getAdminPool()->getAdminByAdminCode($code)->generateUrl($action, $parameters, $referenceType);
     }
 
     /**
      * @param string $code
      * @param string $action
-     * @param mixed  $object
+     * @param object $object
      * @param array  $parameters
-     * @param int    $absolute
+     * @param int    $referenceType
      *
      * @return string
      */
-    public function objectUrl($code, $action, $object, $parameters = [], $absolute = UrlGeneratorInterface::ABSOLUTE_PATH)
+    public function objectUrl($code, $action, $object, $parameters = [], $referenceType = UrlGeneratorInterface::ABSOLUTE_PATH)
     {
-        list($action, $code) = $this->getCodeAction($code, $action);
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.',
+            __METHOD__
+        ), \E_USER_DEPRECATED);
 
-        return $this->getAdminPool()->getAdminByAdminCode($code)->generateObjectUrl($action, $object, $parameters, $absolute);
+        [$action, $code] = $this->getCodeAction($code, $action);
+
+        return $this->getAdminPool()->getAdminByAdminCode($code)->generateObjectUrl($action, $object, $parameters, $referenceType);
     }
 
     public function getMosaicBackground(): ?string
     {
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.83 and will be removed in version 4.0.'
+            .' Use "sonata_config.getOption(\'mosaic_background\')" instead.',
+            __METHOD__
+        ), \E_USER_DEPRECATED);
+
         return $this->mosaicBackground;
     }
 
-    private function getCodeAction($code, $action): array
+    /**
+     * @return string[]
+     */
+    private function getCodeAction(string $code, string $action): array
     {
         if ($pipe = strpos($code, '|')) {
             // convert code=sonata.page.admin.page|sonata.page.admin.snapshot, action=list
             // to => sonata.page.admin.page|sonata.page.admin.snapshot.list
-            $action = $code.'.'.$action;
+            $action = sprintf('%s.%s', $code, $action);
             $code = substr($code, 0, $pipe);
         }
 

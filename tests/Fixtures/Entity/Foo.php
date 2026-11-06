@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\Tests\Fixtures\Entity;
 class Foo
 {
     public $qux;
+
     private $bar;
 
     private $baz;
@@ -35,6 +36,11 @@ class Foo
     public function setBar($bar): void
     {
         $this->bar = $bar;
+    }
+
+    public function addBar($bar): void
+    {
+        $this->bar[] = $bar;
     }
 
     public function getBaz()

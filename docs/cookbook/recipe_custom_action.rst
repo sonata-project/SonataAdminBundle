@@ -111,7 +111,7 @@ to implement a ``clone`` action::
         }
     }
 
-If you want to add the current filter parameters to the redirect url you can add them to the `generateUrl` method::
+If you want to add the current filter parameters to the redirect url you can add them to the ``generateUrl()`` method::
 
     return new RedirectResponse(
         $this->admin->generateUrl('list', ['filter' => $this->admin->getFilterParameters()])
@@ -123,7 +123,7 @@ as a new object. Finally we set a flash message indicating success and redirect 
 .. tip::
 
     If you want to render something here you can create new template anywhere, extend sonata layout
-    and use `sonata_admin_content` block.
+    and use ``sonata_admin_content`` block.
 
     .. code-block:: html+jinja
 
@@ -171,7 +171,7 @@ Next we have to add the action in ``configureListFields`` specifying the templat
     protected function configureListFields(ListMapper $listMapper)
     {
         $listMapper
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
 
                     // ...
@@ -208,7 +208,7 @@ The full ``CarAdmin.php`` example looks like this::
                 ->add('engine')
                 ->add('rescueEngine')
                 ->add('createdAt')
-                ->add('_action', null, [
+                ->add(ListMapper::NAME_ACTIONS, null, [
                     'actions' => [
                         'show' => [],
                         'edit' => [],

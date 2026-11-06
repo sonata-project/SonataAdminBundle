@@ -70,6 +70,7 @@ Full Configuration Options
             title: 'Sonata Admin'
             title_logo: bundles/sonataadmin/logo_title.png
             search: true
+            default_controller: Sonata\AdminBundle\Controller\CRUDController
             options:
                 html5_validate: true
 
@@ -77,6 +78,7 @@ Full Configuration Options
                 sort_admins: false
                 confirm_exit: true
                 js_debug: false
+                skin: 'skin-black'
                 use_select2: true
                 use_icheck: true
                 use_bootlint: false
@@ -85,15 +87,14 @@ Full Configuration Options
                 form_type: standard
                 default_group: default
                 default_label_catalogue: SonataAdminBundle
-                default_icon: '<i class="fa fa-folder"></i>'
+                default_icon: 'fa fa-folder'
                 dropdown_number_groups_per_colums:  2
-                title_mode: ~ # One of "single_text"; "single_image"; "both"
+                logo_content: 'all' # One of "text"; "icon"; "all"
+                list_action_button_content: 'all' # One of "text"; "icon"; "all"
 
                 # Enable locking when editing an object, if the corresponding object manager supports it.
                 lock_protection: false
 
-                # Enable automatic registration of annotations with JMSDiExtraBundle
-                enable_jms_di_extra_autoregistration: true
             dashboard:
                 groups:
 
@@ -101,7 +102,7 @@ Full Configuration Options
                     id:
                         label: ~
                         label_catalogue: ~
-                        icon: '<i class="fa fa-folder"></i>'
+                        icon: ~
                         provider: ~
                         items:
                             admin: ~
@@ -119,8 +120,9 @@ Full Configuration Options
                         id: ~
                     position: right
                     class: col-md-4
-            admin_services:
+            default_admin_services:
                 model_manager: null
+                data_source: null
                 form_contractor: null
                 show_builder: null
                 list_builder: null
@@ -135,13 +137,7 @@ Full Configuration Options
                 route_builder: null
                 label_translator_strategy: null
                 pager_type: null
-                templates:
-                    form: []
-                    filter: []
-                    view:
 
-                        # Prototype
-                        id: ~
             templates:
                 user_block: '@SonataAdmin/Core/user_block.html.twig'
                 add_block: '@SonataAdmin/Core/add_block.html.twig'
@@ -175,6 +171,9 @@ Full Configuration Options
                 pager_results: '@SonataAdmin/Pager/results.html.twig'
                 tab_menu_template: '@SonataAdmin/Core/tab_menu_template.html.twig'
                 knp_menu_template: '@SonataAdmin/Menu/sonata_menu.html.twig'
+                form_theme: []
+                filter_theme: []
+
             assets:
                 stylesheets:
 
@@ -183,7 +182,6 @@ Full Configuration Options
                     - bundles/sonatacore/vendor/components-font-awesome/css/font-awesome.min.css
                     - bundles/sonatacore/vendor/ionicons/css/ionicons.min.css
                     - bundles/sonataadmin/vendor/admin-lte/dist/css/AdminLTE.min.css
-                    - bundles/sonataadmin/vendor/admin-lte/dist/css/skins/skin-black.min.css
                     - bundles/sonataadmin/vendor/iCheck/skins/square/blue.css
                     - bundles/sonatacore/vendor/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css
                     - bundles/sonataadmin/vendor/jqueryui/themes/base/jquery-ui.css
@@ -236,6 +234,7 @@ Full Configuration Options
 
                 # Prototype
                 id:
+                    global: false
                     admins: []
                     excludes: []
                     implements: []
@@ -246,5 +245,5 @@ Full Configuration Options
             filter_persister: sonata.admin.filter_persister.session
             show_mosaic_button: true
             global_search:
-                show_empty_boxes: show
+                empty_boxes: show
                 case_sensitive: true

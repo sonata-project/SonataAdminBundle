@@ -16,6 +16,8 @@ namespace Sonata\AdminBundle\Security\Handler;
 use Sonata\AdminBundle\Admin\AdminInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class NoopSecurityHandler implements SecurityHandlerInterface

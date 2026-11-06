@@ -36,27 +36,27 @@ class RoleSecurityHandlerTest extends TestCase
      */
     private $authorizationChecker;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
-        $this->authorizationChecker = $this->getMockForAbstractClass(AuthorizationCheckerInterface::class);
-        $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
+        $this->authorizationChecker = $this->createMock(AuthorizationCheckerInterface::class);
+        $this->admin = $this->createMock(AdminInterface::class);
     }
 
     /**
      * @dataProvider getBaseRoleTests
      */
-    public function testGetBaseRole($expected, $code): void
+    public function testGetBaseRole(string $expected, string $code): void
     {
         $handler = new RoleSecurityHandler($this->authorizationChecker, ['ROLE_BATMAN', 'ROLE_IRONMAN']);
 
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('getCode')
-            ->will($this->returnValue($code));
+            ->willReturn($code);
 
-        $this->assertSame($expected, $handler->getBaseRole($this->admin));
+        static::assertSame($expected, $handler->getBaseRole($this->admin));
     }
 
-    public function getBaseRoleTests()
+    public function getBaseRoleTests(): array
     {
         return [
             ['ROLE_FOO_BAR_%s', 'foo.bar'],
@@ -69,51 +69,40 @@ class RoleSecurityHandlerTest extends TestCase
     /**
      * @dataProvider getIsGrantedTests
      */
-    public function testIsGranted($expected, array $superAdminRoles, $adminCode, $operation, $object = null): void
+    public function testIsGranted(bool $expected, array $superAdminRoles, string $adminCode, $operation, $object = null): void
     {
         $handler = $this->getRoleSecurityHandler($superAdminRoles);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getCode')
-            ->will($this->returnValue($adminCode));
+            ->willReturn($adminCode);
 
-        $this->authorizationChecker->expects($this->any())
+        $this->authorizationChecker
             ->method('isGranted')
-            ->will($this->returnCallback(function (array $attributes, $object) {
-                if (\in_array('ROLE_BATMAN', $attributes, true)) {
-                    return true;
+            ->willReturnCallback(static function (string $attribute, $object) {
+                switch ($attribute) {
+                    case 'ROLE_BATMAN':
+                    case 'ROLE_IRONMAN':
+                    case 'ROLE_FOO_BAR_ABC':
+                    case 'ROLE_FOO_BAR_BAZ_ALL':
+                    case 'ROLE_CUSTOM':
+                        return true;
+                    case 'ROLE_AUTH_EXCEPTION':
+                        throw new AuthenticationCredentialsNotFoundException();
+                    case 'ROLE_FOO_BAR_DEF':
+                        return $object instanceof \stdClass;
+                    default:
+                        return false;
                 }
+            });
 
-                if (\in_array('ROLE_IRONMAN', $attributes, true)) {
-                    return true;
-                }
-
-                if (\in_array('ROLE_AUTH_EXCEPTION', $attributes, true)) {
-                    throw new AuthenticationCredentialsNotFoundException();
-                }
-
-                if (\in_array('ROLE_FOO_BAR_ABC', $attributes, true)) {
-                    return true;
-                }
-
-                if (\in_array('ROLE_FOO_BAR_DEF', $attributes, true) && is_a($object, 'stdClass')) {
-                    return true;
-                }
-
-                if (\in_array('ROLE_FOO_BAR_BAZ_ALL', $attributes, true)) {
-                    return true;
-                }
-
-                return false;
-            }));
-
-        $this->assertSame($expected, $handler->isGranted($this->admin, $operation, $object));
+        static::assertSame($expected, $handler->isGranted($this->admin, $operation, $object));
     }
 
-    public function getIsGrantedTests()
+    public function getIsGrantedTests(): array
     {
         return [
-            //empty
+            // empty
             [false, [''], 'foo.bar', ''],
             [false, [''], 'foo.bar', ['']],
             [false, [''], 'foo.bar.abc', ['']],
@@ -121,7 +110,7 @@ class RoleSecurityHandlerTest extends TestCase
             [false, [''], 'foo.bar.baz.xyz', ''],
             [false, [''], 'foo.bar.baz.xyz', ['']],
 
-            //superadmins
+            // superadmins
             [true, ['ROLE_BATMAN', 'ROLE_IRONMAN'], 'foo.bar', 'BAZ'],
             [true, ['ROLE_BATMAN', 'ROLE_IRONMAN'], 'foo.bar', 'ANYTHING'],
             [true, ['ROLE_BATMAN', 'ROLE_IRONMAN'], 'foo.bar', ['BAZ', 'ANYTHING']],
@@ -131,7 +120,7 @@ class RoleSecurityHandlerTest extends TestCase
             [true, ['ROLE_IRONMAN'], 'foo.bar', ''],
             [true, ['ROLE_IRONMAN'], 'foo.bar', ['']],
 
-            //operations
+            // operations
             [true, ['ROLE_SPIDERMAN'], 'foo.bar', 'ABC'],
             [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['ABC']],
             [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['ABC', 'DEF']],
@@ -154,7 +143,7 @@ class RoleSecurityHandlerTest extends TestCase
             [false, [], 'foo.bar.baz.xyz', 'BAZ'],
             [false, [], 'foo.bar.baz.xyz', ['BAZ']],
 
-            //objects
+            // objects
             [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['DEF'], new \stdClass()],
             [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['ABC'], new \stdClass()],
             [true, ['ROLE_SPIDERMAN'], 'foo.bar', ['ABC', 'DEF'], new \stdClass()],
@@ -174,6 +163,11 @@ class RoleSecurityHandlerTest extends TestCase
             [false, [], 'foo.bar.baz.xyz', ['BAZ'], new \stdClass()],
             [false, ['ROLE_AUTH_EXCEPTION'], 'foo.bar.baz.xyz', ['BAZ'], new \stdClass()],
 
+            // role
+            [false, [], 'foo.bar', ['CUSTOM']],
+            [true, [], 'foo.bar', ['ROLE_CUSTOM']],
+            [false, [], 'foo.bar', ['ROLE_ANOTHER_CUSTOM']],
+
             // ALL role
             [true, [], 'foo.bar.baz', 'LIST'],
             [true, [], 'foo.bar.baz', ['LIST', 'EDIT']],
@@ -182,38 +176,45 @@ class RoleSecurityHandlerTest extends TestCase
 
     public function testIsGrantedWithException(): void
     {
-        $this->expectException(\RuntimeException::class, 'Something is wrong');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Something is wrong');
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getCode')
-            ->will($this->returnValue('foo.bar'));
+            ->willReturn('foo.bar');
 
-        $this->authorizationChecker->expects($this->any())
+        $this->authorizationChecker
             ->method('isGranted')
-            ->will($this->returnCallback(function (array $attributes, $object): void {
+            ->willReturnCallback(static function (): void {
                 throw new \RuntimeException('Something is wrong');
-            }));
+            });
 
         $handler = $this->getRoleSecurityHandler(['ROLE_BATMAN']);
         $handler->isGranted($this->admin, 'BAZ');
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testCreateObjectSecurity(): void
     {
         $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
-        $this->assertNull($handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
+        $handler->createObjectSecurity($this->getSonataAdminObject(), new \stdClass());
     }
 
+    /**
+     * @doesNotPerformAssertions
+     */
     public function testDeleteObjectSecurity(): void
     {
         $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
-        $this->assertNull($handler->deleteObjectSecurity($this->getSonataAdminObject(), new \stdClass()));
+        $handler->deleteObjectSecurity($this->getSonataAdminObject(), new \stdClass());
     }
 
     public function testBuildSecurityInformation(): void
     {
         $handler = $this->getRoleSecurityHandler(['ROLE_FOO']);
-        $this->assertSame([], $handler->buildSecurityInformation($this->getSonataAdminObject()));
+        static::assertSame([], $handler->buildSecurityInformation($this->getSonataAdminObject()));
     }
 
     private function getRoleSecurityHandler(array $superAdminRoles): RoleSecurityHandler

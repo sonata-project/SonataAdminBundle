@@ -13,64 +13,28 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Guesser;
 
-use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
-use Symfony\Component\Form\Guess\Guess;
+if (!class_exists(\Sonata\AdminBundle\FieldDescription\TypeGuesserChain::class, false)) {
+    @trigger_error(sprintf(
+        'The %s\TypeGuesserChain class is deprecated since sonata-project/admin-bundle 3.92 and will be removed in 4.0.'
+        .' Use \Sonata\AdminBundle\FieldDescription\TypeGuesserChain instead.',
+        __NAMESPACE__
+    ), \E_USER_DEPRECATED);
+}
 
-/**
- * The code is based on Symfony2 Form Components.
- *
- * @author Bernhard Schussek <bernhard.schussek@symfony.com>
- * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+class_alias(
+    \Sonata\AdminBundle\FieldDescription\TypeGuesserChain::class,
+    __NAMESPACE__.'\TypeGuesserChain'
+);
+
+/*
+ * @phpstan-ignore-next-line
  */
-class TypeGuesserChain implements TypeGuesserInterface
-{
+if (false) {
     /**
-     * @var array
+     * @deprecated since sonata-project/admin-bundle 3.92, to be removed in 4.0.
+     * Use Sonata\AdminBundle\FieldDescription\TypeGuesserChain instead.
      */
-    protected $guessers = [];
-
-    public function __construct(array $guessers)
+    class TypeGuesserChain extends \Sonata\AdminBundle\FieldDescription\TypeGuesserChain
     {
-        foreach ($guessers as $guesser) {
-            if (!$guesser instanceof TypeGuesserInterface) {
-                throw new UnexpectedTypeException($guesser, TypeGuesserInterface::class);
-            }
-
-            if ($guesser instanceof self) {
-                $this->guessers = array_merge($this->guessers, $guesser->guessers);
-            } else {
-                $this->guessers[] = $guesser;
-            }
-        }
-    }
-
-    public function guessType($class, $property, ModelManagerInterface $modelManager)
-    {
-        return $this->guess(function ($guesser) use ($class, $property, $modelManager) {
-            return $guesser->guessType($class, $property, $modelManager);
-        });
-    }
-
-    /**
-     * Executes a closure for each guesser and returns the best guess from the
-     * return values.
-     *
-     * @param \Closure $closure The closure to execute. Accepts a guesser
-     *                          as argument and should return a Guess instance
-     *
-     * @return Guess The guess with the highest confidence
-     */
-    private function guess(\Closure $closure): Guess
-    {
-        $guesses = [];
-
-        foreach ($this->guessers as $guesser) {
-            if ($guess = $closure($guesser)) {
-                $guesses[] = $guess;
-            }
-        }
-
-        return Guess::getBestGuess($guesses);
     }
 }

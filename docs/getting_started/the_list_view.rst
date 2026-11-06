@@ -172,9 +172,12 @@ the search field to use the ``name`` property of the Category::
         {
             $datagridMapper
                 ->add('title')
-                ->add('category', null, [], EntityType::class, [
-                    'class' => Category::class,
-                    'choice_label' => 'name',
+                ->add('category', null, [
+                    'field_type' => EntityType::class,
+                    'field_options' => [
+                        'class' => Category::class,
+                        'choice_label' => 'name',
+                    ],
                 ])
             ;
         }

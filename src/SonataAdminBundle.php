@@ -14,11 +14,18 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle;
 
 use Mopa\Bundle\BootstrapBundle\Form\Type\TabType;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AddAuditReadersCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddDependencyCallsCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AddFilterTypeCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AdminAddInitializeCallCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\AdminMakerCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AdminSearchCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\AliasDeprecatedPublicServicesCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\DependencyInjection\Compiler\GlobalVariablesCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ModelManagerCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\ObjectAclManipulatorCompilerPass;
+use Sonata\AdminBundle\DependencyInjection\Compiler\TwigStringExtensionCompilerPass;
 use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType;
 use Sonata\AdminBundle\Form\Type\CollectionType;
@@ -35,22 +42,29 @@ use Sonata\AdminBundle\Form\Type\ModelListType;
 use Sonata\AdminBundle\Form\Type\ModelReferenceType;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use Sonata\CoreBundle\Form\FormHelper;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
+/**
+ * @final since sonata-project/admin-bundle 3.52
+ */
 class SonataAdminBundle extends Bundle
 {
     public function build(ContainerBuilder $container)
     {
         $container->addCompilerPass(new AddDependencyCallsCompilerPass());
         $container->addCompilerPass(new AddFilterTypeCompilerPass());
+        $container->addCompilerPass(new AdminSearchCompilerPass());
         $container->addCompilerPass(new ExtensionCompilerPass());
         $container->addCompilerPass(new GlobalVariablesCompilerPass());
-
-        $bundles = $container->getParameter('kernel.bundles');
-        if (isset($bundles['MakerBundle'])) {
-            $container->addCompilerPass(new AdminMakerCompilerPass());
-        }
+        $container->addCompilerPass(new ModelManagerCompilerPass());
+        $container->addCompilerPass(new ObjectAclManipulatorCompilerPass());
+        $container->addCompilerPass(new TwigStringExtensionCompilerPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 1);
+        $container->addCompilerPass(new AdminMakerCompilerPass());
+        $container->addCompilerPass(new AddAuditReadersCompilerPass());
+        $container->addCompilerPass(new AliasDeprecatedPublicServicesCompilerPass(), PassConfig::TYPE_AFTER_REMOVING);
+        $container->addCompilerPass(new AdminAddInitializeCallCompilerPass(), PassConfig::TYPE_BEFORE_REMOVING, -100);
 
         $this->registerFormMapping();
     }
@@ -62,10 +76,16 @@ class SonataAdminBundle extends Bundle
 
     /**
      * Register form mapping information.
+     *
+     * NEXT_MAJOR: remove this method
      */
     public function registerFormMapping()
     {
-        FormHelper::registerFormTypeMapping([
+        if (!class_exists(FormHelper::class)) {
+            return;
+        }
+
+        $formMapping = [
             'sonata_type_admin' => AdminType::class,
             'sonata_type_model' => ModelType::class,
             'sonata_type_model_list' => ModelListType::class,
@@ -81,8 +101,13 @@ class SonataAdminBundle extends Bundle
             'sonata_type_filter_date_range' => DateRangeType::class,
             'sonata_type_filter_datetime' => DateTimeType::class,
             'sonata_type_filter_datetime_range' => DateTimeRangeType::class,
-            'tab' => TabType::class,
-        ]);
+        ];
+
+        if (class_exists(TabType::class)) {
+            $formMapping['tab'] = TabType::class;
+        }
+
+        FormHelper::registerFormTypeMapping($formMapping);
 
         FormHelper::registerFormExtensionMapping('form', [
             'sonata.admin.form.extension.field',

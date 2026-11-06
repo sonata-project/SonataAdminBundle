@@ -42,7 +42,7 @@ file that was distributed with this source code.
                                     {% if (currentRevision == false or revision.rev == currentRevision.rev) %}
                                         /
                                     {% else %}
-                                        <a href="{{ admin.generateObjectUrl('history_compare_revisions', object, {'base_revision': currentRevision.rev, 'compare_revision': revision.rev }) }}" class="revision-compare-link" rel="{{ revision.rev }}">{{ 'label_compare_revision'|trans({}, 'SonataAdminBundle') }}</a>
+                                        <a href="{{ admin.generateObjectUrl('history_compare_revisions', object, {'baseRevision': currentRevision.rev, 'compareRevision': revision.rev }) }}" class="revision-compare-link" rel="{{ revision.rev }}">{{ 'label_compare_revision'|trans({}, 'SonataAdminBundle') }}</a>
                                     {% endif %}
                                 </td>
                             </tr>

@@ -9,12 +9,14 @@ file that was distributed with this source code.
 
 #}
 
-<div id="sonata-ba-field-container-{{ field_element.vars.id }}" class="sonata-ba-field sonata-ba-field-{{ edit }}-{{ inline }} {% if field_element.vars.errors|length %}sonata-ba-field-error{% endif %}">
+{% deprecated 'The "base_inline_edit_field.html.twig" is deprecated since sonata-project/admin-bundle 3.74 and will be removed in 4.0' %}
+
+<div id="sonata-ba-field-container-{{ field_element.vars.id }}" class="sonata-ba-field sonata-ba-field-{{ edit }}-{{ inline }}{% if field_element.vars.errors|length %} sonata-ba-field-error{% endif %}">
 
     {% block label %}
         {% if inline == 'natural' %}
-            {% if field_description.options.name is defined %}
-                {{ form_label(field_element, field_description.options.name) }}
+            {% if field_description.option('name') %}
+                {{ form_label(field_element, field_description.option('name')) }}
             {% else %}
                 {{ form_label(field_element) }}
             {% endif %}

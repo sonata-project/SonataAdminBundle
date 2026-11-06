@@ -7,7 +7,7 @@ as defined by your ``Admin`` services. This is useful to help you start using
 advantage of the Dashboard.
 
 The Dashboard is, by default, available at ``/admin/dashboard``, which is handled by
-the ``SonataAdminBundle:Core:dashboard`` controller action. The default view file for
+the ``Sonata\AdminBundle\Action\DashboardAction`` controller action. The default view file for
 this action is ``@SonataAdmin/Core/dashboard.html.twig``, but you can change
 this in your admin configuration:
 
@@ -295,7 +295,7 @@ suit this scenario.
 In this example, you would have two ``admin_list`` blocks on your dashboard, each
 of them containing the respectively configured groups.
 
-.. _`SonataBlock documentation page`:  https://sonata-project.org/bundles/block/master/doc/index.html
+.. _`SonataBlock documentation page`: https://docs.sonata-project.org/projects/SonataBlockBundle/en/3.x/
 
 Statistic Block
 ~~~~~~~~~~~~~~~
@@ -318,11 +318,61 @@ counter is related to the filters from one admin
                         type:     sonata.admin.block.stats   # block id
                         settings:
                             code:  sonata.page.admin.page    # admin code - service id
-                            icon:  fa-magic                  # font awesome icon
-                            text:  Edited Pages
+                            icon:  fa fa-magic               # font awesome icon
+                            text:  app.page.stats            # static text or translation message
                             color: bg-yellow                 # colors: bg-green, bg-red and bg-aqua
                             filters:                         # filter values
                                 edited: { value: 1 }
+
+The block configuration for ``settings.text`` accepts static text or a translation message,
+which could also have a pluralized translation target:
+
+.. code-block:: xml
+
+    <!-- messages.en.xlf -->
+
+    <trans-unit id="app.page.stats">
+        <source>app.page.stats</source>
+        <target>{0} results|{1} result|]1,Inf] results</target>
+    </trans-unit>
+
+**If you're using ``symfony/translation`` >= 4.2, you can also opt in for the ICU Message Format**
+
+.. code-block:: xml
+
+    <!-- messages+intl-icu.en.xlf -->
+
+    <trans-unit id="app.page.stats">
+        <source>app.page.stats</source>
+        <target>{count, plural, =0 {results} one {result} other {results}}</target>
+    </trans-unit>
+
+Preview Block
+~~~~~~~~~~~~~
+
+A preview block can be used to display a brief of an admin list.
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/packages/sonata_admin.yaml
+
+        sonata_admin:
+            dashboard:
+                blocks:
+                    -
+                        position: top                              # zone in the dashboard
+                        type:     sonata.admin.block.admin_preview # block id
+                        settings:
+                            code:  sonata.page.admin.page          # admin code - service id
+                            icon:  fa fa-magic                     # font awesome icon
+                            limit: 10
+                            text:  Latest Edited Pages
+                            filters:                               # filter values
+                                edited:      { value: 1 }
+                                _sort_by:    updatedAt
+                                _sort_order: DESC
 
 Dashboard Layout
 ~~~~~~~~~~~~~~~~

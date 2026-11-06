@@ -16,11 +16,17 @@ namespace Sonata\AdminBundle\Mapper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 
 /**
+ * NEXT_MAJOR: Stop extending BaseMapper.
+ *
  * This class is used to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
+ * @phpstan-implements MapperInterface<T>
+ * @phpstan-extends BaseMapper<T>
  */
-abstract class BaseGroupedMapper extends BaseMapper
+abstract class BaseGroupedMapper extends BaseMapper implements MapperInterface
 {
     /**
      * @var string|null
@@ -33,21 +39,28 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected $currentTab;
 
     /**
-     * @var bool|null
+     * @var bool[]
      */
-    protected $apply;
+    protected $apply = [];
 
     /**
+     * @final since sonata-project/admin-bundle 3.99.
+     *
      * Add new group or tab (if parameter "tab=true" is available in options).
      *
-     * @param string $name
+     * @param string               $name
+     * @param array<string, mixed> $options
      *
-     * @throws \RuntimeException
+     * @throws \LogicException
      *
-     * @return $this
+     * @return static
      */
     public function with($name, array $options = [])
     {
+        if (!$this->shouldApply()) {
+            return $this;
+        }
+
         /*
          * The current implementation should work with the following workflow:
          *
@@ -73,15 +86,17 @@ abstract class BaseGroupedMapper extends BaseMapper
             'class' => false,
             'description' => false,
             'label' => $name, // NEXT_MAJOR: Remove this line and uncomment the next one
-//            'label' => $this->admin->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group'),
+//            'label' => $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group'),
             'translation_domain' => null,
             'name' => $name,
             'box_class' => 'box box-primary',
+            'empty_message' => 'message_form_group_empty',
+            'empty_message_translation_domain' => 'SonataAdminBundle',
         ];
 
         // NEXT_MAJOR: remove this code
-        if ($this->admin instanceof AbstractAdmin && $pool = $this->admin->getConfigurationPool()) {
-            if ($pool->getContainer()->getParameter('sonata.admin.configuration.translate_group_label')) {
+        if ($this->admin instanceof AbstractAdmin && $pool = $this->admin->getConfigurationPool('sonata_deprecation_mute')) {
+            if ($pool->getContainer('sonata_deprecation_mute')->getParameter('sonata.admin.configuration.translate_group_label')) {
                 $defaultOptions['label'] = $this->admin->getLabelTranslatorStrategy()->getLabel($name, $this->getName(), 'group');
             }
         }
@@ -94,12 +109,18 @@ abstract class BaseGroupedMapper extends BaseMapper
 
             if ($this->currentTab) {
                 if (isset($tabs[$this->currentTab]['auto_created']) && true === $tabs[$this->currentTab]['auto_created']) {
-                    throw new \RuntimeException('New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.');
+                    throw new \LogicException('New tab was added automatically when you have added field or group. You should close current tab before adding new one OR add tabs before adding groups and fields.');
                 }
 
-                throw new \RuntimeException(sprintf('You should close previous tab "%s" with end() before adding new tab "%s".', $this->currentTab, $name));
-            } elseif ($this->currentGroup) {
-                throw new \RuntimeException(sprintf('You should open tab before adding new group "%s".', $name));
+                throw new \LogicException(sprintf(
+                    'You should close previous tab "%s" with end() before adding new tab "%s".',
+                    $this->currentTab,
+                    $name
+                ));
+            }
+
+            if ($this->currentGroup) {
+                throw new \LogicException(sprintf('You should open tab before adding new group "%s".', $name));
             }
 
             if (!isset($tabs[$name])) {
@@ -114,7 +135,11 @@ abstract class BaseGroupedMapper extends BaseMapper
             $this->currentTab = $code;
         } else {
             if ($this->currentGroup) {
-                throw new \RuntimeException(sprintf('You should close previous group "%s" with end() before adding new tab "%s".', $this->currentGroup, $name));
+                throw new \LogicException(sprintf(
+                    'You should close previous group "%s" with end() before adding new tab "%s".',
+                    $this->currentGroup,
+                    $name
+                ));
             }
 
             if (!$this->currentTab) {
@@ -128,7 +153,8 @@ abstract class BaseGroupedMapper extends BaseMapper
 
             // if no tab is selected, we go the the main one named '_' ..
             if ('default' !== $this->currentTab) {
-                $code = $this->currentTab.'.'.$name; // groups with the same name can be on different tabs, so we prefix them in order to make unique group name
+                // groups with the same name can be on different tabs, so we prefix them in order to make unique group name
+                $code = sprintf('%s.%s', $this->currentTab, $name);
             }
 
             $groups = $this->getGroups();
@@ -155,61 +181,64 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.99.
+     *
      * Only nested add if the condition match true.
      *
      * @param bool $bool
      *
-     * @throws \RuntimeException
-     *
-     * @return $this
+     * @return static
      */
     public function ifTrue($bool)
     {
-        if (null !== $this->apply) {
-            throw new \RuntimeException('Cannot nest ifTrue or ifFalse call');
-        }
-
-        $this->apply = (true === $bool);
+        $this->apply[] = true === $bool;
 
         return $this;
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.99.
+     *
      * Only nested add if the condition match false.
      *
      * @param bool $bool
      *
-     * @throws \RuntimeException
-     *
-     * @return $this
+     * @return static
      */
     public function ifFalse($bool)
     {
-        if (null !== $this->apply) {
-            throw new \RuntimeException('Cannot nest ifTrue or ifFalse call');
-        }
-
-        $this->apply = (false === $bool);
+        $this->apply[] = false === $bool;
 
         return $this;
     }
 
     /**
-     * @return $this
+     * @final since sonata-project/admin-bundle 3.99.
+     *
+     * @throws \LogicException
+     *
+     * @return static
      */
     public function ifEnd()
     {
-        $this->apply = null;
+        if (empty($this->apply)) {
+            throw new \LogicException('No open ifTrue() or ifFalse(), you cannot use ifEnd()');
+        }
+
+        array_pop($this->apply);
 
         return $this;
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.99.
+     *
      * Add new tab.
      *
-     * @param string $name
+     * @param string               $name
+     * @param array<string, mixed> $options
      *
-     * @return $this
+     * @return static
      */
     public function tab($name, array $options = [])
     {
@@ -217,26 +246,34 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.99.
+     *
      * Close the current group or tab.
      *
-     * @throws \RuntimeException
+     * @throws \LogicException
      *
-     * @return $this
+     * @return static
      */
     public function end()
     {
+        if (!$this->shouldApply()) {
+            return $this;
+        }
+
         if (null !== $this->currentGroup) {
             $this->currentGroup = null;
         } elseif (null !== $this->currentTab) {
             $this->currentTab = null;
         } else {
-            throw new \RuntimeException('No open tabs or groups, you cannot use end()');
+            throw new \LogicException('No open tabs or groups, you cannot use end()');
         }
 
         return $this;
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.99.
+     *
      * Returns a boolean indicating if there is an open tab at the moment.
      *
      * @return bool
@@ -247,17 +284,96 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
-     * @return array
+     * @final since sonata-project/admin-bundle 3.99.
+     *
+     * Removes a group.
+     *
+     * @param string $group          The group to delete
+     * @param string $tab            The tab the group belongs to, defaults to 'default'
+     * @param bool   $deleteEmptyTab Whether or not the Tab should be deleted, when the deleted group leaves the tab empty after deletion
+     *
+     * @return static
+     */
+    public function removeGroup($group, $tab = 'default', $deleteEmptyTab = false)
+    {
+        $groups = $this->getGroups();
+
+        // When the default tab is used, the tabname is not prepended to the index in the group array
+        if ('default' !== $tab) {
+            $group = sprintf('%s.%s', $tab, $group);
+        }
+
+        if (isset($groups[$group])) {
+            foreach ($groups[$group]['fields'] as $field) {
+                $this->remove($field);
+            }
+        }
+        unset($groups[$group]);
+
+        $tabs = $this->getTabs();
+        $key = array_search($group, $tabs[$tab]['groups'], true);
+
+        if (false !== $key) {
+            unset($tabs[$tab]['groups'][$key]);
+        }
+        if ($deleteEmptyTab && 0 === \count($tabs[$tab]['groups'])) {
+            unset($tabs[$tab]);
+        }
+
+        $this->setTabs($tabs);
+        $this->setGroups($groups);
+
+        return $this;
+    }
+
+    /**
+     * @final since sonata-project/admin-bundle 3.99.
+     *
+     * Removes a tab.
+     *
+     * @return static
+     */
+    public function removeTab(string $tab): self
+    {
+        $groups = $this->getGroups();
+        $tabs = $this->getTabs();
+
+        foreach ($tabs[$tab]['groups'] as $group) {
+            if (isset($groups[$group])) {
+                foreach ($groups[$group]['fields'] as $field) {
+                    $this->remove($field);
+                }
+            }
+
+            unset($groups[$group]);
+        }
+
+        unset($tabs[$tab]);
+
+        $this->setTabs($tabs);
+        $this->setGroups($groups);
+
+        return $this;
+    }
+
+    /**
+     * @return array<string, array<string, mixed>>
      */
     abstract protected function getGroups();
 
     /**
-     * @return array
+     * @return array<string, array<string, mixed>>
      */
     abstract protected function getTabs();
 
+    /**
+     * @param array<string, array<string, mixed>> $groups
+     */
     abstract protected function setGroups(array $groups);
 
+    /**
+     * @param array<string, array<string, mixed>> $tabs
+     */
     abstract protected function setTabs(array $tabs);
 
     /**
@@ -267,15 +383,22 @@ abstract class BaseGroupedMapper extends BaseMapper
      */
     protected function getName()
     {
-        @trigger_error(__METHOD__.' should be implemented and will be abstract in 4.0.', E_USER_DEPRECATED);
+        @trigger_error(sprintf(
+            '%s should be implemented and will be abstract in 4.0.',
+            __METHOD__
+        ), \E_USER_DEPRECATED);
 
         return 'default';
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.99.
+     *
      * Add the field name to the current group.
      *
      * @param string $fieldName
+     *
+     * @return array<string, mixed>
      */
     protected function addFieldToCurrentGroup($fieldName)
     {
@@ -290,6 +413,8 @@ abstract class BaseGroupedMapper extends BaseMapper
     }
 
     /**
+     * @final since sonata-project/admin-bundle 3.99.
+     *
      * Return the name of the currently selected group. The method also makes
      * sure a valid group name is currently selected.
      *
@@ -301,9 +426,29 @@ abstract class BaseGroupedMapper extends BaseMapper
     protected function getCurrentGroupName()
     {
         if (!$this->currentGroup) {
-            $this->with($this->admin->getLabel(), ['auto_created' => true]);
+            $label = $this->getAdmin()->getLabel();
+
+            if (null === $label) {
+                $this->with('default', [
+                    'auto_created' => true,
+                    'translation_domain' => null,
+                ]);
+            } else {
+                $this->with($label, [
+                    'auto_created' => true,
+                    'translation_domain' => $this->getAdmin()->getTranslationDomain(),
+                ]);
+            }
         }
 
         return $this->currentGroup;
+    }
+
+    /**
+     * Check if all apply conditions are respected.
+     */
+    final protected function shouldApply(): bool
+    {
+        return !\in_array(false, $this->apply, true);
     }
 }

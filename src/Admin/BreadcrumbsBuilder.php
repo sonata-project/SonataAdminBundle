@@ -72,7 +72,7 @@ class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
     public function buildBreadcrumbs(
         AdminInterface $admin,
         $action,
-        ItemInterface $menu = null
+        ?ItemInterface $menu = null
     ): ItemInterface {
         if (!$menu) {
             $menu = $admin->getMenuFactory()->createItem('root');
@@ -100,14 +100,14 @@ class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
 
         $childAdmin = $admin->getCurrentChildAdmin();
 
-        if ($childAdmin) {
+        if ($childAdmin && $admin->hasSubject()) {
             $id = $admin->getRequest()->get($admin->getIdParameter());
 
             $menu = $menu->addChild(
                 $admin->toString($admin->getSubject()),
                 [
                     'uri' => $admin->hasRoute($this->config['child_admin_route']) && $admin->hasAccess($this->config['child_admin_route'], $admin->getSubject()) ?
-                    $admin->generateUrl($this->config['child_admin_route'], ['id' => $id]) :
+                    $admin->generateUrl($this->config['child_admin_route'], [$admin->getIdParameter() => $id]) :
                     null,
                     'extras' => [
                         'translation_domain' => false,
@@ -121,7 +121,7 @@ class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
         }
 
         if ('list' === $action) {
-            $menu->setUri(false);
+            $menu->setUri(null);
 
             return $menu;
         }
@@ -145,11 +145,11 @@ class BreadcrumbsBuilder implements BreadcrumbsBuilderInterface
      * Creates a new menu item from a simple name. The name is normalized and
      * translated with the specified translation domain.
      *
-     * @param AdminInterface $admin             used for translation
-     * @param ItemInterface  $menu              will be modified and returned
-     * @param string         $name              the source of the final label
-     * @param string         $translationDomain for label translation
-     * @param array          $options           menu item options
+     * @param AdminInterface       $admin             used for translation
+     * @param ItemInterface        $menu              will be modified and returned
+     * @param string               $name              the source of the final label
+     * @param string               $translationDomain for label translation
+     * @param array<string, mixed> $options           menu item options
      */
     private function createMenuItem(
         AdminInterface $admin,

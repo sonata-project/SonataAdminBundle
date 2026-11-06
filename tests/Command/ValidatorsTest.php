@@ -24,12 +24,12 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateUsernameTests
      */
-    public function testValidateUsername($expected, $value): void
+    public function testValidateUsername(string $expected, string $value): void
     {
-        $this->assertSame($expected, Validators::validateUsername($value));
+        static::assertSame($expected, Validators::validateUsername($value));
     }
 
-    public function getValidateUsernameTests()
+    public function getValidateUsernameTests(): array
     {
         return [
             ['Foo', 'Foo'],
@@ -37,32 +37,29 @@ class ValidatorsTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getValidateUsernameWithExceptionTests
-     */
-    public function testValidateUsernameWithException($value): void
+    public function testValidateUsernameWithException(): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
-        Validators::validateUsername($value);
-    }
-
-    public function getValidateUsernameWithExceptionTests()
-    {
-        return [
-            [null],
-        ];
+        Validators::validateUsername(null);
     }
 
     /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     *
      * @dataProvider getValidateEntityNameTests
      */
-    public function testValidateEntityName($expected, $value): void
+    public function testValidateEntityName(array $expected, string $value): void
     {
-        $this->assertSame($expected, Validators::validateEntityName($value));
+        static::assertSame($expected, Validators::validateEntityName($value));
     }
 
-    public function getValidateEntityNameTests()
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
+    public function getValidateEntityNameTests(): array
     {
         return [
             [['AcmeBlogBundle', 'Post'], 'AcmeBlogBundle:Post'],
@@ -72,16 +69,23 @@ class ValidatorsTest extends TestCase
     }
 
     /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     *
      * @dataProvider getValidateEntityNamesWithExceptionTests
      */
-    public function testValidateEntityNameWithException($value): void
+    public function testValidateEntityNameWithException(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Validators::validateEntityName($value);
     }
 
-    public function getValidateEntityNamesWithExceptionTests()
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
+    public function getValidateEntityNamesWithExceptionTests(): array
     {
         return [
             ['Sonata\AdminBundle\Admin\AbstractAdmin'],
@@ -97,9 +101,9 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateClassTests
      */
-    public function testValidateClass($expected, $value): void
+    public function testValidateClass(string $expected, string $value): void
     {
-        $this->assertSame($expected, Validators::validateClass($value));
+        static::assertSame($expected, Validators::validateClass($value));
     }
 
     public function getValidateClassTests()
@@ -113,7 +117,7 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateClassWithExceptionTests
      */
-    public function testValidateClassWithException($value): void
+    public function testValidateClassWithException(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
@@ -132,9 +136,9 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateAdminClassBasenameTests
      */
-    public function testValidateAdminClassBasename($expected, $value): void
+    public function testValidateAdminClassBasename(string $expected, string $value): void
     {
-        $this->assertSame($expected, Validators::validateAdminClassBasename($value));
+        static::assertSame($expected, Validators::validateAdminClassBasename($value));
     }
 
     public function getValidateAdminClassBasenameTests()
@@ -149,14 +153,14 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateAdminClassBasenameWithExceptionTests
      */
-    public function testValidateAdminClassBasenameWithException($value): void
+    public function testValidateAdminClassBasenameWithException(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Validators::validateAdminClassBasename($value);
     }
 
-    public function getValidateAdminClassBasenameWithExceptionTests()
+    public function getValidateAdminClassBasenameWithExceptionTests(): array
     {
         return [
             ['Foo:BarAdmin'],
@@ -168,9 +172,9 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateControllerClassBasenameTests
      */
-    public function testValidateControllerClassBasename($expected, $value): void
+    public function testValidateControllerClassBasename(string $expected, string $value): void
     {
-        $this->assertSame($expected, Validators::validateControllerClassBasename($value));
+        static::assertSame($expected, Validators::validateControllerClassBasename($value));
     }
 
     public function getValidateControllerClassBasenameTests()
@@ -185,14 +189,14 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateControllerClassBasenameWithExceptionTests
      */
-    public function testValidateControllerClassBasenameWithException($value): void
+    public function testValidateControllerClassBasenameWithException(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Validators::validateControllerClassBasename($value);
     }
 
-    public function getValidateControllerClassBasenameWithExceptionTests()
+    public function getValidateControllerClassBasenameWithExceptionTests(): array
     {
         return [
             [' foobar '],
@@ -221,12 +225,12 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateServicesFileTests
      */
-    public function testValidateServicesFile($expected, $value): void
+    public function testValidateServicesFile(string $expected, string $value): void
     {
-        $this->assertSame($expected, Validators::validateServicesFile($value));
+        static::assertSame($expected, Validators::validateServicesFile($value));
     }
 
-    public function getValidateServicesFileTests()
+    public function getValidateServicesFileTests(): array
     {
         return [
             ['foobar', 'foobar'],
@@ -242,12 +246,12 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateServiceIdTests
      */
-    public function testValidateServiceId($value): void
+    public function testValidateServiceId(string $value): void
     {
-        $this->assertSame($value, Validators::validateServiceId($value));
+        static::assertSame($value, Validators::validateServiceId($value));
     }
 
-    public function getValidateServiceIdTests()
+    public function getValidateServiceIdTests(): array
     {
         return [
             ['abcdefghijklmnopqrstuvwxyz.ABCDEFGHIJKLMNOPQRSTUVWXYZ_0123456789'],
@@ -259,14 +263,14 @@ class ValidatorsTest extends TestCase
     /**
      * @dataProvider getValidateServiceIdWithExceptionTests
      */
-    public function testValidateServiceIdWithException($value): void
+    public function testValidateServiceIdWithException(string $value): void
     {
         $this->expectException(\InvalidArgumentException::class);
 
         Validators::validateServiceId($value);
     }
 
-    public function getValidateServiceIdWithExceptionTests()
+    public function getValidateServiceIdWithExceptionTests(): array
     {
         return [
             [' foobar '],

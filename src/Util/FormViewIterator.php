@@ -16,12 +16,14 @@ namespace Sonata\AdminBundle\Util;
 use Symfony\Component\Form\FormView;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FormViewIterator implements \RecursiveIterator
 {
     /**
-     * @var \ArrayIterator
+     * @var \ArrayIterator<string, FormView>
      */
     protected $iterator;
 
@@ -40,6 +42,9 @@ class FormViewIterator implements \RecursiveIterator
         return \count($this->current()->children) > 0;
     }
 
+    /**
+     * @return FormView
+     */
     public function current()
     {
         return $this->iterator->current();

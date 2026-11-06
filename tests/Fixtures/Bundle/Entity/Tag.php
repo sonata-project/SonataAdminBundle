@@ -13,34 +13,17 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
-
 class Tag
 {
-    private $posts;
+    private $post;
 
-    public function __construct()
+    public function setPost(Post $post): void
     {
-        $this->posts = new ArrayCollection();
+        $this->post = $post;
     }
 
-    public function setPosts($posts): void
+    public function getPost(): ?Post
     {
-        $this->posts = $posts;
-    }
-
-    public function getPosts()
-    {
-        return $this->posts;
-    }
-
-    public function addPost(Post $post): void
-    {
-        $this->posts[] = $post;
-    }
-
-    public function removePost(Post $post): void
-    {
-        $this->posts->removeElement($post);
+        return $this->post;
     }
 }

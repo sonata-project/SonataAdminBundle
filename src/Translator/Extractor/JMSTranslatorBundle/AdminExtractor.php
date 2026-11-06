@@ -25,6 +25,13 @@ use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
 use Sonata\AdminBundle\Translator\LabelTranslatorStrategyInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
+/**
+ * NEXT_MAJOR: Remove this class and the jms/translation-bundle dev dependency.
+ *
+ * @deprecated since sonata-project/admin-bundle 3.72. Use `translation:update` Symfony command instead.
+ *
+ * @final since sonata-project/admin-bundle 3.52
+ */
 class AdminExtractor implements ExtractorInterface, TranslatorInterface, SecurityHandlerInterface, LabelTranslatorStrategyInterface
 {
     /**
@@ -62,7 +69,7 @@ class AdminExtractor implements ExtractorInterface, TranslatorInterface, Securit
      */
     private $breadcrumbsBuilder;
 
-    public function __construct(Pool $adminPool, LoggerInterface $logger = null)
+    public function __construct(Pool $adminPool, ?LoggerInterface $logger = null)
     {
         $this->logger = $logger;
         $this->adminPool = $adminPool;

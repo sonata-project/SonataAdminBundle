@@ -23,9 +23,12 @@ file that was distributed with this source code.
                             style="display:none;"
                         {% endif %}
                     >
-                        {{ nested_field.vars.label|trans({}, nested_field.vars['sonata_admin'].admin.translationDomain
-                            |default(nested_field.vars.translation_domain)
-                        ) }}
+                        {% if nested_field.vars.translation_domain is same as(false) %}
+                            {{ nested_field.vars.label }}
+                        {% else %}
+                            {% set translationDomain = nested_field.vars.translation_domain|default(nested_field.vars['sonata_admin'].admin.translationDomain|default(null)) %}
+                            {{ nested_field.vars.label|trans({}, translationDomain) }}
+                        {% endif %}
                     </th>
                 {% endif %}
             {% endfor %}
@@ -36,9 +39,10 @@ file that was distributed with this source code.
             <tr>
                 {% for field_name, nested_field in nested_group_field.children %}
                     <td class="
-                        sonata-ba-td-{{ id }}-{{ field_name  }}
+                        sonata-ba-td-{{ id }}-{{ field_name }}
+                        form-group
                         control-group
-                        {% if nested_field.vars.errors|default(false) %} error sonata-ba-field-error{% endif %}
+                        {% if nested_field.vars.errors|default(false) %} error has-error sonata-ba-field-error{% endif %}
                         "
                         {% if nested_field.vars['attr']['hidden']|default(false) %}
                             style="display:none;"
@@ -46,6 +50,21 @@ file that was distributed with this source code.
                     >
                         {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name] is defined %}
                             {{ form_widget(nested_field) }}
+
+                            {# NEXT_MAJOR: Remove this block #}
+                            {% if sonata_admin.field_description.associationadmin.formfielddescriptions[field_name].getHelp('sonata_deprecation_mute') %}
+                                <span class="help-block">
+                                    {%- block help %}
+                                        {% deprecated 'The "help" option is deprecated in field description since sonata-project/admin-bundle 3.74, to be removed in 4.0. Use Symfony Form "help" option instead.' %}
+                                        {{- sonata_admin.field_description.associationadmin.formfielddescriptions[field_name].help|trans(
+                                            {},
+                                            sonata_admin.field_description.associationadmin.formfielddescriptions[field_name].translationDomain
+                                        )|raw -}}
+                                    {% endblock -%}
+                                </span>
+                            {% endif %}
+
+                            {{ form_help(nested_field) }}
 
                             {% set dummy = nested_group_field.setrendered %}
                         {% else %}
@@ -56,7 +75,7 @@ file that was distributed with this source code.
                             {% endif %}
                         {% endif %}
                         {% if nested_field.vars.errors|default(false) %}
-                            <div class="help-inline sonata-ba-field-error-messages">
+                            <div class="help-block help-inline sonata-ba-field-error-messages">
                                 {{ form_errors(nested_field) }}
                             </div>
                         {% endif %}

@@ -17,11 +17,15 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Twig\GlobalVariables;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * @author Ahmet Akbana <ahmetakbana@gmail.com>
+ *
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @group legacy
  */
 class GlobalVariablesTest extends TestCase
 {
@@ -30,7 +34,7 @@ class GlobalVariablesTest extends TestCase
     private $admin;
     private $pool;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->code = 'sonata.page.admin.page|sonata.page.admin.snapshot';
         $this->action = 'list';
@@ -40,12 +44,12 @@ class GlobalVariablesTest extends TestCase
 
     public function testUrl(): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('generateUrl')
             ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn(true);
 
-        $this->pool->expects($this->once())
+        $this->pool->expects(static::once())
             ->method('getAdminByAdminCode')
             ->with('sonata.page.admin.page')
             ->willReturn($this->admin);
@@ -57,12 +61,12 @@ class GlobalVariablesTest extends TestCase
 
     public function testObjectUrl(): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('generateObjectUrl')
             ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', 'foo', ['bar'], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn(true);
 
-        $this->pool->expects($this->once())
+        $this->pool->expects(static::once())
             ->method('getAdminByAdminCode')
             ->with('sonata.page.admin.page')
             ->willReturn($this->admin);
@@ -78,23 +82,22 @@ class GlobalVariablesTest extends TestCase
      */
     public function testWithContainer(): void
     {
-        $this->admin->expects($this->once())
+        $this->admin->expects(static::once())
             ->method('generateUrl')
             ->with('sonata.page.admin.page|sonata.page.admin.snapshot.list', ['foo'], UrlGeneratorInterface::ABSOLUTE_PATH)
             ->willReturn(true);
 
-        $this->pool->expects($this->once())
+        $this->pool->expects(static::once())
             ->method('getAdminByAdminCode')
             ->with('sonata.page.admin.page')
             ->willReturn($this->admin);
 
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->expects($this->once())
-            ->method('get')
-            ->with('sonata.admin.pool')
-            ->willReturn($this->pool);
+        $container = new Container();
+        $container->set('sonata.admin.pool', $this->pool);
 
         $globalVariables = new GlobalVariables($container);
+
+        static::assertSame($this->pool, $globalVariables->getAdminPool());
 
         $globalVariables->url($this->code, $this->action, ['foo']);
     }
@@ -104,8 +107,8 @@ class GlobalVariablesTest extends TestCase
      */
     public function testInvalidArgumentException(): void
     {
-        $this->expectException(
-            \InvalidArgumentException::class,
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage(
             '$adminPool should be an instance of Sonata\AdminBundle\Admin\Pool'
         );
 
@@ -114,7 +117,7 @@ class GlobalVariablesTest extends TestCase
 
     public function testGetMosaicBackground(): void
     {
-        $this->assertSame(
+        static::assertSame(
             'image.png',
             (new GlobalVariables($this->pool, 'image.png'))->getMosaicBackground()
         );
@@ -122,6 +125,6 @@ class GlobalVariablesTest extends TestCase
 
     public function testGetMosaicBackgroundNull(): void
     {
-        $this->assertNull((new GlobalVariables($this->pool))->getMosaicBackground());
+        static::assertNull((new GlobalVariables($this->pool))->getMosaicBackground());
     }
 }

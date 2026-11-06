@@ -29,16 +29,16 @@ Picking which fields to export
 By default, all fields are exported. More accurately, it depends on the
 persistence backend you are using, but for instance, the doctrine ORM backend
 exports all fields (associations are not exported). If you want to change this
-behavior for a specific admin, you can override the ``getExportFields()`` method::
+behavior for a specific admin, you can override the ``configureExportFields()`` method::
 
-    public function getExportFields()
+    protected function configureExportFields(): array
     {
         return ['givenName', 'familyName', 'contact.phone', 'getAddress'];
     }
 
 .. note::
 
-    Note that you can use `contact.phone` to access the `phone` property
+    Note that you can use ``contact.phone`` to access the ``phone`` property
     of `Contact` entity. Or use a getter if you have some virtual field.
 
 You can also tweak the list by creating an admin extension that implements the

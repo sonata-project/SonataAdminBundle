@@ -14,8 +14,14 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Guesser;
 
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Symfony\Component\Form\Guess\TypeGuess;
 
 /**
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @deprecated since sonata-project/admin-bundle 3.92, to be removed in 4.0.
+ * Use Sonata\AdminBundle\FieldDescription\TypeGuesserInterface instead.
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 interface TypeGuesserInterface
@@ -24,7 +30,9 @@ interface TypeGuesserInterface
      * @param string $class
      * @param string $property
      *
-     * @return mixed
+     * @return TypeGuess|null
+     *
+     * @phpstan-param class-string $class
      */
     public function guessType($class, $property, ModelManagerInterface $modelManager);
 }

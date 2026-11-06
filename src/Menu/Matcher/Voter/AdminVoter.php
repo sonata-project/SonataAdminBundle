@@ -22,6 +22,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 /**
  * Admin menu voter based on extra `admin`.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Samusev Andrey <andrey.simfi@ya.ru>
  */
 class AdminVoter implements VoterInterface
@@ -32,37 +34,34 @@ class AdminVoter implements VoterInterface
     private $requestStack;
 
     /**
-     * @var Request
+     * @var Request|null
      */
-    private $request = null;
+    private $request;
 
-    public function __construct(RequestStack $requestStack = null)
+    public function __construct(?RequestStack $requestStack = null)
     {
         $this->requestStack = $requestStack;
     }
 
     /**
-     * @deprecated since version 3.31. Pass a RequestStack to the constructor instead.
+     * @deprecated since sonata-project/admin-bundle 3.31. Pass a RequestStack to the constructor instead.
      *
-     * @return $this
+     * @return static
      */
     public function setRequest($request)
     {
-        @trigger_error(
-            sprintf(
-                'The %s() method is deprecated since version 3.31.
-                Pass a Symfony\Component\HttpFoundation\RequestStack
-                in the constructor instead.',
-            __METHOD__),
-            E_USER_DEPRECATED
-        );
+        @trigger_error(sprintf(
+            'The %s() method is deprecated since version 3.31. Pass a %s in the constructor instead.',
+            __METHOD__,
+            RequestStack::class
+        ), \E_USER_DEPRECATED);
 
         $this->request = $request;
 
         return $this;
     }
 
-    public function matchItem(ItemInterface $item)
+    public function matchItem(ItemInterface $item): ?bool
     {
         $admin = $item->getExtra('admin');
 

@@ -116,9 +116,9 @@ The following is a working example of a ShowAction::
                  // The boolean option is actually very cool
                  // true   shows a check mark and the 'yes' label
                  // false  shows a check mark and the 'no' label
-                ->add('dateCafe', 'boolean')
-                ->add('datePub', 'boolean')
-                ->add('dateClub', 'boolean')
+                ->add('dateCafe', FieldDescriptionInterface::TYPE_BOOLEAN)
+                ->add('datePub', FieldDescriptionInterface::TYPE_BOOLEAN)
+                ->add('dateClub', FieldDescriptionInterface::TYPE_BOOLEAN)
             ;
 
         }
@@ -161,6 +161,6 @@ This ensures that you can update Sonata Admin and keep all of your hard work.
 
 The original template can be found in the following location:
 
-``vendor/sonata-project/admin-bundle/Resources/views/CRUD/base_show.html.twig``
+``vendor/sonata-project/admin-bundle/src/Resources/views/CRUD/base_show.html.twig``
 
 Now that you have a copy of the default template, check to make sure it works.

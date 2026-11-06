@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type;
 
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\EventListener\ResizeFormListener;
@@ -22,16 +23,20 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
  * This type defines a standard text field with autocomplete feature.
+ *
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  * @author Florent Denis <dflorent.pokap@gmail.com>
  */
 class ModelAutocompleteType extends AbstractType
 {
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->addViewTransformer(new ModelToIdPropertyTransformer($options['model_manager'], $options['class'], $options['property'], $options['multiple'], $options['to_string_callback']), true);
@@ -44,8 +49,6 @@ class ModelAutocompleteType extends AbstractType
         $builder->setAttribute(
             'disabled',
             $options['disabled']
-            // NEXT_MAJOR: Remove this when bumping Symfony constraint to 2.8+
-            || (\array_key_exists('read_only', $options) && $options['read_only'])
         );
         $builder->setAttribute('to_string_callback', $options['to_string_callback']);
         $builder->setAttribute('target_admin_access_action', $options['target_admin_access_action']);
@@ -95,24 +98,18 @@ class ModelAutocompleteType extends AbstractType
     }
 
     /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
+     * @return void
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
-        $compound = function (Options $options) {
+        $compound = static function (Options $options) {
             return $options['multiple'];
         };
 
         $resolver->setDefaults([
             'attr' => [],
             'compound' => $compound,
+            'error_bubbling' => false,
             'model_manager' => null,
             'class' => null,
             'admin_code' => null,
@@ -122,12 +119,13 @@ class ModelAutocompleteType extends AbstractType
             'context' => '',
 
             'placeholder' => '',
-            'minimum_input_length' => 3, //minimum 3 chars should be typed to load ajax data
-            'items_per_page' => 10, //number of items per page
+            'minimum_input_length' => 3, // minimum 3 chars should be typed to load ajax data
+            'items_per_page' => 10, // number of items per page
             'quiet_millis' => 100,
             'cache' => false,
 
             'to_string_callback' => null,
+            'response_item_callback' => null,
 
             // add button
             // NEXT_MAJOR: Set this value to 'link_add' to display button by default
@@ -139,8 +137,8 @@ class ModelAutocompleteType extends AbstractType
             'route' => ['name' => 'sonata_admin_retrieve_autocomplete_items', 'parameters' => []],
             'req_params' => [],
             'req_param_name_search' => 'q',
-            'req_param_name_page_number' => '_page',
-            'req_param_name_items_per_page' => '_per_page',
+            'req_param_name_page_number' => DatagridInterface::PAGE,
+            'req_param_name_items_per_page' => DatagridInterface::PER_PAGE,
 
             // security
             'target_admin_access_action' => 'list',
@@ -169,7 +167,7 @@ class ModelAutocompleteType extends AbstractType
     /**
      * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * {@inheritdoc}
+     * @return string
      */
     public function getName()
     {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<psalm xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="https://getpsalm.org/schema/config" errorLevel="6" resolveFromConfigFile="true" xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd" errorBaseline="psalm-baseline.xml">
+    <projectFiles>
+        <directory name="src"/>
+        <ignoreFiles>
+            <directory name="src/Resources/skeleton"/>
+            <directory name="vendor"/>
+        </ignoreFiles>
+    </projectFiles>
+    <issueHandlers>
+        <UnrecognizedStatement>
+            <!-- NEXT_MAJOR: Remove this issue -->
+            <errorLevel type="suppress">
+                <file name="src/Admin/FieldDescriptionInterface.php"/>
+                <file name="src/Admin/FieldDescriptionRegistryInterface.php"/>
+            </errorLevel>
+        </UnrecognizedStatement>
+        <UndefinedClass>
+            <errorLevel type="suppress">
+                <!-- NEXT_MAJOR: Remove next line -->
+                <referencedClass name="Sonata\CoreBundle\Form\Type\CollectionType"/>
+            </errorLevel>
+        </UndefinedClass>
+    </issueHandlers>
+</psalm>

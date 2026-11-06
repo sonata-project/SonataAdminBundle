@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Twig\Extension;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Exception\AdminCodeNotFoundException;
 use Sonata\AdminBundle\Templating\TemplateRegistryInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\Exception\ServiceCircularReferenceException;
@@ -29,17 +31,35 @@ final class TemplateRegistryExtension extends AbstractExtension
     private $globalTemplateRegistry;
 
     /**
+     * NEXT_MAJOR: Remove this property.
+     *
      * @var ContainerInterface
      */
     private $container;
 
-    public function __construct(TemplateRegistryInterface $globalTemplateRegistry, ContainerInterface $container)
+    /**
+     * NEXT_MAJOR: Remove "null" from var type.
+     *
+     * @var Pool|null
+     */
+    private $pool;
+
+    /**
+     * @internal since sonata-project/admin-bundle 4. This class should only be used through Twig
+     *
+     * NEXT_MAJOR: Remove $container parameter and make Pool mandatory.
+     */
+    public function __construct(TemplateRegistryInterface $globalTemplateRegistry, ContainerInterface $container, ?Pool $pool = null)
     {
         $this->globalTemplateRegistry = $globalTemplateRegistry;
         $this->container = $container;
+        $this->pool = $pool;
     }
 
-    public function getFunctions()
+    /**
+     * @return TwigFunction[]
+     */
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('get_admin_template', [$this, 'getAdminTemplate']),
@@ -56,10 +76,8 @@ final class TemplateRegistryExtension extends AbstractExtension
      *
      * @throws ServiceNotFoundException
      * @throws ServiceCircularReferenceException
-     *
-     * @return string|null
      */
-    public function getAdminTemplate($name, $adminCode)
+    public function getAdminTemplate($name, $adminCode): ?string
     {
         // NEXT_MAJOR: Remove this line and use commented line below it instead
         return $this->getAdmin($adminCode)->getTemplate($name);
@@ -67,47 +85,40 @@ final class TemplateRegistryExtension extends AbstractExtension
     }
 
     /**
-     * @deprecated Sinds 3.34, to be removed in 4.0. Use getGlobalTemplate instead.
+     * @deprecated since sonata-project/admin-bundle 3.34, to be removed in 4.0. Use getGlobalTemplate instead.
      *
      * @param string $name
-     *
-     * @return string|null
      */
-    public function getPoolTemplate($name)
+    public function getPoolTemplate($name): ?string
     {
         return $this->getGlobalTemplate($name);
     }
 
     /**
      * @param string $name
-     *
-     * @return string|null
      */
-    public function getGlobalTemplate($name)
+    public function getGlobalTemplate($name): ?string
     {
         return $this->globalTemplateRegistry->getTemplate($name);
     }
 
     /**
-     * @throws ServiceNotFoundException
-     * @throws ServiceCircularReferenceException
+     * @throws AdminCodeNotFoundException
      */
     private function getTemplateRegistry(string $adminCode): TemplateRegistryInterface
     {
-        $serviceId = $adminCode.'.template_registry';
-        $templateRegistry = $this->container->get($serviceId);
-        if ($templateRegistry instanceof TemplateRegistryInterface) {
-            return $templateRegistry;
-        }
+        $admin = $this->pool->getAdminByAdminCode($adminCode);
 
-        throw new ServiceNotFoundException($serviceId);
+        return $admin->getTemplateRegistry();
     }
 
     /**
-     * @deprecated since 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
+     * @deprecated since sonata-project/admin-bundle 3.34, will be dropped in 4.0. Use TemplateRegistry services instead
      *
      * @throws ServiceNotFoundException
      * @throws ServiceCircularReferenceException
+     *
+     * @return AdminInterface<object>
      */
     private function getAdmin(string $adminCode): AdminInterface
     {

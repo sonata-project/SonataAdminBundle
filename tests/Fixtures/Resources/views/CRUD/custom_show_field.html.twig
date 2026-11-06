@@ -1,0 +1,7 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{%- block field -%}
+    {{ object.name }}<br/>
+
+    {{- parent() -}}
+{%- endblock -%}

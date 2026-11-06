@@ -1,0 +1,44 @@
+{
+  "name": "eonasdan-bootstrap-datetimepicker",
+  "version": "3.1.4",
+  "main": [
+    "build/css/bootstrap-datetimepicker.min.css",
+    "build/js/bootstrap-datetimepicker.min.js"
+  ],
+  "dependencies": {
+    "jquery": ">=1.8.3",
+    "bootstrap": ">= 3.0",
+    "moment": ">=2.8.0"
+  },
+  "homepage": "https://github.com/Eonasdan/bootstrap-datetimepicker",
+  "authors": [
+    "Eonasdan"
+  ],
+  "description": "bootstrap3 datetimepicker",
+  "keywords": [
+    "twitter-bootstrap",
+    "bootstrap",
+    "datepicker",
+    "datetimepicker",
+    "timepicker",
+    "moment"
+  ],
+  "license": "MIT",
+  "private": false,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "3.1.4",
+  "_resolution": {
+    "type": "version",
+    "tag": "3.1.4",
+    "commit": "b04a8eeffaa960d6e90e1714a3eca18eef8b4a3c"
+  },
+  "_source": "git://github.com/Eonasdan/bootstrap-datetimepicker.git",
+  "_target": "^3.1",
+  "_originalSource": "eonasdan-bootstrap-datetimepicker"
+}

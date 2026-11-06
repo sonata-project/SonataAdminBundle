@@ -14,40 +14,68 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Show;
 
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Builder\ShowBuilderInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Mapper\BaseGroupedMapper;
 
 /**
  * This class is used to simulate the Form API.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
+ * @phpstan-extends BaseGroupedMapper<T>
  */
 class ShowMapper extends BaseGroupedMapper
 {
+    /**
+     * @var FieldDescriptionCollection
+     */
     protected $list;
 
+    /**
+     * @var ShowBuilderInterface
+     */
+    protected $builder;
+
+    /**
+     * NEXT_MAJOR: Make the property private.
+     *
+     * @var AdminInterface
+     * @phpstan-var AdminInterface<T> $admin
+     */
+    protected $admin;
+
+    /**
+     * @phpstan-param AdminInterface<T> $admin
+     */
     public function __construct(
         ShowBuilderInterface $showBuilder,
         FieldDescriptionCollection $list,
         AdminInterface $admin
     ) {
-        parent::__construct($showBuilder, $admin);
+        $this->admin = $admin;
+        $this->builder = $showBuilder;
         $this->list = $list;
     }
 
     /**
-     * @param mixed $name
-     * @param mixed $type
+     * NEXT_MAJOR: Restrict the type of the $name parameter to string.
      *
-     * @throws \RuntimeException
+     * @param FieldDescriptionInterface|string $name
+     * @param string|null                      $type
+     * @param array<string, mixed>             $fieldDescriptionOptions
      *
-     * @return $this
+     * @throws \LogicException
+     *
+     * @return static
      */
     public function add($name, $type = null, array $fieldDescriptionOptions = [])
     {
-        if (null !== $this->apply && !$this->apply) {
+        if (!$this->shouldApply()) {
             return $this;
         }
 
@@ -55,38 +83,67 @@ class ShowMapper extends BaseGroupedMapper
 
         $this->addFieldToCurrentGroup($fieldKey);
 
+        // NEXT_MAJOR: Keep only the elseif part.
         if ($name instanceof FieldDescriptionInterface) {
+            @trigger_error(
+                sprintf(
+                    'Passing a %s instance as first param of %s is deprecated since sonata-project/admin-bundle 3.103'
+                    .' and will throw an exception in 4.0. You should pass a string instead.',
+                    FieldDescriptionInterface::class,
+                    __METHOD__
+                ),
+                \E_USER_DEPRECATED
+            );
+
             $fieldDescription = $name;
             $fieldDescription->mergeOptions($fieldDescriptionOptions);
         } elseif (\is_string($name)) {
-            if (!$this->admin->hasShowFieldDescription($name)) {
-                $fieldDescription = $this->admin->getModelManager()->getNewFieldDescriptionInstance(
-                    $this->admin->getClass(),
-                    $name,
-                    $fieldDescriptionOptions
-                );
+            if (!$this->getAdmin()->hasShowFieldDescription($name)) {
+
+                // NEXT_MAJOR: Remove the check and use `createFieldDescription`.
+                if (method_exists($this->getAdmin(), 'createFieldDescription')) {
+                    $fieldDescription = $this->getAdmin()->createFieldDescription(
+                        $name,
+                        $fieldDescriptionOptions
+                    );
+                } else {
+                    $fieldDescription = $this->getAdmin()->getModelManager()->getNewFieldDescriptionInstance(
+                        $this->getAdmin()->getClass(),
+                        $name,
+                        $fieldDescriptionOptions
+                    );
+                }
             } else {
-                throw new \RuntimeException(sprintf('Duplicate field name "%s" in show mapper. Names should be unique.', $name));
+                throw new \LogicException(sprintf(
+                    'Duplicate field name "%s" in show mapper. Names should be unique.',
+                    $name
+                ));
             }
         } else {
-            throw new \RuntimeException('invalid state');
+            throw new \TypeError(
+                'Unknown field name in show mapper.'
+                    .' Field name should be either of FieldDescriptionInterface interface or string.'
+            );
         }
 
-        if (!$fieldDescription->getLabel() && false !== $fieldDescription->getOption('label')) {
-            $fieldDescription->setOption('label', $this->admin->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+        if (null === $fieldDescription->getLabel('sonata_deprecation_mute')) {
+            $fieldDescription->setOption('label', $this->getAdmin()->getLabelTranslatorStrategy()->getLabel($fieldDescription->getName(), 'show', 'label'));
         }
 
         $fieldDescription->setOption('safe', $fieldDescription->getOption('safe', false));
 
-        // add the field with the FormBuilder
-        $this->builder->addField($this->list, $type, $fieldDescription, $this->admin);
+        if (!isset($fieldDescriptionOptions['role']) || $this->getAdmin()->isGranted($fieldDescriptionOptions['role'])) {
+            // add the field with the FormBuilder
+            $this->builder->addField($this->list, $type, $fieldDescription, $this->getAdmin());
+        }
 
         return $this;
     }
 
-    public function get($name)
+    public function get($key)
     {
-        return $this->list->get($name);
+        return $this->list->get($key);
     }
 
     public function has($key)
@@ -96,50 +153,8 @@ class ShowMapper extends BaseGroupedMapper
 
     public function remove($key)
     {
-        $this->admin->removeShowFieldDescription($key);
+        $this->getAdmin()->removeShowFieldDescription($key);
         $this->list->remove($key);
-
-        return $this;
-    }
-
-    /**
-     * Removes a group.
-     *
-     * @param string $group          The group to delete
-     * @param string $tab            The tab the group belongs to, defaults to 'default'
-     * @param bool   $deleteEmptyTab Whether or not the parent Tab should be deleted too,
-     *                               when the deleted group leaves the tab empty after deletion
-     *
-     * @return $this
-     */
-    public function removeGroup($group, $tab = 'default', $deleteEmptyTab = false)
-    {
-        $groups = $this->getGroups();
-
-        // When the default tab is used, the tabname is not prepended to the index in the group array
-        if ('default' !== $tab) {
-            $group = $tab.'.'.$group;
-        }
-
-        if (isset($groups[$group])) {
-            foreach ($groups[$group]['fields'] as $field) {
-                $this->remove($field);
-            }
-        }
-        unset($groups[$group]);
-
-        $tabs = $this->getTabs();
-        $key = array_search($group, $tabs[$tab]['groups'], true);
-
-        if (false !== $key) {
-            unset($tabs[$tab]['groups'][$key]);
-        }
-        if ($deleteEmptyTab && 0 === \count($tabs[$tab]['groups'])) {
-            unset($tabs[$tab]);
-        }
-
-        $this->setTabs($tabs);
-        $this->setGroups($groups);
 
         return $this;
     }
@@ -151,29 +166,33 @@ class ShowMapper extends BaseGroupedMapper
 
     public function reorder(array $keys)
     {
-        $this->admin->reorderShowGroup($this->getCurrentGroupName(), $keys);
+        $this->getAdmin()->reorderShowGroup($this->getCurrentGroupName(), $keys);
 
         return $this;
     }
 
     protected function getGroups()
     {
-        return $this->admin->getShowGroups();
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+
+        return $this->getAdmin()->getShowGroups('sonata_deprecation_mute');
     }
 
     protected function setGroups(array $groups)
     {
-        $this->admin->setShowGroups($groups);
+        $this->getAdmin()->setShowGroups($groups);
     }
 
     protected function getTabs()
     {
-        return $this->admin->getShowTabs();
+        // NEXT_MAJOR: Remove the argument "sonata_deprecation_mute" in the following call.
+
+        return $this->getAdmin()->getShowTabs('sonata_deprecation_mute');
     }
 
     protected function setTabs(array $tabs)
     {
-        $this->admin->setShowTabs($tabs);
+        $this->getAdmin()->setShowTabs($tabs);
     }
 
     protected function getName()
@@ -181,3 +200,6 @@ class ShowMapper extends BaseGroupedMapper
         return 'show';
     }
 }
+
+// NEXT_MAJOR: Remove next line.
+interface_exists(FieldDescriptionInterface::class);

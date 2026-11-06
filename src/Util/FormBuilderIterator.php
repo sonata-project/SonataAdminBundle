@@ -16,6 +16,8 @@ namespace Sonata\AdminBundle\Util;
 use Symfony\Component\Form\FormBuilderInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class FormBuilderIterator extends \RecursiveArrayIterator
@@ -31,28 +33,47 @@ class FormBuilderIterator extends \RecursiveArrayIterator
     protected $formBuilder;
 
     /**
-     * @var array
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @deprecated since sonata-project/sonata-admin-bundle 3.95
+     *
+     * @var mixed[]
      */
     protected $keys = [];
 
     /**
-     * @var bool|string
+     * @var string
      */
     protected $prefix;
 
     /**
-     * @var \ArrayIterator
+     * @var \ArrayIterator<string|int, string|int>
      */
     protected $iterator;
 
     /**
-     * @param bool $prefix
+     * NEXT_MAJOR: Change argument 2 to ?string $prefix = null.
+     *
+     * @param string|false $prefix
      */
-    public function __construct(FormBuilderInterface $formBuilder, $prefix = false)
+    public function __construct(FormBuilderInterface $formBuilder, $prefix = null)
     {
         parent::__construct();
         $this->formBuilder = $formBuilder;
-        $this->prefix = $prefix ? $prefix : $formBuilder->getName();
+
+        // NEXT_MAJOR: Remove this block.
+        if (null !== $prefix && !\is_string($prefix)) {
+            @trigger_error(sprintf(
+                'Passing other type than string or null as argument 2 for method %s() is deprecated since'
+                .' sonata-project/admin-bundle 3.84. It will accept only string and null in version 4.0.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
+        // NEXT_MAJOR: Remove next line.
+        $this->prefix = \is_string($prefix) ? $prefix : $formBuilder->getName();
+        // NEXT_MAJOR: Uncomment next line.
+        // $this->prefix = $prefix ?? $formBuilder->getName();
         $this->iterator = new \ArrayIterator(self::getKeys($formBuilder));
     }
 
@@ -66,6 +87,9 @@ class FormBuilderIterator extends \RecursiveArrayIterator
         return $this->iterator->valid();
     }
 
+    /**
+     * @return string
+     */
     public function key()
     {
         $name = $this->iterator->current();
@@ -78,14 +102,20 @@ class FormBuilderIterator extends \RecursiveArrayIterator
         $this->iterator->next();
     }
 
+    /**
+     * @return FormBuilderInterface
+     */
     public function current()
     {
         return $this->formBuilder->get($this->iterator->current());
     }
 
+    /**
+     * @return FormBuilderIterator
+     */
     public function getChildren()
     {
-        return new self($this->formBuilder->get($this->iterator->current()), $this->current());
+        return new self($this->formBuilder->get($this->iterator->current()), $this->key());
     }
 
     public function hasChildren()
@@ -94,9 +124,7 @@ class FormBuilderIterator extends \RecursiveArrayIterator
     }
 
     /**
-     * @static
-     *
-     * @return array
+     * @return array<string|int, string|int>
      */
     private static function getKeys(FormBuilderInterface $formBuilder)
     {

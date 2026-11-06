@@ -15,24 +15,24 @@ namespace Sonata\AdminBundle\Tests\Command;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Builder\DatagridBuilderInterface;
 use Sonata\AdminBundle\Builder\ListBuilderInterface;
 use Sonata\AdminBundle\Command\ExplainAdminCommand;
 use Sonata\AdminBundle\Controller\CRUDController;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotNull;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Mapping\Factory\MetadataFactoryInterface;
 use Symfony\Component\Validator\Mapping\GenericMetadata;
-use Symfony\Component\Validator\Mapping\MetadataInterface;
 
 /**
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -57,128 +57,111 @@ class ExplainAdminCommandTest extends TestCase
     protected function setUp(): void
     {
         $this->application = new Application();
-        $command = new ExplainAdminCommand();
 
-        $container = $this->createMock(ContainerInterface::class);
+        $container = new Container();
 
         $this->admin = $this->createMock(AdminInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getCode')
-            ->will($this->returnValue('foo'));
+            ->willReturn('foo');
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getClass')
-            ->will($this->returnValue('Acme\Entity\Foo'));
+            ->willReturn('Acme\Entity\Foo');
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getBaseControllerName')
-            ->will($this->returnValue(CRUDController::class));
+            ->willReturn(CRUDController::class);
 
         $routeCollection = new RouteCollection('foo', 'fooBar', 'foo-bar', CRUDController::class);
         $routeCollection->add('list');
         $routeCollection->add('edit');
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getRoutes')
-            ->will($this->returnValue($routeCollection));
+            ->willReturn($routeCollection);
 
         $fieldDescription1 = $this->createMock(FieldDescriptionInterface::class);
 
-        $fieldDescription1->expects($this->any())
+        $fieldDescription1
             ->method('getType')
-            ->will($this->returnValue('text'));
+            ->willReturn('text');
 
-        $fieldDescription1->expects($this->any())
+        $fieldDescription1
             ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/foo_text.html.twig'));
+            ->willReturn('@SonataAdmin/CRUD/foo_text.html.twig');
 
         $fieldDescription2 = $this->createMock(FieldDescriptionInterface::class);
 
-        $fieldDescription2->expects($this->any())
+        $fieldDescription2
             ->method('getType')
-            ->will($this->returnValue('datetime'));
+            ->willReturn('datetime');
 
-        $fieldDescription2->expects($this->any())
+        $fieldDescription2
             ->method('getTemplate')
-            ->will($this->returnValue('@SonataAdmin/CRUD/bar_datetime.html.twig'));
+            ->willReturn('@SonataAdmin/CRUD/bar_datetime.html.twig');
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getListFieldDescriptions')
-            ->will($this->returnValue([
+            ->willReturn([
                 'fooTextField' => $fieldDescription1,
                 'barDateTimeField' => $fieldDescription2,
-            ]));
+            ]);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getFilterFieldDescriptions')
-            ->will($this->returnValue([
+            ->willReturn([
                 'fooTextField' => $fieldDescription1,
                 'barDateTimeField' => $fieldDescription2,
-            ]));
+            ]);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getFormTheme')
-            ->will($this->returnValue(['@Foo/bar.html.twig']));
+            ->willReturn(['@Foo/bar.html.twig']);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getFormFieldDescriptions')
-            ->will($this->returnValue([
+            ->willReturn([
                 'fooTextField' => $fieldDescription1,
                 'barDateTimeField' => $fieldDescription2,
-            ]));
+            ]);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('isChild')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getParent')
-            ->will($this->returnCallback(function () {
+            ->willReturnCallback(function () {
                 $adminParent = $this->createMock(AdminInterface::class);
 
-                $adminParent->expects($this->any())
+                $adminParent
                     ->method('getCode')
-                    ->will($this->returnValue('foo_child'));
+                    ->willReturn('foo_child');
 
                 return $adminParent;
-            }));
+            });
+
+        $container->set('acme.admin.foo', $this->admin);
+
+        $pool = new Pool($container, ['acme.admin.foo', 'acme.admin.bar']);
 
         $this->validatorFactory = $this->createMock(MetadataFactoryInterface::class);
 
-        $container->expects($this->any())
-            ->method('get')
-            ->will($this->returnCallback(function ($id) use ($container) {
-                switch ($id) {
-                    case 'sonata.admin.pool':
-                        $pool = new Pool($container, '', '');
-                        $pool->setAdminServiceIds(['acme.admin.foo', 'acme.admin.bar']);
-
-                        return $pool;
-
-                    case 'validator':
-                        return $this->validatorFactory;
-
-                    case 'acme.admin.foo':
-                        return $this->admin;
-                }
-            }));
-
-        $container->expects($this->any())->method('has')->will($this->returnValue(true));
-
-        $command->setContainer($container);
+        $command = new ExplainAdminCommand($pool, $this->validatorFactory);
 
         $this->application->add($command);
     }
 
     public function testExecute(): void
     {
-        $metadata = $this->createMock(MetadataInterface::class);
+        $metadata = $this->createMock(ClassMetadata::class);
 
-        $this->validatorFactory->expects($this->once())
+        $this->validatorFactory->expects(static::once())
             ->method('getMetadataFor')
-            ->with($this->equalTo('Acme\Entity\Foo'))
-            ->will($this->returnValue($metadata));
+            ->with(static::equalTo('Acme\Entity\Foo'))
+            ->willReturn($metadata);
 
         $propertyMetadata = $this->getMockForAbstractClass(GenericMetadata::class);
         $propertyMetadata->constraints = [
@@ -198,34 +181,34 @@ class ExplainAdminCommandTest extends TestCase
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getModelManager')
-            ->will($this->returnValue($modelManager));
+            ->willReturn($modelManager);
 
         $formBuilder = $this->createMock(FormBuilderInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
              ->method('getFormBuilder')
-             ->will($this->returnValue($formBuilder));
+             ->willReturn($formBuilder);
 
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getDatagridBuilder')
-            ->will($this->returnValue($datagridBuilder));
+            ->willReturn($datagridBuilder);
 
         $listBuilder = $this->createMock(ListBuilderInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getListBuilder')
-            ->will($this->returnValue($listBuilder));
+            ->willReturn($listBuilder);
 
         $command = $this->application->find('sonata:admin:explain');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName(), 'admin' => 'acme.admin.foo']);
 
-        $this->assertSame(sprintf(
-            str_replace("\n", PHP_EOL, file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin.txt')),
+        static::assertSame(sprintf(
+            str_replace("\n", \PHP_EOL, file_get_contents(sprintf('%s/../Fixtures/Command/explain_admin.txt', __DIR__))),
             \get_class($this->admin),
             \get_class($modelManager),
             \get_class($formBuilder),
@@ -236,49 +219,49 @@ class ExplainAdminCommandTest extends TestCase
 
     public function testExecuteEmptyValidator(): void
     {
-        $metadata = $this->createMock(MetadataInterface::class);
+        $metadata = $this->createMock(ClassMetadata::class);
 
-        $this->validatorFactory->expects($this->once())
+        $this->validatorFactory->expects(static::once())
             ->method('getMetadataFor')
-            ->with($this->equalTo('Acme\Entity\Foo'))
-            ->will($this->returnValue($metadata));
+            ->with(static::equalTo('Acme\Entity\Foo'))
+            ->willReturn($metadata);
 
         $metadata->properties = [];
         $metadata->getters = [];
 
         $modelManager = $this->createMock(ModelManagerInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getModelManager')
-            ->will($this->returnValue($modelManager));
+            ->willReturn($modelManager);
 
         $formBuilder = $this->createMock(FormBuilderInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
              ->method('getFormBuilder')
-             ->will($this->returnValue($formBuilder));
+             ->willReturn($formBuilder);
 
         $datagridBuilder = $this->createMock(DatagridBuilderInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getDatagridBuilder')
-            ->will($this->returnValue($datagridBuilder));
+            ->willReturn($datagridBuilder);
 
         $listBuilder = $this->createMock(ListBuilderInterface::class);
 
-        $this->admin->expects($this->any())
+        $this->admin
             ->method('getListBuilder')
-            ->will($this->returnValue($listBuilder));
+            ->willReturn($listBuilder);
 
         $command = $this->application->find('sonata:admin:explain');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName(), 'admin' => 'acme.admin.foo']);
 
-        $this->assertSame(sprintf(
+        static::assertSame(sprintf(
             str_replace(
                 "\n",
-                PHP_EOL,
-                file_get_contents(__DIR__.'/../Fixtures/Command/explain_admin_empty_validator.txt')
+                \PHP_EOL,
+                file_get_contents(sprintf('%s/../Fixtures/Command/explain_admin_empty_validator.txt', __DIR__))
             ),
             \get_class($this->admin),
             \get_class($modelManager),
@@ -290,16 +273,62 @@ class ExplainAdminCommandTest extends TestCase
 
     public function testExecuteNonAdminService(): void
     {
-        try {
-            $command = $this->application->find('sonata:admin:explain');
-            $commandTester = new CommandTester($command);
-            $commandTester->execute(['command' => $command->getName(), 'admin' => 'nonexistent.service']);
-        } catch (\RuntimeException $e) {
-            $this->assertSame('Service "nonexistent.service" is not an admin class', $e->getMessage());
+        $command = $this->application->find('sonata:admin:explain');
+        $commandTester = new CommandTester($command);
 
-            return;
-        }
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('Admin service "nonexistent.service" not found in admin pool. Did you mean "acme.admin.bar" or one of those: []');
 
-        $this->fail('An expected exception has not been raised.');
+        $commandTester->execute(['command' => $command->getName(), 'admin' => 'nonexistent.service']);
+    }
+
+    public function testExecuteWithNonClassMetadata(): void
+    {
+        $metadata = $this->createStub(GenericMetadata::class);
+
+        $this->validatorFactory->expects(static::once())
+            ->method('getMetadataFor')
+            ->with(static::equalTo('Acme\Entity\Foo'))
+            ->willReturn($metadata);
+
+        $metadata->properties = [];
+        $metadata->getters = [];
+
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+
+        $this->admin
+            ->method('getModelManager')
+            ->willReturn($modelManager);
+
+        $formBuilder = $this->createStub(FormBuilderInterface::class);
+
+        $this->admin
+            ->method('getFormBuilder')
+            ->willReturn($formBuilder);
+
+        $datagridBuilder = $this->createStub(DatagridBuilderInterface::class);
+
+        $this->admin
+            ->method('getDatagridBuilder')
+            ->willReturn($datagridBuilder);
+
+        $listBuilder = $this->createStub(ListBuilderInterface::class);
+
+        $this->admin
+            ->method('getListBuilder')
+            ->willReturn($listBuilder);
+
+        $command = $this->application->find('sonata:admin:explain');
+        $commandTester = new CommandTester($command);
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage(
+            sprintf(
+                'Cannot read metadata properties of Acme\Entity\Foo because its metadata is an instance of %s instead of Symfony\Component\Validator\Mapping\ClassMetadata',
+                \get_class($metadata)
+            )
+        );
+
+        $commandTester->execute(['command' => $command->getName(), 'admin' => 'acme.admin.foo']);
     }
 }

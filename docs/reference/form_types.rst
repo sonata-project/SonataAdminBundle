@@ -11,8 +11,8 @@ relationships between one entity class and another.
 
 .. _field-types-model:
 
-Sonata\AdminBundle\Form\Type\ModelType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sonata\\AdminBundle\\Form\\Type\\ModelType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This type allows you to choose an existing
 entity from the linked model class. In effect it shows a list of options from
@@ -61,7 +61,7 @@ The available options are:
   string to designate which field to use for the choice values.
 
 ``query``
-  defaults to ``null``. You can set this to a QueryBuilder instance in order to
+  defaults to ``null``. You can set this to a ProxyQueryInterface instance in order to
   define a custom query for retrieving the available options.
 
 ``template``
@@ -78,10 +78,6 @@ The available options are:
 
 ``preferred_choices``
   defaults to [] - see the `Symfony choice Field Type docs`_ for more info
-
-``choice_list``
-  **(deprecated in favor of choice_loader since Symfony 2.7)**
-  defaults to a ``ModelChoiceList`` built from the other options
 
 ``choice_loader``
   defaults to a ``ModelChoiceLoader`` built from the other options
@@ -116,8 +112,8 @@ The available options are:
     (``sonata-admin-setup-list-modal`` by default and
     ``sonata-admin-append-form-element`` when using ``edit:inline``).
 
-Sonata\AdminBundle\Form\Type\ModelListType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sonata\\AdminBundle\\Form\\Type\\ModelListType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This type allows you to choose an existing entity,
 add a new one or edit the one that is already selected.
@@ -162,8 +158,8 @@ The available options are:
 
     For more info, see the storage-engine-specific form field definitions: `ORM`_, `PHPCR`_, `MongoDB`_
 
-Sonata\AdminBundle\Form\Type\ModelHiddenType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sonata\\AdminBundle\\Form\\Type\\ModelHiddenType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 The value of hidden field is identifier of related entity::
 
     // src/Admin/PageAdmin.php
@@ -194,8 +190,8 @@ The available options are:
   calculated from the linked admin class. You usually should not need to set
   this manually.
 
-Sonata\AdminBundle\Form\Type\ModelAutocompleteType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sonata\\AdminBundle\\Form\\Type\\ModelAutocompleteType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This type allows you to choose an existing entity from the linked model class.
 In effect it shows a list of options from which you can choose a value.
@@ -271,20 +267,41 @@ The available options are:
 
   From the ``$admin`` parameter it is possible to get the ``Datagrid`` and the ``Request``::
 
-    $formMapper
-        ->add('category', ModelAutocompleteType::class, [
-            'property' => 'title',
-            'callback' => function ($admin, $property, $value) {
-                $datagrid = $admin->getDatagrid();
-                $queryBuilder = $datagrid->getQuery();
-                $queryBuilder
-                    ->andWhere($queryBuilder->getRootAlias() . '.foo=:barValue')
-                    ->setParameter('barValue', $admin->getRequest()->get('bar'))
-                ;
-                $datagrid->setValue($property, null, $value);
-            },
-        ])
-    ;
+      $formMapper
+          ->add('category', ModelAutocompleteType::class, [
+              'property' => 'title',
+              'callback' => static function (AdminInterface $admin, string $property, $value): void {
+                  $datagrid = $admin->getDatagrid();
+                  $query = $datagrid->getQuery();
+                  $query
+                      ->andWhere($query->getRootAlias() . '.foo=:barValue')
+                      ->setParameter('barValue', $admin->getRequest()->get('bar'))
+                  ;
+                  $datagrid->setValue($property, null, $value);
+              },
+          ])
+      ;
+
+  If you want to dynamically change the ``property`` being filtered on to something else,
+  you can use a prefix system, as follows.
+  When the user types **id: 20** the property used for filtering is "id".
+  When they type **username: awesome_user_name**, it will be "username"::
+
+      $formMapper
+          ->add('category', ModelAutocompleteType::class, [
+              'property' => 'title',
+              'callback' => static function (AdminInterface $admin, string $property, string $value): void {
+                  $datagrid = $admin->getDatagrid();
+
+                  $valueParts = explode(':', $value);
+                  if (count($valueParts) === 2 && in_array($valueParts[0], ['id', 'email', 'username'])) {
+                      [$property, $value] = $valueParts;
+                  }
+
+                  $datagrid->setValue($datagrid->getFilter($property)->getFormName(), null, $value);
+              },
+          ])
+      ;
 
 ``to_string_callback``
   defaults to ``null``. Callable function that can be used to change the default toString behavior of entity::
@@ -294,6 +311,20 @@ The available options are:
             'property' => 'title',
             'to_string_callback' => function($entity, $property) {
                 return $entity->getTitle();
+            },
+        ])
+    ;
+
+``response_item_callback``
+  defaults to ``null``. Callable function that can be used to customize each item individually returned in JSON::
+
+    $formMapper
+        ->add('category', ModelAutocompleteType::class, [
+            'property' => 'title',
+            'response_item_callback' => function (AdminInterface $admin, object $entity, array $item): array {
+                $item['type'] = $entity->getType();
+
+                return $item;
             },
         ])
     ;
@@ -328,7 +359,7 @@ The available options are:
   defaults to "". Controls the width style attribute of the Select2 container div.
 
 ``dropdown_auto_width``
-  defaults to ``false``. Set to ``true`` to enable the `dropdownAutoWidth` Select2 option,
+  defaults to ``false``. Set to ``true`` to enable the ``dropdownAutoWidth`` Select2 option,
   which allows the drop downs to be wider than the parent input, sized according to their content.
 
 ``container_css_class``
@@ -391,6 +422,12 @@ The available options are:
     {# change the default selection format #}
     {% block sonata_type_model_autocomplete_selection_format %}'<b>'+item.label+'</b>'{% endblock %}
 
+    {# customize select2 options #}
+    {% block sonata_type_model_autocomplete_select2_options_js %}
+    options.multiple = false;
+    options.dropdownAutoWidth = false;
+    {% endblock %}
+
 ``target_admin_access_action``
   defaults to ``list``.
   By default, the user needs the ``LIST`` role (mapped to ``list`` access action)
@@ -446,8 +483,8 @@ The available options are:
           }
       }
 
-Sonata\AdminBundle\Form\Type\ChoiceFieldMaskType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sonata\\AdminBundle\\Form\\Type\\ChoiceFieldMaskType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 According the choice made only associated fields are displayed. The others fields are hidden::
 
@@ -485,8 +522,11 @@ According the choice made only associated fields are displayed. The others field
 ``map``
   Associative array. Describes the fields that are displayed for each choice.
 
-Sonata\AdminBundle\Form\Type\AdminType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+.. figure:: ../images/choice_field_mask_type.gif
+   :alt: Form type choice field mask type
+
+Sonata\\AdminBundle\\Form\\Type\\AdminType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Setting a field type of ``Sonata\AdminBundle\Form\Type\AdminType`` will embed another admin class
 and use the embedded admin's configuration when editing this field.
@@ -558,8 +598,8 @@ The available options (which can be passed as a third parameter to ``FormMapper:
   corresponding button. You can also specify a custom translation catalogue
   for these labels, which defaults to ``SonataAdminBundle``.
 
-Sonata\Form\Type\CollectionType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sonata\\Form\\Type\\CollectionType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The ``Sonata\Form\Type\CollectionType`` is meant to handle creation and editing of model
 collections. Rows can be added and deleted, and your model abstraction layer may
@@ -609,19 +649,23 @@ The available options (which can be passed as a third parameter to ``FormMapper:
   corresponding button. You can also specify a custom translation catalogue
   for this label, which defaults to ``SonataAdminBundle``.
 
-**TIP**: A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
-You can listen to this event to trigger custom JavaScript (eg: add a calendar widget to a newly added date field)
+.. tip::
 
-**TIP**: Setting the 'required' option to ``true`` does not cause a requirement of 'at least one' child entity.
-Setting the 'required' option to ``false`` causes all nested form fields to become not required as well.
+    A jQuery event is fired after a row has been added (``sonata-admin-append-form-element``).
+    You can listen to this event to trigger custom JavaScript (eg: add a calendar widget to a newly added date field)
+
+.. tip::
+
+    Setting the 'required' option to ``true`` does not cause a requirement of 'at least one' child entity.
+    Setting the 'required' option to ``false`` causes all nested form fields to become not required as well.
 
 .. tip::
 
     You can check / uncheck a range of checkboxes by clicking a first one,
     then a second one with shift + click.
 
-Sonata\AdminBundle\Form\Type\CollectionType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Sonata\\AdminBundle\\Form\\Type\\CollectionType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This bundle handle the native Symfony ``collection`` form type by adding:
 
@@ -759,8 +803,8 @@ General
         }
     }
 
-Symfony\Component\Form\Extension\Core\Type\ChoiceType
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Symfony\\Component\\Form\\Extension\\Core\\Type\\ChoiceType
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 - ``sortable``: This option can be added for multiple choice widget to activate select2 sortable::
 
@@ -783,9 +827,9 @@ Symfony\Component\Form\Extension\Core\Type\ChoiceType
         }
     }
 
-.. _`Symfony field types`: http://symfony.com/doc/current/book/forms.html#built-in-field-types
-.. _`Symfony choice Field Type docs`: http://symfony.com/doc/current/reference/forms/types/choice.html
-.. _`Symfony PropertyPath`: http://api.symfony.com/2.0/Symfony/Component/Form/Util/PropertyPath.html
-.. _`ORM`: https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/form_field_definition.html
-.. _`PHPCR`: https://sonata-project.org/bundles/doctrine-phpcr-admin/master/doc/reference/form_field_definition.html
-.. _`MongoDB`: https://sonata-project.org/bundles/mongo-admin/master/doc/reference/form_field_definition.html
+.. _`Symfony field types`: https://symfony.com/doc/4.4/reference/forms/types.html
+.. _`Symfony choice Field Type docs`: https://symfony.com/doc/4.4/reference/forms/types.html#choice-fields
+.. _`Symfony PropertyPath`: https://github.com/symfony/property-access/blob/4.4/PropertyPath.php
+.. _`ORM`: https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/3.x/reference/form_field_definition/
+.. _`PHPCR`: https://docs.sonata-project.org/projects/SonataDoctrinePhpcrAdminBundle/en/2.x/reference/form_field_definition/
+.. _`MongoDB`: https://docs.sonata-project.org/projects/SonataDoctrineMongoDBAdminBundle/en/3.x/reference/form_field_definition/

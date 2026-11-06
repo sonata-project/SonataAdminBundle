@@ -25,11 +25,12 @@ use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 /**
  * This type define a standard select input with a + sign to add new associated object.
+ *
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
@@ -45,6 +46,9 @@ class ModelType extends AbstractType
         $this->propertyAccessor = $propertyAccessor;
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['multiple']) {
@@ -54,12 +58,10 @@ class ModelType extends AbstractType
             );
 
             $builder
-                ->addEventSubscriber(new MergeCollectionListener($options['model_manager']))
-            ;
+                ->addEventSubscriber(new MergeCollectionListener());
         } else {
             $builder
-                ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']), true)
-            ;
+                ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']), true);
         }
     }
 
@@ -72,20 +74,13 @@ class ModelType extends AbstractType
     }
 
     /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
+     * @return void
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $options = [];
         $propertyAccessor = $this->propertyAccessor;
-        $options['choice_loader'] = function (Options $options, $previousValue) use ($propertyAccessor) {
+        $options['choice_loader'] = static function (Options $options, $previousValue) use ($propertyAccessor) {
             if ($previousValue && \count($choices = $previousValue->getChoices())) {
                 return $choices;
             }
@@ -99,29 +94,25 @@ class ModelType extends AbstractType
                 $propertyAccessor
             );
         };
-        // NEXT_MAJOR: Remove this when dropping support for SF 2.8
-        if (method_exists(FormTypeInterface::class, 'setDefaultOptions')) {
-            $options['choices_as_values'] = true;
-        }
 
         $resolver->setDefaults(array_merge($options, [
-            'compound' => function (Options $options) {
+            'compound' => static function (Options $options) {
                 if (isset($options['multiple']) && $options['multiple']) {
                     if (isset($options['expanded']) && $options['expanded']) {
-                        //checkboxes
+                        // checkboxes
                         return true;
                     }
 
-                    //select tag (with multiple attribute)
+                    // select tag (with multiple attribute)
                     return false;
                 }
 
                 if (isset($options['expanded']) && $options['expanded']) {
-                    //radio buttons
+                    // radio buttons
                     return true;
                 }
 
-                //select tag
+                // select tag
                 return false;
             },
 
@@ -132,7 +123,7 @@ class ModelType extends AbstractType
             'class' => null,
             'property' => null,
             'query' => null,
-            'choices' => [],
+            'choices' => null,
             'preferred_choices' => [],
             'btn_add' => 'link_add',
             'btn_list' => 'link_list',
@@ -141,6 +132,11 @@ class ModelType extends AbstractType
         ]));
     }
 
+    /**
+     * @return string
+     *
+     * @phpstan-return class-string<FormTypeInterface>
+     */
     public function getParent()
     {
         return ChoiceType::class;
@@ -149,7 +145,7 @@ class ModelType extends AbstractType
     /**
      * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * {@inheritdoc}
+     * @return string
      */
     public function getName()
     {

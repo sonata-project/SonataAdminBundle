@@ -17,6 +17,8 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
+use Symfony\Component\Security\Acl\Model\AclInterface;
+use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 use Symfony\Component\Security\Acl\Model\MutableAclProviderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -37,31 +39,31 @@ class AclSecurityHandlerTest extends TestCase
     public function testAcl(): void
     {
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->any())
+        $admin
             ->method('getCode')
-            ->will($this->returnValue('test'));
+            ->willReturn('test');
 
         $authorizationChecker = $this->getAuthorizationCheckerMock();
-        $authorizationChecker->expects($this->any())
+        $authorizationChecker
             ->method('isGranted')
-            ->will($this->returnValue(true));
+            ->willReturn(true);
 
         $aclProvider = $this->getMockForAbstractClass(MutableAclProviderInterface::class);
 
         $handler = new AclSecurityHandler($this->getTokenStorageMock(), $authorizationChecker, $aclProvider, MaskBuilder::class, []);
 
-        $this->assertTrue($handler->isGranted($admin, ['TOTO']));
-        $this->assertTrue($handler->isGranted($admin, 'TOTO'));
+        static::assertTrue($handler->isGranted($admin, ['TOTO']));
+        static::assertTrue($handler->isGranted($admin, 'TOTO'));
 
         $authorizationChecker = $this->getAuthorizationCheckerMock();
-        $authorizationChecker->expects($this->any())
+        $authorizationChecker
             ->method('isGranted')
-            ->will($this->returnValue(false));
+            ->willReturn(false);
 
         $handler = new AclSecurityHandler($this->getTokenStorageMock(), $authorizationChecker, $aclProvider, MaskBuilder::class, []);
 
-        $this->assertFalse($handler->isGranted($admin, ['TOTO']));
-        $this->assertFalse($handler->isGranted($admin, 'TOTO'));
+        static::assertFalse($handler->isGranted($admin, ['TOTO']));
+        static::assertFalse($handler->isGranted($admin, 'TOTO'));
     }
 
     public function testBuildInformation(): void
@@ -72,13 +74,13 @@ class AclSecurityHandlerTest extends TestCase
 
         $authorizationChecker = $this->getAuthorizationCheckerMock();
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
-        $admin->expects($this->once())
+        $admin->expects(static::once())
             ->method('getCode')
-            ->will($this->returnValue('test'));
+            ->willReturn('test');
 
-        $admin->expects($this->once())
+        $admin->expects(static::once())
             ->method('getSecurityInformation')
-            ->will($this->returnValue($informations));
+            ->willReturn($informations);
 
         $aclProvider = $this->getMockForAbstractClass(MutableAclProviderInterface::class);
 
@@ -86,7 +88,7 @@ class AclSecurityHandlerTest extends TestCase
 
         $results = $handler->buildSecurityInformation($admin);
 
-        $this->assertArrayHasKey('ROLE_TEST_EDIT', $results);
+        static::assertArrayHasKey('ROLE_TEST_EDIT', $results);
     }
 
     public function testWithAuthenticationCredentialsNotFoundException(): void
@@ -94,15 +96,15 @@ class AclSecurityHandlerTest extends TestCase
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
 
         $authorizationChecker = $this->getAuthorizationCheckerMock();
-        $authorizationChecker->expects($this->any())
+        $authorizationChecker
             ->method('isGranted')
-            ->will($this->throwException(new AuthenticationCredentialsNotFoundException('FAIL')));
+            ->will(static::throwException(new AuthenticationCredentialsNotFoundException('FAIL')));
 
         $aclProvider = $this->getMockForAbstractClass(MutableAclProviderInterface::class);
 
         $handler = new AclSecurityHandler($this->getTokenStorageMock(), $authorizationChecker, $aclProvider, MaskBuilder::class, []);
 
-        $this->assertFalse($handler->isGranted($admin, 'raise exception', $admin));
+        static::assertFalse($handler->isGranted($admin, 'raise exception', $admin));
     }
 
     public function testWithNonAuthenticationCredentialsNotFoundException(): void
@@ -112,14 +114,52 @@ class AclSecurityHandlerTest extends TestCase
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
 
         $authorizationChecker = $this->getAuthorizationCheckerMock();
-        $authorizationChecker->expects($this->any())
+        $authorizationChecker
             ->method('isGranted')
-            ->will($this->throwException(new \RuntimeException('FAIL')));
+            ->will(static::throwException(new \RuntimeException('FAIL')));
 
         $aclProvider = $this->getMockForAbstractClass(MutableAclProviderInterface::class);
 
         $handler = new AclSecurityHandler($this->getTokenStorageMock(), $authorizationChecker, $aclProvider, MaskBuilder::class, []);
 
-        $this->assertFalse($handler->isGranted($admin, 'raise exception', $admin));
+        static::assertFalse($handler->isGranted($admin, 'raise exception', $admin));
+    }
+
+    public function testAddObjectOwnerParamMustBeMutableAclInterface(): void
+    {
+        $this->expectException(\TypeError::class);
+        $this->expectExceptionMessage(sprintf(
+            'Argument 1 passed to "%s::addObjectOwner()" must implement "%s".',
+            AclSecurityHandler::class,
+            MutableAclInterface::class
+        ));
+        $handler = new AclSecurityHandler(
+            $this->getTokenStorageMock(),
+            $this->getAuthorizationCheckerMock(),
+            $this->getMockForAbstractClass(MutableAclProviderInterface::class),
+            MaskBuilder::class,
+            []
+        );
+        $handler->addObjectOwner($this->createStub(AclInterface::class));
+    }
+
+    public function testSuccerfulUpdateAcl(): void
+    {
+        $acl = $this->createStub(MutableAclInterface::class);
+        $aclProvider = $this->getMockForAbstractClass(MutableAclProviderInterface::class);
+
+        $aclProvider
+            ->expects(static::once())
+            ->method('updateAcl')
+            ->with($acl);
+
+        $handler = new AclSecurityHandler(
+            $this->getTokenStorageMock(),
+            $this->getAuthorizationCheckerMock(),
+            $aclProvider,
+            MaskBuilder::class,
+            []
+        );
+        $handler->updateAcl($acl);
     }
 }

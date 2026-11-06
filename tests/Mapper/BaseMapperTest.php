@@ -19,6 +19,10 @@ use Sonata\AdminBundle\Builder\BuilderInterface;
 use Sonata\AdminBundle\Mapper\BaseMapper;
 
 /**
+ * NEXT_MAJOR: Remove this tests.
+ *
+ * @group legacy
+ *
  * Test for BaseMapperTest.
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
@@ -35,7 +39,7 @@ class BaseMapperTest extends TestCase
      */
     protected $admin;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         $this->admin = $this->getMockForAbstractClass(AdminInterface::class);
         $builder = $this->getMockForAbstractClass(BuilderInterface::class);
@@ -45,6 +49,6 @@ class BaseMapperTest extends TestCase
 
     public function testGetAdmin(): void
     {
-        $this->assertSame($this->admin, $this->baseMapper->getAdmin());
+        static::assertSame($this->admin, $this->baseMapper->getAdmin());
     }
 }

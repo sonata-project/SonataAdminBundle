@@ -6,26 +6,31 @@ List and Show Actions
 
 There are many field types that can be used in the list and show action :
 
-============    =============================================
-Fieldtype       Description
-============    =============================================
-array           display value from an array
-boolean         display a green or red picture dependant on the boolean value
-date            display a formatted date. Accepts an optional ``format`` parameter
-datetime        display a formatted date and time. Accepts an optional ``format`` and ``timezone`` parameter
-text            display a text
-textarea        display a textarea
-trans           translate the value with a provided ``catalogue`` option
-string          display a text
-number          display a number
-currency        display a number with a provided ``currency`` option
-percent         display a percentage
-choice          uses the given value as index for the ``choices`` array and displays (and optionally translates) the matching value
-url             display a link
-html            display (and optionally truncate or strip tags from) raw html
-============    =============================================
+================================================    =============================================
+Fieldtype                                           Description
+================================================    =============================================
+``FieldDescriptionInterface::TYPE_ARRAY``           display value from an array
+``FieldDescriptionInterface::TYPE_BOOLEAN``         display a green or red picture dependant on the boolean value
+``FieldDescriptionInterface::TYPE_DATE``            display a formatted date. Accepts the option ``format``
+``FieldDescriptionInterface::TYPE_TIME``            display a formatted time. Accepts the options ``format`` and ``timezone``
+``FieldDescriptionInterface::TYPE_DATETIME``        display a formatted date and time. Accepts the options ``format`` and ``timezone``
+``FieldDescriptionInterface::TYPE_STRING``          display a text
+``FieldDescriptionInterface::TYPE_EMAIL``           display a mailto link. Accepts the options ``as_string``, ``subject`` and ``body``
+``FieldDescriptionInterface::TYPE_TEXTAREA``        display a textarea
+``FieldDescriptionInterface::TYPE_TRANS``           translate the value with a provided ``catalogue`` (translation domain) and ``format`` (sprintf format) option
+``FieldDescriptionInterface::TYPE_FLOAT``           display a number
+``FieldDescriptionInterface::TYPE_CURRENCY``        display a number with a provided ``currency`` option
+``FieldDescriptionInterface::TYPE_PERCENT``         display a percentage
+``FieldDescriptionInterface::TYPE_CHOICE``          uses the given value as index for the ``choices`` array and displays (and optionally translates) the matching value
+``FieldDescriptionInterface::TYPE_URL``             display a link
+``FieldDescriptionInterface::TYPE_HTML``            display (and optionally truncate or strip tags from) raw html
+``FieldDescriptionInterface::TYPE_MANY_TO_MANY``    used for relational tables
+``FieldDescriptionInterface::TYPE_MANY_TO_ONE``     used for relational tables
+``FieldDescriptionInterface::TYPE_ONE_TO_MANY``     used for relational tables
+``FieldDescriptionInterface::TYPE_ONE_TO_ONE``      used for relational tables
+================================================    =============================================
 
-Theses types accept an ``editable`` parameter to edit the value from within the list action.
+Theses types accept an ``editable`` option to edit the value from within the list action.
 This is currently limited to scalar types (text, integer, url...) and choice types with association field.
 
 .. note::
@@ -34,15 +39,15 @@ This is currently limited to scalar types (text, integer, url...) and choice typ
     will be changed to use localized information.
 
     Option for currency type must be an official ISO code, example : EUR for "euros".
-    List of ISO codes : `http://en.wikipedia.org/wiki/List_of_circulating_currencies <http://en.wikipedia.org/wiki/List_of_circulating_currencies>`_
+    List of ISO codes : `https://en.wikipedia.org/wiki/List_of_circulating_currencies <https://en.wikipedia.org/wiki/List_of_circulating_currencies>`_
 
-    In ``date`` and ``datetime`` field types, ``format`` pattern must match twig's
-    ``date`` filter specification, available at: `http://twig.sensiolabs.org/doc/filters/date.html <http://twig.sensiolabs.org/doc/filters/date.html>`_
+    In ``FieldDescriptionInterface::TYPE_DATE``, ``FieldDescriptionInterface::TYPE_TIME`` and ``FieldDescriptionInterface::TYPE_DATETIME`` field types, ``format`` pattern must match twig's
+    ``date`` filter specification, available at: `https://twig.symfony.com/doc/2.x/filters/date.html <https://twig.symfony.com/doc/2.x/filters/date.html>`_
 
-    In ``datetime`` field types, ``timezone`` syntax must match twig's
-    ``date`` filter specification, available at: `http://twig.sensiolabs.org/doc/filters/date.html <http://twig.sensiolabs.org/doc/filters/date.html>`_
-    and php timezone list: `https://php.net/manual/en/timezones.php <https://php.net/manual/en/timezones.php>`_
-    You can use in lists what `view-timezone <http://symfony.com/doc/current/reference/forms/types/datetime.html#view-timezone>`_ allows on forms,
+    In ``FieldDescriptionInterface::TYPE_TIME`` and ``FieldDescriptionInterface::TYPE_DATETIME`` field types, ``timezone`` syntax must match twig's
+    ``date`` filter specification, available at: `https://twig.symfony.com/doc/2.x/filters/date.html <https://twig.symfony.com/doc/2.x/filters/date.html>`_
+    and php timezone list: `https://www.php.net/manual/en/timezones.php <https://www.php.net/manual/en/timezones.php>`_
+    You can use in lists what `view-timezone <https://symfony.com/doc/4.4/reference/forms/types/datetime.html#view-timezone>`_ allows on forms,
     a way to render the date in the user timezone::
 
         protected function configureListFields(ListMapper $listMapper)
@@ -57,22 +62,97 @@ This is currently limited to scalar types (text, integer, url...) and choice typ
             ;
         }
 
-More types might be provided based on the persistency layer defined. Please refer to their
-related documentations.
+``FieldDescriptionInterface::TYPE_ARRAY``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Choice
-^^^^^^
-
-You can use the following parameters:
+You can use the following options:
 
 ======================================  ============================================================
-Parameter                               Description
+Option                                  Description
 ======================================  ============================================================
-**choices**                             Array of choices
+**inline**                              If ``true``, the array will be displayed as a single line,
+                                        the whole array and each array level will be wrapped up with square brackets.
+                                        If ``false``, the array will be displayed as an unordered list.
+                                        For the ``show`` action, the default value is ``true`` and for the ``list`` action
+                                        it's ``false``.
+**display**                             Define what should be displayed: keys, values or both.
+                                        Defaults to ``'both'``.
+                                        Available options are: ``'both'``, ``'keys'``, ``'values'``.
+**key_translation_domain**              This option determines if the keys should be translated and
+                                        in which translation domain.
+                                        The values of this option can be ``true`` (use admin
+                                        translation domain), ``false`` (disable translation), ``null``
+                                        (uses the parent translation domain or the default domain)
+                                        or a string which represents the exact translation domain to use.
+**value_translation_domain**            This option determines if the values should be translated and
+                                        in which translation domain.
+                                        The values of this option can be ``true`` (use admin
+                                        translation domain), ``false`` (disable translation), ``null``
+                                        (uses the parent translation domain or the default domain)
+                                        or a string which represents the exact translation domain to use.
+======================================  ============================================================
+
+.. code-block:: php
+
+    protected function configureListFields(ListMapper $listMapper): void
+    {
+        $listMapper
+            ->add('options', FieldDescriptionInterface::TYPE_ARRAY, [
+                'inline' => true,
+                'display' => 'both',
+                'key_translation_domain' => true,
+                'value_translation_domain' => null
+            ])
+        ;
+    }
+
+``FieldDescriptionInterface::TYPE_BOOLEAN``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can use the following options:
+
+======================================  ======================================================================
+Option                                  Description
+======================================  ======================================================================
+**ajax_hidden**                         Yes/No; ajax_hidden allows to hide list field during an AJAX context.
+**editable**                            Yes/No; editable allows to edit directly from the list if authorized.
+**inverse**                             Yes/No; reverses the background color (green for false, red for true).
+======================================  ======================================================================
+
+.. code-block:: php
+
+    protected function configureListFields(ListMapper $listMapper)
+    {
+        $listMapper
+            ->add('invalid', FieldDescriptionInterface::TYPE_BOOLEAN, [
+                'editable' => true,
+                'inverse'  => true,
+            ])
+        ;
+    }
+
+.. note::
+
+    It is better to prefer non negative notions when possible for boolean values
+    so use the ``inverse`` option if you really cannot find a good enough antonym for the name you have.
+
+``FieldDescriptionInterface::TYPE_CHOICE``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can use the following options:
+
+======================================  ======================================================================
+Option                                  Description
+======================================  ======================================================================
+**choices**                             Array of choices.
+**multiple**                            Determines if choosing multiple options is allowed. Defaults to false.
+**delimiter**                           Separator of values, if multiple.
+**catalogue**                           Translation catalogue.
+**class**                               Class qualified name for editable association field.
 **required**                            Whether the field is required or not (default true) when the
                                         ``editable`` option is set to ``true``. If false, an empty
                                         placeholder will be added.
-======================================  ============================================================
+======================================  ======================================================================
 
 .. code-block:: php
 
@@ -80,7 +160,7 @@ Parameter                               Description
     {
         // For the value `prog`, the displayed text is `In progress`. The `App` catalogue will be used to translate `In progress` message.
         $listMapper
-            ->add('status', 'choice', [
+            ->add('status', FieldDescriptionInterface::TYPE_CHOICE, [
                 'choices' => [
                     'prep' => 'Prepared',
                     'prog' => 'In progress',
@@ -91,15 +171,13 @@ Parameter                               Description
         ;
     }
 
-The ``choice`` field type also supports multiple values that can be separated by a ``delimiter``.
-
-.. code-block:: php
+The ``FieldDescriptionInterface::TYPE_CHOICE`` field type also supports multiple values that can be separated by a ``delimiter``::
 
     protected function configureListFields(ListMapper $listMapper)
     {
         // For the value `['r', 'b']`, the displayed text ist `red | blue`.
         $listMapper
-            ->add('colors', 'choice', [
+            ->add('colors', FieldDescriptionInterface::TYPE_CHOICE, [
                 'multiple' => true,
                 'delimiter' => ' | ',
                 'choices' => [
@@ -115,15 +193,15 @@ The ``choice`` field type also supports multiple values that can be separated by
 
     The default delimiter is a comma ``,``.
 
-URL
-^^^
+``FieldDescriptionInterface::TYPE_URL``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Display URL link to external website or controller action.
 
-You can use the following parameters:
+You can use the following options:
 
 ======================================  ==================================================================
-Parameter                               Description
+Option                                  Description
 ======================================  ==================================================================
 **hide_protocol**                       remove protocol part from the link text
 **url**                                 URL address (e.g. ``http://example.com``)
@@ -141,29 +219,29 @@ Parameter                               Description
         $listMapper
             // Output for value `http://example.com`:
             // `<a href="http://example.com">http://example.com</a>`
-            ->add('targetUrl', 'url')
+            ->add('targetUrl', FieldDescriptionInterface::TYPE_URL)
 
             // Output for value `http://example.com`:
             // `<a href="http://example.com" target="_blank">example.com</a>`
-            ->add('targetUrl', 'url', [
+            ->add('targetUrl', FieldDescriptionInterface::TYPE_URL, [
                 'attributes' => ['target' => '_blank']
             ])
 
             // Output for value `http://example.com`:
             // `<a href="http://example.com">example.com</a>`
-            ->add('targetUrl', 'url', [
+            ->add('targetUrl', FieldDescriptionInterface::TYPE_URL, [
                 'hide_protocol' => true
             ])
 
             // Output for value `Homepage of example.com` :
             // `<a href="http://example.com">Homepage of example.com</a>`
-            ->add('title', 'url', [
+            ->add('title', FieldDescriptionInterface::TYPE_URL, [
                 'url' => 'http://example.com'
             ])
 
             // Output for value `Acme Blog Homepage`:
             // `<a href="http://blog.example.com">Acme Blog Homepage</a>`
-            ->add('title', 'url', [
+            ->add('title', FieldDescriptionInterface::TYPE_URL, [
                 'route' => [
                     'name' => 'acme_blog_homepage',
                     'absolute' => true
@@ -172,7 +250,7 @@ Parameter                               Description
 
             // Output for value `Sonata is great!` (related object has identifier `123`):
             // `<a href="http://blog.example.com/xml/123">Sonata is great!</a>`
-            ->add('title', 'url', [
+            ->add('title', FieldDescriptionInterface::TYPE_URL, [
                 'route' => [
                     'name' => 'acme_blog_article',
                     'absolute' => true,
@@ -185,23 +263,23 @@ Parameter                               Description
 
 .. note::
 
-    Do not use ``url`` type with ``addIdentifier()`` method, because it will create invalid nested URLs.
+    Do not use ``FieldDescriptionInterface::TYPE_URL`` type with ``addIdentifier()`` method, because it will create invalid nested URLs.
 
-HTML
-^^^^
+``FieldDescriptionInterface::TYPE_HTML``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Display (and optionally truncate or strip tags from) raw html.
 
-You can use the following parameters:
+You can use the following options:
 
 ========================    ==================================================================
-Parameter                   Description
+Option                      Description
 ========================    ==================================================================
 **strip**                   Strip HTML and PHP tags from a string
-**truncate**                Truncate a string to ``length`` characters beginning from start. Implies strip. Beware of HTML entities. Make sure to configure your HTML editor to disable entities if you want to use truncate. For instance, use `config.entities <http://docs.ckeditor.com/#!/api/CKEDITOR.config-cfg-entities>`_ for ckeditor
+**truncate**                Truncate a string to ``length`` characters beginning from start. Implies strip. Beware of HTML entities. Make sure to configure your HTML editor to disable entities if you want to use truncate. For instance, use `config.entities <https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR_config.html#cfg-entities>`_ for ckeditor
 **truncate.length**         The length to truncate the string to (default ``30``)
-**truncate.preserve**       Preserve whole words (default ``false``)
-**truncate.separator**      Separator to be appended to the trimmed string (default ``...``)
+**truncate.cut**            Determines if whole words must be cut (default ``true``)
+**truncate.ellipsis**       Ellipsis to be appended to the trimmed string (default ``...``)
 ========================    ==================================================================
 
 .. code-block:: php
@@ -212,23 +290,23 @@ Parameter                   Description
 
             // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
             // `<p><strong>Creating a Template for the Field</strong> and form</p>` (no escaping is done)
-            ->add('content', 'html')
+            ->add('content', FieldDescriptionInterface::TYPE_HTML)
 
             // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
             // `Creating a Template for the Fi...`
-            ->add('content', 'html', [
+            ->add('content', FieldDescriptionInterface::TYPE_HTML, [
                 'strip' => true
             ])
 
             // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
             // `Creating a Template for...`
-            ->add('content', 'html', [
+            ->add('content', FieldDescriptionInterface::TYPE_HTML, [
                 'truncate' => true
             ])
 
             // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
             // `Creating a...`
-            ->add('content', 'html', [
+            ->add('content', FieldDescriptionInterface::TYPE_HTML, [
                 'truncate' => [
                     'length' => 10
                 ]
@@ -236,28 +314,65 @@ Parameter                   Description
 
             // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
             // `Creating a Template for the Field...`
-            ->add('content', 'html', [
+            ->add('content', FieldDescriptionInterface::TYPE_HTML, [
                 'truncate' => [
-                    'preserve' => true
+                    'cut' => false
                 ]
             ])
 
             // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
             // `Creating a Template for the Fi, etc.`
-            ->add('content', 'html', [
+            ->add('content', FieldDescriptionInterface::TYPE_HTML, [
                 'truncate' => [
-                    'separator' => ', etc.'
+                    'ellipsis' => ', etc.'
                 ]
             ])
 
             // Output for value `<p><strong>Creating a Template for the Field</strong> and form</p>`:
             // `Creating a Template for***`
-            ->add('content', 'html', [
+            ->add('content', FieldDescriptionInterface::TYPE_HTML, [
                 'truncate' => [
                     'length' => 20,
-                    'preserve' => true,
-                    'separator' => '***'
+                    'cut' => false,
+                    'ellipsis' => '***'
                 ]
             ])
         ;
     }
+
+Create your own field type
+--------------------------
+
+Field types are Twig templates that are registered in the configuration
+section matching your model manager. The example below uses
+``sonata_doctrine_orm_admin``.
+
+.. code-block:: yaml
+
+    # config/sonata_doctrine_orm_admin.yaml
+
+    sonata_doctrine_orm_admin:
+        templates:
+            types:
+                show: # or "list"
+                    dump: 'fieldtypes/show_dump.html.twig'
+
+Now add a twig file to your ``templates/`` directory. The example below
+uses ``@SonataAdmin/CRUD/base_show_field.html.twig`` to provide the row
+layout used by the "show" template.
+Within this base template you can override the ``field`` block to
+rewrite the contents of the field content cell in this row.
+
+.. code-block:: html+twig
+
+    {# templates/fieldtypes/show_dump.html.twig #}
+
+    {% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+    {% block field %}
+        {{ dump(value) }}
+    {% endblock %}
+
+Take a look at the default templates in
+``@SonataAdmin/Resources/views/CRUD`` to get an idea of the
+possibilities when writing field templates.

@@ -115,7 +115,7 @@ The following configuration uses a menu provider to populate the menu group ``my
                 groups:
                     my_group:
                         provider:        'MyBundle:MyMenuProvider:getMyMenu'
-                        icon:            '<i class="fa fa-edit"></i>'
+                        icon:            'fa fa-edit' # html is also supported
 
 With KnpMenuBundle you can create a custom menu by using a builder class
 or by declaring it as a service. Please see the `Knp documentation`_ for
@@ -161,7 +161,7 @@ name ``sonata.admin.event.configure.menu.sidebar``::
                 'label' => 'Daily and monthly reports',
                 'route' => 'app_reports_index',
             ])->setExtras([
-                'icon' => '<i class="fa fa-bar-chart"></i>',
+                'icon' => 'fa fa-bar-chart', // html is also supported
             ]);
         }
     }
@@ -230,7 +230,7 @@ open and ignore open/close effects:
                     keep_open:       true
                     label:           sonata_media
                     label_catalogue: SonataMediaBundle
-                    icon:            '<i class="fa fa-image"></i>'
+                    icon:            'fa fa-image' # html is also supported
                     items:
                         - sonata.media.admin.media
                         - sonata.media.admin.gallery
@@ -297,5 +297,5 @@ Your can't use this option for two or more items at the same time:
 In this case you have an exception: "You can't use ``on_top`` option with multiple same name groups".
 
 .. _KnpMenu: https://github.com/KnpLabs/KnpMenu
-.. _Knp documentation: http://symfony.com/doc/current/bundles/KnpMenuBundle/index.html#create-your-first-menu
-.. _Using events to allow a menu to be extended: http://symfony.com/doc/master/bundles/KnpMenuBundle/events.html
+.. _Knp documentation: https://symfony.com/doc/current/bundles/KnpMenuBundle/index.html#create-your-first-menu
+.. _Using events to allow a menu to be extended: https://symfony.com/doc/master/bundles/KnpMenuBundle/events.html

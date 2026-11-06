@@ -39,7 +39,7 @@ interface ParentAdminInterface
     /**
      * Returns an collection of admin children.
      *
-     * @return array list of Admin children
+     * @return array<string, AdminInterface> list of Admin children
      */
     public function getChildren();
 
@@ -48,7 +48,7 @@ interface ParentAdminInterface
      *
      * @param string $code
      *
-     * @return AdminInterface|null
+     * @return AdminInterface|null // NEXT_MAJOR: Return AdminInterface
      */
     public function getChild($code);
 }

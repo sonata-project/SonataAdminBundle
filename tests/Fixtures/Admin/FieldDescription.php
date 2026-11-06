@@ -13,49 +13,60 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
-use Sonata\AdminBundle\Admin\BaseFieldDescription;
+use Sonata\AdminBundle\FieldDescription\BaseFieldDescription;
 
 class FieldDescription extends BaseFieldDescription
 {
+    // NEXT_MAJOR: Make this method protected.
     public function setAssociationMapping($associationMapping): void
     {
-        // TODO: Implement setAssociationMapping() method.
+        $this->associationMapping = $associationMapping;
     }
 
     public function getTargetEntity(): void
     {
-        // TODO: Implement getTargetEntity() method.
+        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
+    public function getTargetModel(): ?string
+    {
+        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
+    }
+
+    // NEXT_MAJOR: Make this method protected.
     public function setFieldMapping($fieldMapping): void
     {
-        // TODO: Implement setFieldMapping() method.
+        $this->fieldMapping = $fieldMapping;
     }
 
     public function isIdentifier(): void
     {
-        // TODO: Implement isIdentifier() method.
+        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
     }
 
-    /**
-     * set the parent association mappings information.
-     *
-     * @param array $parentAssociationMappings
-     */
+    // NEXT_MAJOR: Make this method protected.
     public function setParentAssociationMappings(array $parentAssociationMappings): void
     {
-        // TODO: Implement setParentAssociationMappings() method.
+        $this->parentAssociationMappings = $parentAssociationMappings;
     }
 
-    /**
-     * return the value linked to the description.
-     *
-     * @param  $object
-     *
-     * @return bool|mixed
-     */
     public function getValue($object)
     {
-        // TODO: Implement getValue() method.
+        throw new \BadMethodCallException(sprintf('Implement %s() method.', __METHOD__));
+    }
+
+    public function describesAssociation(): bool
+    {
+        return $this->describesSingleValuedAssociation() || $this->describesCollectionValuedAssociation();
+    }
+
+    public function describesSingleValuedAssociation(): bool
+    {
+        return false;
+    }
+
+    public function describesCollectionValuedAssociation(): bool
+    {
+        return false;
     }
 }

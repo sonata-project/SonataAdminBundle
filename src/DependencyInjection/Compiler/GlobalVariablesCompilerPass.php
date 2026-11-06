@@ -18,6 +18,12 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
+ * NEXT_MAJOR: Remove the "since" part of the internal annotation.
+ *
+ * @internal since sonata-project/admin-bundle version 4.0
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class GlobalVariablesCompilerPass implements CompilerPassInterface
@@ -25,6 +31,8 @@ class GlobalVariablesCompilerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $container->getDefinition('twig')
+            ->addMethodCall('addGlobal', ['sonata_config', new Reference('sonata.admin.configuration')])
+            // NEXT_MAJOR: Remove next line.
             ->addMethodCall('addGlobal', ['sonata_admin', new Reference('sonata.admin.twig.global')]);
     }
 }

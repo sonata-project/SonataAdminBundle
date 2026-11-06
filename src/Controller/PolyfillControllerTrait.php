@@ -32,7 +32,7 @@ trait PolyfillControllerTrait
         $this->proxyToController($methodName, $arguments);
     }
 
-    public function render($view, array $parameters = [], Response $response = null)
+    public function render($view, array $parameters = [], ?Response $response = null)
     {
         return $this->__call('render', [$view, $parameters, $response]);
     }
@@ -43,7 +43,7 @@ trait PolyfillControllerTrait
     final protected function proxyToControllerClass($methodName, $arguments)
     {
         if (!method_exists(Controller::class, $methodName)) {
-            throw new \LogicException('Call to undefined method '.__CLASS__.'::'.$methodName);
+            throw new \LogicException(sprintf('Call to undefined method %s::%s', __CLASS__, $methodName));
         }
 
         $controller = new PolyfillProxyContainer($this->container);
@@ -61,7 +61,7 @@ class PolyfillProxyContainer extends Controller
 
     public function proxyCall($method, $arguments)
     {
-        return \call_user_func_array([$this, $method], $arguments);
+        return $this->{$method}(...$arguments);
     }
 }
 

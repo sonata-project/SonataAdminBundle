@@ -11,6 +11,7 @@ the services which are injected by default are:
 Dependencies                  Service ID
 =========================     ===================================================================
 model_manager                 sonata.admin.manager.%manager-type%
+data_source                   sonata.admin.data_source.%manager-type%
 form_contractor               sonata.admin.builder.%manager-type%_form
 show_builder                  sonata.admin.builder.%manager-type%_show
 list_builder                  sonata.admin.builder.%manager-type%_list
@@ -184,7 +185,7 @@ Inherited classes
 
 You can manage inherited classes by injecting subclasses using the service configuration.
 
-Lets consider a base class named `Person` and its subclasses `Student` and `Teacher`:
+Lets consider a base class named ``Person`` and its subclasses ``Student`` and ``Teacher``:
 
 .. configuration-block::
 
@@ -252,19 +253,19 @@ ACL
 ^^^
 
 Though the route linked by a menu may be protected the Tab Menu will not automatically check the ACl for you.
-The link will still appear unless you manually check it using the `hasAccess` method::
+The link will still appear unless you manually check it using the ``hasAccess()`` method::
 
     protected function configureTabMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
     {
         // Link will always appear even if it is protected by ACL
         $menu->addChild($this->trans('Show'), [
-            'uri' => $admin->generateUrl('show', ['id' => $id])
+            'uri' => $admin->generateUrl('show', [$admin->getIdParameter() => $id])
         ]);
 
         // Link will only appear if access to ACL protected URL is granted
         if ($this->hasAccess('edit')) {
             $menu->addChild($this->trans('Edit'), [
-                'uri' => $admin->generateUrl('edit', ['id' => $id])
+                'uri' => $admin->generateUrl('edit', [$admin->getIdParameter() => $id])
             ]);
         }
     }
@@ -284,10 +285,10 @@ the `'dropdown' => true` attribute::
         $menu->addChild('comments', ['attributes' => ['dropdown' => true]]);
 
         $menu['comments']->addChild('list', [
-            'uri' => $admin->generateUrl('listComment', ['id' => $id])
+            'uri' => $admin->generateUrl('listComment', [$admin->getIdParameter() => $id])
         ]);
         $menu['comments']->addChild('create', [
-            'uri' => $admin->generateUrl('addComment', ['id' => $id])
+            'uri' => $admin->generateUrl('addComment', [$admin->getIdParameter() => $id])
         ]);
     }
 
@@ -306,19 +307,19 @@ If you want to use the Tab Menu in a different way, you can replace the Menu Tem
 Translations
 ^^^^^^^^^^^^
 
-The translation parameters and domain can be customised by using the
-``translation_domain`` and ``translation_parameters`` keys of the extra array
+The label translation parameters and domain can be customised by using the
+``label_translation_parameters`` and ``label_catalogue`` keys of the extra array
 of data associated with the item, respectively::
 
     $menuItem->setExtras([
-        'translation_parameters' => ['myparam' => 'myvalue'],
-        'translation_domain' => 'My domain',
+        'label_translation_parameters' => ['myparam' => 'myvalue'],
+        'label_catalogue' => 'My domain',
     ]);
 
 You can also set the translation domain on the menu root, and children will
 inherit it::
 
-    $menu->setExtra('translation_domain', 'My domain');
+    $menu->setExtra('label_catalogue', 'My domain');
 
 Filter parameters
 ^^^^^^^^^^^^^^^^^
@@ -358,7 +359,7 @@ You can add or override filter parameters to the Tab Menu::
         }
     }
 
-The `Delivery` class is based on the `sonata_type_translatable_choice` example inside the `Core's documentation`_.
+The ``Delivery`` class is based on the ``sonata_type_translatable_choice`` example inside the `Core's documentation`_.
 
 Actions Menu
 ------------
@@ -450,4 +451,19 @@ by overriding ``checkAccess`` function::
         }
     }
 
-.. _`Core's documentation`: http://sonata-project.org/bundles/core/master/doc/reference/form_types.html#sonata-type-translatable-choice
+Use your own custom controller as default
+-----------------------------------------
+
+By default, ``CRUDController`` is the controller used when no controller has been specified. You can modify this by
+adding the following in the configuration:
+
+.. configuration-block::
+
+    .. code-block:: yaml
+
+        # config/packages/sonata_admin.yaml
+
+        sonata_admin:
+            default_controller: App\Controller\DefaultCRUDController
+
+.. _`Core's documentation`: https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/3.x/reference/form_types.html#sonata-type-translatable-choice

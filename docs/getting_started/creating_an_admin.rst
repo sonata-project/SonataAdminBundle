@@ -134,12 +134,12 @@ easiest way to do this is by extending ``Sonata\AdminBundle\Admin\AbstractAdmin`
 
 So, what does this code do?
 
-* **Line 11-14**: These lines configure which fields are displayed on the edit
+* **configureFormFields()**: This method configures which fields are displayed on the edit
   and create actions. The ``FormMapper`` behaves similar to the ``FormBuilder``
   of the Symfony Form component;
-* **Line 16-19**: This method configures the filters, used to filter and sort
+* **configureDatagridFilters()**: This method configures the filters, used to filter and sort
   the list of models;
-* **Line 21-24**: Here you specify which fields are shown when all models are
+* **configureListFields()**: Here you specify which fields are shown when all models are
   listed (the ``addIdentifier()`` method means that this field will link to the
   show/edit page of this particular model).
 
@@ -212,4 +212,4 @@ entity and learn more about this class.
     If you're not seeing the nice labels, but instead something like
     "link_add", you should make sure that you've `enabled the translator`_.
 
-.. _`enabled the translator`: http://symfony.com/doc/current/book/translation.html#configuration
+.. _`enabled the translator`: https://symfony.com/doc/4.4/translation.html#configuration

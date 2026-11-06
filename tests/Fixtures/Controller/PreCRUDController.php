@@ -46,6 +46,6 @@ class PreCRUDController extends CRUDController
 
     protected function preList(Request $request)
     {
-        return new Response(sprintf('preList called'));
+        return new Response('preList called');
     }
 }

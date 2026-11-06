@@ -15,52 +15,38 @@ namespace Sonata\AdminBundle\Templating;
 
 /**
  * @author Timo Bakx <timobakx@gmail.com>
+ *
+ * NEXT_MAJOR: remove `MutableTemplateRegistryInterface` implementation.
  */
-final class TemplateRegistry implements MutableTemplateRegistryInterface
+final class TemplateRegistry extends AbstractTemplateRegistry implements MutableTemplateRegistryInterface
 {
     /**
-     * @var string[]
-     */
-    private $templates = [];
-
-    /**
-     * @param string[] $templates
-     */
-    public function __construct(array $templates = [])
-    {
-        $this->templates = $templates;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getTemplates(): array
-    {
-        return $this->templates;
-    }
-
-    /**
-     * @param string[] $templates
+     * NEXT_MAJOR: remove this method.
+     *
+     * @deprecated since version sonata-project/admin-bundle 3.39.0 and will be removed in 4.0. Use Sonata\AdminBundle\Templating\MutableTemplateRegistry instead.
      */
     public function setTemplates(array $templates)
     {
         $this->templates = $templates;
+
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.39 and will be removed in 4.0.',
+            __METHOD__
+        ), \E_USER_DEPRECATED);
     }
 
     /**
-     * @param string $name
+     * NEXT_MAJOR: remove this method.
+     *
+     * @deprecated since version sonata-project/admin-bundle 3.39.0 and will be removed in 4.0. Use Sonata\AdminBundle\Templating\MutableTemplateRegistry instead.
      */
-    public function getTemplate($name): ?string
-    {
-        if (isset($this->templates[$name])) {
-            return $this->templates[$name];
-        }
-
-        return null;
-    }
-
     public function setTemplate($name, $template)
     {
         $this->templates[$name] = $template;
+
+        @trigger_error(sprintf(
+            'Method "%s()" is deprecated since sonata-project/admin-bundle 3.39 and will be removed in 4.0.',
+            __METHOD__
+        ), \E_USER_DEPRECATED);
     }
 }

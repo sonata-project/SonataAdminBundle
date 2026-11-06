@@ -36,7 +36,7 @@ For more information about optional libraries:
 
 .. note::
 
-    **TODO**:
+    **TODO**
     * options available when adding fields, inc custom templates
 
 Routes
@@ -64,32 +64,11 @@ For more detailed information about routes, see :doc:`routing`::
 Adding form fields
 ------------------
 
-Within the configureFormFields method you can define which fields should
-be shown when editing or creating entities.
-Each field has to be added to a specific form group. And form groups can
-optionally be added to a tab. See `FormGroup options`_ for additional
-information about configuring form groups.
-
-Using the FormMapper add method, you can add form fields. The add method
-has 4 parameters:
-
-- ``name``: The name of your entity.
-- ``type``: The type of field to show; by defaults this is ``null`` to let
-  Sonata decide which type to use. See :doc:`Field Types <field_types>`
-  for more information on available types.
-- ``options``: The form options to be used for the field. These may differ
-  per type. See :doc:`Field Types <field_types>` for more information on
-  available options.
-- ``fieldDescriptionOptions``: The field description options. Options here
-  are passed through to the field template. See :ref:`Form Types, FieldDescription
-  options <form_types_fielddescription_options>` for more information.
-
-.. note::
-
-    The property entered in ``name`` should be available in your Entity
-    through getters/setters or public access.
-
-.. code-block:: php
+Within the ``configureFormFields`` method you can define which fields should
+be shown when editing or creating entities. Each field has to be added to a
+specific form group. And form groups can optionally be added to a tab.
+See `FormGroup options`_ for additional information about configuring form
+groups::
 
     // src/Admin/PersonAdmin.php
 
@@ -109,6 +88,25 @@ has 4 parameters:
             ;
         }
     }
+
+Using the FormMapper add method, you can add form fields. The add method
+has 4 parameters:
+
+- ``name``: The name of your entity.
+- ``type``: The type of field to show; by defaults this is ``null`` to let
+  Sonata decide which type to use. See :doc:`Field Types <field_types>`
+  for more information on available types.
+- ``options``: The form options to be used for the field. These may differ
+  per type. See :doc:`Field Types <field_types>` for more information on
+  available options.
+- ``fieldDescriptionOptions``: The field description options. Options here
+  are passed through to the field template. See :ref:`Form Types, FieldDescription
+  options <form_types_fielddescription_options>` for more information.
+
+.. note::
+
+    The property entered in ``name`` should be available in your Entity
+    through getters/setters or public access.
 
 FormGroup options
 ~~~~~~~~~~~~~~~~~

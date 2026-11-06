@@ -12,56 +12,27 @@ file that was distributed with this source code.
 {% extends get_admin_template('base_list_field', admin.code) %}
 
 {% set is_editable =
-    field_description.options.editable is defined and
-    field_description.options.editable and
+    field_description.option('editable', false) and
     admin.hasAccess('edit', object)
 %}
 {% set x_editable_type = field_description.type|sonata_xeditable_type %}
 
-{% if is_editable and x_editable_type %}
-    {% block field_span_attributes %}
-        {% spaceless %}
+{% block field_span_attributes %}
+    {% if is_editable and x_editable_type %}
+        {% apply spaceless %}
             {{ parent() }}
             data-source="{{ field_description|sonata_xeditable_choices|json_encode }}"
-        {% endspaceless %}
-    {% endblock %}
-{% endif %}
+        {% endapply %}
+    {% endif %}
+{% endblock %}
 
 {% block field %}
-{% spaceless %}
-    {% if field_description.options.choices is defined %}
-        {% if field_description.options.multiple is defined and field_description.options.multiple==true and value is iterable %}
-
-            {% set result = '' %}
-            {% set delimiter = field_description.options.delimiter|default(', ') %}
-
-            {% for val in value %}
-                {% if result is not empty %}
-                    {% set result = result ~ delimiter %}
-                {% endif %}
-
-                {% if field_description.options.choices[val] is defined %}
-                    {% if field_description.options.catalogue is not defined %}
-                        {% set result = result ~ field_description.options.choices[val] %}
-                    {% else %}
-                        {% set result = result ~ field_description.options.choices[val]|trans({}, field_description.options.catalogue) %}
-                    {% endif %}
-                {% else %}
-                    {% set result = result ~ val %}
-                {% endif %}
-            {% endfor %}
-
-            {% set value = result %}
-
-        {% elseif value in field_description.options.choices|keys %}
-            {% if field_description.options.catalogue is not defined %}
-                {% set value = field_description.options.choices[value] %}
-            {% else %}
-                {% set value = field_description.options.choices[value]|trans({}, field_description.options.catalogue) %}
-            {% endif %}
-        {% endif %}
-    {% endif %}
-
-    {{ value }}
-{% endspaceless %}
+    {%- include '@SonataAdmin/CRUD/display_choice.html.twig' with {
+        value: value,
+        choices: field_description.option('choices'),
+        multiple: field_description.option('multiple'),
+        delimiter: field_description.option('delimiter'),
+        translation_domain: field_description.option('catalogue'),
+        safe: field_description.option('safe'),
+    } only -%}
 {% endblock %}

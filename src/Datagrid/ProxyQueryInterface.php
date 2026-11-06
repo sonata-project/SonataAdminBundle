@@ -29,11 +29,9 @@ interface ProxyQueryInterface
     public function __call($name, $args);
 
     /**
-     * @param int|null $hydrationMode
-     *
-     * @return mixed
+     * @return array<object>|\Traversable<object>
      */
-    public function execute(array $params = [], $hydrationMode = null);
+    public function execute();
 
     /**
      * @param array $parentAssociationMappings
@@ -44,23 +42,27 @@ interface ProxyQueryInterface
     public function setSortBy($parentAssociationMappings, $fieldMapping);
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getSortBy();
 
     /**
-     * @param mixed $sortOrder
+     * @param string $sortOrder
      *
      * @return ProxyQueryInterface
      */
     public function setSortOrder($sortOrder);
 
     /**
-     * @return mixed
+     * @return string|null
      */
     public function getSortOrder();
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.74, to be removed in 4.0.
+     *
      * @return mixed
      */
     public function getSingleScalarResult();
@@ -85,19 +87,25 @@ interface ProxyQueryInterface
     public function setMaxResults($maxResults);
 
     /**
-     * @return mixed
+     * @return int|null
      */
     public function getMaxResults();
 
     /**
-     * @return mixed
+     * NEXT_MAJOR: Remove this method from the interface.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.76, to be removed in 4.0.
+     *
+     * @return int
      */
     public function getUniqueParameterId();
 
     /**
-     * @param array $associationMappings
+     * NEXT_MAJOR: Remove this method from the interface.
      *
-     * @return mixed
+     * @deprecated since sonata-project/admin-bundle 3.76, to be removed in 4.0.
+     *
+     * @return string
      */
     public function entityJoin(array $associationMappings);
 }

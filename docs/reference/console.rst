@@ -5,7 +5,6 @@ SonataAdminBundle provides the following console commands:
 
 * ``cache:create-cache-class``
 * ``make:sonata:admin``
-* ``sonata:admin:generate``
 * ``sonata:admin:list``
 * ``sonata:admin:explain``
 * ``sonata:admin:setup-acl``
@@ -45,36 +44,6 @@ Options           Description
  **manager**      the model manager type (by default this is the first registered model manager type, e.g. "orm")
  **services**     the services YAML file (the default value is "services.yaml")
  **id**           the admin service ID (the default value is combination of "admin" and admin class basename like "admin.foo_bar")
-===============   ===============================================================================================================================
-
-.. code-block:: bash
-
-    bin/console sonata:admin:generate App/Entity/Foo
-
-sonata:admin:generate
----------------------
-
-The ``sonata:admin:generate`` command generates a new Admin class based on the given model
-class, registers it as a service and potentially creates a new controller.
-As an argument you need to specify the fully qualified model class.
-All passed arguments and options are used as default values in interactive mode.
-You can disable the interactive mode with ``--no-interaction`` option.
-
-The command requires the SensioGeneratorBundle_ to work. If you don't already have it, you can install it with :
-
-.. code-block:: bash
-
-    composer require sensio/generator-bundle --dev
-
-===============   ===============================================================================================================================
-Options           Description
-===============   ===============================================================================================================================
- **bundle**       the bundle name (the default value is determined by the given model class, e.g. "App" or "YourNSFooBundle")
- **admin**        the admin class basename (by default this adds "Admin" to the model class name, e.g. "BarAdmin")
- **controller**   the controller class basename (by default this adds "AdminController" to the model class name, e.g. "BarAdminController")
- **manager**      the model manager type (by default this is the first registered model manager type, e.g. "orm")
- **services**     the services YAML file (the default value is "services.yaml")
- **id**           the admin service ID (the default value is combination of the bundle name and admin class basename like "your_ns_foo.admin.bar")
 ===============   ===============================================================================================================================
 
 .. code-block:: bash
@@ -137,5 +106,4 @@ of the command for more information.
 
     bin/console sonata:admin:generate-object-acl
 
-.. _SensioGeneratorBundle: http://symfony.com/doc/current/bundles/SensioGeneratorBundle/index.html
 .. _`Symfony Maker Bundle`: https://symfony.com/doc/current/bundles/SymfonyMakerBundle/index.html

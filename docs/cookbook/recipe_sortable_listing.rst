@@ -6,7 +6,7 @@ This is a full working example of how to implement a sortable feature in your So
 Background
 ----------
 
-A sortable behavior is already available for one-to-many relationships (https://sonata-project.org/bundles/doctrine-orm-admin/master/doc/reference/form_field_definition.html#advanced-usage-one-to-many).
+A sortable behavior is already available for one-to-many relationships (https://docs.sonata-project.org/projects/SonataDoctrineORMAdminBundle/en/3.x/reference/form_field_definition/#advanced-usage-one-to-many).
 However there is no packaged solution to have some up and down arrows to sort
 your records such as showed in the following screen
 
@@ -43,7 +43,7 @@ First of all we are going to add a position field in our ``Client`` entity::
 
 Then we need to inject the Sortable listener.
 If you only have the Gedmo bundle enabled, you only have to add the listener
-to your `services.yaml` file and skip this step.
+to your ``services.yaml`` file and skip this step.
 
 .. code-block:: yaml
 
@@ -73,7 +73,7 @@ In our ``ClientAdmin`` we are going to add a custom action in the ``configureLis
 and use the default twig template provided in the ``pixSortableBehaviorBundle``::
 
     $listMapper
-        ->add('_action', null, [
+        ->add(ListMapper::NAME_ACTIONS, null, [
             'actions' => [
                 'move' => [
                     'template' => '@PixSortableBehavior/Default/_sort.html.twig'
@@ -85,7 +85,7 @@ In order to add new routes for these actions we are also adding the following me
 
     // src/Admin/ClientAdmin.php
 
-    namespace App/Admin;
+    namespace App\Admin;
 
     use Sonata\AdminBundle\Route\RouteCollection;
 
@@ -116,17 +116,19 @@ Now we need to define the sort by field to be ``$position``::
 
     namespace App\Admin;
 
-    use Sonata\AdminBundle\AbstractAdmin;
+    use Sonata\AdminBundle\Admin\AbstractAdmin;
+    use Sonata\AdminBundle\Datagrid\DatagridInterface;
     use Sonata\AdminBundle\Datagrid\ListMapper;
     use Sonata\AdminBundle\Route\RouteCollection;
 
     final class ClientAdmin extends AbstractAdmin
     {
-        protected $datagridValues = [
-            '_page' => 1,
-            '_sort_order' => 'ASC',
-            '_sort_by' => 'position',
-        ];
+        protected function configureDefaultSortValues(array &$sortValues): void
+        {
+            $sortValues[DatagridInterface::PAGE] = 1;
+            $sortValues[DatagridInterface::SORT_ORDER] = 'ASC';
+            $sortValues[DatagridInterface::SORT_BY] = 'position';
+        }
 
         protected function configureRoutes(RouteCollection $collection)
         {
@@ -138,7 +140,7 @@ Now we need to define the sort by field to be ``$position``::
             $listMapper
                 ->addIdentifier('name')
                 ->add('enabled')
-                ->add('_action', null, [
+                ->add(ListMapper::NAME_ACTIONS, null, [
                     'actions' => [
                         'move' => [
                             'template' => '@App/Admin/_sort.html.twig'

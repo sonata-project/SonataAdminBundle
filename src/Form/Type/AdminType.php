@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\Type;
 
+use Sonata\AdminBundle\Admin\AdminHelper;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformer\ArrayToModelTransformer;
+use Sonata\AdminBundle\Manipulator\ObjectManipulator;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -23,15 +25,42 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\PropertyAccess\Exception\NoSuchIndexException;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminType extends AbstractType
 {
+    /**
+     * NEXT_MAJOR: Remove this property.
+     *
+     * @var AdminHelper|null
+     */
+    private $adminHelper;
+
+    /**
+     * NEXT_MAJOR: Remove the __construct method.
+     */
+    public function __construct(?AdminHelper $adminHelper = null)
+    {
+        if (null !== $adminHelper) {
+            @trigger_error(sprintf(
+                'Passing argument 1 to %s() is deprecated since sonata-project/admin-bundle 3.72'
+                .' and will be ignored in version 4.0.',
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
+
+        $this->adminHelper = $adminHelper;
+    }
+
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $admin = clone $this->getAdmin($options);
@@ -51,11 +80,16 @@ class AdminType extends AbstractType
         // hack to make sure the subject is correctly set
         // https://github.com/sonata-project/SonataAdminBundle/pull/2076
         if (null === $builder->getData()) {
-            $p = new PropertyAccessor(false, true);
+            $propertyAccessor = PropertyAccess::createPropertyAccessorBuilder()
+                ->disableMagicCall()
+                ->enableExceptionOnInvalidIndex()
+                ->getPropertyAccessor();
 
-            try {
-                $parentSubject = $admin->getParentFieldDescription()->getAdmin()->getSubject();
-                if (null !== $parentSubject && false !== $parentSubject) {
+            if ($admin->hasParentFieldDescription()) {
+                $parentFieldDescription = $admin->getParentFieldDescription();
+                $parentAdmin = $parentFieldDescription->getAdmin();
+
+                if ($parentAdmin->hasSubject() && isset($options['property_path'])) {
                     // this check is to work around duplication issue in property path
                     // https://github.com/sonata-project/SonataAdminBundle/issues/4425
                     if ($this->getFieldDescription($options)->getFieldName() === $options['property_path']) {
@@ -64,12 +98,33 @@ class AdminType extends AbstractType
                         $path = $this->getFieldDescription($options)->getFieldName().$options['property_path'];
                     }
 
-                    $subject = $p->getValue($parentSubject, $path);
-                    $builder->setData($subject);
+                    $parentPath = implode(
+                        '',
+                        array_map(
+                            static function (array $associationMapping): string {
+                                return sprintf('%s.', $associationMapping['fieldName']);
+                            },
+                            $this->getFieldDescription($options)->getParentAssociationMappings()
+                        )
+                    );
+                    $parentSubject = $parentAdmin->getSubject();
+
+                    try {
+                        $subject = $propertyAccessor->getValue($parentSubject, $parentPath.$path);
+                    } catch (NoSuchIndexException $e) {
+                        // no object here, we create a new one
+                        $subject = $admin->getNewInstance();
+
+                        if ($options['collection_by_reference']) {
+                            $subject = ObjectManipulator::addInstance($parentSubject, $subject, $parentFieldDescription);
+                        } else {
+                            $subject = ObjectManipulator::setObject($subject, $parentSubject, $parentFieldDescription);
+                        }
+                    }
                 }
-            } catch (NoSuchIndexException $e) {
-                // no object here
             }
+
+            $builder->setData($subject ?? $admin->getNewInstance());
         }
 
         $admin->setSubject($builder->getData());
@@ -79,6 +134,9 @@ class AdminType extends AbstractType
         $builder->addModelTransformer(new ArrayToModelTransformer($admin->getModelManager(), $admin->getClass()));
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['btn_add'] = $options['btn_add'];
@@ -88,19 +146,12 @@ class AdminType extends AbstractType
     }
 
     /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
+     * @return void
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'delete' => function (Options $options) {
+            'delete' => static function (Options $options) {
                 return false !== $options['btn_delete'];
             },
             'delete_options' => [
@@ -115,13 +166,14 @@ class AdminType extends AbstractType
             'btn_list' => 'link_list',
             'btn_delete' => 'link_delete',
             'btn_catalogue' => 'SonataAdminBundle',
+            'collection_by_reference' => true,
         ]);
     }
 
     /**
      * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * {@inheritdoc}
+     * @return string
      */
     public function getName()
     {
@@ -134,6 +186,8 @@ class AdminType extends AbstractType
     }
 
     /**
+     * @param array<string, mixed> $options
+     *
      * @throws \RuntimeException
      *
      * @return FieldDescriptionInterface
@@ -148,6 +202,8 @@ class AdminType extends AbstractType
     }
 
     /**
+     * @param array<string, mixed> $options
+     *
      * @return AdminInterface
      */
     protected function getAdmin(array $options)
@@ -155,3 +211,6 @@ class AdminType extends AbstractType
         return $this->getFieldDescription($options)->getAssociationAdmin();
     }
 }
+
+// NEXT_MAJOR: Remove next line.
+interface_exists(FieldDescriptionInterface::class);

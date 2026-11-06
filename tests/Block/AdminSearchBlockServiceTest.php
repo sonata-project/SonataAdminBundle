@@ -17,14 +17,19 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Block\AdminSearchBlockService;
 use Sonata\AdminBundle\Search\SearchHandler;
-use Sonata\BlockBundle\Test\AbstractBlockServiceTestCase;
-use Sonata\BlockBundle\Test\FakeTemplating;
+use Sonata\BlockBundle\Test\BlockServiceTestCase;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 /**
  * @author Sullivan Senechal <soullivaneuh@gmail.com>
  */
-class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
+final class AdminSearchBlockServiceTest extends BlockServiceTestCase
 {
+    use ExpectDeprecationTrait;
+
     /**
      * @var Pool
      */
@@ -39,43 +44,82 @@ class AdminSearchBlockServiceTest extends AbstractBlockServiceTestCase
     {
         parent::setUp();
 
-        $this->pool = $this->getMockBuilder(Pool::class)->disableOriginalConstructor()->getMock();
-        $this->searchHandler = $this->getMockBuilder(SearchHandler::class)->disableOriginalConstructor()->getMock();
+        $this->pool = new Pool(new Container());
+        $this->searchHandler = new SearchHandler(true);
     }
 
     public function testDefaultSettings(): void
     {
-        $blockService = new AdminSearchBlockService('foo', $this->templating, $this->pool, $this->searchHandler);
+        $blockService = new AdminSearchBlockService(
+            $this->createMock(Environment::class),
+            $this->pool,
+            $this->searchHandler,
+            'show'
+        );
         $blockContext = $this->getBlockContext($blockService);
 
         $this->assertSettings([
-            'admin_code' => false,
+            'admin_code' => '',
             'query' => '',
             'page' => 0,
             'per_page' => 10,
-            'icon' => '<i class="fa fa-list"></i>',
+            'icon' => 'fa fa-list',
+        ], $blockContext);
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
+    public function testDefaultSettingsWithoutEmptyBoxOption(): void
+    {
+        $this->expectDeprecation('Not passing a string as argument 4 to %s() is deprecated since sonata-project/admin-bundle 3.81 and will throw a \TypeError in version 4.0.');
+
+        $blockService = new AdminSearchBlockService(
+            $this->createMock(Environment::class),
+            $this->pool,
+            $this->searchHandler,
+        );
+        $blockContext = $this->getBlockContext($blockService);
+
+        $this->assertSettings([
+            'admin_code' => '',
+            'query' => '',
+            'page' => 0,
+            'per_page' => 10,
+            'icon' => 'fa fa-list',
         ], $blockContext);
     }
 
     public function testGlobalSearchReturnsEmptyWhenFiltersAreDisabled(): void
     {
-        $admin = $this->getMockBuilder(AbstractAdmin::class)->disableOriginalConstructor()->getMock();
-        $templating = $this->getMockBuilder(FakeTemplating::class)->disableOriginalConstructor()->getMock();
+        $adminCode = 'code';
 
-        $blockService = new AdminSearchBlockService('foo', $templating, $this->pool, $this->searchHandler);
+        $admin = $this->createMock(AbstractAdmin::class);
+        $admin
+            ->method('getCode')
+            ->willReturn($adminCode);
+
+        $container = new Container();
+        $container->set($adminCode, $admin);
+        $pool = new Pool($container, [$adminCode]);
+
+        $blockService = new AdminSearchBlockService(
+            $this->createStub(Environment::class),
+            $pool,
+            $this->searchHandler,
+            'show'
+        );
         $blockContext = $this->getBlockContext($blockService);
+        $blockContext->setSetting('admin_code', $adminCode);
 
-        $this->searchHandler->expects(self::once())->method('search')->willReturn(false);
-        $this->pool->expects(self::once())->method('getAdminByAdminCode')->willReturn($admin);
-        $admin->expects(self::once())->method('checkAccess')->with('list')->willReturn(true);
-
-        // Make sure the template is never generated (empty response is required,
-        // but the FakeTemplate always returns an empty response)
-        $templating->expects(self::never())->method('renderResponse');
+        $this->searchHandler->configureAdminSearch([$adminCode => false]);
+        $admin->expects(static::once())->method('checkAccess')->with('list')->willReturn(true);
 
         $response = $blockService->execute($blockContext);
 
         static::assertSame('', $response->getContent());
-        static::assertSame(204, $response->getStatusCode());
+        static::assertSame(Response::HTTP_NO_CONTENT, $response->getStatusCode());
     }
 }

@@ -1,53 +1,64 @@
 {% extends 'knp_menu.html.twig' %}
 
 {% block root %}
-    {%- set listAttributes = item.childrenAttributes|merge({'class': 'sidebar-menu', 'data-widget': 'tree'}) %}
-    {%- set request        = item.extra('request') ?: app.request %}
+    {%- set listAttributes = item.childrenAttributes|merge({'class': 'sidebar-menu', 'data-widget': 'tree'}) -%}
+    {%- set request        = item.extra('request') ?: app.request -%}
     {{ block('list') -}}
 {% endblock %}
 
 {% block item %}
-    {%- if item.displayed %}
+    {%- if item.displayed -%}
         {#- check role of the group #}
-        {%- set display = (item.extra('roles') is empty or is_granted(sonata_admin.adminPool.getOption('role_super_admin')) ) %}
-        {%- for role in item.extra('roles') if not display %}
-            {%- set display = is_granted(role) %}
-        {%- endfor %}
-    {%- endif %}
+        {%- set display = item.extra('roles') is empty or is_granted(sonata_config.getOption('role_super_admin')) or item.extra('roles')|filter(role => is_granted(role))|length > 0 -%}
+    {%- endif -%}
 
-    {%- if item.displayed and display|default %}
-        {% set options = options|merge({branch_class: 'treeview', currentClass: "active", ancestorClass: "active"}) %}
-        {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' active')|trim) %}
-        {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' treeview-menu')|trim) %}
+    {%- if item.displayed and display|default -%}
+        {%- set options = options|merge({branch_class: 'treeview', currentClass: "active", ancestorClass: "active"}) -%}
+        {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' active')|trim) -%}
+        {%- do item.setChildrenAttribute('class', (item.childrenAttribute('class')~' treeview-menu')|trim) -%}
         {{ parent() }}
-    {% endif %}
+    {%- endif -%}
 {% endblock %}
 
 {% block linkElement %}
-    {% spaceless %}
-        {% set translation_domain = item.extra('label_catalogue', 'messages') %}
-        {% if item.extra('on_top') is defined and not item.extra('on_top') %}
-            {% set icon = item.extra('icon')|default(item.level > 1 ? '<i class="fa fa-angle-double-right" aria-hidden="true"></i>' : '') %}
-        {% else %}
-            {% set icon = item.extra('icon') %}
-        {% endif %}
-        {% set is_link = true %}
+    {% apply spaceless %}
+        {%- set translation_domain = item.extra('label_catalogue', 'messages') -%}
+        {%- if item.extra('on_top') is defined and not item.extra('on_top') -%}
+            {%- set icon = item.extra('icon')|default(item.level > 1 ? 'fa fa-angle-double-right' : '')|parse_icon -%}
+        {%- else -%}
+            {%- set icon = item.extra('icon')|parse_icon -%}
+        {%- endif -%}
+        {%- set is_link = true -%}
         {{ parent() }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block spanElement %}
-    {% spaceless %}
+    {% apply spaceless %}
         <a href="#">
-            {% set translation_domain = item.extra('label_catalogue') %}
-            {% set icon = item.extra('icon')|default('') %}
+            {%- set translation_domain = item.extra('label_catalogue', 'messages') -%}
+            {%- set icon = item.extra('icon')|default('')|parse_icon -%}
             {{ icon|raw }}
             {{ parent() }}
             {%- if item.extra('keep_open') is not defined or not item.extra('keep_open') -%}
                 <span class="pull-right-container"><i class="fa pull-right fa-angle-left"></i></span>
             {%- endif -%}
         </a>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
-{% block label %}{% if is_link is defined and is_link %}{{ icon|default|raw }}{% endif %}{% if options.allow_safe_labels and item.extra('safe_label', false) %}{{ item.label|raw }}{% else %}{{ item.label|trans({}, translation_domain|default('messages')) }}{% endif %}{% endblock %}
+{% block label %}
+    {% apply spaceless %}
+        {%- if is_link|default(false) -%}
+            {{ icon|default('')|parse_icon }}
+        {%- endif -%}
+        {# We use method accessor instead of ".label" since `item` implements `ArrayAccess` and could have a property called "label". #}
+        {%- set item_label = item.getLabel() -%}
+        {%- if options.allow_safe_labels and item.extra('safe_label', false) -%}
+            {{ item_label|raw }}
+        {%- else -%}
+            {%- set translation_domain = item.extra('label_catalogue', 'messages') -%}
+            {{ item_label|trans(item.extra('label_translation_parameters', {}), translation_domain) }}
+        {%- endif -%}
+    {% endapply %}
+{% endblock %}

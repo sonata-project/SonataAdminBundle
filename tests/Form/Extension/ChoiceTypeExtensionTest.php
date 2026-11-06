@@ -15,44 +15,53 @@ namespace Sonata\AdminBundle\Tests\Form\Extension;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\Extension\ChoiceTypeExtension;
+use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Sonata\CoreBundle\Form\Extension\DependencyInjectionExtension;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\Forms;
 
 class ChoiceTypeExtensionTest extends TestCase
 {
-    protected function setup(): void
+    /**
+     * @var FormFactoryInterface
+     */
+    private $factory;
+
+    protected function setUp(): void
     {
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->expects($this->any())->method('has')->will($this->returnValue(true));
-        $container->expects($this->any())->method('get')
-            ->with($this->equalTo('sonata.admin.form.choice_extension'))
-            ->will($this->returnValue(new ChoiceTypeExtension()));
+        if (class_exists(DependencyInjectionExtension::class)) {
+            $container = new Container();
+            $container->set('sonata.admin.form.choice_extension', new ChoiceTypeExtension());
 
-        $typeServiceIds = [];
-        $typeExtensionServiceIds = [];
-        $guesserServiceIds = [];
-        $mappingTypes = [
-            'choice' => ChoiceType::class,
-        ];
-        $extensionTypes = [
-            'choice' => [
-                'sonata.admin.form.choice_extension',
-            ],
-        ];
+            $typeServiceIds = [];
+            $typeExtensionServiceIds = [];
+            $guesserServiceIds = [];
+            $mappingTypes = [
+                'choice' => ChoiceType::class,
+            ];
+            $extensionTypes = [
+                'choice' => [
+                    'sonata.admin.form.choice_extension',
+                ],
+            ];
 
-        $dependency = new DependencyInjectionExtension(
-            $container,
-            $typeServiceIds,
-            $typeExtensionServiceIds,
-            $guesserServiceIds,
-            $mappingTypes,
-            $extensionTypes
-        );
+            $extension = new DependencyInjectionExtension(
+                $container,
+                $typeServiceIds,
+                $typeExtensionServiceIds,
+                $guesserServiceIds,
+                $mappingTypes,
+                $extensionTypes
+            );
+        } else {
+            $extension = new TestExtension(null);
+            $extension->addTypeExtension(new ChoiceTypeExtension());
+        }
 
         $this->factory = Forms::createFormFactoryBuilder()
-            ->addExtension($dependency)
+            ->addExtension($extension)
             ->getFormFactory();
     }
 
@@ -60,12 +69,12 @@ class ChoiceTypeExtensionTest extends TestCase
     {
         $extension = new ChoiceTypeExtension();
 
-        $this->assertSame(
+        static::assertSame(
             ChoiceType::class,
             $extension->getExtendedType()
         );
 
-        $this->assertSame(
+        static::assertSame(
             [ChoiceType::class],
             ChoiceTypeExtension::getExtendedTypes()
         );
@@ -79,8 +88,8 @@ class ChoiceTypeExtensionTest extends TestCase
             ])
             ->createView();
 
-        $this->assertTrue(isset($view->vars['sortable']));
-        $this->assertTrue($view->vars['sortable']);
+        static::assertTrue(isset($view->vars['sortable']));
+        static::assertTrue($view->vars['sortable']);
     }
 
     public function testDefaultOptionsWithoutSortable(): void
@@ -89,7 +98,7 @@ class ChoiceTypeExtensionTest extends TestCase
             ->create(ChoiceType::class, null, [])
             ->createView();
 
-        $this->assertTrue(isset($view->vars['sortable']));
-        $this->assertFalse($view->vars['sortable']);
+        static::assertTrue(isset($view->vars['sortable']));
+        static::assertFalse($view->vars['sortable']);
     }
 }

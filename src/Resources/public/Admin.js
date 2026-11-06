@@ -50,7 +50,7 @@ var Admin = {
       }
     },
     read_config: function() {
-      var data = $('[data-sonata-admin]').data('sonata-admin');
+      var data = jQuery('[data-sonata-admin]').data('sonata-admin');
 
       this.config = data.config;
       this.translations = data.translations;
@@ -97,9 +97,11 @@ var Admin = {
             Admin.log('[core|setup_select2] configure Select2 on', subject);
 
             jQuery('select:not([data-sonata-select2="false"])', subject).each(function() {
-                var select            = jQuery(this);
-                var allowClearEnabled = false;
-                var popover           = select.data('popover');
+                var select                  = jQuery(this);
+                var allowClearEnabled       = false;
+                var popover                 = select.data('popover');
+                var maximumSelectionSize    = null;
+                var minimumResultsForSearch = 10;
 
                 select.removeClass('form-control');
 
@@ -109,6 +111,14 @@ var Admin = {
                     allowClearEnabled = false;
                 }
 
+                if (select.attr('data-sonata-select2-maximumSelectionSize')) {
+                    maximumSelectionSize = select.attr('data-sonata-select2-maximumSelectionSize');
+                }
+
+                if (select.attr('data-sonata-select2-minimumResultsForSearch')) {
+                    minimumResultsForSearch = select.attr('data-sonata-select2-minimumResultsForSearch');
+                }
+
                 select.select2({
                     width: function(){
                         // Select2 v3 and v4 BC. If window.Select2 is defined, then the v3 is installed.
@@ -116,8 +126,9 @@ var Admin = {
                         return Admin.get_select2_width(window.Select2 ? this.element : select);
                     },
                     dropdownAutoWidth: true,
-                    minimumResultsForSearch: 10,
-                    allowClear: allowClearEnabled
+                    minimumResultsForSearch: minimumResultsForSearch,
+                    allowClear: allowClearEnabled,
+                    maximumSelectionSize: maximumSelectionSize
                 });
 
                 if (undefined !== popover) {
@@ -133,16 +144,21 @@ var Admin = {
         if (Admin.get_config('USE_ICHECK')) {
             Admin.log('[core|setup_icheck] configure iCheck on', subject);
 
-            jQuery('input[type="checkbox"]:not(label.btn > input, [data-sonata-icheck="false"]), input[type="radio"]:not(label.btn > input, [data-sonata-icheck="false"])', subject)
+            var inputs = jQuery('input[type="checkbox"]:not(label.btn > input, [data-sonata-icheck="false"]), input[type="radio"]:not(label.btn > input, [data-sonata-icheck="false"])', subject);
+            inputs
               .iCheck({
                 checkboxClass: 'icheckbox_square-blue',
                 radioClass: 'iradio_square-blue'
               })
               // See https://github.com/fronteed/iCheck/issues/244
               .on('ifToggled', function (e) {
-                  $(e.target).trigger('change');
+                  jQuery(e.target).trigger('change');
               });
 
+            // In case some checkboxes were already checked (for instance after moving back in the browser's session history), update iCheck checkboxes.
+            if (subject === window.document) {
+                setTimeout(function () { inputs.iCheck('update'); }, 0);
+            }
         }
     },
     /**
@@ -210,6 +226,11 @@ var Admin = {
                     .replaceWith(html);
             },
             error: function(xhr, statusText, errorThrown) {
+                // On some error responses, we return JSON.
+                if ('application/json' === xhr.getResponseHeader('Content-Type')) {
+                    return JSON.parse(xhr.responseText);
+                }
+
                 return xhr.responseText;
             }
         });
@@ -235,10 +256,10 @@ var Admin = {
     /**
      * NEXT_MAJOR: remove this function.
      *
-     * @deprecated in version 3.0
+     * @deprecated since sonata-project/admin-bundle 3.0
      */
     add_pretty_errors: function() {
-        console.warn('Admin.add_pretty_errors() was deprecated in version 3.0');
+        console.warn('Admin.add_pretty_errors() is deprecated since sonata-project/admin-bundle 3.0');
     },
 
     stopEvent: function(event) {
@@ -306,7 +327,30 @@ var Admin = {
         });
 
         jQuery('.sonata-filter-form', subject).on('submit', function () {
-            jQuery(this).find('[sonata-filter="true"]:hidden :input').val('');
+            var $form = jQuery(this);
+            $form.find('[sonata-filter="true"]:hidden :input').val('');
+
+            if (!this.dataset.defaultValues) {
+                return;
+            }
+
+            var defaults = Admin.convert_query_string_to_object(
+                jQuery.param({'filter': JSON.parse(this.dataset.defaultValues)})
+            );
+
+            // Keep only changed values
+            $form.find('[name*=filter]').each(function (i, field) {
+                var defaultValue = field.multiple ? [] : '';
+
+                if (JSON.stringify(defaults[field.name] || defaultValue) === JSON.stringify(jQuery(field).val() || defaultValue)) {
+                    field.removeAttribute('name');
+                }
+            });
+
+            // Simulate a reset if no value is different from the default ones.
+            if ($form.find('[name*=filter]').length === 0) {
+                $form.append('<input name="filters" type="hidden" value="reset">');
+            }
         });
 
         /* Advanced filters */
@@ -357,7 +401,7 @@ var Admin = {
         var highestCounterRegexp = new RegExp('_([0-9]+)[^0-9]*$');
         jQuery(subject).find('[data-prototype]').each(function() {
             var collection = jQuery(this);
-            var counter = 0;
+            var counter = -1;
             collection.children().each(function() {
                 var matches = highestCounterRegexp.exec(jQuery('[id^="sonata-ba-field-container"]', this).attr('id'));
                 if (matches && matches[1] && matches[1] > counter) {
@@ -533,13 +577,13 @@ var Admin = {
         return '100%';
     },
 
-    setup_sortable_select2: function(subject, data) {
+    setup_sortable_select2: function(subject, data, customOptions) {
         var transformedData = [];
         for (var i = 0 ; i < data.length ; i++) {
             transformedData[i] = {id: data[i].data, text: data[i].label};
         }
 
-        subject.select2({
+        var options = Object.assign({
             width: function(){
                 // Select2 v3 and v4 BC. If window.Select2 is defined, then the v3 is installed.
                 // NEXT_MAJOR: Remove Select2 v3 support.
@@ -548,7 +592,9 @@ var Admin = {
             dropdownAutoWidth: true,
             data: transformedData,
             multiple: true
-        });
+        }, customOptions);
+
+        subject.select2(options);
 
         subject.select2("container").find("ul.select2-choices").sortable({
             containment: 'parent',
@@ -629,6 +675,7 @@ var Admin = {
             Admin.handleScroll(footer, navbar, wrapper);
         }
     },
+
     handleScroll: function(footer, navbar, wrapper) {
         if (footer.length && jQuery(window).scrollTop() + jQuery(window).height() != jQuery(document).height()) {
             jQuery(footer).addClass('stuck');
@@ -636,7 +683,7 @@ var Admin = {
 
         jQuery(window).scroll(
             Admin.debounce(function() {
-                if (footer.length && jQuery(window).scrollTop() + jQuery(window).height() == jQuery(document).height()) {
+                if (footer.length && Math.round(jQuery(window).scrollTop() + jQuery(window).height()) >= jQuery(document).height()) {
                     jQuery(footer).removeClass('stuck');
                 }
 
@@ -658,6 +705,7 @@ var Admin = {
             }, 250)
         );
     },
+
     handleResize: function(footer, navbar, wrapper) {
         if (navbar.length && jQuery(navbar).hasClass('stuck')) {
             jQuery(navbar).width(jQuery(wrapper).outerWidth());
@@ -667,6 +715,7 @@ var Admin = {
             jQuery(footer).width(jQuery(wrapper).outerWidth());
         }
     },
+
     refreshNavbarStuckClass: function(topNavbar) {
         var stuck = jQuery('#navbar-stuck');
 
@@ -679,6 +728,7 @@ var Admin = {
 
         stuck.html('body.fixed .content-header .navbar.stuck { top: ' + jQuery(topNavbar).outerHeight() + 'px; }');
     },
+
     // http://davidwalsh.name/javascript-debounce-function
     debounce: function (func, wait, immediate) {
         var timeout;
@@ -705,6 +755,7 @@ var Admin = {
             }
         };
     },
+
     setup_readmore_elements: function(subject) {
         Admin.log('[core|setup_readmore_elements] setup readmore elements on', subject);
 
@@ -716,9 +767,11 @@ var Admin = {
             });
         });
     },
+
     handle_top_navbar_height: function() {
         jQuery('body.fixed .content-wrapper').css('padding-top', jQuery('.navbar-static-top').outerHeight());
     },
+
     setup_form_submit: function(subject) {
         Admin.log('[core|setup_form_submit] setup form submit on', subject);
 
@@ -737,6 +790,25 @@ var Admin = {
             }
         });
     },
+
+    convert_query_string_to_object: function (str) {
+        return str.split('&').reduce(function (accumulator, keyValue) {
+            var key = decodeURIComponent(keyValue.split('=')[0]);
+            var val = keyValue.split('=')[1];
+
+            if (key.endsWith('[]')) {
+                if (!accumulator.hasOwnProperty(key)) {
+                    accumulator[key] = [];
+                }
+                accumulator[key].push(val);
+            } else {
+                accumulator[key] = val;
+            }
+
+            return accumulator;
+        }, {});
+    },
+
     /**
      * Remember open tab after refreshing page.
      */
@@ -780,9 +852,6 @@ jQuery(window).resize(function() {
 
 jQuery(document).ready(function() {
     jQuery('html').removeClass('no-js');
-    if (Admin.get_config('CONFIRM_EXIT')) {
-        jQuery('.sonata-ba-form form').each(function () { jQuery(this).confirmExit(); });
-    }
 
     Admin.setup_per_page_switcher(document);
     Admin.setup_collection_buttons(document);
@@ -794,4 +863,12 @@ jQuery(document).on('sonata-admin-append-form-element', function(e) {
     Admin.setup_select2(e.target);
     Admin.setup_icheck(e.target);
     Admin.setup_collection_counter(e.target);
+});
+
+jQuery(window).on('load', function() {
+    if (Admin.get_config('CONFIRM_EXIT')) {
+        jQuery('.sonata-ba-form form').each(function() {
+            jQuery(this).confirmExit();
+        });
+    }
 });

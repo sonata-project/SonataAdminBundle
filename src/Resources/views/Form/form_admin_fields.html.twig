@@ -23,13 +23,26 @@ file that was distributed with this source code.
     {% endif %}
 {%- endblock form_errors %}
 
+{# NEXT_MAJOR: Remove this block and all the calls made to this block #}
 {% block sonata_help %}
-{% spaceless %}
+{% apply spaceless %}
 {% if sonata_help is defined and sonata_help %}
+    {% deprecated 'The "sonata_help" option is deprecated since sonata-project/admin-bundle 3.60, to be removed in 4.0. Use "help" instead.' %}
     <span class="help-block sonata-ba-field-widget-help">{{ sonata_help|raw }}</span>
 {% endif %}
-{% endspaceless %}
+{% endapply %}
 {% endblock %}
+
+{% block form_help -%}
+    {% if sonata_admin_translation_domain is defined and translation_domain is null %}
+        {% set translation_domain = sonata_admin_translation_domain %}
+    {% endif %}
+    {% if help is not empty %}
+        {# NEXT_MAJOR: Remove class sonata-ba-field-widget-help #}
+        {% set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' help-block sonata-ba-field-widget-help sonata-ba-field-help')}) %}
+        {{ parent() }}
+    {% endif %}
+{%- endblock form_help %}
 
 {% block form_widget -%}
     {{ parent() }}
@@ -82,14 +95,14 @@ file that was distributed with this source code.
 {%- endblock money_widget %}
 
 {% block percent_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set type = type|default('text') %}
         <div class="input-group">
             {{ block('form_widget_simple') }}
             <span class="input-group-addon">%</span>
         </div>
         {{ block('sonata_help') }}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock percent_widget %}
 
 {% block checkbox_widget -%}
@@ -116,7 +129,7 @@ file that was distributed with this source code.
 
 {# Labels #}
 {% block form_label %}
-{% spaceless %}
+{% apply spaceless %}
     {% if label is not same as(false) and sonata_admin.options['form_type'] == 'horizontal' %}
         {% set label_class = 'col-sm-3' %}
     {% endif %}
@@ -145,16 +158,17 @@ file that was distributed with this source code.
         {% endif %}
 
         <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>
-            {% if translation_domain is same as(false) %}
+            {%- if translation_domain is same as(false) -%}
                 {{- label -}}
-            {% elseif not sonata_admin.admin %}
-                {{- label|trans({}, translation_domain) -}}
-            {% else %}
-                {{ label|trans({}, sonata_admin.field_description.translationDomain ?: admin.translationDomain) }}
-            {% endif %}
+            {%- elseif not sonata_admin.admin -%}
+                {{- label|trans(label_translation_parameters, translation_domain) -}}
+            {%- else -%}
+                {# NEXT_MAJOR: Remove "admin.translationDomain" #}
+                {{- label|trans(label_translation_parameters, sonata_admin.field_description.translationDomain|default(admin.translationDomain|default(sonata_admin.admin.translationDomain))) -}}
+            {%- endif -%}
         </label>
     {% endif %}
-{% endspaceless %}
+{% endapply %}
 {% endblock form_label %}
 
 {% block checkbox_label -%}
@@ -187,7 +201,7 @@ file that was distributed with this source code.
                     {% if translation_domain is same as(false) %}
                         {{- label -}}
                     {% else %}
-                        {{- label|trans({}, translation_domain) -}}
+                        {{- label|trans(label_translation_parameters, translation_domain) -}}
                     {%- endif -%}
                 </span>
             {%- endif -%}
@@ -196,7 +210,7 @@ file that was distributed with this source code.
 {% endblock checkbox_radio_label %}
 
 {% block choice_widget_expanded %}
-{% spaceless %}
+{% apply spaceless %}
     {% set attr = attr|merge({'class': attr.class|default('') ~ ' list-unstyled'}) %}
     <ul {{ block('widget_container_attributes') }}>
     {% for child in form %}
@@ -209,11 +223,11 @@ file that was distributed with this source code.
         </li>
     {% endfor %}
     </ul>
-{% endspaceless %}
+{% endapply %}
 {% endblock choice_widget_expanded %}
 
 {% block choice_widget_collapsed %}
-{% spaceless %}
+{% apply spaceless %}
     {% if required and placeholder is defined and placeholder is none %}
         {% set required = false %}
     {% elseif required and empty_value is defined and empty_value_in_choices is defined and empty_value is none and not empty_value_in_choices and not multiple %}
@@ -257,11 +271,11 @@ file that was distributed with this source code.
             {{ block('choice_widget_options') }}
         </select>
     {% endif %}
-{% endspaceless %}
+{% endapply %}
 {% endblock choice_widget_collapsed %}
 
 {% block date_widget %}
-{% spaceless %}
+{% apply spaceless %}
     {% if widget == 'single_text' %}
         {{ block('form_widget_simple') }}
     {% else %}
@@ -280,11 +294,11 @@ file that was distributed with this source code.
     {% if datepicker_use_button is not defined %}
         {{ block('sonata_help') }}
     {% endif %}
-{% endspaceless %}
+{% endapply %}
 {% endblock date_widget %}
 
 {% block time_widget %}
-{% spaceless %}
+{% apply spaceless %}
     {% if widget == 'single_text' %}
         {{ block('form_widget_simple') }}
     {% else %}
@@ -309,11 +323,11 @@ file that was distributed with this source code.
         </div>
     {% endif %}
     {{ block('sonata_help') }}
-{% endspaceless %}
+{% endapply %}
 {% endblock time_widget %}
 
 {% block datetime_widget %}
-{% spaceless %}
+{% apply spaceless %}
     {% if widget == 'single_text' %}
         {{ block('form_widget_simple') }}
     {% else %}
@@ -342,14 +356,18 @@ file that was distributed with this source code.
     {% if datepicker_use_button is not defined %}
         {{ block('sonata_help') }}
     {% endif %}
-{% endspaceless %}
+{% endapply %}
 {% endblock datetime_widget %}
 
 {% block form_row %}
     {% set show_label = show_label ?? true %}
-    <div class="form-group{% if errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ id }}">
-        {% if sonata_admin.field_description.options is defined %}
-            {% set label = sonata_admin.field_description.options.name|default(label)  %}
+    {% set row_id = 'sonata-ba-field-container-'~id %}
+    {% set row_class = (row_attr.class|default('') ~ ' form-group' ~ (errors|length > 0 ? ' has-error'))|trim %}
+    <div{% with {attr: row_attr|merge({id: row_id, class: row_class})} %}{{ block('attributes') }}{% endwith %}>
+        {# NEXT_MAJOR: Remove this block #}
+        {% if sonata_admin.field_description|default(null) is not null and sonata_admin.field_description.option('name') %}
+            {% deprecated 'The "name" option is deprecated in field description since sonata-project/admin-bundle 3.91, to be removed in 4.0.' %}
+            {% set label = sonata_admin.field_description.option('name', label) %}
         {% endif %}
 
         {% set div_class = 'sonata-ba-field' %}
@@ -392,9 +410,12 @@ file that was distributed with this source code.
                 </div>
             {% endif %}
 
-            {% if sonata_admin is defined and sonata_admin_enabled and sonata_admin.field_description.help|default(false) %}
-                <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans({}, sonata_admin.field_description.translationDomain ?: admin.translationDomain)|raw }}</span>
+            {# NEXT_MAJOR: Remove this block #}
+            {% if sonata_admin is defined and sonata_admin_enabled and sonata_admin.field_description.getHelp('sonata_deprecation_mute')|default(false) %}
+                <span class="help-block sonata-ba-field-help">{{ sonata_admin.field_description.help|trans(help_translation_parameters, sonata_admin.field_description.translationDomain ?? admin.translationDomain)|raw }}</span>
             {% endif %}
+
+            {{ form_help(form) }}
         </div>
     </div>
 {% endblock form_row %}
@@ -410,7 +431,7 @@ file that was distributed with this source code.
 {%- endblock radio_row %}
 
 {% block sonata_type_native_collection_widget_row %}
-{% spaceless %}
+{% apply spaceless %}
     <div class="sonata-collection-row">
         {% if allow_delete %}
             <div class="row">
@@ -427,11 +448,11 @@ file that was distributed with this source code.
             </div>
         {% endif %}
     </div>
-{% endspaceless %}
+{% endapply %}
 {% endblock sonata_type_native_collection_widget_row %}
 
 {% block sonata_type_native_collection_widget %}
-{% spaceless %}
+{% apply spaceless %}
     {% if prototype is defined %}
         {% set child = prototype %}
         {% set allow_delete_backup = allow_delete %}
@@ -449,11 +470,11 @@ file that was distributed with this source code.
             <div><a href="#" class="btn btn-link sonata-collection-add"><i class="fa fa-plus-circle" aria-hidden="true"></i></a></div>
         {% endif %}
     </div>
-{% endspaceless %}
+{% endapply %}
 {% endblock sonata_type_native_collection_widget %}
 
 {% block sonata_type_immutable_array_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div {{ block('widget_container_attributes') }}>
             {{ block('sonata_help') }}
 
@@ -465,21 +486,21 @@ file that was distributed with this source code.
 
             {{ form_rest(form) }}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock sonata_type_immutable_array_widget %}
 
 {% block sonata_type_immutable_array_widget_row %}
-    {% spaceless %}
-        <div class="form-group{% if child.vars.errors|length > 0%} has-error{%endif%}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
+    {% apply spaceless %}
+        <div class="form-group{% if child.vars.errors|length > 0 %} has-error{% endif %}" id="sonata-ba-field-container-{{ id }}-{{ key }}">
 
             {{ form_label(child) }}
 
             {% set div_class = "" %}
             {% if sonata_admin.options['form_type'] == 'horizontal' %}
                 {% set div_class = 'col-sm-9' %}
-            {% endif%}
+            {% endif %}
 
-            <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }} {% if child.vars.errors|length > 0 %}sonata-ba-field-error{% endif %}">
+            <div class="{{ div_class }} sonata-ba-field sonata-ba-field-{{ sonata_admin.edit }}-{{ sonata_admin.inline }}{% if child.vars.errors|length > 0 %} sonata-ba-field-error{% endif %}">
                 {{ form_widget(child, {'horizontal': false, 'horizontal_input_wrapper_class': ''}) }} {# {'horizontal': false, 'horizontal_input_wrapper_class': ''} needed to avoid MopaBootstrapBundle messing with the DOM #}
                 {% set sonata_help = child.vars.sonata_help %}
                 {{ block('sonata_help') }}
@@ -491,7 +512,7 @@ file that was distributed with this source code.
                 </div>
             {% endif %}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
 
 {% block sonata_type_model_autocomplete_widget %}
@@ -533,12 +554,16 @@ file that was distributed with this source code.
                 };
 
                 jQuery.each(allFields, function (i, field) {
-                    jQuery(controlGroupIdFunc(field)).hide();
+                    var fieldContainer = controlGroupIdFunc(field);
+                    jQuery(fieldContainer).hide();
+                    jQuery(fieldContainer).find('[required="required"]').attr('data-required', 'required').removeAttr("required");
                 });
 
                 if (map[val]) {
                     jQuery.each(map[val], function (i, field) {
-                        jQuery(controlGroupIdFunc(field)).show();
+                        var fieldContainer = controlGroupIdFunc(field);
+                        jQuery(fieldContainer).show();
+                        jQuery(fieldContainer).find('[data-required="required"]').attr("required", "required");
                     });
                 }
             }
@@ -546,19 +571,127 @@ file that was distributed with this source code.
             {% if value is empty %}
                 choice_field_mask_show(showMaskChoiceEl.val());
             {% else %}
-                choice_field_mask_show('{{ value }}');
+                choice_field_mask_show('{{ value|e('js') }}');
             {% endif %}
         });
 
     </script>
 {% endblock %}
 
-{%  block sonata_type_choice_multiple_sortable %}
+{% block sonata_type_choice_multiple_sortable %}
     <input type="hidden" name="{{ full_name }}" id="{{ id }}" value="{{ value|join(',') }}" />
 
     <script>
         jQuery(document).ready(function() {
-            Admin.setup_sortable_select2(jQuery('#{{ id }}'), {{ form.vars.choices|json_encode|raw }});
+            var options = {};
+
+            {% block sonata_type_model_autocomplete_select2_options_js %}{% endblock %}
+
+            Admin.setup_sortable_select2(jQuery('#{{ id }}'), {{ form.vars.choices|json_encode|raw }}, options);
         });
     </script>
+{% endblock %}
+
+{% block sonata_type_model_list_widget %}
+    <div id="field_container_{{ id }}" class="field-container">
+        <span id="field_widget_{{ id }}" class="field-short-description">
+            {% if sonata_admin.value and sonata_admin.field_description.associationadmin.urlSafeIdentifier(sonata_admin.value) is not null %}
+                {# NEXT_MAJOR: Remove the 'code' parameter #}
+                {{ render(path('sonata_admin_short_object_information', {
+                    '_sonata_admin': sonata_admin.field_description.associationadmin.baseCodeRoute,
+                    'code': sonata_admin.field_description.associationadmin.code,
+                    'objectId': sonata_admin.field_description.associationadmin.urlSafeIdentifier(sonata_admin.value),
+                    'uniqid': sonata_admin.field_description.associationadmin.uniqid,
+                    'linkParameters': sonata_admin.field_description.option('link_parameters', {})
+                } + (
+                    sonata_admin.field_description.associationadmin.hasRequest()
+                    ? sonata_admin.field_description.associationadmin.request.attributes.get('_route_params', {})
+                    : {}
+                ) + app.request.query.all|default({})
+                )) }}
+            {% elseif sonata_admin.field_description.option('placeholder', 'short_object_description_placeholder') %}
+                <span class="inner-field-short-description">
+                    {{ sonata_admin.field_description.option('placeholder', 'short_object_description_placeholder')|trans({}, 'SonataAdminBundle') }}
+                </span>
+            {% endif %}
+        </span>
+        <span id="field_actions_{{ id }}" class="field-actions">
+            <span class="btn-group">
+                {% if sonata_admin.field_description.associationadmin.hasroute('list') and sonata_admin.field_description.associationadmin.hasAccess('list') and btn_list %}
+                    <a href="{{ sonata_admin.field_description.associationadmin.generateUrl('list', {select: true}) }}"
+                       onclick="return start_field_dialog_form_list_{{ id }}(this);"
+                       class="btn btn-info btn-sm sonata-ba-action"
+                       title="{{ btn_list|trans({}, btn_catalogue) }}"
+                    >
+                        <i class="fa fa-list"></i>
+                        {{ btn_list|trans({}, btn_catalogue) }}
+                    </a>
+                {% endif %}
+
+                {% if sonata_admin.field_description.associationadmin.hasroute('create')
+                    and sonata_admin.field_description.associationadmin.hasAccess('create')
+                    and btn_add
+                %}
+                    <a href="{{ sonata_admin.field_description.associationadmin.generateUrl('create') }}"
+                       onclick="return start_field_dialog_form_add_{{ id }}(this);"
+                       class="btn btn-success btn-sm sonata-ba-action"
+                       title="{{ btn_add|trans({}, btn_catalogue) }}"
+                    >
+                        <i class="fa fa-plus-circle"></i>
+                        {{ btn_add|trans({}, btn_catalogue) }}
+                    </a>
+                {% endif %}
+                {% if sonata_admin.field_description.associationadmin.hasroute('edit')
+                    and sonata_admin.field_description.associationadmin.hasAccess('edit')
+                    and btn_edit
+                %}
+                    <a href="{{ sonata_admin.value == null ? '' : sonata_admin.field_description.associationadmin.generateUrl('edit', {
+                        (sonata_admin.field_description.associationadmin.idParameter) : sonata_admin.field_description.associationadmin.urlSafeIdentifier(sonata_admin.value)})
+                    }}"
+                       onclick="return start_field_dialog_form_edit_{{ id }}(this);"
+                       class="btn btn-warning btn-sm sonata-ba-action {% if sonata_admin.value == null %}hidden{% endif %}"
+                       title="{{ btn_edit|trans({}, btn_catalogue) }}"
+                    >
+                        <i class="fa fa-pencil"></i>
+                        {{ btn_edit|trans({}, btn_catalogue) }}
+                    </a>
+                {% endif %}
+            </span>
+
+            <span class="btn-group">
+                {% if btn_delete %}
+                    <button
+                        onclick="return remove_selected_element_{{ id }}(this);"
+                        class="btn btn-danger btn-sm sonata-ba-action"
+                        title="{{ btn_delete|trans({}, btn_catalogue) }}"
+                    >
+                        <i class="fa fa-minus-circle"></i>
+                        {{ btn_delete|trans({}, btn_catalogue) }}
+                    </button>
+                {% endif %}
+            </span>
+        </span>
+
+        <span style="display: none" >
+            {# Hidden text input cannot be required, because browser will throw error "An invalid form control with name='' is not focusable"  #}
+            {{ form_widget(form, {'required':false}) }}
+        </span>
+
+        {{ block('sonata_help') }}
+
+        <div class="modal fade" id="field_dialog_{{ id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title"></h4>
+                    </div>
+                    <div class="modal-body">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include '@SonataAdmin/CRUD/Association/edit_many_script.html.twig' %}
 {% endblock %}

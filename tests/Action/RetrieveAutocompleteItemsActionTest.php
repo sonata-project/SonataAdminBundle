@@ -13,29 +13,32 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
-use Prophecy\Prophecy\ObjectProphecy;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Action\RetrieveAutocompleteItemsAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
-use Sonata\AdminBundle\Admin\Pool;
-use Sonata\AdminBundle\Datagrid\Pager;
+use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
+use Sonata\AdminBundle\Datagrid\PagerInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use Sonata\AdminBundle\Filter\Filter;
 use Sonata\AdminBundle\Object\MetadataInterface;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Filter\FooFilter;
-use Sonata\DatagridBundle\Datagrid\DatagridInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormConfigInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 final class RetrieveAutocompleteItemsActionTest extends TestCase
 {
     /**
-     * @var Pool
+     * @var Stub&AdminFetcherInterface
      */
-    private $pool;
+    private $adminFetcher;
 
     /**
      * @var GetShortObjectDescriptionAction
@@ -49,104 +52,99 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->admin = $this->prophesize(AbstractAdmin::class);
-        $this->admin->setRequest(Argument::type(Request::class))->shouldBeCalled();
-        $this->pool = $this->prophesize(Pool::class);
-        $this->pool->getInstance(Argument::any())->willReturn($this->admin->reveal());
-        $this->action = new RetrieveAutocompleteItemsAction(
-            $this->pool->reveal()
-        );
+        $this->admin = $this->createMock(AbstractAdmin::class);
+        $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
+        $this->adminFetcher->method('get')->willReturn($this->admin);
+        $this->action = new RetrieveAutocompleteItemsAction($this->adminFetcher);
     }
 
     public function testRetrieveAutocompleteItemsActionNotGranted(): void
     {
+        $request = new Request([
+            '_sonata_admin' => 'foo.admin',
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+
+        $this->admin->method('hasAccess')->willReturnMap([
+            ['create', false],
+            ['edit', true],
+        ]);
+
         $this->expectException(AccessDeniedException::class);
 
-        $request = new Request([
-            'admin_code' => 'foo.admin',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
-
-        $this->admin->hasAccess('create')->willReturn(false);
-        $this->admin->hasAccess('edit')->willReturn(false);
-
-        $action = $this->action;
-        $action($request);
+        ($this->action)($request);
     }
 
     public function testRetrieveAutocompleteItemsActionDisabledFormelememt(): void
     {
-        $this->expectException(AccessDeniedException::class);
-        $this->expectExceptionMessage('Autocomplete list can`t be retrieved because the form element is disabled or read_only.');
-
         $object = new \stdClass();
         $request = new Request([
-            'admin_code' => 'foo.admin',
+            '_sonata_admin' => 'foo.admin',
             'field' => 'barField',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
+        // NEXT_MAJOR: Use `createStub` instead of using mock builder
+        $fieldDescription = $this->getMockBuilder(FieldDescriptionInterface::class)
+            ->addMethods(['getTargetModel'])
+            ->getMockForAbstractClass();
 
         $this->configureFormConfig('barField', true);
 
-        $this->admin->getNewInstance()->willReturn($object);
-        $this->admin->setSubject($object)->shouldBeCalled();
-        $this->admin->hasAccess('create')->willReturn(true);
-        $this->admin->getFormFieldDescriptions()->willReturn(null);
-        $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
+        $this->admin->method('getNewInstance')->willReturn($object);
+        $this->admin->expects(static::once())->method('setSubject')->with($object);
+        $this->admin->method('hasAccess')->with('create')->willReturn(true);
+        $this->admin->method('getFormFieldDescriptions')->willReturn(null);
+        $this->admin->method('getFormFieldDescription')->with('barField')->willReturn($fieldDescription);
 
-        $fieldDescription->getTargetEntity()->willReturn(Foo::class);
-        $fieldDescription->getName()->willReturn('barField');
+        $fieldDescription->method('getTargetModel')->willReturn(Foo::class);
+        $fieldDescription->method('getName')->willReturn('barField');
 
-        $action = $this->action;
-        $action($request);
+        $this->expectException(AccessDeniedException::class);
+        $this->expectExceptionMessage('Autocomplete list can`t be retrieved because the form element is disabled or read_only.');
+
+        ($this->action)($request);
     }
 
     public function testRetrieveAutocompleteItemsTooShortSearchString(): void
     {
         $object = new \stdClass();
         $request = new Request([
-            'admin_code' => 'foo.admin',
+            '_sonata_admin' => 'foo.admin',
             'field' => 'barField',
             'q' => 'so',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
-        $targetAdmin = $this->prophesize(AbstractAdmin::class);
-        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
+        $targetAdmin = $this->createStub(AbstractAdmin::class);
+        // NEXT_MAJOR: Use `createStub` instead of using mock builder
+        $fieldDescription = $this->getMockBuilder(FieldDescriptionInterface::class)
+            ->addMethods(['getTargetModel'])
+            ->getMockForAbstractClass();
 
         $this->configureFormConfig('barField');
 
-        $this->admin->getNewInstance()->willReturn($object);
-        $this->admin->setSubject($object)->shouldBeCalled();
-        $this->admin->hasAccess('create')->willReturn(true);
-        $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
-        $this->admin->getFormFieldDescriptions()->willReturn(null);
-        $targetAdmin->checkAccess('list')->willReturn(null);
-        $fieldDescription->getTargetEntity()->willReturn(Foo::class);
-        $fieldDescription->getName()->willReturn('barField');
-        $fieldDescription->getAssociationAdmin()->willReturn($targetAdmin->reveal());
+        $this->admin->method('getNewInstance')->willReturn($object);
+        $this->admin->expects(static::once())->method('setSubject')->with($object);
+        $this->admin->method('hasAccess')->with('create')->willReturn(true);
+        $this->admin->method('getFormFieldDescription')->with('barField')->willReturn($fieldDescription);
+        $this->admin->method('getFormFieldDescriptions')->willReturn(null);
+        $targetAdmin->method('checkAccess')->with('list')->willReturn(null);
+        $fieldDescription->method('getTargetModel')->willReturn(Foo::class);
+        $fieldDescription->method('getName')->willReturn('barField');
+        $fieldDescription->method('getAssociationAdmin')->willReturn($targetAdmin);
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
-        $this->isInstanceOf(Response::class, $response);
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"KO","message":"Too short search string."}', $response->getContent());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame('application/json', $response->headers->get('Content-Type'));
+        static::assertSame('{"status":"KO","message":"Too short search string."}', $response->getContent());
     }
 
     public function testRetrieveAutocompleteItems(): void
     {
-        $entity = new \stdClass();
         $request = new Request([
-            'admin_code' => 'foo.admin',
+            '_sonata_admin' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
-
-        $targetAdmin = $this->prophesize(AbstractAdmin::class);
-        $datagrid = $this->prophesize(DatagridInterface::class);
-        $metadata = $this->prophesize(MetadataInterface::class);
-        $pager = $this->prophesize(Pager::class);
-        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->configureFormConfig('barField');
 
@@ -154,25 +152,28 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $filter = new FooFilter();
         $filter->initialize('foo');
 
-        $datagrid->hasFilter('foo')->willReturn(true);
-        $datagrid->getFilter('foo')->willReturn($filter);
-        $datagrid->setValue('foo', null, 'sonata')->shouldBeCalled();
+        $datagrid->method('hasFilter')->with('foo')->willReturn(true);
+        $datagrid->method('getFilter')->with('foo')->willReturn($filter);
+        $datagrid->expects(static::exactly(3))->method('setValue')->withConsecutive(
+            ['foo', null, 'sonata'],
+            [DatagridInterface::PER_PAGE, null, 10],
+            [DatagridInterface::PAGE, null, 1]
+        );
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
-        $this->isInstanceOf(Response::class, $response);
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame('application/json', $response->headers->get('Content-Type'));
+        static::assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
 
     public function testRetrieveAutocompleteItemsComplexPropertyArray(): void
     {
         $request = new Request([
-            'admin_code' => 'foo.admin',
+            '_sonata_admin' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->configureFormConfigComplexPropertyArray('barField');
         $datagrid = $this->configureAutocompleteItemsDatagrid();
@@ -180,32 +181,47 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $filter = new FooFilter();
         $filter->initialize('entity.property');
 
-        $datagrid->hasFilter('entity.property')->willReturn(true);
-        $datagrid->getFilter('entity.property')->willReturn($filter);
         $filter2 = new FooFilter();
         $filter2->initialize('entity2.property2');
 
-        $datagrid->hasFilter('entity2.property2')->willReturn(true);
-        $datagrid->getFilter('entity2.property2')->willReturn($filter2);
+        $datagrid->method('hasFilter')->willReturnMap([
+            ['entity.property', true],
+            ['entity2.property2', true],
+        ]);
+        $datagrid->method('getFilter')->willReturnMap([
+            ['entity.property', $filter],
+            ['entity2.property2', $filter2],
+        ]);
+        $datagrid->expects(static::exactly(4))->method('setValue')->withConsecutive(
+            ['entity__property', null, 'sonata'],
+            ['entity2__property2', null, 'sonata'],
+            [DatagridInterface::PER_PAGE, null, 10],
+            [DatagridInterface::PAGE, null, 1]
+        );
 
-        $datagrid->setValue('entity__property', null, 'sonata')->shouldBeCalled();
-        $datagrid->setValue('entity2__property2', null, 'sonata')->shouldBeCalled();
+        $datagrid->expects(static::once())
+            ->method('reorderFilters')
+            ->with(['entity.property', 'entity2.property2']);
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
-        $this->isInstanceOf(Response::class, $response);
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
+        static::assertSame(Filter::CONDITION_OR, $filter->getCondition());
+        static::assertNull($filter->getPreviousFilter());
+        static::assertSame(Filter::CONDITION_OR, $filter2->getCondition());
+        static::assertSame($filter, $filter2->getPreviousFilter());
+
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame('application/json', $response->headers->get('Content-Type'));
+        static::assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO","foo":"bar"}]}', $response->getContent());
     }
 
     public function testRetrieveAutocompleteItemsComplexProperty(): void
     {
         $request = new Request([
-            'admin_code' => 'foo.admin',
+            '_sonata_admin' => 'foo.admin',
             'field' => 'barField',
             'q' => 'sonata',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'GET', 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_GET, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
 
         $this->configureFormConfigComplexProperty('barField');
         $datagrid = $this->configureAutocompleteItemsDatagrid();
@@ -213,107 +229,125 @@ final class RetrieveAutocompleteItemsActionTest extends TestCase
         $filter = new FooFilter();
         $filter->initialize('entity.property');
 
-        $datagrid->hasFilter('entity.property')->willReturn(true);
-        $datagrid->getFilter('entity.property')->willReturn($filter);
-        $datagrid->setValue('entity__property', null, 'sonata')->shouldBeCalled();
+        $datagrid->method('hasFilter')->with('entity.property')->willReturn(true);
+        $datagrid->method('getFilter')->with('entity.property')->willReturn($filter);
+        $datagrid->expects(static::exactly(3))->method('setValue')->withConsecutive(
+            ['entity__property', null, 'sonata'],
+            [DatagridInterface::PER_PAGE, null, 10],
+            [DatagridInterface::PAGE, null, 1]
+        );
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
-        $this->isInstanceOf(Response::class, $response);
-        $this->assertSame('application/json', $response->headers->get('Content-Type'));
-        $this->assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame('application/json', $response->headers->get('Content-Type'));
+        static::assertSame('{"status":"OK","more":false,"items":[{"id":123,"label":"FOO"}]}', $response->getContent());
     }
 
-    private function configureAutocompleteItemsDatagrid(): ObjectProphecy
+    private function configureAutocompleteItemsDatagrid(): MockObject
     {
-        $entity = new \stdClass();
+        $model = new \stdClass();
 
-        $targetAdmin = $this->prophesize(AbstractAdmin::class);
-        $datagrid = $this->prophesize(DatagridInterface::class);
-        $metadata = $this->prophesize(MetadataInterface::class);
-        $pager = $this->prophesize(Pager::class);
-        $fieldDescription = $this->prophesize(FieldDescriptionInterface::class);
+        $targetAdmin = $this->createMock(AbstractAdmin::class);
+        $datagrid = $this->createStub(DatagridInterface::class);
+        $metadata = $this->createStub(MetadataInterface::class);
+        // NEXT_MAJOR: Use createMock instead.
+        $pager = $this->getMockBuilder(PagerInterface::class)
+            ->addMethods(['getCurrentPageResults', 'isLastPage'])
+            ->getMockForAbstractClass();
+        // NEXT_MAJOR: Use `createStub` instead of using mock builder
+        $fieldDescription = $this->getMockBuilder(FieldDescriptionInterface::class)
+            ->addMethods(['getTargetModel'])
+            ->getMockForAbstractClass();
 
-        $this->admin->getNewInstance()->willReturn($entity);
-        $this->admin->setSubject($entity)->shouldBeCalled();
-        $this->admin->hasAccess('create')->willReturn(true);
-        $this->admin->getFormFieldDescription('barField')->willReturn($fieldDescription->reveal());
-        $this->admin->getFormFieldDescriptions()->willReturn(null);
-        $this->admin->id($entity)->willReturn(123);
-        $targetAdmin->checkAccess('list')->shouldBeCalled();
-        $targetAdmin->setFilterPersister(null)->shouldBeCalled();
-        $targetAdmin->getDatagrid()->willReturn($datagrid->reveal());
-        $targetAdmin->getObjectMetadata($entity)->willReturn($metadata->reveal());
-        $metadata->getTitle()->willReturn('FOO');
+        $this->admin->method('getNewInstance')->willReturn($model);
+        $this->admin->expects(static::once())->method('setSubject')->with($model);
+        $this->admin->method('hasAccess')->with('create')->willReturn(true);
+        $this->admin->method('getFormFieldDescription')->with('barField')->willReturn($fieldDescription);
+        $this->admin->method('getFormFieldDescriptions')->willReturn(null);
+        $this->admin->method('id')->with($model)->willReturn(123);
+        $targetAdmin->expects(static::once())->method('checkAccess')->with('list');
+        $targetAdmin->expects(static::once())->method('setFilterPersister')->with(null);
+        $targetAdmin->method('getDatagrid')->willReturn($datagrid);
+        $targetAdmin->method('getObjectMetadata')->with($model)->willReturn($metadata);
+        $metadata->method('getTitle')->willReturn('FOO');
 
-        $datagrid->setValue('_per_page', null, 10)->shouldBeCalled();
-        $datagrid->setValue('_page', null, 1)->shouldBeCalled();
-        $datagrid->buildPager()->willReturn(null);
-        $datagrid->getPager()->willReturn($pager->reveal());
-        $pager->getResults()->willReturn([$entity]);
-        $pager->isLastPage()->willReturn(true);
-        $fieldDescription->getTargetEntity()->willReturn(Foo::class);
-        $fieldDescription->getName()->willReturn('barField');
-        $fieldDescription->getAssociationAdmin()->willReturn($targetAdmin->reveal());
+        $datagrid->method('buildPager')->willReturn(null);
+        $datagrid->method('getPager')->willReturn($pager);
+        $pager->method('getCurrentPageResults')->willReturn([$model]);
+        $pager->method('isLastPage')->willReturn(true);
+        $fieldDescription->method('getTargetModel')->willReturn(Foo::class);
+        $fieldDescription->method('getName')->willReturn('barField');
+        $fieldDescription->method('getAssociationAdmin')->willReturn($targetAdmin);
 
         return $datagrid;
     }
 
     private function configureFormConfig(string $field, bool $disabled = false): void
     {
-        $form = $this->prophesize(Form::class);
-        $formType = $this->prophesize(Form::class);
-        $formConfig = $this->prophesize(FormConfigInterface::class);
+        $form = $this->createStub(Form::class);
+        $formType = $this->createStub(Form::class);
+        $formConfig = $this->createStub(FormConfigInterface::class);
 
-        $this->admin->getForm()->willReturn($form->reveal());
-        $form->get($field)->willReturn($formType->reveal());
-        $formType->getConfig()->willReturn($formConfig->reveal());
-        $formConfig->getAttribute('disabled')->willReturn($disabled);
-        $formConfig->getAttribute('property')->willReturn('foo');
-        $formConfig->getAttribute('callback')->willReturn(null);
-        $formConfig->getAttribute('minimum_input_length')->willReturn(3);
-        $formConfig->getAttribute('items_per_page')->willReturn(10);
-        $formConfig->getAttribute('req_param_name_page_number')->willReturn('_page');
-        $formConfig->getAttribute('to_string_callback')->willReturn(null);
-        $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
+        $this->admin->method('getForm')->willReturn($form);
+        $form->method('get')->with($field)->willReturn($formType);
+        $formType->method('getConfig')->willReturn($formConfig);
+        $formConfig->method('getAttribute')->willReturnMap([
+            ['disabled', null, $disabled],
+            ['property', null, 'foo'],
+            ['callback', null, null],
+            ['minimum_input_length', null, 3],
+            ['items_per_page', null, 10],
+            ['req_param_name_page_number', null, DatagridInterface::PAGE],
+            ['to_string_callback', null, null],
+            ['target_admin_access_action', null, 'list'],
+            ['response_item_callback', null, null],
+        ]);
     }
 
     private function configureFormConfigComplexProperty(string $field): void
     {
-        $form = $this->prophesize(Form::class);
-        $formType = $this->prophesize(Form::class);
-        $formConfig = $this->prophesize(FormConfigInterface::class);
+        $form = $this->createStub(Form::class);
+        $formType = $this->createStub(Form::class);
+        $formConfig = $this->createStub(FormConfigInterface::class);
 
-        $this->admin->getForm()->willReturn($form->reveal());
-        $form->get($field)->willReturn($formType->reveal());
-        $formType->getConfig()->willReturn($formConfig->reveal());
-        $formConfig->getAttribute('disabled')->willReturn(false);
-        $formConfig->getAttribute('property')->willReturn('entity.property');
-        $formConfig->getAttribute('callback')->willReturn(null);
-        $formConfig->getAttribute('minimum_input_length')->willReturn(3);
-        $formConfig->getAttribute('items_per_page')->willReturn(10);
-        $formConfig->getAttribute('req_param_name_page_number')->willReturn('_page');
-        $formConfig->getAttribute('to_string_callback')->willReturn(null);
-        $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
+        $this->admin->method('getForm')->willReturn($form);
+        $form->method('get')->with($field)->willReturn($formType);
+        $formType->method('getConfig')->willReturn($formConfig);
+
+        $formConfig->method('getAttribute')->willReturnMap([
+            ['disabled', null, false],
+            ['property', null, 'entity.property'],
+            ['minimum_input_length', null, 3],
+            ['items_per_page', null, 10],
+            ['req_param_name_page_number', null, DatagridInterface::PAGE],
+            ['target_admin_access_action', null, 'list'],
+            ['response_item_callback', null, null],
+        ]);
     }
 
-    private function configureFormConfigComplexPropertyArray($field): void
+    private function configureFormConfigComplexPropertyArray(string $field): void
     {
-        $form = $this->prophesize(Form::class);
-        $formType = $this->prophesize(Form::class);
-        $formConfig = $this->prophesize(FormConfigInterface::class);
+        $form = $this->createStub(Form::class);
+        $formType = $this->createStub(Form::class);
+        $formConfig = $this->createStub(FormConfigInterface::class);
 
-        $this->admin->getForm()->willReturn($form->reveal());
-        $form->get($field)->willReturn($formType->reveal());
-        $formType->getConfig()->willReturn($formConfig->reveal());
-        $formConfig->getAttribute('disabled')->willReturn(false);
-        $formConfig->getAttribute('property')->willReturn(['entity.property', 'entity2.property2']);
-        $formConfig->getAttribute('callback')->willReturn(null);
-        $formConfig->getAttribute('minimum_input_length')->willReturn(3);
-        $formConfig->getAttribute('items_per_page')->willReturn(10);
-        $formConfig->getAttribute('req_param_name_page_number')->willReturn('_page');
-        $formConfig->getAttribute('to_string_callback')->willReturn(null);
-        $formConfig->getAttribute('target_admin_access_action')->willReturn('list');
+        $this->admin->method('getForm')->willReturn($form);
+        $form->method('get')->with($field)->willReturn($formType);
+        $formType->method('getConfig')->willReturn($formConfig);
+
+        $formConfig->method('getAttribute')->willReturnMap([
+            ['disabled', null, false],
+            ['property', null, ['entity.property', 'entity2.property2']],
+            ['minimum_input_length', null, 3],
+            ['items_per_page', null, 10],
+            ['req_param_name_page_number', null, DatagridInterface::PAGE],
+            ['target_admin_access_action', null, 'list'],
+            ['response_item_callback', null, static function (AdminInterface $admin, object $model, array $item): array {
+                $item['foo'] = 'bar';
+
+                return $item;
+            }],
+        ]);
     }
 }

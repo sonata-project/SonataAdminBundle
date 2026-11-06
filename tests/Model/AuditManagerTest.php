@@ -16,51 +16,64 @@ namespace Sonata\AdminBundle\Tests\Model;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Model\AuditManager;
 use Sonata\AdminBundle\Model\AuditReaderInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
- * Test for AuditManager.
- *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
-class AuditManagerTest extends TestCase
+final class AuditManagerTest extends TestCase
 {
+    // NEXT_MAJOR: Remove next line.
+    use ExpectDeprecationTrait;
+
     public function testGetReader(): void
     {
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
+        $container = new Container();
 
-        $fooReader = $this->getMockForAbstractClass(AuditReaderInterface::class);
-        $barReader = $this->getMockForAbstractClass(AuditReaderInterface::class);
+        $fooReader = $this->createStub(AuditReaderInterface::class);
+        $barReader = $this->createStub(AuditReaderInterface::class);
 
-        $container->expects($this->any())
-            ->method('get')
-            ->will($this->returnCallback(function ($id) use ($fooReader, $barReader) {
-                switch ($id) {
-                    case 'foo_reader':
-                        return $fooReader;
-
-                    case 'bar_reader':
-                        return $barReader;
-                }
-            }));
+        $container->set('foo_reader', $fooReader);
+        $container->set('bar_reader', $barReader);
 
         $auditManager = new AuditManager($container);
 
-        $this->assertFalse($auditManager->hasReader('Foo\Foo1'));
+        static::assertFalse($auditManager->hasReader('Foo\Foo1'));
 
         $auditManager->setReader('foo_reader', ['Foo\Foo1', 'Foo\Foo2']);
 
-        $this->assertTrue($auditManager->hasReader('Foo\Foo1'));
-        $this->assertSame($fooReader, $auditManager->getReader('Foo\Foo1'));
+        static::assertTrue($auditManager->hasReader('Foo\Foo1'));
+        static::assertSame($fooReader, $auditManager->getReader('Foo\Foo1'));
     }
 
     public function testGetReaderWithException(): void
     {
-        $this->expectException(\RuntimeException::class, 'The class "Foo\Foo" does not have any reader manager');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('The class "Foo\Foo" does not have any reader manager');
 
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $auditManager = new AuditManager($container);
+        $auditManager = new AuditManager(new Container());
 
         $auditManager->getReader('Foo\Foo');
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this test.
+     *
+     * @group legacy
+     */
+    public function testReaderShouldBeTagged(): void
+    {
+        $container = new Container();
+
+        $fooReader = $this->createStub(AuditReaderInterface::class);
+
+        $container->set('foo_reader', $fooReader);
+
+        $auditManager = new AuditManager($container, new Container());
+
+        $this->expectDeprecation('Not registering the audit reader "foo_reader" with tag "sonata.admin.audit_reader" is deprecated since sonata-project/admin-bundle 3.95 and will not work in 4.0. You MUST add "sonata.admin.audit_reader" tag to the service "foo_reader".');
+
+        $auditManager->setReader('foo_reader', ['Foo\Foo1', 'Foo\Foo2']);
     }
 }

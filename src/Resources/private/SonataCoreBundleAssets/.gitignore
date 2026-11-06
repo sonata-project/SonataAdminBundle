@@ -1,0 +1,4 @@
+# This .gitignore file lists some resources that should not be committed because of their size.
+vendor/eonasdan-bootstrap-datetimepicker/src/nuget
+vendor/ionicons/cheatsheet.html
+vendor/moment/min/tests.js

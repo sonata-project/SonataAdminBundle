@@ -24,7 +24,7 @@ User Entity
 ^^^^^^^^^^^
 
 This represents your security user, you can read more about it
-`here <http://symfony.com/doc/current/security/entity_provider.html#create-your-user-entity>`__::
+`here <https://symfony.com/doc/4.4/security.html#a-create-your-user-class>`__::
 
     namespace App\Entity;
 
@@ -63,7 +63,7 @@ UserProvider
 ^^^^^^^^^^^^
 
 This represents your user provider, it will be used to load your security users, read
-more about it `here <http://symfony.com/doc/current/security/custom_provider.html#create-a-user-provider>`__::
+more about it `here <https://symfony.com/doc/4.4/security.html#b-the-user-provider>`__::
 
     namespace App\Security;
 
@@ -154,7 +154,7 @@ AdminLoginAuthenticator
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 This represents your custom authentication system, read
-more about it `here <https://symfony.com/doc/current/security/guard_authentication.html#step-1-create-the-authenticator-class>`__::
+more about it `here <https://symfony.com/doc/4.4/security/guard_authentication.html#step-2-create-the-authenticator-class>`__::
 
     namespace App\Security;
 
@@ -168,7 +168,6 @@ more about it `here <https://symfony.com/doc/current/security/guard_authenticati
     use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
     use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
     use Symfony\Component\Security\Core\Exception\AuthenticationException;
-    use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
     use Symfony\Component\Security\Core\Security;
     use Symfony\Component\Security\Core\User\UserInterface;
     use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -232,15 +231,7 @@ more about it `here <https://symfony.com/doc/current/security/guard_authenticati
 
         public function checkCredentials($credentials, UserInterface $user): bool
         {
-            if (!$this->passwordEncoder->isPasswordValid($user, $credentials['password'])) {
-                return false;
-            }
-
-            if (!$user->hasRole('ROLE_ADMIN')) {
-                throw new CustomUserMessageAuthenticationException("You don't have permission to access that page.");
-            }
-
-            return true;
+            return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
         }
 
         public function onAuthenticationFailure(Request $request, AuthenticationException $exception): RedirectResponse
@@ -250,9 +241,9 @@ more about it `here <https://symfony.com/doc/current/security/guard_authenticati
             return new RedirectResponse($this->router->generate('admin_login'));
         }
 
-        protected function getLoginUrl(): RedirectResponse
+        protected function getLoginUrl(): string
         {
-            return new RedirectResponse($this->router->generate('admin_login'));
+            return $this->router->generate('admin_login');
         }
 
         public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey): RedirectResponse
@@ -312,8 +303,8 @@ this will be handled by Symfony, but we still need to register that route::
         }
     }
 
-Setup firewall in `security.yaml`
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Setup firewall in ``security.yaml``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: yaml
 
@@ -327,7 +318,7 @@ Setup firewall in `security.yaml`
                 - ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT
 
         encoders:
-            App\Entity\User: bcrypt
+            App\Entity\User: auto # use bcrypt if you are using "symfony/security-bundle" < 4.3
 
         providers:
             users:

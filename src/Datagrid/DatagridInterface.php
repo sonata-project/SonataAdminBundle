@@ -13,27 +13,42 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Datagrid;
 
-use Sonata\AdminBundle\Admin\FieldDescriptionCollection;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionCollection;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Filter\FilterInterface;
 use Symfony\Component\Form\FormInterface;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @method array getSortParameters(FieldDescriptionInterface $fieldDescription)
+ * @method array getPaginationParameters(int $page)
+ *
+ * @phpstan-template T of ProxyQueryInterface
  */
 interface DatagridInterface
 {
+    public const SORT_ORDER = '_sort_order';
+    public const SORT_BY = '_sort_by';
+    public const PAGE = '_page';
+    public const PER_PAGE = '_per_page';
+
     /**
      * @return PagerInterface
+     *
+     * @phpstan-return PagerInterface<T>
      */
     public function getPager();
 
     /**
      * @return ProxyQueryInterface
+     *
+     * @phpstan-return T
      */
     public function getQuery();
 
     /**
-     * @return array
+     * @return iterable<object>
      */
     public function getResults();
 
@@ -45,7 +60,7 @@ interface DatagridInterface
     public function addFilter(FilterInterface $filter);
 
     /**
-     * @return array
+     * @return array<string, FilterInterface>
      */
     public function getFilters();
 
@@ -104,4 +119,14 @@ interface DatagridInterface
      * @return bool
      */
     public function hasDisplayableFilters();
+
+    /*
+     * NEXT_MAJOR: Uncomment getSortParameters and getPaginationParameters.
+     *
+     * public function getSortParameters(FieldDescriptionInterface $fieldDescription): array;
+     * public function getPaginationParameters(int $page): array;
+     */
 }
+
+// NEXT_MAJOR: Remove next line.
+interface_exists(FieldDescriptionInterface::class);

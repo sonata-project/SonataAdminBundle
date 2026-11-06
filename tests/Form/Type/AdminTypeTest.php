@@ -13,120 +13,287 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Form\Type;
 
-use Prophecy\Argument\Token\AnyValueToken;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
 use Sonata\AdminBundle\Form\Type\AdminType;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
+use Sonata\AdminBundle\Tests\Fixtures\TestExtension;
 use Symfony\Component\Form\FormTypeGuesserInterface;
 use Symfony\Component\Form\Test\TypeTestCase;
-use Symfony\Component\Form\Tests\Fixtures\TestExtension;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\Exception\NoSuchPropertyException;
 
 class AdminTypeTest extends TypeTestCase
 {
+    /**
+     * @var AdminType
+     */
+    private $adminType;
+
+    protected function setUp(): void
+    {
+        $this->adminType = new AdminType();
+
+        parent::setUp();
+    }
+
     public function testGetDefaultOptions(): void
     {
-        $type = new AdminType();
-
         $optionResolver = new OptionsResolver();
 
-        $type->configureOptions($optionResolver);
+        $this->adminType->configureOptions($optionResolver);
 
         $options = $optionResolver->resolve();
 
-        $this->assertTrue($options['delete']);
-        $this->assertFalse($options['auto_initialize']);
-        $this->assertSame('link_add', $options['btn_add']);
-        $this->assertSame('link_list', $options['btn_list']);
-        $this->assertSame('link_delete', $options['btn_delete']);
-        $this->assertSame('SonataAdminBundle', $options['btn_catalogue']);
+        static::assertTrue($options['delete']);
+        static::assertFalse($options['auto_initialize']);
+        static::assertSame('link_add', $options['btn_add']);
+        static::assertSame('link_list', $options['btn_list']);
+        static::assertSame('link_delete', $options['btn_delete']);
+        static::assertSame('SonataAdminBundle', $options['btn_catalogue']);
     }
 
     public function testSubmitValidData(): void
     {
-        $parentAdmin = $this->prophesize(AdminInterface::class);
-        $parentField = $this->prophesize(FieldDescriptionInterface::class);
-        $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
+        $parentAdmin = $this->createMock(AdminInterface::class);
+        $parentAdmin->expects(static::once())->method('hasSubject')->willReturn(false);
+        $parentField = $this->createMock(FieldDescriptionInterface::class);
+        $parentField->expects(static::once())->method('setAssociationAdmin')->with(static::isInstanceOf(AdminInterface::class));
+        $parentField->expects(static::once())->method('getAdmin')->willReturn($parentAdmin);
 
-        $modelManager = $this->prophesize(ModelManagerInterface::class);
-        $modelManager->modelReverseTransform(Foo::class, [])->shouldBeCalled();
+        $modelManager = $this->createStub(ModelManagerInterface::class);
 
-        $admin = $this->prophesize(AbstractAdmin::class);
-        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(false);
-        $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
-        $admin->hasAccess('delete')->shouldBeCalled()->willReturn(false);
-        $admin->setSubject(null)->shouldBeCalled();
-        $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
-        $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
-        $admin->getClass()->shouldBeCalled()->willReturn(Foo::class);
+        $foo = new Foo();
 
-        $field = $this->prophesize(FieldDescriptionInterface::class);
-        $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
-        $field->getAdmin()->shouldBeCalled();
-        $field->getName()->shouldBeCalled();
-        $field->getOption('edit', 'standard')->shouldBeCalled();
-        $field->getOption('inline', 'natural')->shouldBeCalled();
-        $field->getOption('block_name', false)->shouldBeCalled();
+        $admin = $this->createMock(AbstractAdmin::class);
+        $admin->expects(static::exactly(2))->method('hasParentFieldDescription')->willReturn(true);
+        $admin->expects(static::exactly(2))->method('getParentFieldDescription')->willReturn($parentField);
+        $admin->expects(static::once())->method('hasAccess')->with('delete')->willReturn(false);
+        $admin->expects(static::once())->method('defineFormBuilder');
+        $admin->expects(static::once())->method('getModelManager')->willReturn($modelManager);
+        $admin->expects(static::once())->method('getClass')->willReturn(Foo::class);
+        $admin->expects(static::once())->method('getNewInstance')->willReturn($foo);
+        $admin->expects(static::once())->method('setSubject')->with($foo);
+
+        $field = $this->createMock(FieldDescriptionInterface::class);
+        $field->expects(static::once())->method('getAssociationAdmin')->willReturn($admin);
+        $field->expects(static::once())->method('getAdmin');
+        $field->expects(static::once())->method('getName');
+        $field->expects(static::exactly(3))->method('getOption')->withConsecutive(
+            ['edit', 'standard'],
+            ['inline', 'natural'],
+            ['block_name', false]
+        );
+
         $formData = [];
 
         $form = $this->factory->create(
             AdminType::class,
             null,
             [
-                'sonata_field_description' => $field->reveal(),
+                'sonata_field_description' => $field,
             ]
         );
         $form->submit($formData);
-        $this->assertTrue($form->isSynchronized());
+        static::assertTrue($form->isSynchronized());
     }
 
     public function testDotFields(): void
     {
+        $foo = new \stdClass();
+        $foo->bar = 1;
+
         $parentSubject = new \stdClass();
-        $parentSubject->foo = 1;
+        $parentSubject->foo = $foo;
 
-        $parentAdmin = $this->prophesize(AdminInterface::class);
-        $parentAdmin->getSubject()->shouldBeCalled()->willReturn($parentSubject);
-        $parentField = $this->prophesize(FieldDescriptionInterface::class);
-        $parentField->getAdmin()->shouldBeCalled()->willReturn($parentAdmin->reveal());
+        $parentAdmin = $this->createMock(AdminInterface::class);
+        $parentAdmin->expects(static::once())->method('getSubject')->willReturn($parentSubject);
+        $parentAdmin->expects(static::once())->method('hasSubject')->willReturn(true);
+        $parentField = $this->createMock(FieldDescriptionInterface::class);
+        $parentField->expects(static::once())->method('setAssociationAdmin')->with(static::isInstanceOf(AdminInterface::class));
+        $parentField->expects(static::once())->method('getAdmin')->willReturn($parentAdmin);
 
-        $modelManager = $this->prophesize(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
 
-        $admin = $this->prophesize(AbstractAdmin::class);
-        $admin->hasParentFieldDescription()->shouldBeCalled()->willReturn(false);
-        $admin->getParentFieldDescription()->shouldBeCalled()->willReturn($parentField->reveal());
-        $admin->setSubject(1)->shouldBeCalled();
-        $admin->defineFormBuilder(new AnyValueToken())->shouldBeCalled();
-        $admin->getModelManager()->shouldBeCalled()->willReturn($modelManager);
-        $admin->getClass()->shouldBeCalled()->willReturn(Foo::class);
+        $admin = $this->createMock(AbstractAdmin::class);
+        $admin->expects(static::exactly(2))->method('hasParentFieldDescription')->willReturn(true);
+        $admin->expects(static::exactly(2))->method('getParentFieldDescription')->willReturn($parentField);
+        $admin->expects(static::once())->method('setSubject')->with(1);
+        $admin->expects(static::once())->method('defineFormBuilder');
+        $admin->expects(static::once())->method('getModelManager')->willReturn($modelManager);
+        $admin->expects(static::once())->method('getClass')->willReturn(Foo::class);
 
-        $field = $this->prophesize(FieldDescriptionInterface::class);
-        $field->getAssociationAdmin()->shouldBeCalled()->willReturn($admin->reveal());
-        $field->getFieldName()->shouldBeCalled()->willReturn('foo');
+        $field = $this->createMock(FieldDescriptionInterface::class);
+        $field->expects(static::once())->method('getAssociationAdmin')->willReturn($admin);
+        $field->expects(static::once())->method('getFieldName')->willReturn('bar');
+        $field->expects(static::once())->method('getParentAssociationMappings')->willReturn([['fieldName' => 'foo']]);
 
         $this->builder->add('foo.bar');
 
         try {
-            $type = new AdminType();
-            $type->buildForm($this->builder, [
-                'sonata_field_description' => $field->reveal(),
+            $this->adminType->buildForm($this->builder, [
+                'sonata_field_description' => $field,
                 'delete' => false, // not needed
-                'property_path' => 'foo', // actual test case
+                'property_path' => 'bar', // actual test case
             ]);
         } catch (NoSuchPropertyException $exception) {
-            $this->fail($exception->getMessage());
+            static::fail($exception->getMessage());
+        }
+    }
+
+    public function testArrayCollection(): void
+    {
+        $foo = new Foo();
+
+        $parentSubject = new \stdClass();
+        $parentSubject->foo = new ArrayCollection([$foo]);
+
+        $parentAdmin = $this->createMock(AdminInterface::class);
+        $parentAdmin->expects(static::once())->method('getSubject')->willReturn($parentSubject);
+        $parentAdmin->expects(static::once())->method('hasSubject')->willReturn(true);
+        $parentField = $this->createMock(FieldDescriptionInterface::class);
+        $parentField->expects(static::once())->method('setAssociationAdmin')->with(static::isInstanceOf(AdminInterface::class));
+        $parentField->expects(static::once())->method('getAdmin')->willReturn($parentAdmin);
+
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+
+        $admin = $this->createMock(AbstractAdmin::class);
+        $admin->expects(static::exactly(2))->method('hasParentFieldDescription')->willReturn(true);
+        $admin->expects(static::exactly(2))->method('getParentFieldDescription')->willReturn($parentField);
+        $admin->expects(static::once())->method('defineFormBuilder');
+        $admin->expects(static::once())->method('getModelManager')->willReturn($modelManager);
+        $admin->expects(static::once())->method('getClass')->willReturn(Foo::class);
+        $admin->expects(static::once())->method('setSubject')->with($foo);
+
+        $field = $this->createMock(FieldDescriptionInterface::class);
+        $field->expects(static::once())->method('getAssociationAdmin')->willReturn($admin);
+        $field->expects(static::atLeastOnce())->method('getFieldName')->willReturn('foo');
+        $field->expects(static::once())->method('getParentAssociationMappings')->willReturn([]);
+
+        $this->builder->add('foo');
+
+        try {
+            $this->adminType->buildForm($this->builder, [
+                'sonata_field_description' => $field,
+                'delete' => false, // not needed
+                'property_path' => '[0]', // actual test case
+            ]);
+        } catch (NoSuchPropertyException $exception) {
+            static::fail($exception->getMessage());
+        }
+    }
+
+    public function testArrayCollectionNotFound(): void
+    {
+        $parentSubject = new class() {
+            public $foo = [];
+        };
+
+        $parentAdmin = $this->createMock(AdminInterface::class);
+        $parentAdmin->expects(static::once())->method('getSubject')->willReturn($parentSubject);
+        $parentAdmin->expects(static::once())->method('hasSubject')->willReturn(true);
+        $parentField = $this->createMock(FieldDescriptionInterface::class);
+        $parentField->expects(static::once())->method('setAssociationAdmin')->with(static::isInstanceOf(AdminInterface::class));
+        $parentField->expects(static::once())->method('getAdmin')->willReturn($parentAdmin);
+        $parentField->expects(static::once())->method('getParentAssociationMappings')->willReturn([]);
+        $parentField->expects(static::once())->method('getAssociationMapping')->willReturn(['fieldName' => 'foo', 'mappedBy' => 'bar']);
+
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+
+        $newInstance = new class() {
+            public function setBar()
+            {
+            }
+        };
+
+        $admin = $this->createMock(AbstractAdmin::class);
+        $admin->expects(static::exactly(2))->method('hasParentFieldDescription')->willReturn(true);
+        $admin->expects(static::exactly(2))->method('getParentFieldDescription')->willReturn($parentField);
+        $admin->expects(static::once())->method('defineFormBuilder');
+        $admin->expects(static::once())->method('getModelManager')->willReturn($modelManager);
+        $admin->expects(static::once())->method('getClass')->willReturn(Foo::class);
+        $admin->expects(static::once())->method('setSubject')->with($newInstance);
+        $admin->expects(static::once())->method('getNewInstance')->willReturn($newInstance);
+
+        $field = $this->createMock(FieldDescriptionInterface::class);
+        $field->expects(static::once())->method('getAssociationAdmin')->willReturn($admin);
+        $field->expects(static::atLeastOnce())->method('getFieldName')->willReturn('foo');
+        $field->expects(static::once())->method('getParentAssociationMappings')->willReturn([]);
+
+        $this->builder->add('foo');
+
+        try {
+            $this->adminType->buildForm($this->builder, [
+                'sonata_field_description' => $field,
+                'delete' => false, // not needed
+                'property_path' => '[0]', // actual test case
+                'collection_by_reference' => false,
+            ]);
+        } catch (NoSuchPropertyException $exception) {
+            static::fail($exception->getMessage());
+        }
+    }
+
+    public function testArrayCollectionByReferenceNotFound(): void
+    {
+        $parentSubject = new class() {
+            public $foo = [];
+
+            public function addFoo()
+            {
+            }
+        };
+
+        $parentAdmin = $this->createMock(AdminInterface::class);
+        $parentAdmin->expects(static::once())->method('getSubject')->willReturn($parentSubject);
+        $parentAdmin->expects(static::once())->method('hasSubject')->willReturn(true);
+        $parentField = $this->createMock(FieldDescriptionInterface::class);
+        $parentField->expects(static::once())->method('setAssociationAdmin')->with(static::isInstanceOf(AdminInterface::class));
+        $parentField->expects(static::once())->method('getAdmin')->willReturn($parentAdmin);
+        $parentField->expects(static::once())->method('getParentAssociationMappings')->willReturn([]);
+        $parentField->expects(static::once())->method('getAssociationMapping')->willReturn(['fieldName' => 'foo', 'mappedBy' => 'bar']);
+
+        $modelManager = $this->createStub(ModelManagerInterface::class);
+
+        $newInstance = new \stdClass();
+
+        $admin = $this->createMock(AbstractAdmin::class);
+        $admin->expects(static::exactly(2))->method('hasParentFieldDescription')->willReturn(true);
+        $admin->expects(static::exactly(2))->method('getParentFieldDescription')->willReturn($parentField);
+        $admin->expects(static::once())->method('defineFormBuilder');
+        $admin->expects(static::once())->method('getModelManager')->willReturn($modelManager);
+        $admin->expects(static::once())->method('getClass')->willReturn(Foo::class);
+        $admin->expects(static::once())->method('setSubject')->with($newInstance);
+        $admin->expects(static::once())->method('getNewInstance')->willReturn($newInstance);
+
+        $field = $this->createMock(FieldDescriptionInterface::class);
+        $field->expects(static::once())->method('getAssociationAdmin')->willReturn($admin);
+        $field->expects(static::atLeastOnce())->method('getFieldName')->willReturn('foo');
+        $field->expects(static::once())->method('getParentAssociationMappings')->willReturn([]);
+
+        $this->builder->add('foo');
+
+        try {
+            $this->adminType->buildForm($this->builder, [
+                'sonata_field_description' => $field,
+                'delete' => false, // not needed
+                'property_path' => '[0]', // actual test case
+                'collection_by_reference' => true,
+            ]);
+        } catch (NoSuchPropertyException $exception) {
+            static::fail($exception->getMessage());
         }
     }
 
     protected function getExtensions()
     {
         $extensions = parent::getExtensions();
-        $guesser = $this->prophesize(FormTypeGuesserInterface::class)->reveal();
+
+        $guesser = $this->createStub(FormTypeGuesserInterface::class);
         $extension = new TestExtension($guesser);
 
         $extension->addTypeExtension(new FormTypeFieldExtension([], []));

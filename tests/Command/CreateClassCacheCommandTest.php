@@ -17,8 +17,6 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Command\CreateClassCacheCommand;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @group legacy
@@ -48,34 +46,13 @@ class CreateClassCacheCommandTest extends TestCase
 
         if (mkdir($tempFile)) {
             $this->tempDirectory = $tempFile;
-            file_put_contents($this->tempDirectory.'/classes.map', '<?php return [\'Sonata\\AdminBundle\\Tests\\Fixtures\\Controller\\FooAdminController\', \'Sonata\\AdminBundle\\Tests\\Fixtures\\Controller\\BarAdminController\',];');
+            file_put_contents(sprintf('%s/classes.map', $this->tempDirectory), '<?php return [\'Sonata\\AdminBundle\\Tests\\Fixtures\\Controller\\FooAdminController\', \'Sonata\\AdminBundle\\Tests\\Fixtures\\Controller\\BarAdminController\',];');
         } else {
-            $this->markTestSkipped(sprintf('Temp directory "%s" creation error.', $tempFile));
+            static::markTestSkipped(sprintf('Temp directory "%s" creation error.', $tempFile));
         }
 
         $this->application = new Application();
-        $command = new CreateClassCacheCommand();
-
-        $container = $this->createMock(ContainerInterface::class);
-        $kernel = $this->createMock(KernelInterface::class);
-
-        $kernel->expects($this->any())
-            ->method('getCacheDir')
-            ->will($this->returnValue($this->tempDirectory));
-
-        $kernel->expects($this->any())
-            ->method('isDebug')
-            ->will($this->returnValue(false));
-
-        $container->expects($this->any())
-                ->method('get')
-                ->will($this->returnCallback(function ($id) use ($kernel) {
-                    if ('kernel' === $id) {
-                        return $kernel;
-                    }
-                }));
-
-        $command->setContainer($container);
+        $command = new CreateClassCacheCommand($this->tempDirectory, false);
 
         $this->application->add($command);
     }
@@ -83,12 +60,12 @@ class CreateClassCacheCommandTest extends TestCase
     protected function tearDown(): void
     {
         if ($this->tempDirectory) {
-            if (file_exists($this->tempDirectory.'/classes.map')) {
-                unlink($this->tempDirectory.'/classes.map');
+            if (file_exists(sprintf('%s/classes.map', $this->tempDirectory))) {
+                unlink(sprintf('%s/classes.map', $this->tempDirectory));
             }
 
-            if (file_exists($this->tempDirectory.'/classes.php')) {
-                unlink($this->tempDirectory.'/classes.php');
+            if (file_exists(sprintf('%s/classes.php', $this->tempDirectory))) {
+                unlink(sprintf('%s/classes.php', $this->tempDirectory));
             }
 
             if (file_exists($this->tempDirectory) && is_dir($this->tempDirectory)) {
@@ -99,35 +76,35 @@ class CreateClassCacheCommandTest extends TestCase
 
     public function testExecute(): void
     {
-        $this->markTestSkipped();
-        $this->assertFileExists($this->tempDirectory.'/classes.map');
-        $this->assertFileNotExists($this->tempDirectory.'/classes.php');
+        static::markTestSkipped();
+        static::assertFileExists(sprintf('%s/classes.map', $this->tempDirectory));
+        static::assertFileNotExists(sprintf('%s/classes.php', $this->tempDirectory));
 
         $command = $this->application->find('cache:create-cache-class');
         $commandTester = new CommandTester($command);
         $commandTester->execute(['command' => $command->getName()]);
 
-        $this->assertRegExp('@Writing cache file ...\s+done!@', $commandTester->getDisplay());
+        static::assertMatchesRegularExpression('@Writing cache file ...\s+done!@', $commandTester->getDisplay());
 
-        $this->assertFileExists($this->tempDirectory.'/classes.php');
-        $this->assertFileEquals(__DIR__.'/../Fixtures/Command/classes.php', $this->tempDirectory.'/classes.php');
+        static::assertFileExists(sprintf('%s/classes.php', $this->tempDirectory));
+        static::assertFileEquals(sprintf('%s/../Fixtures/Command/classes.php', __DIR__), sprintf('%s/classes.php', $this->tempDirectory));
     }
 
     public function testExecuteWithException(): void
     {
-        $this->assertFileExists($this->tempDirectory.'/classes.map');
-        unlink($this->tempDirectory.'/classes.map');
+        static::assertFileExists(sprintf('%s/classes.map', $this->tempDirectory));
+        unlink(sprintf('%s/classes.map', $this->tempDirectory));
 
         try {
             $command = $this->application->find('cache:create-cache-class');
             $commandTester = new CommandTester($command);
             $commandTester->execute(['command' => $command->getName()]);
         } catch (\RuntimeException $e) {
-            $this->assertSame(sprintf('The file %s/classes.map does not exist', $this->tempDirectory), $e->getMessage());
+            static::assertSame(sprintf('The file %s/classes.map does not exist', $this->tempDirectory), $e->getMessage());
 
             return;
         }
 
-        $this->fail('An expected exception has not been raised.');
+        static::fail('An expected exception has not been raised.');
     }
 }

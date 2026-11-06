@@ -19,9 +19,9 @@ file that was distributed with this source code.
 
 {% block form %}
     {% block form_acl_roles %}
-        {{ acl.render_form(aclRolesForm, permissions, 'td_role', admin, sonata_admin.adminPool, object) }}
+        {{ acl.render_form(aclRolesForm, permissions, 'td_role', admin, sonata_config, object) }}
     {% endblock %}
     {% block form_acl_users %}
-        {{ acl.render_form(aclUsersForm, permissions, 'td_username', admin, sonata_admin.adminPool, object) }}
+        {{ acl.render_form(aclUsersForm, permissions, 'td_username', admin, sonata_config, object) }}
     {% endblock %}
 {% endblock %}

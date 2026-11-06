@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Generator;
+namespace Sonata\AdminBundle\Tests\Manipulator;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Manipulator\ServicesManipulator;
@@ -53,7 +53,7 @@ class ServicesManipulatorTest extends TestCase
             'controller_name',
             'manager_type'
         );
-        $this->assertSame(
+        static::assertSame(
             "services:
     service_id:
         class: admin_class
@@ -70,7 +70,7 @@ class ServicesManipulatorTest extends TestCase
             'another_controller_name',
             'another_manager_type'
         );
-        $this->assertSame(
+        static::assertSame(
             "services:
     service_id:
         class: admin_class
@@ -120,7 +120,7 @@ class ServicesManipulatorTest extends TestCase
             'controller_name',
             'manager_type'
         );
-        $this->assertSame(
+        static::assertSame(
             "services:
     service_id:
         class: admin_class

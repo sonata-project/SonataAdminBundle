@@ -2,6 +2,15 @@
 
 declare(strict_types=1);
 
+/*
+ * This file is part of the Sonata Project package.
+ *
+ * (c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Sonata\AdminBundle\Tests\Fixtures\Admin;
 
 use Sonata\AdminBundle\Admin\AbstractAdmin;
@@ -17,8 +26,7 @@ final class ModelAdmin extends AbstractAdmin
         $datagridMapper
             ->add('foo')
             ->add('bar')
-            ->add('baz')
-        ;
+            ->add('baz');
     }
 
     protected function configureListFields(ListMapper $listMapper): void
@@ -27,14 +35,13 @@ final class ModelAdmin extends AbstractAdmin
             ->add('foo')
             ->add('bar')
             ->add('baz')
-            ->add('_action', null, [
+            ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'show' => [],
                     'edit' => [],
                     'delete' => [],
                 ],
-            ])
-        ;
+            ]);
     }
 
     protected function configureFormFields(FormMapper $formMapper): void
@@ -42,8 +49,7 @@ final class ModelAdmin extends AbstractAdmin
         $formMapper
             ->add('foo')
             ->add('bar')
-            ->add('baz')
-        ;
+            ->add('baz');
     }
 
     protected function configureShowFields(ShowMapper $showMapper): void
@@ -51,7 +57,6 @@ final class ModelAdmin extends AbstractAdmin
         $showMapper
             ->add('foo')
             ->add('bar')
-            ->add('baz')
-        ;
+            ->add('baz');
     }
 }

@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
-use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,9 +28,9 @@ use Twig\Loader\ArrayLoader;
 final class GetShortObjectDescriptionActionTest extends TestCase
 {
     /**
-     * @var Pool
+     * @var Stub&AdminFetcherInterface
      */
-    private $pool;
+    private $adminFetcher;
 
     /**
      * @var Environment
@@ -50,130 +50,142 @@ final class GetShortObjectDescriptionActionTest extends TestCase
     protected function setUp(): void
     {
         $this->twig = new Environment(new ArrayLoader(['template' => 'renderedTemplate']));
-        $this->pool = $this->prophesize(Pool::class);
-        $this->admin = $this->prophesize(AbstractAdmin::class);
-        $this->pool->getInstance(Argument::any())->willReturn($this->admin->reveal());
-        $this->admin->setRequest(Argument::type(Request::class))->shouldBeCalled();
+        $this->admin = $this->createMock(AbstractAdmin::class);
+        $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
         $this->action = new GetShortObjectDescriptionAction(
             $this->twig,
-            $this->pool->reveal()
+            $this->adminFetcher
         );
     }
 
     public function testGetShortObjectDescriptionActionInvalidAdmin(): void
     {
-        $this->expectException(NotFoundHttpException::class);
-
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            '_sonata_admin' => 'non_existing_code',
             'objectId' => 42,
             'uniqid' => 'asdasd123',
         ]);
 
-        $this->pool->getInstance('sonata.post.admin')->willReturn(null);
-        $this->admin->setRequest(Argument::type(Request::class))->shouldNotBeCalled();
+        $this->adminFetcher->method('get')->willThrowException(new \InvalidArgumentException());
 
-        $action = $this->action;
-        $action($request);
+        $this->admin->expects(static::never())->method('setRequest');
+
+        $this->expectException(NotFoundHttpException::class);
+
+        ($this->action)($request);
     }
 
+    /**
+     * NEXT_MAJOR: Expect a NotFoundHttpException instead.
+     *
+     * @group legacy
+     * @expectedDeprecation Trying to get a short object description for a non found object is deprecated since sonata-project/admin-bundle 3.76 and will be throw a 404 in version 4.0.
+     */
     public function testGetShortObjectDescriptionActionObjectDoesNotExist(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('Invalid format');
 
+        $this->adminFetcher->method('get')->willReturn($this->admin);
+
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            '_sonata_admin' => 'sonata.post.admin',
             'objectId' => 42,
             'uniqid' => 'asdasd123',
         ]);
 
-        $this->admin->setUniqid('asdasd123')->shouldBeCalled();
-        $this->admin->getObject(42)->willReturn(false);
+        $this->admin->method('getObject')->with(42)->willReturn(null);
 
-        $action = $this->action;
-        $action($request);
+        ($this->action)($request);
     }
 
+    /**
+     * NEXT_MAJOR: Expect a NotFoundHttpException instead.
+     *
+     * @group legacy
+     * @expectedDeprecation Trying to get a short object description for a non found object is deprecated since sonata-project/admin-bundle 3.76 and will be throw a 404 in version 4.0.
+     */
     public function testGetShortObjectDescriptionActionEmptyObjectId(): void
     {
         $request = new Request([
-            'code' => 'sonata.post.admin',
-            'objectId' => '',
+            '_sonata_admin' => 'sonata.post.admin',
             'uniqid' => 'asdasd123',
             '_format' => 'html',
         ]);
 
-        $this->admin->setUniqid('asdasd123')->shouldBeCalled();
-        $this->admin->getObject(null)->willReturn(false);
+        $this->adminFetcher->method('get')->willReturn($this->admin);
 
-        $action = $this->action;
-        $response = $action($request);
+        $this->admin->method('getObject')->with(null)->willReturn(null);
 
-        $this->assertInstanceOf(Response::class, $response);
+        static::assertInstanceOf(Response::class, ($this->action)($request));
     }
 
     public function testGetShortObjectDescriptionActionObject(): void
     {
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            '_sonata_admin' => 'sonata.post.admin',
             'objectId' => 42,
             'uniqid' => 'asdasd123',
             '_format' => 'html',
         ]);
         $object = new \stdClass();
 
-        $this->admin->setUniqid('asdasd123')->shouldBeCalled();
-        $this->admin->getObject(42)->willReturn($object);
-        $this->admin->getTemplate('short_object_description')->willReturn('template');
-        $this->admin->toString($object)->willReturn('bar');
+        $this->adminFetcher->method('get')->willReturn($this->admin);
 
-        $action = $this->action;
-        $response = $action($request);
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->method('getTemplate')->with('short_object_description')->willReturn('template');
+        $this->admin->method('toString')->with($object)->willReturn('bar');
 
-        $this->assertSame('renderedTemplate', $response->getContent());
+        $response = ($this->action)($request);
+
+        static::assertSame('renderedTemplate', $response->getContent());
     }
 
+    /**
+     * NEXT_MAJOR: Expect a NotFoundHttpException instead.
+     *
+     * @group legacy
+     * @expectedDeprecation Trying to get a short object description for a non found object is deprecated since sonata-project/admin-bundle 3.76 and will be throw a 404 in version 4.0.
+     */
     public function testGetShortObjectDescriptionActionEmptyObjectIdAsJson(): void
     {
         $request = new Request([
-            'code' => 'sonata.post.admin',
-            'objectId' => '',
+            '_sonata_admin' => 'sonata.post.admin',
             'uniqid' => 'asdasd123',
             '_format' => 'json',
         ]);
 
-        $this->admin->setUniqid('asdasd123')->shouldBeCalled();
-        $this->admin->getObject(null)->willReturn(false);
-        $this->admin->id(false)->willReturn('');
-        $this->admin->toString(false)->willReturn('');
+        $this->adminFetcher->method('get')->willReturn($this->admin);
 
-        $action = $this->action;
-        $response = $action($request);
+        $this->admin->method('getObject')->with(null)->willReturn(null);
+        $this->admin->method('id')->with(null)->willReturn('');
+        $this->admin->method('toString')->with(null)->willReturn('');
 
-        $this->assertInstanceOf(JsonResponse::class, $response);
-        $this->assertSame('{"result":{"id":"","label":""}}', $response->getContent());
+        $response = ($this->action)($request);
+
+        static::assertInstanceOf(JsonResponse::class, $response);
+        static::assertSame('{"result":{"id":"","label":""}}', $response->getContent());
     }
 
     public function testGetShortObjectDescriptionActionObjectAsJson(): void
     {
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            '_sonata_admin' => 'sonata.post.admin',
             'objectId' => 42,
             'uniqid' => 'asdasd123',
             '_format' => 'json',
         ]);
         $object = new \stdClass();
 
-        $this->admin->setUniqid('asdasd123')->shouldBeCalled();
-        $this->admin->id($object)->willReturn(42);
-        $this->admin->getObject(42)->willReturn($object);
-        $this->admin->getTemplate('short_object_description')->willReturn('template');
-        $this->admin->toString($object)->willReturn('bar');
+        $this->adminFetcher->method('get')->willReturn($this->admin);
 
-        $action = $this->action;
-        $response = $action($request);
+        $this->admin->method('id')->with($object)->willReturn(42);
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->method('getTemplate')->with('short_object_description')->willReturn('template');
+        $this->admin->method('toString')->with($object)->willReturn('bar');
 
-        $this->assertSame('{"result":{"id":42,"label":"bar"}}', $response->getContent());
+        $response = ($this->action)($request);
+
+        static::assertSame('{"result":{"id":42,"label":"bar"}}', $response->getContent());
     }
 }

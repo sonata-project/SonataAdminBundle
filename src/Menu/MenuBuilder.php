@@ -23,6 +23,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * Sonata menu builder.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Martin Hasoň <martin.hason@gmail.com>
  * @author Alexandru Furculita <alex@furculita.net>
  */
@@ -91,7 +93,7 @@ class MenuBuilder
         }
 
         $event = new ConfigureMenuEvent($this->factory, $menu);
-        $this->eventDispatcher->dispatch(ConfigureMenuEvent::SIDEBAR, $event);
+        $this->eventDispatcher->dispatch($event, ConfigureMenuEvent::SIDEBAR);
 
         return $event->getMenu();
     }

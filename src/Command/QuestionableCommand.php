@@ -13,14 +13,14 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Command;
 
-use Sensio\Bundle\GeneratorBundle\Command\Helper\QuestionHelper;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 
-abstract class QuestionableCommand extends ContainerAwareCommand
+abstract class QuestionableCommand extends Command
 {
     /**
      * @param string   $questionText
@@ -38,7 +38,7 @@ abstract class QuestionableCommand extends ContainerAwareCommand
     ) {
         $questionHelper = $this->getQuestionHelper();
 
-        $question = new Question($questionHelper->getQuestion($questionText, $default), $default);
+        $question = new Question($questionText, $default);
 
         $question->setValidator($validator);
 
@@ -50,7 +50,9 @@ abstract class QuestionableCommand extends ContainerAwareCommand
      * @param string $default
      * @param string $separator
      *
-     * @return string
+     * NEXT_MAJOR: Remove `$separator` argument
+     *
+     * @return bool
      */
     final protected function askConfirmation(
         InputInterface $input,
@@ -60,12 +62,10 @@ abstract class QuestionableCommand extends ContainerAwareCommand
         $separator
     ) {
         $questionHelper = $this->getQuestionHelper();
-
-        $question = new ConfirmationQuestion($questionHelper->getQuestion(
-            $questionText,
-            $default,
-            $separator
-        ), ('no' === $default ? false : true));
+        $question = new ConfirmationQuestion(
+            (new Question($questionText, $default))->getQuestion(),
+            'no' !== $default
+        );
 
         return $questionHelper->ask($input, $output, $question);
     }

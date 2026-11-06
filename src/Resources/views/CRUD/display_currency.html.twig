@@ -1,0 +1,23 @@
+{#
+
+This file is part of the Sonata package.
+
+(c) Thomas Rabaix <thomas.rabaix@sonata-project.org>
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+
+#}
+
+{%- apply spaceless %}
+    {# NEXT_MAJOR: Remove this BC-layer #}
+    {% if field_description is defined %}
+        {% set currency = currency|default(field_description.option('currency')) %}
+    {% endif %}
+
+    {%- if value is null -%}
+        &nbsp;
+    {%- else -%}
+        {{ currency|default(null) }} {{ value }}
+    {%- endif -%}
+{% endapply -%}

@@ -13,31 +13,28 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\MockObject\Stub\Stub;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Sonata\AdminBundle\Action\GetShortObjectDescriptionAction;
 use Sonata\AdminBundle\Action\RetrieveFormFieldElementAction;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminHelper;
-use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
-use Symfony\Bridge\Twig\AppVariable;
-use Symfony\Bridge\Twig\Command\DebugCommand;
-use Symfony\Bridge\Twig\Extension\FormExtension;
-use Symfony\Bridge\Twig\Form\TwigRenderer;
+use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilder;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
 final class RetrieveFormFieldElementActionTest extends TestCase
 {
     /**
-     * @var Pool
+     * @var Stub&AdminFetcherInterface
      */
-    private $pool;
+    private $adminFetcher;
 
     /**
      * @var GetShortObjectDescriptionAction
@@ -61,16 +58,15 @@ final class RetrieveFormFieldElementActionTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->twig = $this->prophesize(Environment::class);
-        $this->admin = $this->prophesize(AbstractAdmin::class);
-        $this->admin->setRequest(Argument::type(Request::class))->shouldBeCalled();
-        $this->pool = $this->prophesize(Pool::class);
-        $this->pool->getInstance(Argument::any())->willReturn($this->admin->reveal());
-        $this->helper = $this->prophesize(AdminHelper::class);
+        $this->twig = $this->createStub(Environment::class);
+        $this->admin = $this->createMock(AbstractAdmin::class);
+        $this->adminFetcher = $this->createStub(AdminFetcherInterface::class);
+        $this->adminFetcher->method('get')->willReturn($this->admin);
+        $this->helper = $this->createStub(AdminHelper::class);
         $this->action = new RetrieveFormFieldElementAction(
-            $this->twig->reveal(),
-            $this->pool->reveal(),
-            $this->helper->reveal()
+            $this->twig,
+            $this->adminFetcher,
+            $this->helper
         );
     }
 
@@ -78,68 +74,46 @@ final class RetrieveFormFieldElementActionTest extends TestCase
     {
         $object = new \stdClass();
         $request = new Request([
-            'code' => 'sonata.post.admin',
+            '_sonata_admin' => 'sonata.post.admin',
             'objectId' => 42,
             'field' => 'enabled',
             'value' => 1,
             'context' => 'list',
-        ], [], [], [], [], ['REQUEST_METHOD' => 'POST']);
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST]);
 
-        $modelManager = $this->prophesize(ModelManagerInterface::class);
+        $modelManager = $this->createStub(ModelManagerInterface::class);
         $formView = new FormView();
-        $form = $this->prophesize(Form::class);
-        $formBuilder = $this->prophesize(FormBuilder::class);
+        $form = $this->createMock(Form::class);
+        $formBuilder = $this->createStub(FormBuilder::class);
 
         $renderer = $this->configureFormRenderer();
 
-        $this->admin->getObject(42)->willReturn($object);
-        $this->admin->getClass()->willReturn(\get_class($object));
-        $this->admin->setSubject($object)->shouldBeCalled();
-        $this->admin->getFormTheme()->willReturn($formView);
-        $this->admin->getFormBuilder()->willReturn($formBuilder->reveal());
-        $this->helper->getChildFormView($formView, null)
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->method('getClass')->willReturn(\get_class($object));
+        $this->admin->expects(static::once())->method('setSubject')->with($object);
+        $this->admin->method('getFormTheme')->willReturn($formView);
+        $this->admin->method('getFormBuilder')->willReturn($formBuilder);
+        $this->helper->method('getChildFormView')->with($formView, null)
             ->willReturn($formView);
-        $modelManager->find(\get_class($object), 42)->willReturn($object);
-        $form->setData($object)->shouldBeCalled();
-        $form->handleRequest($request)->shouldBeCalled();
-        $form->createView()->willReturn($formView);
-        $formBuilder->getForm()->willReturn($form->reveal());
-        $renderer->setTheme($formView, $formView)->shouldBeCalled();
-        $renderer->searchAndRenderBlock($formView, 'widget')->willReturn('block');
+        $modelManager->method('find')->with(\get_class($object), 42)->willReturn($object);
+        $form->expects(static::once())->method('setData')->with($object);
+        $form->expects(static::once())->method('handleRequest')->with($request);
+        $form->method('createView')->willReturn($formView);
+        $formBuilder->method('getForm')->willReturn($form);
+        $renderer->expects(static::once())->method('setTheme')->with($formView, $formView);
+        $renderer->method('searchAndRenderBlock')->with($formView, 'widget')->willReturn('block');
 
-        $action = $this->action;
-        $response = $action($request);
+        $response = ($this->action)($request);
 
-        $this->isInstanceOf(Response::class, $response);
-        $this->assertSame($response->getContent(), 'block');
+        static::assertInstanceOf(Response::class, $response);
+        static::assertSame($response->getContent(), 'block');
     }
 
     private function configureFormRenderer()
     {
-        $runtime = $this->prophesize(FormRenderer::class);
+        $runtime = $this->createMock(FormRenderer::class);
 
-        // Remove the condition when dropping sf < 3.2
-        if (!method_exists(AppVariable::class, 'getToken')) {
-            $extension = $this->prophesize(FormExtension::class);
-
-            $this->twig->getExtension(FormExtension::class)->willReturn($extension->reveal());
-            $extension->initRuntime($this->twig->reveal())->shouldBeCalled();
-            $extension->renderer = $runtime->reveal();
-
-            return $runtime;
-        }
-
-        // Remove the condition when dropping sf < 3.4
-        if (!method_exists(DebugCommand::class, 'getLoaderPaths')) {
-            $twigRuntime = $this->prophesize(TwigRenderer::class);
-
-            $this->twig->getRuntime(TwigRenderer::class)->willReturn($twigRuntime->reveal());
-            $twigRuntime->setEnvironment($this->twig->reveal())->shouldBeCalled();
-
-            return $twigRuntime;
-        }
-
-        $this->twig->getRuntime(FormRenderer::class)->willReturn($runtime->reveal());
+        $this->twig->method('getRuntime')->with(FormRenderer::class)->willReturn($runtime);
 
         return $runtime;
     }

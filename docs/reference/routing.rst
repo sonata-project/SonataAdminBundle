@@ -281,7 +281,7 @@ Any single registered route can be removed by name::
 Removing all routes except named ones
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-If you want to disable all default Sonata routes except few whitelisted ones, you can use
+If you want to disable all default Sonata routes except few allowed ones, you can use
 the ``clearExcept()`` method. This method accepts an array of routes you want to keep active::
 
     // src/Admin/MediaAdmin.php
@@ -340,19 +340,37 @@ can use ``hasParentFieldDescription()`` to detect this case and remove the route
         }
     }
 
+Restoring a single route
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Any previously removed route can be restored by name::
+
+    // src/Admin/DeletableMediaAdmin.php
+
+    use Sonata\AdminBundle\Route\RouteCollection;
+
+    final class DeletableMediaAdmin extends MediaAdmin
+    {
+        protected function configureRoutes(RouteCollection $collection)
+        {
+            $collection->restore('delete');
+        }
+    }
+
+
 Persistent parameters
 ---------------------
 
 In some cases, the interface might be required to pass the same parameters
 across the different ``Admin``'s actions. Instead of setting them in the
-template or doing other weird hacks, you can define a ``getPersistentParameters``
+template or doing other weird hacks, you can define a ``configurePersistentParameters()``
 method. This method will be used when a link is being generated::
 
     // src/Admin/MediaAdmin.php
 
     final class MediaAdmin extends AbstractAdmin
     {
-        public function getPersistentParameters()
+        public function configurePersistentParameters(): array
         {
             if (!$this->getRequest()) {
                 return [];

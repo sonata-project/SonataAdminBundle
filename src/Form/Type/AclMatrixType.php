@@ -18,17 +18,21 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * This type define an ACL matrix.
+ *
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Samuel Roze <samuel@sroze.io>
  * @author Baptiste Meyer <baptiste@les-tilleuls.coop>
  */
 class AclMatrixType extends AbstractType
 {
+    /**
+     * @param array<string, mixed> $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $aclValueType = $options['acl_value'] instanceof UserInterface ? 'user' : 'role';
@@ -44,15 +48,8 @@ class AclMatrixType extends AbstractType
     }
 
     /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
+     * @return void
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['permissions', 'acl_value']);
@@ -63,7 +60,7 @@ class AclMatrixType extends AbstractType
     /**
      * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * {@inheritdoc}
+     * @return string
      */
     public function getName()
     {

@@ -18,12 +18,20 @@ use Sonata\AdminBundle\Filter\Filter;
 
 class FooFilter extends Filter
 {
-    public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value): void
+    /**
+     * NEXT_MAJOR: Remove this method.
+     */
+    public function filter(ProxyQueryInterface $query, $alias, $field, $value): void
     {
     }
 
     public function apply($query, $value): void
     {
+    }
+
+    public function callSetActive(bool $active): void
+    {
+        $this->setActive($active);
     }
 
     public function getDefaultOptions()

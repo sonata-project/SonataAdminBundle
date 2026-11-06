@@ -29,28 +29,28 @@ class AdminObjectAclDataTest extends TestCase
     public function testGetAdmin(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->assertInstanceOf(AdminInterface::class, $adminObjectAclData->getAdmin());
+        static::assertInstanceOf(AdminInterface::class, $adminObjectAclData->getAdmin());
     }
 
     public function testGetObject(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->assertInstanceOf(\stdClass::class, $adminObjectAclData->getObject());
+        static::assertInstanceOf(\stdClass::class, $adminObjectAclData->getObject());
     }
 
     public function testGetAclUsers(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->assertInstanceOf(\ArrayIterator::class, $adminObjectAclData->getAclUsers());
+        static::assertInstanceOf(\ArrayIterator::class, $adminObjectAclData->getAclUsers());
     }
 
     public function testGetAclRoles(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->assertInstanceOf(\ArrayIterator::class, $adminObjectAclData->getAclRoles());
+        static::assertInstanceOf(\ArrayIterator::class, $adminObjectAclData->getAclRoles());
     }
 
-    public function testSetAcl()
+    public function testSetAcl(): AdminObjectAclData
     {
         $acl = $this->getMockBuilder(Acl::class)
             ->disableOriginalConstructor()
@@ -58,7 +58,7 @@ class AdminObjectAclDataTest extends TestCase
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAcl($acl);
 
-        $this->assertSame($adminObjectAclData, $ret);
+        static::assertSame($adminObjectAclData, $ret);
 
         return $adminObjectAclData;
     }
@@ -66,26 +66,26 @@ class AdminObjectAclDataTest extends TestCase
     /**
      * @depends testSetAcl
      */
-    public function testGetAcl($adminObjectAclData): void
+    public function testGetAcl(AdminObjectAclData $adminObjectAclData): void
     {
-        $this->assertInstanceOf(Acl::class, $adminObjectAclData->getAcl());
+        static::assertInstanceOf(Acl::class, $adminObjectAclData->getAcl());
     }
 
     public function testGetMasks(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->assertInternalType('array', $adminObjectAclData->getMasks());
+        static::assertIsArray($adminObjectAclData->getMasks());
 
         foreach ($adminObjectAclData->getMasks() as $key => $mask) {
-            $this->assertInternalType('string', $key);
-            $this->assertInternalType('int', $mask);
+            static::assertIsString($key);
+            static::assertIsInt($mask);
         }
     }
 
     /**
      * @group legacy
      */
-    public function testSetForm()
+    public function testSetForm(): AdminObjectAclData
     {
         $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
@@ -93,7 +93,7 @@ class AdminObjectAclDataTest extends TestCase
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAclUsersForm($form);
 
-        $this->assertSame($adminObjectAclData, $ret);
+        static::assertSame($adminObjectAclData, $ret);
 
         return $adminObjectAclData;
     }
@@ -103,12 +103,12 @@ class AdminObjectAclDataTest extends TestCase
      *
      * @group legacy
      */
-    public function testGetForm($adminObjectAclData): void
+    public function testGetForm(AdminObjectAclData $adminObjectAclData): void
     {
-        $this->assertInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
+        static::assertInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
     }
 
-    public function testSetAclUsersForm()
+    public function testSetAclUsersForm(): AdminObjectAclData
     {
         $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
@@ -116,7 +116,7 @@ class AdminObjectAclDataTest extends TestCase
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAclUsersForm($form);
 
-        $this->assertSame($adminObjectAclData, $ret);
+        static::assertSame($adminObjectAclData, $ret);
 
         return $adminObjectAclData;
     }
@@ -124,12 +124,12 @@ class AdminObjectAclDataTest extends TestCase
     /**
      * @depends testSetAclUsersForm
      */
-    public function testGetAclUsersForm($adminObjectAclData): void
+    public function testGetAclUsersForm(AdminObjectAclData $adminObjectAclData): void
     {
-        $this->assertInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
+        static::assertInstanceOf(Form::class, $adminObjectAclData->getAclUsersForm());
     }
 
-    public function testSetAclRolesForm()
+    public function testSetAclRolesForm(): AdminObjectAclData
     {
         $form = $this->getMockBuilder(Form::class)
             ->disableOriginalConstructor()
@@ -137,7 +137,7 @@ class AdminObjectAclDataTest extends TestCase
         $adminObjectAclData = $this->createAdminObjectAclData();
         $ret = $adminObjectAclData->setAclRolesForm($form);
 
-        $this->assertSame($adminObjectAclData, $ret);
+        static::assertSame($adminObjectAclData, $ret);
 
         return $adminObjectAclData;
     }
@@ -145,65 +145,71 @@ class AdminObjectAclDataTest extends TestCase
     /**
      * @depends testSetAclRolesForm
      */
-    public function testGetAclRolesForm($adminObjectAclData): void
+    public function testGetAclRolesForm(AdminObjectAclData $adminObjectAclData): void
     {
-        $this->assertInstanceOf(Form::class, $adminObjectAclData->getAclRolesForm());
+        static::assertInstanceOf(Form::class, $adminObjectAclData->getAclRolesForm());
     }
 
     public function testGetPermissions(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
-        $this->assertInternalType('array', $adminObjectAclData->getPermissions());
+        static::assertIsArray($adminObjectAclData->getPermissions());
 
         foreach ($adminObjectAclData->getPermissions() as $permission) {
-            $this->assertInternalType('string', $permission);
+            static::assertIsString($permission);
         }
     }
 
     public function testGetUserPermissions(): void
     {
         $adminObjectAclDataOwner = $this->createAdminObjectAclData();
-        $this->assertInternalType('array', $adminObjectAclDataOwner->getUserPermissions());
+        static::assertIsArray($adminObjectAclDataOwner->getUserPermissions());
 
         foreach ($adminObjectAclDataOwner->getUserPermissions() as $permission) {
-            $this->assertInternalType('string', $permission);
+            static::assertIsString($permission);
         }
 
-        $this->assertTrue(false !== array_search('OWNER', $adminObjectAclDataOwner->getUserPermissions(), true));
-        $this->assertTrue(false !== array_search('MASTER', $adminObjectAclDataOwner->getUserPermissions(), true));
+        static::assertContains('OWNER', $adminObjectAclDataOwner->getUserPermissions());
+        static::assertContains('MASTER', $adminObjectAclDataOwner->getUserPermissions());
 
         $adminObjectAclData = $this->createAdminObjectAclData(false);
-        $this->assertInternalType('array', $adminObjectAclData->getUserPermissions());
+        static::assertIsArray($adminObjectAclData->getUserPermissions());
 
         foreach ($adminObjectAclData->getUserPermissions() as $permission) {
-            $this->assertInternalType('string', $permission);
+            static::assertIsString($permission);
         }
 
-        $this->assertFalse(array_search('OWNER', $adminObjectAclData->getUserPermissions(), true));
-        $this->assertFalse(array_search('MASTER', $adminObjectAclData->getUserPermissions(), true));
+        static::assertFalse(array_search('OWNER', $adminObjectAclData->getUserPermissions(), true));
+        static::assertFalse(array_search('MASTER', $adminObjectAclData->getUserPermissions(), true));
     }
 
     public function testIsOwner(): void
     {
         $adminObjectAclDataOwner = $this->createAdminObjectAclData();
-        $this->assertTrue($adminObjectAclDataOwner->isOwner());
+        static::assertTrue($adminObjectAclDataOwner->isOwner());
 
         $adminObjectAclData = $this->createAdminObjectAclData(false);
-        $this->assertFalse($adminObjectAclData->isOwner());
+        static::assertFalse($adminObjectAclData->isOwner());
     }
 
     public function testGetSecurityHandler(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
 
-        $this->assertInstanceOf(AclSecurityHandlerInterface::class, $adminObjectAclData->getSecurityHandler());
+        static::assertInstanceOf(AclSecurityHandlerInterface::class, $adminObjectAclData->getSecurityHandler());
     }
 
     public function testGetSecurityInformation(): void
     {
         $adminObjectAclData = $this->createAdminObjectAclData();
 
-        $this->assertSame([], $adminObjectAclData->getSecurityInformation());
+        static::assertSame([], $adminObjectAclData->getSecurityInformation());
+    }
+
+    public function testAdminAclIsNotEnabled(): void
+    {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->createAdminObjectAclData(true, false);
     }
 
     protected static function createAclUsers()
@@ -216,37 +222,43 @@ class AdminObjectAclDataTest extends TestCase
         return new \ArrayIterator();
     }
 
-    protected function createAdminObjectAclData($isOwner = true)
+    protected function createAdminObjectAclData(bool $isOwner = true, bool $isAclEnabled = true)
     {
-        return new AdminObjectAclData($this->createAdmin($isOwner), new \stdClass(), self::createAclUsers(), MaskBuilder::class, self::createAclRoles());
+        return new AdminObjectAclData(
+            $this->createAdmin($isOwner, $isAclEnabled),
+            new \stdClass(),
+            self::createAclUsers(),
+            MaskBuilder::class,
+            self::createAclRoles()
+        );
     }
 
-    protected function createAdmin($isOwner = true)
+    protected function createAdmin(bool $isOwner = true, bool $isAclEnabled = true): AdminInterface
     {
         $securityHandler = $this->getMockForAbstractClass(AclSecurityHandlerInterface::class);
 
-        $securityHandler->expects($this->any())
+        $securityHandler
             ->method('getObjectPermissions')
-            ->will($this->returnValue(['VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER']))
-        ;
+            ->willReturn(['VIEW', 'EDIT', 'DELETE', 'UNDELETE', 'OPERATOR', 'MASTER', 'OWNER']);
 
-        $securityHandler->expects($this->any())
+        $securityHandler
             ->method('buildSecurityInformation')
-            ->with($this->isInstanceOf(AdminInterface::class))
-            ->will($this->returnValue([]))
-        ;
+            ->with(static::isInstanceOf(AdminInterface::class))
+            ->willReturn([]);
 
         $admin = $this->getMockForAbstractClass(AdminInterface::class);
 
-        $admin->expects($this->any())
+        $admin
             ->method('isGranted')
-            ->will($this->returnValue($isOwner))
-        ;
+            ->willReturn($isOwner);
 
-        $admin->expects($this->any())
+        $admin
             ->method('getSecurityHandler')
-            ->will($this->returnValue($securityHandler))
-        ;
+            ->willReturn($securityHandler);
+
+        $admin
+            ->method('isAclEnabled')
+            ->willReturn($isAclEnabled);
 
         return $admin;
     }

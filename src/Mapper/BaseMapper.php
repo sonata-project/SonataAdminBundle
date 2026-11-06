@@ -17,14 +17,19 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Builder\BuilderInterface;
 
 /**
+ * NEXT_MAJOR: Remove this class.
+ *
  * This class is used to simulate the Form API.
  *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 abstract class BaseMapper
 {
     /**
      * @var AdminInterface
+     * @phpstan-var AdminInterface<T>
      */
     protected $admin;
 
@@ -33,53 +38,25 @@ abstract class BaseMapper
      */
     protected $builder;
 
+    /**
+     * @phpstan-param AdminInterface<T> $admin
+     */
     public function __construct(BuilderInterface $builder, AdminInterface $admin)
     {
+        @trigger_error(sprintf(
+            'The %s class is deprecated since sonata-project/admin-bundle 3.97 and will be removed in version 4.0.',
+            __CLASS__
+        ), \E_USER_DEPRECATED);
+
         $this->builder = $builder;
         $this->admin = $admin;
     }
 
     /**
-     * @return AdminInterface
+     * @phpstan-return AdminInterface<T>
      */
     public function getAdmin()
     {
         return $this->admin;
     }
-
-    /**
-     * @param string $key
-     *
-     * @return mixed
-     */
-    abstract public function get($key);
-
-    /**
-     * @param string $key
-     *
-     * @return bool
-     */
-    abstract public function has($key);
-
-    /**
-     * @param string $key
-     *
-     * @return $this
-     */
-    abstract public function remove($key);
-
-    // To be uncommented on 4.0.
-    /**
-     * Returns configured keys.
-     *
-     * @return string[]
-     */
-    //abstract public function keys();
-
-    /**
-     * @param array $keys field names
-     *
-     * @return $this
-     */
-    abstract public function reorder(array $keys);
 }

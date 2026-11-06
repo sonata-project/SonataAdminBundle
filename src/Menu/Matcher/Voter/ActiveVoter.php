@@ -19,14 +19,16 @@ use Knp\Menu\Matcher\Voter\VoterInterface;
 /**
  * Active menu voter bases in extra `active`.
  *
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Samusev Andrey <andrey.simfi@ya.ru>
  */
 class ActiveVoter implements VoterInterface
 {
-    public function matchItem(ItemInterface $item)
+    public function matchItem(ItemInterface $item): ?bool
     {
         if (!$item->getExtra('sonata_admin', false)) {
-            return;
+            return null;
         }
 
         return $item->getExtra('active', null);

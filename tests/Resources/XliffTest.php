@@ -13,8 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Resources;
 
-use Sonata\CoreBundle\Test\XliffValidatorTestCase;
-
 class XliffTest extends XliffValidatorTestCase
 {
     /**
@@ -22,6 +20,6 @@ class XliffTest extends XliffValidatorTestCase
      */
     public function getXliffPaths()
     {
-        return [[__DIR__.'/../../src/Resources/translations']];
+        return [[sprintf('%s/../../src/Resources/translations', __DIR__)]];
     }
 }

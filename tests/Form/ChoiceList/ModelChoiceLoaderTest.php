@@ -17,14 +17,38 @@ use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Bundle\Entity\Foo;
+use Symfony\Bridge\PhpUnit\ExpectDeprecationTrait;
 
 class ModelChoiceLoaderTest extends TestCase
 {
-    private $modelManager = null;
+    use ExpectDeprecationTrait;
 
-    public function setUp(): void
+    private $modelManager;
+
+    protected function setUp(): void
     {
-        $this->modelManager = $this->getMockForAbstractClass(ModelManagerInterface::class);
+        $this->modelManager = $this->createMock(ModelManagerInterface::class);
+    }
+
+    /**
+     * NEXT_MAJOR: Expect exception instead.
+     *
+     * @group legacy
+     *
+     * @doesNotPerformAssertions
+     */
+    public function testConstructWithUnsupportedQuery(): void
+    {
+        // NEXT_MAJOR: Use `$this->modelManager` instead
+        $modelManager = $this
+            ->getMockBuilder(ModelManagerInterface::class)
+            ->addMethods(['supportsQuery'])
+            ->getMockForAbstractClass();
+
+        $modelManager->method('supportsQuery')->willReturn(false);
+
+        $this->expectDeprecation('Passing a query which is not supported by the model manager is deprecated since sonata-project/admin-bundle 3.76 and will throw an exception in version 4.0.');
+        new ModelChoiceLoader($modelManager, \stdClass::class, null, new \stdClass());
     }
 
     public function testLoadFromEntityWithSamePropertyValues(): void
@@ -37,15 +61,15 @@ class ModelChoiceLoaderTest extends TestCase
         $fooB->setBar(2);
         $fooB->setBaz('baz');
 
-        $this->modelManager->expects($this->once())
+        $this->modelManager->expects(static::once())
             ->method('findBy')
-            ->will($this->returnValue([$fooA, $fooB]));
+            ->willReturn([$fooA, $fooB]);
 
-        $this->modelManager->expects($this->any())
+        $this->modelManager
             ->method('getIdentifierValues')
-            ->will($this->returnCallback(function (Foo $foo) {
+            ->willReturnCallback(static function (Foo $foo) {
                 return [$foo->getBar()];
-            }));
+            });
 
         $modelChoiceLoader = new ModelChoiceLoader(
             $this->modelManager,
@@ -58,6 +82,6 @@ class ModelChoiceLoaderTest extends TestCase
             2 => 'baz (id: 2)',
         ];
 
-        $this->assertSame($expectedChoices, $modelChoiceLoader->loadChoiceList()->getOriginalKeys());
+        static::assertSame($expectedChoices, $modelChoiceLoader->loadChoiceList()->getOriginalKeys());
     }
 }

@@ -19,19 +19,26 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Model\AclInterface;
+use Symfony\Component\Security\Acl\Model\MutableAclInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminAclManipulator implements AdminAclManipulatorInterface
 {
     /**
      * @var string
+     *
+     * @phpstan-var class-string
      */
     protected $maskBuilderClass;
 
     /**
      * @param string $maskBuilderClass
+     *
+     * @phpstan-param class-string $maskBuilderClass
      */
     public function __construct($maskBuilderClass)
     {
@@ -72,6 +79,13 @@ class AdminAclManipulator implements AdminAclManipulatorInterface
         AclSecurityHandlerInterface $securityHandler,
         array $roleInformation = []
     ) {
+        if (!$acl instanceof MutableAclInterface) {
+            throw new \TypeError(sprintf(
+                'Argument 2 passed to "%s()" must implement "%s".',
+                __METHOD__,
+                MutableAclInterface::class
+            ));
+        }
         if (\count($securityHandler->getAdminPermissions()) > 0) {
             $builder = new $this->maskBuilderClass();
 

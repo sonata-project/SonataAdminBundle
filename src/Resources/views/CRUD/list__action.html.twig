@@ -13,7 +13,7 @@ file that was distributed with this source code.
 
 {% block field %}
     <div class="btn-group">
-        {% for actions in field_description.options.actions %}
+        {% for actions in field_description.option('actions') %}
             {% include actions.template %}
         {% endfor %}
     </div>

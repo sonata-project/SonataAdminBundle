@@ -17,9 +17,12 @@ use Knp\Menu\ItemInterface;
 use Knp\Menu\Matcher\MatcherInterface;
 use Knp\Menu\Renderer\TwigRenderer;
 use PHPUnit\Framework\TestCase;
+use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
+use Sonata\AdminBundle\Twig\Extension\IconExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
-use Symfony\Bridge\Twig\Tests\Extension\Fixtures\StubFilesystemLoader;
 use Symfony\Bundle\FrameworkBundle\Tests\Templating\Helper\Fixtures\StubTranslator;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Environment;
 
 /**
  * Base class for tests checking rendering of twig templates.
@@ -29,22 +32,22 @@ abstract class BaseMenuTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp(): void
+    protected function setUp(): void
     {
         // Adapt to both bundle and project-wide test strategy
         $twigPaths = array_filter([
-            __DIR__.'/../../../../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views',
-            __DIR__.'/../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views',
-            __DIR__.'/../../../src/Resources/views',
+            sprintf('%s/../../../../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views', __DIR__),
+            sprintf('%s/../../../vendor/knplabs/knp-menu/src/Knp/Menu/Resources/views', __DIR__),
+            sprintf('%s/../../../src/Resources/views', __DIR__),
         ], 'is_dir');
 
         $loader = new StubFilesystemLoader($twigPaths);
-        $this->environment = new \Twig_Environment($loader, ['strict_variables' => true]);
+        $this->environment = new Environment($loader, ['strict_variables' => true]);
     }
 
     abstract protected function getTemplate();
 
-    protected function getTranslator()
+    protected function getTranslator(): TranslatorInterface
     {
         return new StubTranslator();
     }
@@ -52,6 +55,7 @@ abstract class BaseMenuTest extends TestCase
     protected function renderMenu(ItemInterface $item, array $options = [])
     {
         $this->environment->addExtension(new TranslationExtension($this->getTranslator()));
+        $this->environment->addExtension(new IconExtension());
         $this->renderer = new TwigRenderer(
             $this->environment,
             $this->getTemplate(),
@@ -63,15 +67,11 @@ abstract class BaseMenuTest extends TestCase
 
     /**
      * Helper method to strip newline and space characters from html string to make comparing easier.
-     *
-     * @param string $html
-     *
-     * @return string
      */
-    protected function cleanHtmlWhitespace($html)
+    protected function cleanHtmlWhitespace(string $html): string
     {
-        $html = preg_replace_callback('/>([^<]+)</', function ($value) {
-            return '>'.trim($value[1]).'<';
+        $html = preg_replace_callback('/>([^<]+)</', static function ($value) {
+            return sprintf('>%s<', trim($value[1]));
         }, $html);
 
         return $html;

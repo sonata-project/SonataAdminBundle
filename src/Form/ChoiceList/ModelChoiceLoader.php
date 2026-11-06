@@ -17,6 +17,7 @@ use Doctrine\Common\Util\ClassUtils;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\Form\ChoiceList\ArrayChoiceList;
+use Symfony\Component\Form\ChoiceList\ChoiceListInterface;
 use Symfony\Component\Form\ChoiceList\Loader\ChoiceLoaderInterface;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
@@ -24,6 +25,8 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\PropertyAccess\PropertyPath;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ModelChoiceLoader implements ChoiceLoaderInterface
@@ -31,23 +34,34 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
     public $identifier;
 
     /**
-     * @var \Sonata\AdminBundle\Model\ModelManagerInterface
+     * @var ModelManagerInterface
      */
     private $modelManager;
 
     /**
      * @var string
+     *
+     * @phpstan-var class-string
      */
     private $class;
 
+    /**
+     * @var string|null
+     */
     private $property;
 
+    /**
+     * @var object|null
+     */
     private $query;
 
+    /**
+     * @var object[]|null
+     */
     private $choices;
 
     /**
-     * @var PropertyPath
+     * @var PropertyPath|null
      */
     private $propertyPath;
 
@@ -56,27 +70,48 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
      */
     private $propertyAccessor;
 
+    /**
+     * @var ChoiceListInterface|null
+     */
     private $choiceList;
 
     /**
-     * @param string      $class
-     * @param string|null $property
-     * @param mixed|null  $query
-     * @param array       $choices
+     * @param string        $class
+     * @param string|null   $property
+     * @param object|null   $query
+     * @param object[]|null $choices
+     *
+     * @phpstan-param class-string $class
      */
     public function __construct(
         ModelManagerInterface $modelManager,
         $class,
         $property = null,
         $query = null,
-        $choices = [],
-        PropertyAccessorInterface $propertyAccessor = null
+        $choices = null,
+        ?PropertyAccessorInterface $propertyAccessor = null
     ) {
         $this->modelManager = $modelManager;
         $this->class = $class;
         $this->property = $property;
-        $this->query = $query;
         $this->choices = $choices;
+
+        if ($query) {
+            // NEXT_MAJOR: Remove the method_exists check.
+            if (method_exists($this->modelManager, 'supportsQuery')) {
+                if (!$this->modelManager->supportsQuery($query)) {
+                    // NEXT_MAJOR: Remove the deprecation and uncomment the exception.
+                    @trigger_error(
+                        'Passing a query which is not supported by the model manager is deprecated since'
+                        .' sonata-project/admin-bundle 3.76 and will throw an exception in version 4.0.',
+                        \E_USER_DEPRECATED
+                    );
+                    // throw new \InvalidArgumentException('The model manager does not support the query.');
+                }
+            }
+
+            $this->query = $query;
+        }
 
         $this->identifier = $this->modelManager->getIdentifierFieldNames($this->class);
 
@@ -93,27 +128,30 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
         if (!$this->choiceList) {
             if ($this->query) {
                 $entities = $this->modelManager->executeQuery($this->query);
-            } elseif (\is_array($this->choices) && \count($this->choices) > 0) {
+            } elseif (\is_array($this->choices)) {
                 $entities = $this->choices;
             } else {
                 $entities = $this->modelManager->findBy($this->class);
             }
 
             $choices = [];
-            foreach ($entities as $key => $entity) {
+            foreach ($entities as $model) {
                 if ($this->propertyPath) {
                     // If the property option was given, use it
-                    $valueObject = $this->propertyAccessor->getValue($entity, $this->propertyPath);
-                } else {
+                    $valueObject = $this->propertyAccessor->getValue($model, $this->propertyPath);
+                } elseif (method_exists($model, '__toString')) {
                     // Otherwise expect a __toString() method in the entity
-                    try {
-                        $valueObject = (string) $entity;
-                    } catch (\Exception $e) {
-                        throw new RuntimeException(sprintf('Unable to convert the entity "%s" to string, provide "property" option or implement "__toString()" method in your entity.', ClassUtils::getClass($entity)), 0, $e);
-                    }
+                    $valueObject = (string) $model;
+                } else {
+                    // NEXT_MAJOR: Change for a LogicException instead.
+                    throw new RuntimeException(sprintf(
+                        'Unable to convert the model "%s" to string, provide "property" option'
+                        .' or implement "__toString()" method in your model.',
+                        ClassUtils::getClass($model)
+                    ));
                 }
 
-                $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($entity));
+                $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($model));
 
                 if (!\array_key_exists($valueObject, $choices)) {
                     $choices[$valueObject] = [];
@@ -150,14 +188,19 @@ class ModelChoiceLoader implements ChoiceLoaderInterface
     }
 
     /**
-     * @param object $entity
+     * @param object $model
+     *
+     * @return mixed[]
      */
-    private function getIdentifierValues($entity): array
+    private function getIdentifierValues($model): array
     {
         try {
-            return $this->modelManager->getIdentifierValues($entity);
+            return $this->modelManager->getIdentifierValues($model);
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($entity)), 0, $e);
+            throw new \InvalidArgumentException(sprintf(
+                'Unable to retrieve the identifier values for entity %s',
+                ClassUtils::getClass($model)
+            ), 0, $e);
         }
     }
 }

@@ -25,19 +25,27 @@ interface FilterInterface
     public const CONDITION_AND = 'AND';
 
     /**
-     * Apply the filter to the QueryBuilder instance.
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.78, to be removed with 4.0
+     *
+     * Apply the filter to the ProxyQueryInterface instance.
      *
      * @param string  $alias
      * @param string  $field
-     * @param mixed[] $value
+     * @param mixed[] $data
+     *
+     * @phpstan-param array{type?: int|null, value?: mixed} $data
      */
-    public function filter(ProxyQueryInterface $queryBuilder, $alias, $field, $value);
+    public function filter(ProxyQueryInterface $query, $alias, $field, $data);
 
     /**
-     * @param mixed $query
-     * @param mixed $value
+     * @param ProxyQueryInterface $query
+     * @param mixed[]             $filterData
+     *
+     * @phpstan-param array{type?: int|null, value?: mixed} $filterData
      */
-    public function apply($query, $value);
+    public function apply($query, $filterData);
 
     /**
      * Returns the filter name.
@@ -66,7 +74,7 @@ interface FilterInterface
     public function setLabel($label);
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getDefaultOptions();
 
@@ -95,22 +103,22 @@ interface FilterInterface
     public function getFieldName();
 
     /**
-     * @return array of mappings
+     * @return array<string, string> array of mappings
      */
     public function getParentAssociationMappings();
 
     /**
-     * @return array field mapping
+     * @return array<string, string> field mapping
      */
     public function getFieldMapping();
 
     /**
-     * @return array association mapping
+     * @return array<string, string> association mapping
      */
     public function getAssociationMapping();
 
     /**
-     * @return array
+     * @return array<string, mixed>
      */
     public function getFieldOptions();
 
@@ -140,7 +148,7 @@ interface FilterInterface
     /**
      * Returns the main widget used to render the filter.
      *
-     * @return array
+     * @return array{0: string, 1: array<string, mixed>}
      */
     public function getRenderSettings();
 

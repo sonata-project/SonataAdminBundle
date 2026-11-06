@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Form\DataTransformer;
 
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Util\ClassUtils;
-use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceList;
 use Sonata\AdminBundle\Form\ChoiceList\ModelChoiceLoader;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Util\TraversableToCollection;
 use Sonata\Doctrine\Adapter\AdapterInterface;
 use Symfony\Component\Form\ChoiceList\LazyChoiceList;
 use Symfony\Component\Form\DataTransformerInterface;
@@ -25,34 +26,42 @@ use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
+ *
+ * @phpstan-template T of object
  */
 class ModelsToArrayTransformer implements DataTransformerInterface
 {
     /**
      * @var ModelManagerInterface
+     * @phpstan-var ModelManagerInterface<T>
      */
     protected $modelManager;
 
     /**
      * @var string
+     *
+     * @phpstan-var class-string<T>
      */
     protected $class;
 
     /**
-     * @var ModelChoiceList
+     * @var ModelChoiceLoader|LazyChoiceList
      *
-     * @deprecated since 3.12, to be removed in 4.0
+     * @deprecated since sonata-project/admin-bundle 3.12, to be removed in 4.0
      * NEXT_MAJOR: remove this property
      */
     protected $choiceList;
 
     /**
-     * ModelsToArrayTransformer constructor.
+     * @param LazyChoiceList|ModelChoiceLoader $choiceList
+     * @param ModelManagerInterface            $modelManager
+     * @param string                           $class
      *
-     * @param ModelChoiceList|LazyChoiceList|ModelChoiceLoader $choiceList
-     * @param ModelManagerInterface                            $modelManager
-     * @param $class
+     * @phpstan-param ModelManagerInterface<T> $modelManager
+     * @phpstan-param class-string<T>          $class
      *
      * @throws RuntimeException
      */
@@ -60,7 +69,7 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     {
         /*
         NEXT_MAJOR: Remove condition , magic methods, legacyConstructor() method, $choiceList property and argument
-        __construct() signature should be : public function __construct(ModelManager $modelManager, $class)
+        __construct() signature should be : public function __construct(ModelManager $modelManager, string $class)
          */
 
         $args = \func_get_args();
@@ -121,15 +130,22 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         unset($this->$name);
     }
 
-    public function transform($collection)
+    /**
+     * @param object[]|null $value
+     *
+     * @return string[]
+     *
+     * @phpstan-param T[]|null $value
+     */
+    public function transform($value)
     {
-        if (null === $collection) {
+        if (null === $value) {
             return [];
         }
 
         $array = [];
-        foreach ($collection as $key => $entity) {
-            $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($entity));
+        foreach ($value as $model) {
+            $id = implode(AdapterInterface::ID_SEPARATOR, $this->getIdentifierValues($model));
 
             $array[] = $id;
         }
@@ -137,26 +153,40 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         return $array;
     }
 
-    public function reverseTransform($keys)
+    /**
+     * @return Collection<int|string, object>|null
+     *
+     * @phpstan-return Collection<array-key, T>|null
+     */
+    public function reverseTransform($value)
     {
-        if (!\is_array($keys)) {
-            throw new UnexpectedTypeException($keys, 'array');
+        if (null === $value) {
+            return null;
         }
 
-        $collection = $this->modelManager->getModelCollectionInstance($this->class);
-        $notFound = [];
-
-        // optimize this into a SELECT WHERE IN query
-        foreach ($keys as $key) {
-            if ($entity = $this->modelManager->find($this->class, $key)) {
-                $collection[] = $entity;
-            } else {
-                $notFound[] = $key;
-            }
+        if (!\is_array($value)) {
+            throw new UnexpectedTypeException($value, 'array');
         }
 
-        if (\count($notFound) > 0) {
-            throw new TransformationFailedException(sprintf('The entities with keys "%s" could not be found', implode('", "', $notFound)));
+        if ([] === $value) {
+            $result = $value;
+        } else {
+            $value = array_map('strval', $value);
+            $query = $this->modelManager->createQuery($this->class);
+            $this->modelManager->addIdentifiersToQuery($this->class, $query, $value);
+            $result = $this->modelManager->executeQuery($query);
+        }
+
+        $collection = TraversableToCollection::transform($result);
+
+        $diffCount = \count($value) - $collection->count();
+
+        if (0 !== $diffCount) {
+            throw new TransformationFailedException(sprintf(
+                '%u keys could not be found in the provided values: "%s".',
+                $diffCount,
+                implode('", "', $value)
+            ));
         }
 
         return $collection;
@@ -167,15 +197,16 @@ class ModelsToArrayTransformer implements DataTransformerInterface
      *
      * @throws RuntimeException
      */
-    private function legacyConstructor(array $args)
+    private function legacyConstructor(array $args): void
     {
         $choiceList = $args[0];
 
-        if (!$choiceList instanceof ModelChoiceList
-            && !$choiceList instanceof ModelChoiceLoader
+        if (!$choiceList instanceof ModelChoiceLoader
             && !$choiceList instanceof LazyChoiceList) {
-            throw new RuntimeException('First param passed to ModelsToArrayTransformer should be instance of
-                ModelChoiceLoader or ModelChoiceList or LazyChoiceList');
+            throw new RuntimeException(
+                'First param passed to ModelsToArrayTransformer'
+                .' should be instance of ModelChoiceLoader or LazyChoiceList'
+            );
         }
 
         $this->choiceList = $choiceList;
@@ -184,14 +215,21 @@ class ModelsToArrayTransformer implements DataTransformerInterface
     }
 
     /**
-     * @param object $entity
+     * @param object $model
+     *
+     * @return mixed[]
+     *
+     * @phpstan-param T $model
      */
-    private function getIdentifierValues($entity): array
+    private function getIdentifierValues($model): array
     {
         try {
-            return $this->modelManager->getIdentifierValues($entity);
+            return $this->modelManager->getIdentifierValues($model);
         } catch (\Exception $e) {
-            throw new \InvalidArgumentException(sprintf('Unable to retrieve the identifier values for entity %s', ClassUtils::getClass($entity)), 0, $e);
+            throw new \InvalidArgumentException(sprintf(
+                'Unable to retrieve the identifier values for entity %s',
+                ClassUtils::getClass($model)
+            ), 0, $e);
         }
     }
 
@@ -203,6 +241,6 @@ class ModelsToArrayTransformer implements DataTransformerInterface
         @trigger_error(sprintf(
             'Using the "%s::$choiceList" property is deprecated since version 3.12 and will be removed in 4.0.',
             __CLASS__
-        ), E_USER_DEPRECATED);
+        ), \E_USER_DEPRECATED);
     }
 }

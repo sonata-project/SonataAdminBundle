@@ -18,7 +18,7 @@ file that was distributed with this source code.
 {% import _self as tree %}
 {% macro navigate_child(collection, admin, root) %}
     <ul{% if root %} class="sonata-tree"{% endif %}>
-        {% for element in collection if not root %}
+        {% for element in collection|filter(element => not root) %}
             <li>
                 <div class="sonata-tree__item">
                     {% if element.parent %}<i class="fa fa-caret-right" aria-hidden="true"></i>{% endif %}
@@ -67,7 +67,7 @@ file that was distributed with this source code.
                                         {{ site.name }}
                                     </a>
                                 </li>
-                            {% endfor%}
+                            {% endfor %}
                         </ul>
                     </div>
                 </h1>

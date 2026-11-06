@@ -9,7 +9,12 @@ file that was distributed with this source code.
 
 #}
 
-{% if admin.canAccessObject('edit', object) and admin.hasRoute('edit') %}
+{# NEXT_MAJOR: Replace canAccessObject by hasAccess #}
+{% if object is not null
+    and admin.id(object) is not null
+    and admin.canAccessObject('edit', object, 'sonata_deprecation_mute')
+    and admin.hasRoute('edit')
+%}
     <li>
         <a class="sonata-action-element" href="{{ admin.generateObjectUrl('edit', object) }}">
             <i class="fa fa-edit" aria-hidden="true"></i>

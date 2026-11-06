@@ -31,7 +31,7 @@ file that was distributed with this source code.
 {% endblock form_widget_simple %}
 
 {% block choice_widget_expanded %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% set label_attr = label_attr|merge({'class': (label_attr.class|default(''))}) %}
         {% set label_attr = label_attr|merge({'class': (label_attr.class ~ ' ' ~ (widget_type is defined and widget_type != '' ? (multiple ? 'checkbox' : 'radio') ~ '-' ~ widget_type : ''))}) %}
         {% if expanded %}
@@ -56,11 +56,11 @@ file that was distributed with this source code.
         {% if expanded %}
             </div>
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock choice_widget_expanded %}
 
 {% block checkbox_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         {% if label is not same as(false) and label is empty %}
             {% set label = name|humanize %}
         {% endif %}
@@ -85,7 +85,7 @@ file that was distributed with this source code.
                 {{ block('form_message') }}
             {% endif %}
         {% endif %}
-    {% endspaceless %}
+    {% endapply %}
 {% endblock checkbox_widget %}
 
 {% block sonata_type_model_autocomplete_widget %}

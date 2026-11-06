@@ -66,7 +66,7 @@ We now need to create the join entity configuration, create the following file i
 
 .. code-block:: xml
 
-    <?xml version="1.0" encoding="utf-8"?>
+    <?xml version="1.0" encoding="UTF-8"?>
     <doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
                       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                       xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
@@ -288,9 +288,7 @@ Part 3 : Update admin classes
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This is a very important part, the admin class **should** be created for the join entity. If you don't do that, the field will never display properly.
-So we are going to start by creating this ``UserBundle\Admin\UserHasExpectationsAdmin.php`` ...
-
-.. code-block:: php
+So we are going to start by creating this ``UserBundle\Admin\UserHasExpectationsAdmin.php``::
 
     namespace UserBundle\Admin;
 
@@ -351,7 +349,7 @@ Now update the ``UserBundle\Admin\UserAdmin.php`` by adding the ``sonata_type_mo
 
 There is two important things that we need to show here :
 * We use the field ``userHasExpectations`` of the user, but we need a list of ``Expectation`` to be displayed, that's explain the use of ``query``.
-* We want to persist ``UserHasExpectations``Entities, but we manage ``Expectation``, so we need to use a custom `ModelTransformer <http://symfony.com/doc/current/cookbook/form/data_transformers.html>`_ to deal with it.
+* We want to persist ``UserHasExpectations``Entities, but we manage ``Expectation``, so we need to use a custom `ModelTransformer <https://symfony.com/doc/4.4/form/data_transformers.html>`_ to deal with it.
 
 Part 4 : Data Transformer
 ^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -379,29 +377,29 @@ to handle the conversion of ``Expectation`` to ``UserHasExpectations``::
             $this->modelManager = $modelManager;
         }
 
-        public function transform($data)
+        public function transform($value)
         {
-            if (!is_null($data)) {
+            if (!is_null($value)) {
                 $results = [];
 
                 /** @var UserHasExpectations $userHasExpectations */
-                foreach ($data as $userHasExpectations) {
+                foreach ($value as $userHasExpectations) {
                     $results[] = $userHasExpectations->getExpectation();
                 }
 
                 return $results;
             }
 
-            return $data;
+            return $value;
         }
 
-        public function reverseTransform($expectations)
+        public function reverseTransform($value)
         {
             $results  = new ArrayCollection();
             $position = 0;
 
             /** @var Expectation $expectation */
-            foreach ($expectations as $expectation) {
+            foreach ($value as $expectation) {
                 $userHasExpectations = $this->create();
                 $userHasExpectations->setExpectation($expectation);
                 $userHasExpectations->setPosition($position++);

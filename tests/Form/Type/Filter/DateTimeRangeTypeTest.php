@@ -11,32 +11,59 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Sonata\AdminBundle\Tests\Form\Type;
+namespace Sonata\AdminBundle\Tests\Form\Type\Filter;
 
 use Sonata\AdminBundle\Form\Type\Filter\DateTimeRangeType;
-use Sonata\CoreBundle\Form\Type\DateTimeRangeType as FormDateTimeRangeType;
-use Symfony\Component\Form\Test\TypeTestCase;
+use Sonata\Form\Type\DateTimeRangeType as FormDateTimeRangeType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Translation\TranslatorInterface;
 
-class DateTimeRangeTypeTest extends TypeTestCase
+final class DateTimeRangeTypeTest extends BaseTypeTest
 {
+    public function testDefaultOptions(): void
+    {
+        $form = $this->factory->create($this->getTestedType());
+
+        $view = $form->createView();
+
+        static::assertFalse($view->children['type']->vars['required']);
+        static::assertTrue($view->children['value']->vars['required']);
+    }
+
     public function testGetDefaultOptions(): void
     {
-        $stub = $this->getMockForAbstractClass(TranslatorInterface::class);
+        $translator = $this->createStub(TranslatorInterface::class);
 
-        $type = new DateTimeRangeType($stub);
+        $type = new DateTimeRangeType($translator);
 
-        $optionResolver = new OptionsResolver();
+        $optionsResolver = new OptionsResolver();
 
-        $type->configureOptions($optionResolver);
+        $type->configureOptions($optionsResolver);
 
-        $options = $optionResolver->resolve();
+        $options = $optionsResolver->resolve();
 
         $expected = [
             'field_type' => FormDateTimeRangeType::class,
-            'field_options' => ['date_format' => 'yyyy-MM-dd'],
+            'field_options' => ['field_options' => ['date_format' => DateTimeType::HTML5_FORMAT]],
         ];
-        $this->assertSame($expected, $options);
+        static::assertSame($expected, $options);
+    }
+
+    protected function getTestedType(): string
+    {
+        return DateTimeRangeType::class;
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @return DateTimeRangeType[]
+     */
+    protected function getTypes(): array
+    {
+        return [
+            new DateTimeRangeType($this->createStub(TranslatorInterface::class)),
+        ];
     }
 }

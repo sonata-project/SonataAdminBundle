@@ -13,96 +13,142 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Model;
 
-use Exporter\Source\SourceIteratorInterface;
-use Sonata\AdminBundle\Admin\FieldDescriptionInterface;
 use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
-use Sonata\AdminBundle\Exception\ModelManagerException;
+use Sonata\AdminBundle\Exception\ModelManagerThrowable;
+use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
+use Sonata\Exporter\Source\SourceIteratorInterface;
 
 /**
- * A model manager is a bridge between the model classes and the admin
- * functionality.
+ * NEXT_MAJOR: Stop to extend DatagridManagerInterface.
+ *
+ * A model manager is a bridge between the model classes and the admin functionality.
+ *
+ * @phpstan-import-type FieldDescriptionOptions from FieldDescriptionInterface
+ *
+ * @method bool supportsQuery(object $query)
+ * @method void reverseTransform(object $object, array $array = [])
+ *
+ * @phpstan-template T of object
  */
-interface ModelManagerInterface
+interface ModelManagerInterface extends DatagridManagerInterface
 {
     /**
+     * @deprecated since sonata-project/admin-bundle 3.92.
+     *
      * @param string $class
      * @param string $name
      *
      * @return FieldDescriptionInterface
+     *
+     * @phpstan-param class-string $class
+     * @phpstan-param FieldDescriptionOptions $options
      */
     public function getNewFieldDescriptionInstance($class, $name, array $options = []);
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
+     *
+     * @phpstan-param T $object
      */
     public function create($object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
+     *
+     * @phpstan-param T $object
      */
     public function update($object);
 
     /**
-     * @param mixed $object
+     * @param object $object
      *
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
+     *
+     * @phpstan-param T $object
      */
     public function delete($object);
 
     /**
-     * @param string $class
+     * @param string               $class
+     * @param array<string, mixed> $criteria
      *
-     * @return array all objects matching the criteria
+     * @return object[] all objects matching the criteria
+     *
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T[]
      */
     public function findBy($class, array $criteria = []);
 
     /**
-     * @param string $class
+     * @param string               $class
+     * @param array<string, mixed> $criteria
      *
-     * @return object an object matching the criteria or null if none match
+     * @return object|null an object matching the criteria or null if none match
+     *
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T|null
      */
     public function findOneBy($class, array $criteria = []);
 
     /**
-     * @param string $class
-     * @param mixed  $id
+     * @param string     $class
+     * @param int|string $id
      *
      * @return object|null the object with id or null if not found
+     *
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T|null
      */
     public function find($class, $id);
 
     /**
      * @param string $class
      *
-     * @throws ModelManagerException
+     * @throws ModelManagerThrowable
+     *
+     * @phpstan-param class-string<T> $class
      */
-    public function batchDelete($class, ProxyQueryInterface $queryProxy);
+    public function batchDelete($class, ProxyQueryInterface $query);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.73. To be removed in 4.0.
+     * Use AdminInterface::getParentFieldDescription instead.
+     *
      * @param array  $parentAssociationMapping
      * @param string $class
+     *
+     * @phpstan-param class-string $class
      */
     public function getParentFieldDescription($parentAssociationMapping, $class);
 
     /**
      * @param string $class
-     * @param string $alias
      *
      * @return ProxyQueryInterface
+     *
+     * @phpstan-param class-string<T> $class
      */
-    public function createQuery($class, $alias = 'o');
+    public function createQuery($class);
 
     /**
      * Get the identifier for the model type of this class.
      *
+     * NEXT_MAJOR: Remove this function in favor of getIdentifierFieldNames
+     *
+     * @deprecated Prefer to use getIdentifierFieldNames
+     *
      * @param string $class fully qualified class name
      *
      * @return string
+     *
+     * @phpstan-param class-string $class
      */
     public function getModelIdentifier($class);
 
@@ -111,11 +157,13 @@ interface ModelManagerInterface
      *
      * This returns an array to handle cases like a primary key that is
      * composed of multiple columns. If you need a string representation,
-     * use getNormalizedIdentifier resp. getUrlsafeIdentifier
+     * use getNormalizedIdentifier resp. getUrlSafeIdentifier
      *
      * @param object $model
      *
-     * @return array list of all identifiers of this model
+     * @return array<int|string> list of all identifiers of this model
+     *
+     * @phpstan-param T $model
      */
     public function getIdentifierValues($model);
 
@@ -125,7 +173,9 @@ interface ModelManagerInterface
      *
      * @param string $class fully qualified class name
      *
-     * @return array
+     * @return string[]
+     *
+     * @phpstan-param class-string<T> $class
      */
     public function getIdentifierFieldNames($class);
 
@@ -134,8 +184,10 @@ interface ModelManagerInterface
      *
      * @param object $model
      *
-     * @return string a string representation of the identifiers for this
-     *                instance
+     * @return string|null a string representation of the identifiers for this
+     *                     instance
+     *
+     * @phpstan-param T $model
      */
     public function getNormalizedIdentifier($model);
 
@@ -147,20 +199,31 @@ interface ModelManagerInterface
      *
      * @param object $model
      *
-     * @return string string representation of the id that is safe to use in a url
+     * @return string|null string representation of the id that is safe to use in a url
+     *
+     * @phpstan-param T $model
      */
-    public function getUrlsafeIdentifier($model);
+    public function getUrlSafeIdentifier($model);
 
     /**
      * Create a new instance of the model of the specified class.
      *
+     * @deprecated since sonata-project/admin-bundle 3.90. To be removed in 4.0. Use AdminInterface::createNewInstance instead.
+     *
      * @param string $class
      *
-     * @return mixed
+     * @return object
+     *
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T
      */
     public function getModelInstance($class);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * @param string $class
      *
      * @return array|\ArrayAccess
@@ -168,75 +231,120 @@ interface ModelManagerInterface
     public function getModelCollectionInstance($class);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Removes an element from the collection.
      *
-     * @param mixed $collection
-     * @param mixed $element
+     * @param array  $collection
+     * @param object $element
      */
     public function collectionRemoveElement(&$collection, &$element);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Add an element from the collection.
      *
-     * @param mixed $collection
-     * @param mixed $element
-     *
-     * @return mixed
+     * @param array  $collection
+     * @param object $element
      */
     public function collectionAddElement(&$collection, &$element);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Check if the element exists in the collection.
      *
-     * @param mixed $collection
-     * @param mixed $element
+     * @param array  $collection
+     * @param object $element
      *
      * @return bool
      */
     public function collectionHasElement(&$collection, &$element);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.75. To be removed in 4.0. Use doctrine/collections instead.
+     *
      * Clear the collection.
      *
-     * @param mixed $collection
-     *
-     * @return mixed
+     * @param array $collection
      */
     public function collectionClear(&$collection);
 
     /**
      * Returns the parameters used in the columns header.
      *
-     * @return array
+     * NEXT_MAJOR: - Remove this function
+     *             - Replace admin.modelmanager.sortparameters to admin.datagrid.sortparameters
+     *
+     * @deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.
+     *
+     * @return array<string, mixed>
      */
     public function getSortParameters(FieldDescriptionInterface $fieldDescription, DatagridInterface $datagrid);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.93, use reverseTransform() instead.
+     *
      * @param string $class
      *
-     * @return array
-     */
-    public function getDefaultSortValues($class);
-
-    /**
-     * @param string $class
+     * @return object
+     *
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T
      */
     public function modelReverseTransform($class, array $array = []);
 
+    // NEXT_MAJOR: Uncomment this.
     /**
+     * @phpstan-param T $object
+     */
+//    public function reverseTransform(object $object, array $array = []): void;
+
+    /**
+     * NEXT_MAJOR: Remove this method.
+     *
+     * @deprecated since sonata-project/admin-bundle 3.80 and will be removed in 4.0.
+     *
      * @param string $class
      * @param object $instance
+     *
+     * @return object
+     *
+     * @phpstan-param class-string<T> $class
+     * @phpstan-return T
      */
     public function modelTransform($class, $instance);
 
+    // NEXT_MAJOR: Uncomment this.
+//    public function supportsQuery(object $query): bool;
+
     /**
-     * @param mixed $query
+     * @param object $query
+     *
+     * @return array<object>|\Traversable<object>
+     *
+     * @phpstan-return array<T>|\Traversable<T>
      */
     public function executeQuery($query);
 
     /**
+     * NEXT_MAJOR: Remove this method.
+     *
      * @param int|null $firstResult
      * @param int|null $maxResult
+     *
+     * @deprecated since sonata-project/admin-bundle 3.79 and will be removed in 4.0.
      *
      * @return SourceIteratorInterface
      */
@@ -250,20 +358,32 @@ interface ModelManagerInterface
     /**
      * @param string $class
      *
-     * @return array
+     * @return string[]
+     *
+     * @phpstan-param class-string<T> $class
      */
     public function getExportFields($class);
 
     /**
      * @param int $page
      *
-     * @return mixed
+     * NEXT_MAJOR: - Remove this function
+     *             - Replace admin.modelmanager.paginationparameters to admin.datagrid.paginationparameters
+     *
+     * @deprecated since sonata-project/admin-bundle 3.66. To be removed in 4.0.
+     *
+     * @return array<string, mixed>
      */
     public function getPaginationParameters(DatagridInterface $datagrid, $page);
 
     /**
-     * @param string $class
-     * @param array  $idx
+     * @param string                 $class
+     * @param array<int, int|string> $idx
+     *
+     * @phpstan-param class-string<T>             $class
+     * @phpstan-param non-empty-array<string|int> $idx
      */
     public function addIdentifiersToQuery($class, ProxyQueryInterface $query, array $idx);
 }
+
+interface_exists(FieldDescriptionInterface::class);

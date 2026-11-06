@@ -14,13 +14,17 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Block;
 
 use Sonata\AdminBundle\Admin\Pool;
+use Sonata\AdminBundle\Datagrid\DatagridInterface;
 use Sonata\BlockBundle\Block\BlockContextInterface;
 use Sonata\BlockBundle\Block\Service\AbstractBlockService;
 use Symfony\Bundle\FrameworkBundle\Templating\EngineInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Twig\Environment;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class AdminStatsBlockService extends AbstractBlockService
@@ -31,16 +35,60 @@ class AdminStatsBlockService extends AbstractBlockService
     protected $pool;
 
     /**
-     * @param string $name
+     * NEXT_MAJOR: Change signature for (Environment $twig, Pool $pool).
+     *
+     * @param Environment|string        $twigOrName
+     * @param Pool|EngineInterface|null $poolOrTemplating
      */
-    public function __construct($name, EngineInterface $templating, Pool $pool)
+    public function __construct($twigOrName, ?object $poolOrTemplating, ?Pool $pool = null)
     {
-        parent::__construct($name, $templating);
+        if ($poolOrTemplating instanceof Pool) {
+            if (!$twigOrName instanceof Environment) {
+                throw new \TypeError(sprintf(
+                    'Argument 1 passed to %s() must be an instance of %s, %s given.',
+                    __METHOD__,
+                    Environment::class,
+                    \is_object($twigOrName) ? 'instance of '.\get_class($twigOrName) : \gettype($twigOrName)
+                ));
+            }
 
-        $this->pool = $pool;
+            parent::__construct($twigOrName);
+
+            $this->pool = $poolOrTemplating;
+        } elseif (null === $poolOrTemplating || $poolOrTemplating instanceof EngineInterface) {
+            @trigger_error(sprintf(
+                'Passing %s as argument 2 to %s() is deprecated since sonata-project/admin-bundle 3.76'
+                .' and will throw a \TypeError in version 4.0. You must pass an instance of %s instead.',
+                null === $poolOrTemplating ? 'null' : EngineInterface::class,
+                __METHOD__,
+                Pool::class
+            ), \E_USER_DEPRECATED);
+
+            if (null === $pool) {
+                throw new \TypeError(sprintf(
+                    'Passing null as argument 3 to %s() is not allowed when %s is passed as argument 2.'
+                    .' You must pass an instance of %s instead.',
+                    __METHOD__,
+                    EngineInterface::class,
+                    Pool::class
+                ));
+            }
+
+            parent::__construct($twigOrName, $poolOrTemplating);
+
+            $this->pool = $pool;
+        } else {
+            throw new \TypeError(sprintf(
+                'Argument 2 passed to %s() must be either null or an instance of %s or preferably %s, instance of %s given.',
+                __METHOD__,
+                EngineInterface::class,
+                Pool::class,
+                \get_class($poolOrTemplating)
+            ));
+        }
     }
 
-    public function execute(BlockContextInterface $blockContext, Response $response = null)
+    public function execute(BlockContextInterface $blockContext, ?Response $response = null): Response
     {
         $admin = $this->pool->getAdminByAdminCode($blockContext->getSetting('code'));
 
@@ -48,8 +96,8 @@ class AdminStatsBlockService extends AbstractBlockService
 
         $filters = $blockContext->getSetting('filters');
 
-        if (!isset($filters['_per_page'])) {
-            $filters['_per_page'] = ['value' => $blockContext->getSetting('limit')];
+        if (!isset($filters[DatagridInterface::PER_PAGE])) {
+            $filters[DatagridInterface::PER_PAGE] = ['value' => $blockContext->getSetting('limit')];
         }
 
         foreach ($filters as $name => $data) {
@@ -61,6 +109,7 @@ class AdminStatsBlockService extends AbstractBlockService
         return $this->renderPrivateResponse($blockContext->getTemplate(), [
             'block' => $blockContext->getBlock(),
             'settings' => $blockContext->getSettings(),
+            // NEXT_MAJOR: Remove next line.
             'admin_pool' => $this->pool,
             'admin' => $admin,
             'pager' => $datagrid->getPager(),
@@ -73,10 +122,10 @@ class AdminStatsBlockService extends AbstractBlockService
         return 'Admin Stats';
     }
 
-    public function configureSettings(OptionsResolver $resolver)
+    public function configureSettings(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'icon' => 'fa-line-chart',
+            'icon' => 'fa fa-line-chart',
             'text' => 'Statistics',
             'translation_domain' => null,
             'color' => 'bg-aqua',

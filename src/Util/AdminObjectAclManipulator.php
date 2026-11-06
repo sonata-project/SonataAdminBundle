@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Form\Form;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Domain\RoleSecurityIdentity;
 use Symfony\Component\Security\Acl\Domain\UserSecurityIdentity;
@@ -26,6 +27,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * A manipulator for updating ACL related to an object.
+ *
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Kévin Dunglas <kevin@les-tilleuls.coop>
  * @author Baptiste Meyer <baptiste@les-tilleuls.coop>
@@ -39,13 +42,18 @@ class AdminObjectAclManipulator
      * @var FormFactoryInterface
      */
     protected $formFactory;
+
     /**
      * @var string
+     *
+     * @phpstan-var class-string
      */
     protected $maskBuilderClass;
 
     /**
      * @param string $maskBuilderClass
+     *
+     * @phpstan-param class-string $maskBuilderClass
      */
     public function __construct(FormFactoryInterface $formFactory, $maskBuilderClass)
     {
@@ -68,16 +76,15 @@ class AdminObjectAclManipulator
      *
      * NEXT_MAJOR: remove this method.
      *
-     * @return Form
+     * @return FormInterface
      *
-     * @deprecated Deprecated since version 3.0. Use createAclUsersForm() instead
+     * @deprecated since sonata-project/admin-bundle 3.0. Use createAclUsersForm() instead
      */
     public function createForm(AdminObjectAclData $data)
     {
         @trigger_error(
-            'createForm() is deprecated since version 3.0 and will be removed in 4.0. '
-            .'Use createAclUsersForm() instead.',
-            E_USER_DEPRECATED
+            'createForm() is deprecated since version 3.0 and will be removed in 4.0. Use createAclUsersForm() instead.',
+            \E_USER_DEPRECATED
         );
 
         return $this->createAclUsersForm($data);
@@ -86,7 +93,7 @@ class AdminObjectAclManipulator
     /**
      * Gets the ACL users form.
      *
-     * @return Form
+     * @return FormInterface
      */
     public function createAclUsersForm(AdminObjectAclData $data)
     {
@@ -101,7 +108,7 @@ class AdminObjectAclManipulator
     /**
      * Gets the ACL roles form.
      *
-     * @return Form
+     * @return FormInterface
      */
     public function createAclRolesForm(AdminObjectAclData $data)
     {
@@ -114,7 +121,7 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Updates ACL users.
+     * @return void
      */
     public function updateAclUsers(AdminObjectAclData $data)
     {
@@ -125,7 +132,7 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Updates ACL roles.
+     * @return void
      */
     public function updateAclRoles(AdminObjectAclData $data)
     {
@@ -136,27 +143,30 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Updates ACl.
-     *
      * NEXT_MAJOR: remove this method.
      *
-     * @deprecated Deprecated since version 3.0. Use updateAclUsers() instead
+     * @deprecated since sonata-project/admin-bundle 3.0. Use updateAclUsers() instead
+     *
+     * @return void
      */
     public function updateAcl(AdminObjectAclData $data)
     {
         @trigger_error(
-            'updateAcl() is deprecated since version 3.0 and will be removed in 4.0.'
-            .'Use updateAclUsers() instead.',
-            E_USER_DEPRECATED
+            'updateAcl() is deprecated since version 3.0 and will be removed in 4.0. Use updateAclUsers() instead.',
+            \E_USER_DEPRECATED
         );
 
         $this->updateAclUsers($data);
     }
 
     /**
-     * Builds ACL.
+     * @param \Traversable<int|string, UserInterface|string> $aclValues
+     *
+     * @return void
+     *
+     * @phpstan-param \Traversable<array-key, UserInterface|string> $aclValues
      */
-    protected function buildAcl(AdminObjectAclData $data, Form $form, \Traversable $aclValues)
+    protected function buildAcl(AdminObjectAclData $data, FormInterface $form, \Traversable $aclValues)
     {
         $masks = $data->getMasks();
         $acl = $data->getAcl();
@@ -221,9 +231,11 @@ class AdminObjectAclManipulator
     }
 
     /**
-     * Builds the form.
+     * @param \Traversable<int|string, UserInterface|string> $aclValues
      *
-     * @return Form
+     * @return FormInterface
+     *
+     * @phpstan-param \Traversable<array-key, UserInterface|string> $aclValues
      */
     protected function buildForm(AdminObjectAclData $data, FormBuilderInterface $formBuilder, \Traversable $aclValues)
     {
@@ -288,7 +300,6 @@ class AdminObjectAclManipulator
     {
         return ($aclValue instanceof UserInterface)
             ? UserSecurityIdentity::fromAccount($aclValue)
-            : new RoleSecurityIdentity($aclValue)
-        ;
+            : new RoleSecurityIdentity($aclValue);
     }
 }

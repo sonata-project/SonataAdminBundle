@@ -8,7 +8,7 @@ Admin Bundle
 * `SonataDoctrineMongoDBAdminBundle <https://github.com/sonata-project/SonataDoctrineMongoDBAdminBundle>`_: integrates MongoDB with the core admin bundle
 * `SonataDoctrinePhpcrAdminBundle <https://github.com/sonata-project/SonataDoctrinePhpcrAdminBundle>`_: integrates PHPCR with the core admin bundle
 
-The demo website can be found at http://demo.sonata-project.org.
+The demo website can be found at https://demo.sonata-project.org.
 
 **Usage examples:**
 
@@ -61,7 +61,6 @@ The demo website can be found at http://demo.sonata-project.org.
 
    reference/routing
    reference/translation
-   reference/conditional_validation
    reference/templates
    reference/security
    reference/extensions
@@ -84,6 +83,7 @@ The demo website can be found at http://demo.sonata-project.org.
    cookbook/recipe_sortable_listing
    cookbook/recipe_dynamic_form_modification
    cookbook/recipe_custom_action
+   cookbook/recipe_decouple_crud_controller
    cookbook/recipe_customizing_a_mosaic_list
    cookbook/recipe_overwrite_admin_configuration
    cookbook/recipe_improve_performance_large_datasets
@@ -93,9 +93,6 @@ The demo website can be found at http://demo.sonata-project.org.
    cookbook/recipe_sortable_sonata_type_model
    cookbook/recipe_delete_field_group
    cookbook/recipe_data_mapper
-   cookbook/recipe_custom_view
    cookbook/recipe_persisting_filters
-   cookbook/recipe_creating_an_admin_with_annotations
    cookbook/recipe_workflow_integration
    cookbook/recipe_sonata_admin_without_user_bundle
-   cookbook/recipe_auto_configure_admin_classes

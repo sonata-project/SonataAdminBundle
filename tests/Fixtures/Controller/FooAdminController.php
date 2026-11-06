@@ -13,14 +13,8 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Fixtures\Controller;
 
-/**
- * Some documentation about Foo controller.
- */
 class FooAdminController extends AbstractFooAdminController
 {
-    /**
-     * Foo action.
-     */
     public function fooAction($baz): void
     {
     }

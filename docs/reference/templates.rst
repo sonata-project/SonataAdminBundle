@@ -147,8 +147,10 @@ You can specify your templates in the config file:
                 button_history:             '@SonataAdmin/Button/history_button.html.twig'
                 button_list:                '@SonataAdmin/Button/list_button.html.twig'
                 button_show:                '@SonataAdmin/Button/show_button.html.twig'
+                form_theme:                 []
+                filter_theme:               []
 
-.. important::
+.. warning::
 
     Notice that this is a global change, meaning it will affect all model mappings
     automatically, both for ``Admin`` mappings defined by you and by other bundles.
@@ -172,7 +174,7 @@ can specify the templates to use in the ``Admin`` service definition:
                     - App\Entity\Post
                     - ~
                 calls:
-                    - [setTemplate, ['edit', '@App/PostAdmin/edit.html.twig']]
+                    - [setTemplate, ['edit', 'PostAdmin/edit.html.twig']]
                 tags:
                     - { name: sonata.admin, manager_type: orm, group: 'Content', label: 'Post' }
 
@@ -187,7 +189,7 @@ can specify the templates to use in the ``Admin`` service definition:
             <argument/>
             <call method="setTemplate">
                 <argument>edit</argument>
-                <argument>@App/PostAdmin/edit.html.twig</argument>
+                <argument>PostAdmin/edit.html.twig</argument>
             </call>
         </service>
 

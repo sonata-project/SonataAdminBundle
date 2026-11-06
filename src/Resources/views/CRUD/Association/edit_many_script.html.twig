@@ -131,8 +131,9 @@ This code manages the many-to-[one|many] association field popup
 
                 // populate the popup container
                 field_dialog_content_{{ id }}.html(html);
-
-                field_dialog_title_{{ id }}.html("{{ associationadmin.label|trans({}, associationadmin.translationdomain) }}");
+                {% if associationadmin.label is not empty %}
+                    field_dialog_title_{{ id }}.html("{{ associationadmin.label|trans({}, associationadmin.translationdomain) }}");
+                {% endif %}
 
                 Admin.shared_setup(field_dialog_{{ id }});
 
@@ -169,7 +170,9 @@ This code manages the many-to-[one|many] association field popup
 
                 // populate the popup container
                 field_dialog_content_{{ id }}.html(html);
-                field_dialog_title_{{ id }}.html("{{ associationadmin.label|trans({}, associationadmin.translationdomain) }}");
+                {% if associationadmin.label is not empty %}
+                    field_dialog_title_{{ id }}.html("{{ associationadmin.label|trans({}, associationadmin.translationdomain) }}");
+                {% endif %}
 
                 Admin.shared_setup(field_dialog_{{ id }});
 
@@ -209,7 +212,9 @@ This code manages the many-to-[one|many] association field popup
 
                 // populate the popup container
                 field_dialog_content_{{ id }}.html(html);
-                field_dialog_title_{{ id }}.html("{{ associationadmin.label|trans({}, associationadmin.translationdomain) }}");
+                {% if associationadmin.label is not empty %}
+                    field_dialog_title_{{ id }}.html("{{ associationadmin.label|trans({}, associationadmin.translationdomain) }}");
+                {% endif %}
 
                 Admin.shared_setup(field_dialog_{{ id }});
 
@@ -275,10 +280,19 @@ This code manages the many-to-[one|many] association field popup
 
         Admin.log('[{{ id }}|field_dialog_form_action] execute ajax call');
 
+        var oldErrorMessages = jQuery(field_dialog_content_{{ id }}).find('div.alert-danger');
+        // Remove old error messages.
+        if (oldErrorMessages.length > 0) {
+          oldErrorMessages.remove();
+        }
+
         // the ajax post
         jQuery(form).ajaxSubmit({
             url: url,
             type: type,
+            headers: {
+                Accept: 'application/json'
+            },
             data: data,
             success: function(data) {
                 Admin.log('[{{ id }}|field_dialog_form_action] ajax success');
@@ -300,13 +314,20 @@ This code manages the many-to-[one|many] association field popup
 
                         // reload the form element
                         jQuery('#field_widget_{{ id }}').closest('form').ajaxSubmit({
+                            // NEXT_MAJOR: Remove the 'code' parameter
                             url: '{{ path('sonata_admin_retrieve_form_element', {
+                                '_sonata_admin': sonata_admin.admin.root.baseCodeRoute,
                                 'elementId': id,
-                                'subclass':  sonata_admin.admin.getActiveSubclassCode(),
-                                'objectId':  sonata_admin.admin.root.id(sonata_admin.admin.root.subject),
-                                'uniqid':    sonata_admin.admin.root.uniqid,
-                                'code':      sonata_admin.admin.root.code
-                            }) }}',
+                                'subclass': sonata_admin.admin.hasActiveSubClass() ? sonata_admin.admin.getActiveSubclassCode() : null,
+                                'objectId': sonata_admin.admin.root.id(sonata_admin.admin.root.subject),
+                                'uniqid': sonata_admin.admin.root.uniqid,
+                                'code': sonata_admin.admin.root.code
+                            } + (
+                                sonata_admin.admin.root.hasRequest()
+                                ? sonata_admin.admin.root.request.attributes.get('_route_params', {})
+                                : {}
+                            ) + app.request.query.all|default({})
+                            ) }}',
                             data: {_xml_http_request: true },
                             dataType: 'html',
                             type: 'POST',
@@ -335,6 +356,37 @@ This code manages the many-to-[one|many] association field popup
 
                 // reattach the event
                 jQuery('form', field_dialog_{{ id }}).submit(field_dialog_form_action_{{ id }});
+            },
+            error: function(xhr) {
+                var content = '';
+
+                if ('application/json' === xhr.getResponseHeader('Content-Type')) {
+                    var jsonContent = JSON.parse(xhr.responseText);
+
+                    if (jsonContent.message) {
+                        content += '<div class="alert alert-danger alert-dismissable">'
+                            + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'
+                            + jsonContent.message
+                            + '</div>';
+                    }
+
+                    if (jsonContent.errors) {
+                        for (error of jsonContent.errors) {
+                            content += '<div class="alert alert-danger alert-dismissable">'
+                                + '<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>'
+                                + error
+                                + '</div>';
+                        }
+                    }
+                } else {
+                    content += xhr.responseText;
+                }
+
+                // Display the error.
+                field_dialog_content_{{ id }}.prepend(content);
+
+                // Reset the submit buttons.
+                $(form).find('button[type="submit"]').removeAttr('disabled');
             }
         });
 
@@ -431,7 +483,7 @@ This code manages the many-to-[one|many] association field popup
             link.onclick = null;
 
             jQuery(link)
-                .click(field_remove_element_{{ id}})
+                .click(field_remove_element_{{ id }})
                 .trigger('click')
             ;
 
@@ -459,15 +511,35 @@ This code manages the many-to-[one|many] association field popup
 
             Admin.log('[{{ id }}|on:change] update the label');
 
+            var objectId = jQuery(this).val();
+
+            // Skip short object information call if object is missing.
+            if (undefined === objectId || null === objectId || '' === objectId) {
+                jQuery('#field_widget_{{ id }}').html('{{ 'short_object_description_placeholder'|trans({}, 'SonataAdminBundle') }}');
+
+                {% if btn_edit %}
+                    jQuery('#field_actions_{{ id }} a.btn-warning').addClass('hidden');
+                {% endif %}
+
+                return;
+            }
+
             jQuery('#field_widget_{{ id }}').html("<span><img src=\"{{ asset('bundles/sonataadmin/ajax-loader.gif') }}\" style=\"vertical-align: middle; margin-right: 10px\"/>{{ 'loading_information'|trans([], 'SonataAdminBundle') }}</span>");
             jQuery.ajax({
                 type: 'GET',
-                url: '{{ path('sonata_admin_short_object_information', {
+                {# NEXT_MAJOR: Remove the 'code' parameter #}
+                url: '{{ path('sonata_admin_short_object_information',{
+                    '_sonata_admin': associationadmin.baseCodeRoute,
                     'objectId': 'OBJECT_ID',
                     'uniqid': associationadmin.uniqid,
                     'code': associationadmin.code,
-                    'linkParameters': sonata_admin.field_description.options.link_parameters
-                })}}'.replace('OBJECT_ID', jQuery(this).val()),
+                    'linkParameters': sonata_admin.field_description.option('link_parameters', {})
+                } + (
+                    associationadmin.hasRequest()
+                    ? associationadmin.request.attributes.get('_route_params', {})
+                    : {}
+                ) + app.request.query.all|default({})
+                )}}'.replace('OBJECT_ID', objectId),
                 dataType: 'html',
                 success: function(html) {
                     jQuery('#field_widget_{{ id }}').html(html);
@@ -476,10 +548,10 @@ This code manages the many-to-[one|many] association field popup
 
             {% if btn_edit %}
                 var edit_button_url = '{{
-                    associationadmin.generateUrl('edit', {'id' : 'OBJECT_ID'})
-                }}'.replace('OBJECT_ID', jQuery(this).val());
+                    associationadmin.generateUrl('edit', {(associationadmin.idParameter) : 'OBJECT_ID'})
+                }}'.replace('OBJECT_ID', objectId);
 
-                jQuery('#field_actions_{{ id }} a.btn-warning').attr('href', edit_button_url);
+                jQuery('#field_actions_{{ id }} a.btn-warning').removeClass('hidden').attr('href', edit_button_url);
             {% endif %}
         });
 

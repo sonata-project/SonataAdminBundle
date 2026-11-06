@@ -9,14 +9,16 @@ file that was distributed with this source code.
 
 #}
 
+{# NEXT_MAJOR: Deprecate this template in version 4. Remove it in version 5. #}
+
 <span class="sonata-ba-list-field sonata-ba-list-field-{{ field_description.type }}" objectId="{{ admin.id(object) }}">
     {% if
-            field_description.options.identifier is defined
-        and field_description.options.route is defined
-        and admin.hasAccess(field_description.options.route.name, object)
-        and admin.hasRoute(field_description.options.route.name)
+        field_description.option('identifier', false)
+        and field_description.option('route')
+        and admin.hasAccess(field_description.option('route').name, object)
+        and admin.hasRoute(field_description.option('route').name)
     %}
-        <a href="{{ admin.generateObjectUrl(field_description.options.route.name, object, field_description.options.route.parameters) }}">
+        <a href="{{ admin.generateObjectUrl(field_description.option('route').name, object, field_description.option('route').parameters) }}">
             {%- block field %}{{ value }}{% endblock -%}
         </a>
     {% else %}

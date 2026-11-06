@@ -18,14 +18,14 @@ use Twig\TwigFunction;
 
 class FakeTemplateRegistryExtension extends AbstractExtension
 {
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('get_admin_template', [$this, 'getAdminTemplate']),
         ];
     }
 
-    public function getAdminTemplate($name, $adminCode)
+    public function getAdminTemplate(string $name, string $adminCode): string
     {
         $templates = [
             'base_list_field' => '@SonataAdmin/CRUD/base_list_field.html.twig',

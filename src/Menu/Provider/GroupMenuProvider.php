@@ -17,10 +17,13 @@ use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Provider\MenuProviderInterface;
 use Sonata\AdminBundle\Admin\Pool;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 /**
  * Menu provider based on group options.
+ *
+ * @final since sonata-project/admin-bundle 3.52
  *
  * @author Alexandru Furculita <alex@furculita.net>
  */
@@ -56,15 +59,16 @@ class GroupMenuProvider implements MenuProviderInterface
          * NEXT_MAJOR: Move AuthorizationCheckerInterface check to method signature.
          */
         if (null === $checker) {
-            @trigger_error(
-                'Passing no 3rd argument is deprecated since version 3.10 and will be mandatory in 4.0.
-                Pass Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface as 3rd argument.',
-                E_USER_DEPRECATED
-            );
+            @trigger_error(sprintf(
+                'Passing no 3rd argument is deprecated since version 3.10 and will be mandatory in 4.0.'
+                .' Pass %s as 3rd argument.',
+                AuthorizationCheckerInterface::class
+            ), \E_USER_DEPRECATED);
         } elseif (!$checker instanceof AuthorizationCheckerInterface) {
-            throw new \InvalidArgumentException(
-                'Argument 3 must be an instance of \Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
-            );
+            throw new \InvalidArgumentException(sprintf(
+                'Argument 3 must be an instance of %s',
+                AuthorizationCheckerInterface::class
+            ));
         }
 
         $this->checker = $checker;
@@ -73,19 +77,18 @@ class GroupMenuProvider implements MenuProviderInterface
     /**
      * Retrieves the menu based on the group options.
      *
-     * @param string $name
-     *
      * @throws \InvalidArgumentException if the menu does not exists
-     *
-     * @return \Knp\Menu\ItemInterface
      */
-    public function get($name, array $options = [])
+    public function get(string $name, array $options = []): ItemInterface
     {
+        /**
+         * @var array{ label: string, label_catalogue: string, icon: string, on_top?: bool, keep_open: bool, provider: string, items: list }
+         */
         $group = $options['group'];
 
         $menuItem = $this->menuFactory->createItem($options['name']);
 
-        if (empty($group['on_top']) || false === $group['on_top']) {
+        if (!\array_key_exists('on_top', $group) || false === $group['on_top']) {
             foreach ($group['items'] as $item) {
                 if ($this->canGenerateMenuItem($item, $group)) {
                     $menuItem->addChild($this->generateMenuItem($item, $group));
@@ -113,12 +116,8 @@ class GroupMenuProvider implements MenuProviderInterface
 
     /**
      * Checks whether a menu exists in this provider.
-     *
-     * @param string $name
-     *
-     * @return bool
      */
-    public function has($name, array $options = [])
+    public function has(string $name, array $options = []): bool
     {
         return 'sonata_group_menu' === $name;
     }
@@ -132,7 +131,7 @@ class GroupMenuProvider implements MenuProviderInterface
             return $admin->hasRoute('list') && $admin->hasAccess('list');
         }
 
-        //NEXT_MAJOR: Remove if statement of null checker.
+        // NEXT_MAJOR: Remove if statement of null checker.
         if (null === $this->checker) {
             return true;
         }
@@ -144,7 +143,7 @@ class GroupMenuProvider implements MenuProviderInterface
         if (!empty($item['roles'])) {
             $isItemGranted = false;
             foreach ($item['roles'] as $role) {
-                if ($this->checker->isGranted([$role])) {
+                if ($this->checker->isGranted($role)) {
                     $isItemGranted = true;
                     break;
                 }
@@ -155,7 +154,7 @@ class GroupMenuProvider implements MenuProviderInterface
         if (!empty($group['roles'])) {
             $isGroupGranted = false;
             foreach ($group['roles'] as $role) {
-                if ($this->checker->isGranted([$role])) {
+                if ($this->checker->isGranted($role)) {
                     $isGroupGranted = true;
                     break;
                 }
@@ -170,13 +169,17 @@ class GroupMenuProvider implements MenuProviderInterface
         if (isset($item['admin']) && !empty($item['admin'])) {
             $admin = $this->pool->getInstance($item['admin']);
 
-            $options = $admin->generateMenuUrl('list', [], $item['route_absolute']);
+            $options = $admin->generateMenuUrl(
+                'list',
+                [],
+                $item['route_absolute'] ? UrlGeneratorInterface::ABSOLUTE_URL : UrlGeneratorInterface::ABSOLUTE_PATH
+            );
             $options['extras'] = [
                 'label_catalogue' => $admin->getTranslationDomain(),
                 'admin' => $admin,
             ];
 
-            return $this->menuFactory->createItem($admin->getLabel(), $options);
+            return $this->menuFactory->createItem($admin->getLabel() ?? '', $options);
         }
 
         return $this->menuFactory->createItem($item['label'], [

@@ -22,10 +22,14 @@ use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Translator\Extractor\JMSTranslatorBundle\AdminExtractor;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Test for AdminExtractor.
+ *
+ * NEXT_MAJOR: Remove this class.
+ *
+ * @group legacy
  *
  * @author Andrej Hudec <pulzarraider@gmail.com>
  */
@@ -56,43 +60,35 @@ class AdminExtractorTest extends TestCase
      */
     private $breadcrumbsBuilder;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         if (!interface_exists(ExtractorInterface::class)) {
-            $this->markTestSkipped('JMS Translator Bundle does not exist');
+            static::markTestSkipped('JMS Translator Bundle does not exist');
         }
 
         $this->fooAdmin = $this->getMockForAbstractClass(AdminInterface::class);
         $this->barAdmin = $this->getMockForAbstractClass(AdminInterface::class);
 
-        $container = $this->getMockForAbstractClass(ContainerInterface::class);
-        $container->expects($this->any())
-            ->method('get')
-            ->will($this->returnCallback(function ($id) {
-                switch ($id) {
-                    case 'foo_admin':
-                        return $this->fooAdmin;
-                    case 'bar_admin':
-                        return $this->barAdmin;
-                }
-            }));
+        $container = new Container();
+        $container->set('foo_admin', $this->fooAdmin);
+        $container->set('bar_admin', $this->barAdmin);
 
         $logger = $this->getMockForAbstractClass(LoggerInterface::class);
 
         $this->pool = $this->getMockBuilder(Pool::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $this->pool->expects($this->any())
+        $this->pool
             ->method('getAdminServiceIds')
-            ->will($this->returnValue(['foo_admin', 'bar_admin']));
-        $this->pool->expects($this->any())
+            ->willReturn(['foo_admin', 'bar_admin']);
+        $this->pool
             ->method('getContainer')
-            ->will($this->returnValue($container));
-        $this->pool->expects($this->any())
+            ->willReturn($container);
+        $this->pool
             ->method('getAdminGroups')
-            ->will($this->returnValue(['group' => [
+            ->willReturn(['group' => [
                 'label_catalogue' => 'admin_domain',
-            ]]));
+            ]]);
 
         $this->adminExtractor = new AdminExtractor($this->pool, $logger);
         $this->adminExtractor->setLogger($logger);
@@ -105,58 +101,59 @@ class AdminExtractorTest extends TestCase
     {
         $catalogue = $this->adminExtractor->extract();
 
-        $this->assertInstanceOf(MessageCatalogue::class, $catalogue);
-        $this->assertFalse($catalogue->has(new Message('foo', 'foo_admin_domain')));
+        static::assertInstanceOf(MessageCatalogue::class, $catalogue);
+        static::assertFalse($catalogue->has(new Message('foo', 'foo_admin_domain')));
     }
 
     public function testExtract(): void
     {
-        $this->fooAdmin->expects($this->any())
+        $this->fooAdmin
             ->method('getShow')
-            ->will($this->returnCallback(function (): void {
+            ->willReturnCallback(function (): void {
                 $this->assertSame('foo', $this->adminExtractor->trans('foo', [], 'foo_admin_domain'));
                 $this->assertSame('foo', $this->adminExtractor->transChoice('foo', 1, [], 'foo_admin_domain'));
-            }));
-        $this->fooAdmin->expects($this->any())
+            });
+        $this->fooAdmin
             ->method('getLabel')
             ->willReturn('foo_label');
-        $this->fooAdmin->expects($this->any())
+        $this->fooAdmin
             ->method('getTranslationDomain')
             ->willReturn('foo_admin_domain');
 
         $catalogue = $this->adminExtractor->extract();
 
-        $this->assertCount(2, $catalogue->getDomains());
+        static::assertCount(2, $catalogue->getDomains());
 
-        $this->assertTrue($catalogue->has(new Message('foo', 'foo_admin_domain')));
-        $this->assertFalse($catalogue->has(new Message('nonexistent', 'foo_admin_domain')));
+        static::assertTrue($catalogue->has(new Message('foo', 'foo_admin_domain')));
+        static::assertFalse($catalogue->has(new Message('nonexistent', 'foo_admin_domain')));
 
-        $this->assertInstanceOf(Message::class, $catalogue->get('foo', 'foo_admin_domain'));
+        static::assertInstanceOf(Message::class, $catalogue->get('foo', 'foo_admin_domain'));
 
         $message = $catalogue->get('foo', 'foo_admin_domain');
-        $this->assertSame('foo', $message->getId());
-        $this->assertSame('foo_admin_domain', $message->getDomain());
+        static::assertSame('foo', $message->getId());
+        static::assertSame('foo_admin_domain', $message->getDomain());
 
-        $this->assertTrue($catalogue->has(new Message('group', 'admin_domain')));
-        $this->assertTrue($catalogue->has(new Message('foo_label', 'foo_admin_domain')));
+        static::assertTrue($catalogue->has(new Message('group', 'admin_domain')));
+        static::assertTrue($catalogue->has(new Message('foo_label', 'foo_admin_domain')));
     }
 
     public function testExtractWithException(): void
     {
-        $this->expectException(\RuntimeException::class, 'Foo throws exception');
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Foo throws exception');
 
-        $this->fooAdmin->expects($this->any())
+        $this->fooAdmin
             ->method('getShow')
-            ->will($this->returnCallback(function (): void {
+            ->willReturnCallback(static function (): void {
                 throw new \RuntimeException('Foo throws exception');
-            }));
+            });
 
         $this->adminExtractor->extract();
     }
 
     public function testExtractCallsBreadcrumbs(): void
     {
-        $this->breadcrumbsBuilder->expects($this->exactly(2 * 6))
+        $this->breadcrumbsBuilder->expects(static::exactly(2 * 6))
             ->method('getBreadcrumbs');
         $this->adminExtractor->extract();
     }

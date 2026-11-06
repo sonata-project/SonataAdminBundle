@@ -16,11 +16,13 @@ namespace Sonata\AdminBundle\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 /**
+ * @final since sonata-project/admin-bundle 3.52
+ *
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  */
 class ChoiceFieldMaskType extends AbstractType
@@ -30,7 +32,7 @@ class ChoiceFieldMaskType extends AbstractType
         $sanitizedMap = [];
         $allFieldNames = [];
         foreach ($options['map'] as $value => $fieldNames) {
-            if (\is_array($fieldNames) || $fieldNames instanceof \Traversable) {
+            if (is_iterable($fieldNames)) {
                 foreach ($fieldNames as $fieldName) {
                     $sanitizedFieldName = str_replace(['__', '.'], ['____', '__'], $fieldName);
                     $sanitizedMap[$value][] = $sanitizedFieldName;
@@ -48,15 +50,8 @@ class ChoiceFieldMaskType extends AbstractType
     }
 
     /**
-     * NEXT_MAJOR: Remove method, when bumping requirements to SF 2.7+.
-     *
-     * {@inheritdoc}
+     * @return void
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
-    {
-        $this->configureOptions($resolver);
-    }
-
     public function configureOptions(OptionsResolver $resolver)
     {
         parent::configureOptions($resolver);
@@ -68,6 +63,11 @@ class ChoiceFieldMaskType extends AbstractType
         $resolver->setAllowedTypes('map', 'array');
     }
 
+    /**
+     * @return string
+     *
+     * @phpstan-return class-string<FormTypeInterface>
+     */
     public function getParent()
     {
         return ChoiceType::class;
@@ -76,7 +76,7 @@ class ChoiceFieldMaskType extends AbstractType
     /**
      * NEXT_MAJOR: Remove when dropping Symfony <2.8 support.
      *
-     * {@inheritdoc}
+     * @return string
      */
     public function getName()
     {
