@@ -26,7 +26,6 @@
     "require": {
         "php": "^8.2",
         "doctrine/collections": "^2.0 || ^3.0",
-        "doctrine/common": "^3.0",
         "knplabs/knp-menu": "^3.6",
         "knplabs/knp-menu-bundle": "^3.0",
         "psr/container": "^1.0 || ^2.0",
