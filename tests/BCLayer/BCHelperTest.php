@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\BCLayer;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Model\ProxyResolverInterface;
@@ -26,6 +27,8 @@ final class BCHelperTest extends TestCase
         static::assertSame(self::class, BCHelper::getClass($this));
     }
 
+    // NEXT_MAJOR: Remove this test.
+    #[IgnoreDeprecations]
     public function testGetProxyClass(): void
     {
         $this->expectUserDeprecationMessage(\sprintf(
