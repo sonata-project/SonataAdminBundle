@@ -3,7 +3,7 @@
     "@fontsource/source-sans-pro": "^4.5",
     "@fortawesome/fontawesome-free": "^5.15",
     "@hotwired/stimulus": "^3.2",
-    "@symfony/stimulus-bridge": "^3.2",
+    "@symfony/stimulus-bridge": "^4.0",
     "admin-lte": "^2.4",
     "bootstrap": "^3.3",
     "icheck": "^1.0",
@@ -19,11 +19,11 @@
     "x-editable": "^1.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.21",
-    "@babel/eslint-parser": "^7.21",
-    "@babel/preset-env": "^7.21",
-    "@symfony/webpack-encore": "^5.2",
+    "@babel/core": "^8.1",
+    "@babel/preset-env": "^8.0",
+    "@symfony/webpack-encore": "^7.2",
     "autoprefixer": "^10.4",
+    "cssnano": "^7.1",
     "eslint": "^8.39",
     "eslint-config-airbnb-base": "^15.0",
     "eslint-config-prettier": "^8.8",
@@ -32,7 +32,7 @@
     "eslint-webpack-plugin": "^4.0",
     "file-loader": "^6.2",
     "postcss": "^8.5",
-    "postcss-loader": "^7.2",
+    "postcss-loader": "^8.2",
     "postcss-scss": "^4.0",
     "prettier": "^2.8",
     "sass-embedded": "^1.62",
@@ -41,11 +41,11 @@
     "stylelint-config-standard-scss": "^9.0",
     "stylelint-order": "^6.0",
     "stylelint-webpack-plugin": "^4.1",
-    "webpack": "^5.98",
-    "webpack-cli": "^5.0"
+    "webpack": "^5.101",
+    "webpack-cli": "^7.3"
   },
   "engines": {
-    "node": ">=18"
+    "node": "^22.22.3 || ^24.15.0 || >=26.0"
   },
   "license": "MIT",
   "private": true,
