@@ -174,8 +174,6 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 return static function (RectorConfig $rectorConfig): void {
     // ....
 
-    $services = $rectorConfig->services();
-
     $rectorConfig->ruleWithConfiguration(AddReturnTypeDeclarationRector::class, [
         new AddReturnTypeDeclaration(AbstractAdmin::class, 'preBatchAction', new VoidType()),
         new AddReturnTypeDeclaration(AbstractAdmin::class, 'configure', new VoidType()),
@@ -221,7 +219,7 @@ return static function (RectorConfig $rectorConfig): void {
         new AddParamTypeDeclaration(AbstractAdmin::class, 'postRemove', 0, new ObjectWithoutClassType()),
     ]);
 
-    $services->set(AddParamBasedOnParentClassMethodRector::class);
+    $rectorConfig->rule(AddParamBasedOnParentClassMethodRector::class);
 };
 ```
 
