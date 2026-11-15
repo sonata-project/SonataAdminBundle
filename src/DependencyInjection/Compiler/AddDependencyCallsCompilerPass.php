@@ -524,7 +524,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
         ?Definition $parentDefinition = null,
     ): void {
         $arguments = $definition->getArguments();
-        $parentArguments = null !== $parentDefinition ? $parentDefinition->getArguments() : [];
+        $parentArguments = $parentDefinition?->getArguments() ?? [];
 
         foreach ($defaultArguments as $index => $value) {
             $declaredInParent = null !== $parentDefinition && \array_key_exists($index, $parentArguments);
