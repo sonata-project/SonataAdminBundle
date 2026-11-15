@@ -18,3 +18,4 @@ package-lock.json export-ignore
 postcss.config.js export-ignore
 prettier.config.js export-ignore
 webpack.config.js export-ignore
+webpack.config.mjs export-ignore
