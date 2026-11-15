@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.44.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.43.0...4.44.0) - 2026-11-15
+### Removed
+- [[#8401](https://github.com/sonata-project/SonataAdminBundle/pull/8401)] Support for Symfony 7.3 and 8.0 ([@dmaicher](https://github.com/dmaicher))
+- [[#8400](https://github.com/sonata-project/SonataAdminBundle/pull/8400)] Direct dependency on the abandoned `doctrine/common` package ([@andreybolonin](https://github.com/andreybolonin))
+
 ## [4.43.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.42.0...4.43.0) - 2026-06-03
 ### Added
 - [[#8381](https://github.com/sonata-project/SonataAdminBundle/pull/8381)] Support for symfony/stimulus-bundle 3. ([@virtualize](https://github.com/virtualize))
