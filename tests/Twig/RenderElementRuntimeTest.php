@@ -27,6 +27,7 @@ use Sonata\AdminBundle\Tests\Fixtures\StubFilesystemLoader;
 use Sonata\AdminBundle\Tests\Twig\Extension\FakeTemplateRegistryExtension;
 use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
 use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
+use Sonata\AdminBundle\Twig\IconRuntime;
 use Sonata\AdminBundle\Twig\RenderElementRuntime;
 use Sonata\AdminBundle\Twig\XEditableRuntime;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
@@ -112,6 +113,7 @@ final class RenderElementRuntimeTest extends TestCase
             'dropdown_number_groups_per_colums' => 2,
             'form_type' => 'standard',
             'html5_validate' => true,
+            'icon_prefixes' => IconRuntime::DEFAULT_PREFIXES,
             'javascripts' => [],
             'js_debug' => false,
             'list_action_button_content' => 'all',
