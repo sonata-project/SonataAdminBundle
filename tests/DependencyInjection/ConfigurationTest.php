@@ -13,9 +13,11 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\DependencyInjection\Configuration;
 use Sonata\AdminBundle\Tests\Fixtures\Controller\FooAdminController;
+use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
 use Symfony\Component\Config\Definition\Exception\InvalidTypeException;
 use Symfony\Component\Config\Definition\Processor;
 
@@ -36,6 +38,63 @@ final class ConfigurationTest extends TestCase
         static::assertSame('SonataAdminBundle', $config['options']['default_label_catalogue']);
         static::assertNull($config['options']['default_translation_domain']);
         static::assertSame('fas fa-folder', $config['options']['default_icon']);
+        static::assertSame(['fa', 'fas', 'far', 'fab', 'fal', 'fad'], $config['options']['icon_prefixes']);
+    }
+
+    /**
+     * @param list<array<string, mixed>> $configs
+     * @param list<string>               $expected
+     */
+    #[DataProvider('provideIconPrefixesCases')]
+    public function testIconPrefixes(array $configs, array $expected): void
+    {
+        $config = $this->process($configs);
+
+        static::assertIsArray($config['options']);
+        static::assertSame($expected, $config['options']['icon_prefixes']);
+    }
+
+    /**
+     * @return iterable<array{list<array<string, mixed>>, list<string>}>
+     */
+    public static function provideIconPrefixesCases(): iterable
+    {
+        yield 'replaces the default prefixes' => [
+            [['options' => ['icon_prefixes' => ['bi', 'fa-solid']]]],
+            ['bi', 'fa-solid'],
+        ];
+
+        yield 'allows only HTML icons' => [
+            [['options' => ['icon_prefixes' => []]]],
+            [],
+        ];
+
+        yield 'merges several configurations' => [
+            [['options' => ['icon_prefixes' => ['bi']]], ['options' => ['icon_prefixes' => ['fa-solid']]]],
+            ['bi', 'fa-solid'],
+        ];
+    }
+
+    #[DataProvider('provideInvalidIconPrefixCases')]
+    public function testInvalidIconPrefix(string $prefix): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+
+        $this->process([[
+            'options' => [
+                'icon_prefixes' => [$prefix],
+            ],
+        ]]);
+    }
+
+    /**
+     * @return iterable<array{string}>
+     */
+    public static function provideInvalidIconPrefixCases(): iterable
+    {
+        yield [''];
+        yield ['bi bi-house'];
+        yield ['bi '];
     }
 
     public function testBreadcrumbsChildRouteDefaultsToShow(): void

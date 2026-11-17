@@ -133,6 +133,7 @@ final class SonataAdminExtension extends Extension
         $container->setParameter('sonata.admin.configuration.default_label_catalogue', $config['options']['default_label_catalogue']);
         $container->setParameter('sonata.admin.configuration.default_translation_domain', $config['options']['default_translation_domain']);
         $container->setParameter('sonata.admin.configuration.default_icon', $config['options']['default_icon']);
+        $container->setParameter('sonata.admin.configuration.icon_prefixes', $config['options']['icon_prefixes']);
         $container->setParameter('sonata.admin.configuration.breadcrumbs', $config['breadcrumbs']);
 
         if (null !== $config['security']['acl_user_manager']) {
