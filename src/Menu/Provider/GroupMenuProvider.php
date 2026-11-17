@@ -157,6 +157,9 @@ final class GroupMenuProvider implements MenuProviderInterface
                 'translation_domain' => $admin->getTranslationDomain(),
                 'admin' => $admin,
             ];
+            if (isset($item['icon'])) {
+                $options['extras']['icon'] = $item['icon'];
+            }
 
             return $this->menuFactory->createItem($admin->getLabel() ?? '', $options);
         }
@@ -164,14 +167,19 @@ final class GroupMenuProvider implements MenuProviderInterface
         \assert(isset($item['label']));
         \assert(isset($item['route']));
 
+        $extras = [
+            'translation_domain' => $group['translation_domain'],
+            'label_catalogue' => $group['label_catalogue'] ?? '', // NEXT_MAJOR: Remove this line.
+        ];
+        if (isset($item['icon'])) {
+            $extras['icon'] = $item['icon'];
+        }
+
         return $this->menuFactory->createItem($item['label'], [
             'route' => $item['route'],
             'routeParameters' => $item['route_params'],
             'routeAbsolute' => $item['route_absolute'],
-            'extras' => [
-                'translation_domain' => $group['translation_domain'],
-                'label_catalogue' => $group['label_catalogue'] ?? '', // NEXT_MAJOR: Remove this line.
-            ],
+            'extras' => $extras,
         ]);
     }
 }

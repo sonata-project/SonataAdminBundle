@@ -181,6 +181,35 @@ final class ConfigurationTest extends TestCase
         );
     }
 
+    public function testDashboardGroupItemsWithIcons(): void
+    {
+        $config = $this->process([[
+            'dashboard' => [
+                'groups' => [
+                    'bar' => [
+                        'items' => [
+                            ['admin' => 'item1', 'icon' => 'fas fa-newspaper'],
+                            ['label' => 'fooLabel', 'route' => 'fooRoute', 'icon' => '<i class="fas fa-blog"></i>'],
+                            'item2',
+                        ],
+                    ],
+                ],
+            ],
+        ]]);
+
+        static::assertIsArray($config['dashboard']);
+        static::assertIsArray($config['dashboard']['groups']);
+        static::assertIsArray($config['dashboard']['groups']['bar']);
+        $items = $config['dashboard']['groups']['bar']['items'];
+        static::assertIsArray($items);
+        static::assertSame(
+            ['admin' => 'item1', 'icon' => 'fas fa-newspaper', 'roles' => [], 'route_params' => [], 'route_absolute' => false],
+            $items[0]
+        );
+        static::assertSame('<i class="fas fa-blog"></i>', $items[1]['icon']);
+        static::assertArrayNotHasKey('icon', $items[2]);
+    }
+
     public function testDashboardGroupsWithNoRoute(): void
     {
         $this->expectException(\InvalidArgumentException::class);
