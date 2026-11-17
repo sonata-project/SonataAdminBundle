@@ -422,6 +422,24 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         static::assertSame('skin-black', $skin);
     }
 
+    public function testSetNullSkin(): void
+    {
+        $this->container->setParameter('kernel.bundles', []);
+        $this->load([
+            'options' => [
+                'skin' => null,
+            ],
+        ]);
+
+        $options = $this->container->getDefinition('sonata.admin.configuration')->getArgument(2);
+        static::assertIsArray($options);
+
+        $stylesheets = $options['stylesheets'];
+        static::assertSame($this->defaultConfiguration['assets']['stylesheets'], $stylesheets);
+
+        static::assertNull($options['skin']);
+    }
+
     public function testSetInvalidSkin(): void
     {
         $this->expectException(InvalidConfigurationException::class);
