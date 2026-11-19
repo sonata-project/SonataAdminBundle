@@ -46,8 +46,6 @@ export default class extends Controller {
   // eslint-disable-next-line consistent-return
   confirm(event) {
     if (this.shouldConfirm) {
-      this.logChangedFields();
-
       const message = Translation.trans('CONFIRM_EXIT');
       event.returnValue = message;
       return message;
@@ -68,22 +66,6 @@ export default class extends Controller {
     window.removeEventListener('pointerdown', this.refreshSnapshot, true);
     window.removeEventListener('keydown', this.refreshSnapshot, true);
     window.removeEventListener('blur', this.refreshSnapshot);
-  }
-
-  logChangedFields() {
-    if (!Config.param('DEBUG')) {
-      return;
-    }
-
-    const before = new URLSearchParams(this.snapshotValue);
-    const after = new URLSearchParams(this.snapshot);
-    const names = new Set([...before.keys(), ...after.keys()]);
-    const changedFields = [...names].filter(
-      (name) => JSON.stringify(before.getAll(name)) !== JSON.stringify(after.getAll(name))
-    );
-
-    // eslint-disable-next-line no-console
-    console.log('[Sonata.ConfirmExit] Changed fields:', changedFields);
   }
 
   get shouldConfirm() {
