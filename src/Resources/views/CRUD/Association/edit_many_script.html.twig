@@ -331,11 +331,30 @@ This code manages the many-to-[one|many] association field popup
                             type: 'POST',
                             success: function(html) {
                                 jQuery('#field_container_{{ id }}').replaceWith(html);
-                                var newElement = jQuery('#{{ id }} [value="' + data.objectId + '"]');
-                                if (newElement.is("input")) {
-                                    newElement.attr('checked', 'checked');
+                                var field = jQuery('#{{ id }}');
+
+                                if (field.is('input[type="hidden"]')) {
+                                    // sortable multiple choice: the selected ids are stored
+                                    // as a comma separated list in a hidden input
+                                    var objectId = String(data.objectId);
+                                    var selectedIds = field.val() ? field.val().split(',') : [];
+
+                                    if (-1 === selectedIds.indexOf(objectId)) {
+                                        selectedIds.push(objectId);
+                                        field.val(selectedIds.join(','));
+                                    }
+
+                                    // refresh the select2 selection if it is already initialized
+                                    if (field.data('select2')) {
+                                        field.trigger('change');
+                                    }
                                 } else {
-                                    newElement.attr('selected', 'selected');
+                                    var newElement = jQuery('#{{ id }} [value="' + data.objectId + '"]');
+                                    if (newElement.is("input")) {
+                                        newElement.attr('checked', 'checked');
+                                    } else {
+                                        newElement.attr('selected', 'selected');
+                                    }
                                 }
 
                                 jQuery('#field_container_{{ id }}').trigger('sonata-admin-append-form-element');
