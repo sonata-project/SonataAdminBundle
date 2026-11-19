@@ -189,7 +189,7 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                 ];
 
                 $groupDefaults[$resolvedGroupName]['priority'] = max($groupDefaults[$resolvedGroupName]['priority'] ?? 0, $attributes['priority'] ?? 0);
-                $groupDefaults[$resolvedGroupName]['items'][] = [
+                $item = [
                     'admin' => $code,
                     'label' => $attributes['label'] ?? '', // NEXT_MAJOR: Remove this line.
                     'route' => '', // NEXT_MAJOR: Remove this line.
@@ -197,6 +197,11 @@ final class AddDependencyCallsCompilerPass implements CompilerPassInterface
                     'route_absolute' => false,
                     'priority' => $attributes['priority'] ?? 0,
                 ];
+                // The "icon" attribute is the icon of the group; "item_icon" is the one of the menu item.
+                if (isset($attributes['item_icon'])) {
+                    $item['icon'] = $attributes['item_icon'];
+                }
+                $groupDefaults[$resolvedGroupName]['items'][] = $item;
 
                 if (true === $groupDefaults[$resolvedGroupName]['on_top']
                     || true === $onTop && (\count($groupDefaults[$resolvedGroupName]['items']) > 1)) {

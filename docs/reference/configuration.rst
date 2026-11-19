@@ -107,6 +107,7 @@ Full Configuration Options
                         admin: ~
                         label: ~
                         route: ~
+                        icon: ~
                         route_params: []
                     roles: []
             blocks:

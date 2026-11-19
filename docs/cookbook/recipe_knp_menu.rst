@@ -76,6 +76,37 @@ group roles will be checked.
                             label:        Article
                     roles: ['ROLE_ADMIN', 'ROLE_SONATA_ADMIN']
 
+Each item can have an icon in the side menu, like a group. The value is the same as for the icon of a group: CSS
+classes or HTML. Without an icon, the menu shows its default icon for items.
+
+.. code-block:: yaml
+
+    # config/packages/sonata_admin.yaml
+
+    sonata_admin:
+        dashboard:
+            groups:
+                news:
+                    icon: 'fas fa-newspaper'
+                    items:
+                        - admin: sonata.news.admin.post
+                          icon:  'fas fa-pen'
+                        - route: blog_home
+                          label: Blog
+                          icon:  'fas fa-blog'
+
+For an admin that is added to its group by its service tag, the tag attribute ``item_icon`` sets the icon of its
+menu item. The attribute ``icon`` stays the icon of the group:
+
+.. code-block:: yaml
+
+    # config/services.yaml
+
+    sonata.news.admin.post:
+        class: Sonata\NewsBundle\Admin\PostAdmin
+        tags:
+            - { name: sonata.admin, model_class: Sonata\NewsBundle\Entity\Post, manager_type: orm, group: news, label: Post, icon: 'fas fa-newspaper', item_icon: 'fas fa-pen' }
+
 You can also override the template of knp_menu used by sonata. The default
 one is `@SonataAdmin/Menu/sonata_menu.html.twig`:
 

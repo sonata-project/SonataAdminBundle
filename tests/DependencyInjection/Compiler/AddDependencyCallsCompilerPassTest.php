@@ -265,6 +265,61 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         static::assertSame('1 Entry', $firstGroup['items'][0]['label'], 'second entry for group in configuration, first in list');
     }
 
+    public function testProcessItemIconFromTheTag(): void
+    {
+        $this->setUpContainer();
+        $this->addAdminTagAttributes('sonata_post_admin', ['icon' => 'fas fa-folder', 'item_icon' => 'fas fa-pen']);
+
+        $this->extension->load([[]], $this->container);
+        $this->compile();
+
+        $group = $this->getAdminGroups()['sonata_group_one'];
+        static::assertSame('fas fa-folder', $group['icon']);
+        $items = array_column($group['items'], null, 'admin');
+        static::assertSame('fas fa-pen', $items['sonata_post_admin']['icon']);
+        static::assertArrayNotHasKey('icon', $items['sonata_article_admin']);
+    }
+
+    public function testProcessTagIconStaysTheIconOfTheGroup(): void
+    {
+        $this->setUpContainer();
+        $this->addAdminTagAttributes('sonata_post_admin', ['icon' => 'fas fa-folder']);
+
+        $this->extension->load([[]], $this->container);
+        $this->compile();
+
+        $group = $this->getAdminGroups()['sonata_group_one'];
+        static::assertSame('fas fa-folder', $group['icon']);
+        foreach ($group['items'] as $item) {
+            static::assertArrayNotHasKey('icon', $item);
+        }
+    }
+
+    public function testProcessItemIconFromTheConfiguration(): void
+    {
+        $this->setUpContainer();
+
+        $this->extension->load([[
+            'dashboard' => [
+                'groups' => [
+                    'sonata_group_one' => [
+                        'items' => [
+                            ['admin' => 'sonata_post_admin', 'icon' => 'fas fa-pen'],
+                            ['route' => 'blog_name', 'label' => 'Blog', 'icon' => 'fas fa-blog'],
+                            'sonata_article_admin',
+                        ],
+                    ],
+                ],
+            ],
+        ]], $this->container);
+        $this->compile();
+
+        $items = $this->getAdminGroups()['sonata_group_one']['items'];
+        static::assertSame('fas fa-pen', $items[0]['icon']);
+        static::assertSame('fas fa-blog', $items[1]['icon']);
+        static::assertArrayNotHasKey('icon', $items[2]);
+    }
+
     public function testProcessGroupNameAsParameter(): void
     {
         $config = [
@@ -779,6 +834,28 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     protected function registerCompilerPass(ContainerBuilder $container): void
     {
         $container->addCompilerPass(new AddDependencyCallsCompilerPass());
+    }
+
+    /**
+     * @param array<string, mixed> $attributes
+     */
+    private function addAdminTagAttributes(string $id, array $attributes): void
+    {
+        $definition = $this->container->getDefinition($id);
+        $tags = $definition->getTag(TaggedAdminInterface::ADMIN_TAG);
+        $definition->clearTag(TaggedAdminInterface::ADMIN_TAG);
+        $definition->addTag(TaggedAdminInterface::ADMIN_TAG, $attributes + $tags[0]);
+    }
+
+    /**
+     * @return array<string, array{icon: string, items: list<array<string, mixed>>}>
+     */
+    private function getAdminGroups(): array
+    {
+        $groups = $this->container->findDefinition('sonata.admin.pool')->getArgument(2);
+        static::assertIsArray($groups);
+
+        return $groups;
     }
 
     private function setUpContainer(): void

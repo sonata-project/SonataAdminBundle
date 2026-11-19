@@ -248,6 +248,57 @@ final class GroupMenuProviderTest extends TestCase
         static::assertSame('/FooRelativeRoute?baz=qux', $menu['relative_route']->getUri());
     }
 
+    public function testGetMenuProviderWithItemIcons(): void
+    {
+        $this->container->set('sonata_admin_foo_service', $this->getAdminMock());
+
+        $this->checker
+            ->method('isGranted')
+            ->willReturn(true);
+
+        $menu = $this->provider->get('providerFoo', [
+            'name' => 'foo',
+            'group' => [
+                'label' => 'foo',
+                'icon' => '<i class="fas fa-edit"></i>',
+                'translation_domain' => 'SonataAdminBundle',
+                'items' => [
+                    [
+                        'admin' => 'sonata_admin_foo_service',
+                        'route_params' => [],
+                        'route_absolute' => true,
+                        'roles' => [],
+                        'icon' => 'fas fa-pen',
+                    ],
+                    [
+                        'admin' => '',
+                        'label' => 'route_label',
+                        'route' => 'FooRoute',
+                        'route_params' => [],
+                        'route_absolute' => true,
+                        'roles' => [],
+                        'icon' => '<i class="fas fa-blog"></i>',
+                    ],
+                    [
+                        'admin' => '',
+                        'label' => 'relative_route',
+                        'route' => 'FooRelativeRoute',
+                        'route_params' => [],
+                        'route_absolute' => false,
+                        'roles' => [],
+                    ],
+                ],
+                'roles' => [],
+                'keep_open' => false,
+                'on_top' => false,
+            ],
+        ]);
+
+        static::assertSame('fas fa-pen', $menu['foo_admin_label']?->getExtra('icon'));
+        static::assertSame('<i class="fas fa-blog"></i>', $menu['route_label']?->getExtra('icon'));
+        static::assertNull($menu['relative_route']?->getExtra('icon'));
+    }
+
     /**
      * @phpstan-param Group $adminGroups
      */
