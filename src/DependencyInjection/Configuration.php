@@ -16,6 +16,7 @@ namespace Sonata\AdminBundle\DependencyInjection;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\DependencyInjection\Compiler\ExtensionCompilerPass;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
+use Sonata\AdminBundle\Twig\IconRuntime;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 
@@ -42,6 +43,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *     dropdown_number_groups_per_colums: int,
  *     form_type: 'standard'|'horizontal',
  *     html5_validate: bool,
+ *     icon_prefixes: list<string>,
  *     js_debug: bool,
  *     list_action_button_content: 'text'|'icon'|'all',
  *     lock_protection: bool,
@@ -361,6 +363,17 @@ final class Configuration implements ConfigurationInterface
                         ->scalarNode('default_icon')
                             ->defaultValue('fas fa-folder')
                             ->info('Icon used for admin services if one isn\'t provided.')
+                        ->end()
+                        ->arrayNode('icon_prefixes')
+                            ->info('CSS classes an icon may start with. Replace the list to use another icon set, e.g. ["bi"] for Bootstrap Icons; the icons the bundle uses by default (e.g. "default_icon") are Font Awesome icons.')
+                            ->scalarPrototype()
+                                ->cannotBeEmpty()
+                                ->validate()
+                                    ->ifTrue(static fn (mixed $prefix): bool => !\is_string($prefix) || 1 === preg_match('/\s/', $prefix))
+                                    ->thenInvalid('An icon prefix must be a single CSS class, %s given.')
+                                ->end()
+                            ->end()
+                            ->defaultValue(IconRuntime::DEFAULT_PREFIXES)
                         ->end()
                         ->integerNode('dropdown_number_groups_per_colums')->defaultValue(2)->end()
                         ->enumNode('logo_content')

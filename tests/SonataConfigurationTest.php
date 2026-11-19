@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\SonataConfiguration;
+use Sonata\AdminBundle\Twig\IconRuntime;
 
 final class SonataConfigurationTest extends TestCase
 {
@@ -31,6 +32,7 @@ final class SonataConfigurationTest extends TestCase
             'dropdown_number_groups_per_colums' => 2,
             'form_type' => 'standard',
             'html5_validate' => true,
+            'icon_prefixes' => IconRuntime::DEFAULT_PREFIXES,
             'javascripts' => [],
             'js_debug' => false,
             'list_action_button_content' => 'all',

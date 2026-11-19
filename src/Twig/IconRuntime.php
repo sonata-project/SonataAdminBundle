@@ -17,23 +17,31 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 final class IconRuntime implements RuntimeExtensionInterface
 {
+    /**
+     * The Font Awesome style classes.
+     */
+    public const DEFAULT_PREFIXES = ['fa', 'fas', 'far', 'fab', 'fal', 'fad'];
+
+    /**
+     * @param string[] $prefixes CSS classes an icon may start with
+     */
+    public function __construct(
+        private array $prefixes = self::DEFAULT_PREFIXES,
+    ) {
+    }
+
     public function parseIcon(string $icon): string
     {
         if ('' === $icon || str_starts_with($icon, '<')) {
             return $icon;
         }
 
-        if (
-            !str_starts_with($icon, 'fa ')
-            && !str_starts_with($icon, 'fas ')
-            && !str_starts_with($icon, 'far ')
-            && !str_starts_with($icon, 'fab ')
-            && !str_starts_with($icon, 'fal ')
-            && !str_starts_with($icon, 'fad ')
-        ) {
-            throw new \InvalidArgumentException(\sprintf('The icon format "%s" is not supported.', $icon));
+        foreach ($this->prefixes as $prefix) {
+            if (str_starts_with($icon, $prefix.' ')) {
+                return \sprintf('<i class="%s" aria-hidden="true"></i>', $icon);
+            }
         }
 
-        return \sprintf('<i class="%s" aria-hidden="true"></i>', $icon);
+        throw new \InvalidArgumentException(\sprintf('The icon format "%s" is not supported.', $icon));
     }
 }

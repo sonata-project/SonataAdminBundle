@@ -23,6 +23,7 @@ namespace Sonata\AdminBundle;
  *     dropdown_number_groups_per_colums: int,
  *     form_type: 'standard'|'horizontal',
  *     html5_validate: bool,
+ *     icon_prefixes: list<string>,
  *     javascripts: list<string>,
  *     js_debug: bool,
  *     list_action_button_content: 'text'|'icon'|'all',

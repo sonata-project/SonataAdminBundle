@@ -112,6 +112,9 @@ return static function (ContainerConfigurator $containerConfigurator): void {
 
         ->set('sonata.admin.twig.icon_runtime', IconRuntime::class)
             ->tag('twig.runtime')
+            ->args([
+                param('sonata.admin.configuration.icon_prefixes'),
+            ])
 
         // NEXT_MAJOR: Remove the `args()` call.
         ->set('sonata.admin.twig.security_extension', SecurityExtension::class)

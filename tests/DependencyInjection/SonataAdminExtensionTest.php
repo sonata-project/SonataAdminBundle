@@ -107,7 +107,25 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_label_catalogue');
         self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_translation_domain');
         self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_icon');
+        self::assertContainerBuilderHasParameter('sonata.admin.configuration.icon_prefixes', ['fa', 'fas', 'far', 'fab', 'fal', 'fad']);
         self::assertContainerBuilderHasParameter('sonata.admin.configuration.default_controller');
+    }
+
+    public function testIconPrefixesArePassedToTheIconRuntime(): void
+    {
+        $this->container->setParameter('kernel.bundles', []);
+        $this->load([
+            'options' => [
+                'icon_prefixes' => ['bi'],
+            ],
+        ]);
+
+        self::assertContainerBuilderHasParameter('sonata.admin.configuration.icon_prefixes', ['bi']);
+        self::assertContainerBuilderHasServiceDefinitionWithArgument(
+            'sonata.admin.twig.icon_runtime',
+            0,
+            '%sonata.admin.configuration.icon_prefixes%'
+        );
     }
 
     public function testExtraStylesheetsGetAdded(): void

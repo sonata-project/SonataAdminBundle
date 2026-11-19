@@ -88,6 +88,10 @@ Full Configuration Options
             default_group: default
             default_translation_domain: SonataAdminBundle
             default_icon: 'fas fa-folder'
+
+            # CSS classes an icon may start with. Replace the list to use another icon set, e.g. ['bi'] for Bootstrap Icons;
+            # the icons the bundle uses by default (e.g. default_icon) are Font Awesome icons.
+            icon_prefixes: ['fa', 'fas', 'far', 'fab', 'fal', 'fad']
             dropdown_number_groups_per_colums:  2
             logo_content: 'all' # One of "text"; "icon"; "all"
             list_action_button_content: 'all' # One of "text"; "icon"; "all"
