@@ -48,7 +48,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *     logo_content: 'text'|'icon'|'all',
  *     mosaic_background: string,
  *     pager_links: int|null,
- *     skin: 'skin-black'|'skin-black-light'|'skin-blue'|'skin-blue-light'|'skin-green'|'skin-green-light'|'skin-purple'|'skin-purple-light'|'skin-red'|'skin-red-light'|'skin-yellow'|'skin-yellow-light',
+ *     skin: 'skin-black'|'skin-black-light'|'skin-blue'|'skin-blue-light'|'skin-green'|'skin-green-light'|'skin-purple'|'skin-purple-light'|'skin-red'|'skin-red-light'|'skin-yellow'|'skin-yellow-light'|null,
  *     sort_admins: bool,
  *     use_bootlint: bool,
  *     use_icheck: bool,
@@ -307,7 +307,9 @@ final class Configuration implements ConfigurationInterface
                                 'skin-red-light',
                                 'skin-yellow',
                                 'skin-yellow-light',
+                                null,
                             ])
+                            ->info('AdminLTE skin. Set it to null to not load any skin stylesheet, e.g. when a custom theme brings its own styles.')
                         ->end()
                         ->booleanNode('use_select2')->defaultTrue()->end()
                         ->booleanNode('use_icheck')->defaultTrue()->end()

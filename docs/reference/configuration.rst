@@ -75,6 +75,8 @@ Full Configuration Options
             sort_admins: false
             confirm_exit: true
             js_debug: false
+
+            # AdminLTE skin. Set it to null to not load any skin stylesheet, e.g. when a custom theme brings its own styles.
             skin: 'skin-black'
             use_select2: true
             use_icheck: true
