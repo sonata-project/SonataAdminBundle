@@ -2,6 +2,15 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+## [4.45.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.44.0...4.45.0) - 2026-11-19
+### Added
+- [[#8407](https://github.com/sonata-project/SonataAdminBundle/pull/8407)] `icon` option for the items of a dashboard group and `item_icon` attribute of the admin tag, to show an icon for a menu item ([@micbis](https://github.com/micbis))
+- [[#8406](https://github.com/sonata-project/SonataAdminBundle/pull/8406)] `sonata_admin.options.icon_prefixes` option to configure the CSS classes an icon may start with in the `parse_icon` filter ([@micbis](https://github.com/micbis))
+- [[#8405](https://github.com/sonata-project/SonataAdminBundle/pull/8405)] `null` as value of the `sonata_admin.options.skin` option, to not load any AdminLTE skin stylesheet ([@micbis](https://github.com/micbis))
+
+### Fixed
+- [[#8409](https://github.com/sonata-project/SonataAdminBundle/pull/8409)] Confirm exit dialog showing up when the form data was changed by scripts, browser autofill or extensions before the first user interaction ([@micbis](https://github.com/micbis))
+
 ## [4.44.0](https://github.com/sonata-project/SonataAdminBundle/compare/4.43.0...4.44.0) - 2026-11-15
 ### Removed
 - [[#8401](https://github.com/sonata-project/SonataAdminBundle/pull/8401)] Support for Symfony 7.3 and 8.0 ([@dmaicher](https://github.com/dmaicher))
