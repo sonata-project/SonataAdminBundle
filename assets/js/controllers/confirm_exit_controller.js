@@ -23,6 +23,20 @@ export default class extends Controller {
 
   connect() {
     this.snapshotValue = this.snapshot;
+
+    // Until the user interacts with the page, any change of the form data is made by
+    // scripts (late initialized widgets, browser autofill, extensions, ...), not by the
+    // user. Refreshing the snapshot right before the first user interaction prevents
+    // these changes from triggering the confirmation.
+    window.addEventListener('pointerdown', this.refreshSnapshot, true);
+    window.addEventListener('keydown', this.refreshSnapshot, true);
+    // Interactions inside an iframe (e.g. a WYSIWYG editor) are not dispatched to this
+    // window, but moving the focus into the iframe blurs it.
+    window.addEventListener('blur', this.refreshSnapshot);
+  }
+
+  disconnect() {
+    this.stopRefreshingSnapshot();
   }
 
   skip() {
@@ -32,10 +46,44 @@ export default class extends Controller {
   // eslint-disable-next-line consistent-return
   confirm(event) {
     if (this.shouldConfirm) {
+      this.logChangedFields();
+
       const message = Translation.trans('CONFIRM_EXIT');
       event.returnValue = message;
       return message;
     }
+  }
+
+  refreshSnapshot = (event) => {
+    // Ignore events dispatched by scripts, only real user interactions count.
+    if (!event.isTrusted) {
+      return;
+    }
+
+    this.snapshotValue = this.snapshot;
+    this.stopRefreshingSnapshot();
+  };
+
+  stopRefreshingSnapshot() {
+    window.removeEventListener('pointerdown', this.refreshSnapshot, true);
+    window.removeEventListener('keydown', this.refreshSnapshot, true);
+    window.removeEventListener('blur', this.refreshSnapshot);
+  }
+
+  logChangedFields() {
+    if (!Config.param('DEBUG')) {
+      return;
+    }
+
+    const before = new URLSearchParams(this.snapshotValue);
+    const after = new URLSearchParams(this.snapshot);
+    const names = new Set([...before.keys(), ...after.keys()]);
+    const changedFields = [...names].filter(
+      (name) => JSON.stringify(before.getAll(name)) !== JSON.stringify(after.getAll(name))
+    );
+
+    // eslint-disable-next-line no-console
+    console.log('[Sonata.ConfirmExit] Changed fields:', changedFields);
   }
 
   get shouldConfirm() {
