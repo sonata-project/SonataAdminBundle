@@ -46,7 +46,18 @@ final class HelperActionAccessTest extends WebTestCase
         self::assertStatusCode(Response::HTTP_FORBIDDEN, $client);
     }
 
-    public function testShortObjectDescriptionWithListAccess(): void
+    public function testShortObjectDescriptionWithListAccessOnlyIsDenied(): void
+    {
+        $client = self::createClientAs('bar_lister');
+        $client->request(Request::METHOD_GET, '/admin/core/get-short-object-description.json', [
+            '_sonata_admin' => 'sonata_bar_admin',
+            'objectId' => 'test_id',
+        ]);
+
+        self::assertStatusCode(Response::HTTP_FORBIDDEN, $client);
+    }
+
+    public function testShortObjectDescriptionWithShowAccess(): void
     {
         $client = self::createClientAs('bar_viewer');
         $client->request(Request::METHOD_GET, '/admin/core/get-short-object-description.json', [

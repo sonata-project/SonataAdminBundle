@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
-use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
@@ -128,7 +127,6 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->adminFetcher->method('get')->willReturn($this->admin);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('hasAccess')->willReturn(true);
         $this->admin->method('toString')->with($object)->willReturn('bar');
         $this->admin->method('getCode')->willReturn('sonata.post.admin');
         $this->admin->method('getTemplateRegistry')->willReturn($templateRegistry);
@@ -170,7 +168,6 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
         $this->admin->method('id')->with($object)->willReturn('42');
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('hasAccess')->willReturn(true);
         $this->admin->method('toString')->with($object)->willReturn('bar');
 
         $response = ($this->action)($request);
@@ -198,7 +195,6 @@ final class GetShortObjectDescriptionActionTest extends TestCase
             return $object;
         });
 
-        $this->admin->method('hasAccess')->willReturn(true);
         $this->admin->method('toString')->with($object)->willReturn('bar');
 
         ($this->action)($request);
@@ -218,11 +214,13 @@ final class GetShortObjectDescriptionActionTest extends TestCase
             '_format' => 'json',
         ]);
         $this->requestStack->push($request);
+        $object = new \stdClass();
 
         $this->adminFetcher->method('get')->willReturn($this->admin);
 
-        $this->admin->method('getObject')->with(42)->willReturn(new \stdClass());
-        $this->admin->method('hasAccess')->willReturn(false);
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->method('checkAccess')->with('show', $object)
+            ->willThrowException(new AccessDeniedException());
         $this->admin->expects(static::never())->method('toString');
 
         $this->expectException(AccessDeniedException::class);
@@ -230,8 +228,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         ($this->action)($request);
     }
 
-    #[DataProvider('provideGetShortObjectDescriptionActionGrantedByCases')]
-    public function testGetShortObjectDescriptionActionGrantedBy(string $grantedAction): void
+    public function testGetShortObjectDescriptionActionChecksShowAccess(): void
     {
         $request = new Request([
             '_sonata_admin' => 'sonata.post.admin',
@@ -244,47 +241,13 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->adminFetcher->method('get')->willReturn($this->admin);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->method('hasAccess')->willReturnCallback(
-            static fn (string $action): bool => $action === $grantedAction
-        );
+        $this->admin->expects(static::once())->method('checkAccess')->with('show', $object);
         $this->admin->method('id')->with($object)->willReturn('42');
         $this->admin->method('toString')->with($object)->willReturn('bar');
 
         $response = ($this->action)($request);
 
         static::assertSame('{"result":{"id":"42","label":"bar"}}', $response->getContent());
-    }
-
-    /**
-     * @return iterable<array{string}>
-     */
-    public static function provideGetShortObjectDescriptionActionGrantedByCases(): iterable
-    {
-        yield ['list'];
-        yield ['create'];
-        yield ['edit'];
-    }
-
-    public function testGetShortObjectDescriptionActionShowAccessIsNotEnough(): void
-    {
-        $request = new Request([
-            '_sonata_admin' => 'sonata.post.admin',
-            'objectId' => 42,
-            '_format' => 'json',
-        ]);
-        $this->requestStack->push($request);
-
-        $this->adminFetcher->method('get')->willReturn($this->admin);
-
-        $this->admin->method('getObject')->with(42)->willReturn(new \stdClass());
-        $this->admin->method('hasAccess')->willReturnCallback(
-            static fn (string $action): bool => 'show' === $action
-        );
-        $this->admin->expects(static::never())->method('toString');
-
-        $this->expectException(AccessDeniedException::class);
-
-        ($this->action)($request);
     }
 
     public function testGetShortObjectDescriptionActionSubRequestSkipsAccessCheck(): void
@@ -305,7 +268,7 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->adminFetcher->method('get')->willReturn($this->admin);
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
-        $this->admin->expects(static::never())->method('hasAccess');
+        $this->admin->expects(static::never())->method('checkAccess');
         $this->admin->method('toString')->with($object)->willReturn('bar');
         $this->admin->method('getTemplateRegistry')->willReturn($templateRegistry);
 

@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Action;
 
-use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
@@ -78,11 +77,9 @@ final class GetShortObjectDescriptionAction
             }
         }
 
-        if (!$this->isSubRequest($request) && !$this->canDescribe($admin, $object)) {
-            throw new AccessDeniedException(\sprintf(
-                'Access denied to the description of the object with id "%s".',
-                $objectId
-            ));
+        // The action shows details of the object, so direct requests need the show permission on it.
+        if (!$this->isSubRequest($request)) {
+            $admin->checkAccess('show', $object);
         }
 
         if ('json' === BCHelper::getFromRequest($request, '_format')) {
@@ -121,19 +118,5 @@ final class GetShortObjectDescriptionAction
         $mainRequest = $this->requestStack->getMainRequest();
 
         return null !== $mainRequest && $mainRequest !== $request;
-    }
-
-    /**
-     * Direct requests come from the model list widget whenever its value changes: an object was picked
-     * from the list, created in the modal or edited in the modal. The widget only offers each of these
-     * with the matching permission, so these are the only ones that allow reading the description.
-     *
-     * @param AdminInterface<object> $admin
-     */
-    private function canDescribe(AdminInterface $admin, object $object): bool
-    {
-        return $admin->hasAccess('list')
-            || $admin->hasAccess('create')
-            || $admin->hasAccess('edit', $object);
     }
 }
