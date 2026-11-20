@@ -550,7 +550,7 @@ file that was distributed with this source code.
 {% endblock %}
 
 {% block sonata_type_model_list_widget %}
-    <div id="field_container_{{ id }}" class="field-container">
+    <div id="field_container_{{ id }}" class="field-container clearfix">
         <span id="field_widget_{{ id }}" class="field-short-description">
             {% if sonata_admin.value and sonata_admin.field_description.associationadmin.urlSafeIdentifier(sonata_admin.value) is not null %}
                 {{ render(path('sonata_admin_short_object_information', {
