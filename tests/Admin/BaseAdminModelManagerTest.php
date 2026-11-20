@@ -15,8 +15,16 @@ namespace Sonata\AdminBundle\Tests\Admin;
 
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
+use Sonata\AdminBundle\Exception\ModelManagerException;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Sonata\AdminBundle\Security\Acl\Permission\MaskBuilder;
+use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
+use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Security\Handler\SecurityHandlerInterface;
+use Symfony\Component\Security\Acl\Model\MutableAclProviderInterface;
+use Symfony\Component\Security\Acl\Model\ObjectIdentityInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 final class BaseAdminModelManagerTest extends TestCase
 {
@@ -38,6 +46,147 @@ final class BaseAdminModelManagerTest extends TestCase
         $admin->update($t);
         $admin->create($t);
         $admin->delete($t);
+    }
+
+    public function testDeleteRemovesTheAclAfterTheObject(): void
+    {
+        $object = new class {
+            public ?int $id = 42;
+
+            public function getId(): ?int
+            {
+                return $this->id;
+            }
+        };
+
+        $calls = [];
+
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager->expects(static::once())->method('delete')->with($object)
+            ->willReturnCallback(static function () use ($object, &$calls): void {
+                $calls[] = 'delete';
+                // Like Doctrine does for generated identifiers.
+                $object->id = null;
+            });
+
+        $aclProvider = $this->createMock(MutableAclProviderInterface::class);
+        $aclProvider->expects(static::once())->method('deleteAcl')
+            ->willReturnCallback(static function (ObjectIdentityInterface $objectIdentity) use (&$calls): void {
+                static::assertSame('42', $objectIdentity->getIdentifier());
+                $calls[] = 'deleteAcl';
+            });
+
+        $admin = new BaseAdminModelManager_Admin();
+        $admin->setModelManager($modelManager);
+        $admin->setSecurityHandler($this->createAclSecurityHandler($aclProvider));
+
+        $admin->delete($object);
+
+        static::assertSame(['delete', 'deleteAcl'], $calls);
+    }
+
+    public function testDeleteKeepsTheAclWhenTheObjectCannotBeDeleted(): void
+    {
+        $object = new class {
+            public function getId(): int
+            {
+                return 42;
+            }
+        };
+
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager->method('delete')->willThrowException(new ModelManagerException('Foreign key violation'));
+
+        $aclProvider = $this->createMock(MutableAclProviderInterface::class);
+        $aclProvider->expects(static::never())->method('deleteAcl');
+
+        $admin = new BaseAdminModelManager_Admin();
+        $admin->setModelManager($modelManager);
+        $admin->setSecurityHandler($this->createAclSecurityHandler($aclProvider));
+
+        $this->expectException(ModelManagerException::class);
+
+        $admin->delete($object);
+    }
+
+    public function testDeleteUsesTheAclHandlerInterface(): void
+    {
+        $object = new class {
+            public ?int $id = 42;
+
+            public function getId(): ?int
+            {
+                return $this->id;
+            }
+        };
+
+        $calls = [];
+
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager->expects(static::once())->method('delete')
+            ->willReturnCallback(static function () use ($object, &$calls): void {
+                $calls[] = 'delete';
+                $object->id = null;
+            });
+
+        $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
+        $securityHandler->expects(static::never())->method('deleteObjectSecurity');
+        $securityHandler->expects(static::once())->method('deleteAcl')
+            ->willReturnCallback(static function (ObjectIdentityInterface $objectIdentity) use (&$calls): void {
+                static::assertSame('42', $objectIdentity->getIdentifier());
+                $calls[] = 'deleteAcl';
+            });
+
+        $admin = new BaseAdminModelManager_Admin();
+        $admin->setModelManager($modelManager);
+        $admin->setSecurityHandler($securityHandler);
+
+        $admin->delete($object);
+
+        static::assertSame(['delete', 'deleteAcl'], $calls);
+    }
+
+    public function testDeleteCallsOtherSecurityHandlersAfterTheObjectIsDeleted(): void
+    {
+        $object = new \stdClass();
+        $calls = [];
+
+        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
+        $securityHandler->expects(static::once())->method('deleteObjectSecurity')
+            ->willReturnCallback(static function () use (&$calls): void {
+                $calls[] = 'deleteObjectSecurity';
+            });
+
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager->expects(static::once())->method('delete')
+            ->willReturnCallback(static function () use (&$calls): void {
+                $calls[] = 'delete';
+            });
+
+        $admin = new BaseAdminModelManager_Admin();
+        $admin->setModelManager($modelManager);
+        $admin->setSecurityHandler($securityHandler);
+
+        $admin->delete($object);
+
+        static::assertSame(['delete', 'deleteObjectSecurity'], $calls);
+    }
+
+    public function testDeleteKeepsTheSecurityInformationOfOtherHandlersWhenTheObjectCannotBeDeleted(): void
+    {
+        $modelManager = $this->createMock(ModelManagerInterface::class);
+        $modelManager->method('delete')->willThrowException(new ModelManagerException('Foreign key violation'));
+
+        $securityHandler = $this->createMock(SecurityHandlerInterface::class);
+        $securityHandler->expects(static::never())->method('deleteObjectSecurity');
+
+        $admin = new BaseAdminModelManager_Admin();
+        $admin->setModelManager($modelManager);
+        $admin->setSecurityHandler($securityHandler);
+
+        $this->expectException(ModelManagerException::class);
+
+        $admin->delete(new \stdClass());
     }
 
     public function testObject(): void
@@ -88,5 +237,16 @@ final class BaseAdminModelManagerTest extends TestCase
 
         $admin->id(new \stdClass());
         $admin->getNormalizedIdentifier(new \stdClass());
+    }
+
+    private function createAclSecurityHandler(MutableAclProviderInterface $aclProvider): AclSecurityHandler
+    {
+        return new AclSecurityHandler(
+            static::createStub(TokenStorageInterface::class),
+            static::createStub(AuthorizationCheckerInterface::class),
+            $aclProvider,
+            MaskBuilder::class,
+            'ROLE_SUPER_ADMIN'
+        );
     }
 }

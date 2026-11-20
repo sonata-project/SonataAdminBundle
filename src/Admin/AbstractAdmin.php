@@ -45,6 +45,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\Exception\UninitializedPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -447,8 +448,19 @@ abstract class AbstractAdmin extends BaseAbstractAdmin implements AdminInterface
             $extension->preRemove($this, $object);
         }
 
-        $this->getSecurityHandler()->deleteObjectSecurity($this, $object);
-        $this->getModelManager()->delete($object);
+        $securityHandler = $this->getSecurityHandler();
+
+        // The security information is only removed once the object is really gone, so a failing delete
+        // (a foreign key constraint for example) keeps it.
+        if ($securityHandler instanceof AclSecurityHandlerInterface) {
+            // The ACL identity is built from the id, which Doctrine resets once the object is deleted.
+            $objectIdentity = ObjectIdentity::fromDomainObject($object);
+            $this->getModelManager()->delete($object);
+            $securityHandler->deleteAcl($objectIdentity);
+        } else {
+            $this->getModelManager()->delete($object);
+            $securityHandler->deleteObjectSecurity($this, $object);
+        }
 
         $this->postRemove($object);
         foreach ($this->getExtensions() as $extension) {
