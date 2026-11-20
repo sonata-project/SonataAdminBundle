@@ -15,11 +15,15 @@ namespace Sonata\AdminBundle\Tests\Form;
 
 use Sonata\AdminBundle\Form\Extension\Field\Type\FormTypeFieldExtension;
 use Sonata\AdminBundle\Tests\Fixtures\StubTranslator;
+use Symfony\Bridge\Twig\Extension\AssetExtension;
 use Symfony\Bridge\Twig\Extension\FormExtension;
 use Symfony\Bridge\Twig\Extension\HttpKernelExtension;
 use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Bridge\Twig\Extension\TranslationExtension;
 use Symfony\Bridge\Twig\Form\TwigRendererEngine;
+use Symfony\Component\Asset\Package;
+use Symfony\Component\Asset\Packages;
+use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
 use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\Form\FormRendererInterface;
 use Symfony\Component\Form\FormView;
@@ -57,6 +61,7 @@ abstract class AbstractLayoutTestCase extends FormIntegrationTestCase
         $environment->addExtension(new FormExtension());
         $environment->addExtension(new RoutingExtension(static::createStub(UrlGeneratorInterface::class)));
         $environment->addExtension(new HttpKernelExtension());
+        $environment->addExtension(new AssetExtension(new Packages(new Package(new EmptyVersionStrategy()))));
         $environment->addExtension(new StimulusTwigExtension(new StimulusHelper(null)));
 
         $rendererEngine = new TwigRendererEngine([
