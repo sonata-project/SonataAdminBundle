@@ -13,14 +13,17 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Action;
 
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Environment;
 
 final class GetShortObjectDescriptionAction
@@ -28,11 +31,22 @@ final class GetShortObjectDescriptionAction
     public function __construct(
         private Environment $twig,
         private AdminFetcherInterface $adminFetcher,
+        private ?RequestStack $requestStack = null,
     ) {
+        // NEXT_MAJOR: Remove the deprecation and make the argument mandatory.
+        if (null === $requestStack) {
+            @trigger_error(\sprintf(
+                'Not passing an instance of %s as argument 3 of "%s()" is deprecated since'
+                .' sonata-project/admin-bundle 4.x and will throw an error in 5.0.',
+                RequestStack::class,
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
     }
 
     /**
      * @throws NotFoundHttpException
+     * @throws AccessDeniedException
      */
     public function __invoke(Request $request): Response
     {
@@ -64,6 +78,13 @@ final class GetShortObjectDescriptionAction
             }
         }
 
+        if (!$this->isSubRequest($request) && !$this->canDescribe($admin, $object)) {
+            throw new AccessDeniedException(\sprintf(
+                'Access denied to the description of the object with id "%s".',
+                $objectId
+            ));
+        }
+
         if ('json' === BCHelper::getFromRequest($request, '_format')) {
             return new JsonResponse(['result' => [
                 'id' => $admin->id($object),
@@ -83,5 +104,37 @@ final class GetShortObjectDescriptionAction
         }
 
         throw new BadRequestHttpException('Invalid format');
+    }
+
+    /**
+     * The model list and the one-to-one/many-to-one association widgets render the description of
+     * the current value through a sub request. The user was already allowed to see the form that
+     * contains the value, so these sub requests must keep working even without any permission on
+     * the admin of the associated object.
+     */
+    private function isSubRequest(Request $request): bool
+    {
+        if (null === $this->requestStack) {
+            return false;
+        }
+
+        $mainRequest = $this->requestStack->getMainRequest();
+
+        return null !== $mainRequest && $mainRequest !== $request;
+    }
+
+    /**
+     * Direct requests come from the widgets once an object was picked from the list, created or
+     * edited in the modal. Each of these steps needs one of the permissions below, so anybody
+     * without them has no business reading the description of an arbitrary object.
+     *
+     * @param AdminInterface<object> $admin
+     */
+    private function canDescribe(AdminInterface $admin, object $object): bool
+    {
+        return $admin->hasAccess('show', $object)
+            || $admin->hasAccess('edit', $object)
+            || $admin->hasAccess('list')
+            || $admin->hasAccess('create');
     }
 }

@@ -30,10 +30,30 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             'in_memory' => [
                 'memory' => [
                     'users' => [
+                        // May work with the foo admin, but has no permission on the bar admin.
+                        'foo_editor' => [
+                            'password' => 'foo_editor',
+                            'roles' => [
+                                'ROLE_SONATA_FOO_ADMIN_LIST',
+                                'ROLE_SONATA_FOO_ADMIN_VIEW',
+                                'ROLE_SONATA_FOO_ADMIN_CREATE',
+                                'ROLE_SONATA_FOO_ADMIN_EDIT',
+                            ],
+                        ],
                         // May see the history of bars, except the one denied by LockedBarVoter.
                         'bar_auditor' => [
                             'password' => 'bar_auditor',
                             'roles' => ['ROLE_SONATA_BAR_ADMIN_HISTORY'],
+                        ],
+                        // May only view bar objects, and has no permission on the foo admin.
+                        'bar_viewer' => [
+                            'password' => 'bar_viewer',
+                            'roles' => ['ROLE_SONATA_BAR_ADMIN_VIEW'],
+                        ],
+                        // May only list the bar admin.
+                        'bar_lister' => [
+                            'password' => 'bar_lister',
+                            'roles' => ['ROLE_SONATA_BAR_ADMIN_LIST'],
                         ],
                     ],
                 ],
