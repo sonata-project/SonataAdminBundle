@@ -519,6 +519,7 @@ This code manages the many-to-[one|many] association field popup
         Admin.shared_setup(field_dialog_{{ id }});
     }
 
+    {# NEXT_MAJOR: Remove this block, the ModelListType widget uses the "sonata-model-list" Stimulus controller instead. #}
     {% if sonata_admin.edit == 'list' %}
         {#
             This code is used to defined the "list" popup
