@@ -29,6 +29,10 @@ final class BarRepository implements RepositoryInterface
     ) {
         $this->elements = [
             'test_id' => new Bar('test_id', $fooRepository->byId('test_id'), $bazRepository->byId('test_id')),
+            // Belongs to foo "test_id" as well, the "role_security" environment denies its history.
+            'locked' => new Bar('locked', $fooRepository->byId('test_id')),
+            // Does not belong to any foo.
+            'orphan' => new Bar('orphan'),
         ];
     }
 
