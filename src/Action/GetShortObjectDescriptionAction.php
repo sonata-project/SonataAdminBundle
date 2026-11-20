@@ -124,17 +124,16 @@ final class GetShortObjectDescriptionAction
     }
 
     /**
-     * Direct requests come from the widgets once an object was picked from the list, created or
-     * edited in the modal. Each of these steps needs one of the permissions below, so anybody
-     * without them has no business reading the description of an arbitrary object.
+     * Direct requests come from the model list widget whenever its value changes: an object was picked
+     * from the list, created in the modal or edited in the modal. The widget only offers each of these
+     * with the matching permission, so these are the only ones that allow reading the description.
      *
      * @param AdminInterface<object> $admin
      */
     private function canDescribe(AdminInterface $admin, object $object): bool
     {
-        return $admin->hasAccess('show', $object)
-            || $admin->hasAccess('edit', $object)
-            || $admin->hasAccess('list')
-            || $admin->hasAccess('create');
+        return $admin->hasAccess('list')
+            || $admin->hasAccess('create')
+            || $admin->hasAccess('edit', $object);
     }
 }
