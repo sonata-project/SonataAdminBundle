@@ -314,6 +314,8 @@ final class ConfigurationTest extends TestCase
         $config = $this->process([[]]);
 
         static::assertIsArray($config['security']);
+        // NEXT_MAJOR: Expect 'sonata.admin.security.handler.role'.
+        static::assertNull($config['security']['handler']);
         static::assertSame('ROLE_SONATA_ADMIN', $config['security']['role_admin']);
         static::assertSame('ROLE_SUPER_ADMIN', $config['security']['role_super_admin']);
     }

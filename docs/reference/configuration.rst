@@ -19,11 +19,21 @@ Configuration options
     sonata_admin:
         security:
 
-            # the default value
+            # use this service if you want role based security
             handler: sonata.admin.security.handler.role
 
             # use this service if you want ACL
             handler: sonata.admin.security.handler.acl
+
+            # use this service if the firewall is the only protection you need,
+            # every admin action is granted to everybody passing it
+            handler: sonata.admin.security.handler.noop
+
+.. note::
+
+    If the ``handler`` option is not set, ``sonata.admin.security.handler.noop`` is used.
+    Relying on this is deprecated since sonata-project/admin-bundle 4.x, the default value
+    will change to ``sonata.admin.security.handler.role`` in 5.0.
 
 Full Configuration Options
 --------------------------
@@ -33,9 +43,9 @@ Full Configuration Options
     # Default configuration for extension with alias: "sonata_admin"
     sonata_admin:
         security:
-            handler: sonata.admin.security.handler.noop
+            handler: null # falls back to sonata.admin.security.handler.noop, see the note above
 
-            role_admin: ROLE_ADMIN
+            role_admin: ROLE_SONATA_ADMIN
             role_super_admin: ROLE_SUPER_ADMIN
 
             information:

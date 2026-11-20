@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace Sonata\AdminBundle\Tests\DependencyInjection;
 
 use Matthias\SymfonyDependencyInjectionTest\PhpUnit\AbstractExtensionTestCase;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use Sonata\AdminBundle\Admin\BreadcrumbsBuilderInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\Bridge\Exporter\AdminExporter;
@@ -483,9 +484,45 @@ final class SonataAdminExtensionTest extends AbstractExtensionTestCase
         static::assertTrue($autoconfiguredInstancesOf[AuditReaderInterface::class]->hasTag(AddAuditReadersCompilerPass::AUDIT_READER_TAG));
     }
 
+    // NEXT_MAJOR: Remove this test.
+    #[IgnoreDeprecations]
+    public function testNotSettingTheSecurityHandlerIsDeprecated(): void
+    {
+        $this->expectUserDeprecationMessage(
+            'Not setting the "sonata_admin.security.handler" option is deprecated since'
+            .' sonata-project/admin-bundle 4.x. It falls back to "sonata.admin.security.handler.noop", which'
+            .' grants every admin action to everybody passing the firewall, and will default to'
+            .' "sonata.admin.security.handler.role" in 5.0. Set the option explicitly to keep the current behavior.'
+        );
+
+        $this->container->setParameter('kernel.bundles', []);
+        $this->container->registerExtension(new SonataAdminExtension());
+        $this->container->loadFromExtension('sonata_admin', []);
+        $this->compile();
+
+        self::assertContainerBuilderHasAlias('sonata.admin.security.handler', 'sonata.admin.security.handler.noop');
+    }
+
+    public function testSecurityHandlerIsUsedWhenSet(): void
+    {
+        $this->load(['security' => ['handler' => 'sonata.admin.security.handler.role']]);
+
+        self::assertContainerBuilderHasAlias('sonata.admin.security.handler', 'sonata.admin.security.handler.role');
+    }
+
     protected function getContainerExtensions(): array
     {
         return [new SonataAdminExtension()];
+    }
+
+    /**
+     * NEXT_MAJOR: Remove this method, it only avoids the deprecation about the missing security handler.
+     *
+     * @return array<string, mixed>
+     */
+    protected function getMinimalConfiguration(): array
+    {
+        return ['security' => ['handler' => 'sonata.admin.security.handler.noop']];
     }
 
     /**

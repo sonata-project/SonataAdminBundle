@@ -37,6 +37,9 @@ use Symfony\Component\DependencyInjection\Reference;
 #[CoversMethod(AddDependencyCallsCompilerPass::class, 'process')]
 final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestCase
 {
+    // NEXT_MAJOR: Remove this constant, it only avoids the deprecation about the missing security handler.
+    private const SECURITY_CONFIG = ['security' => ['handler' => 'sonata.admin.security.handler.noop']];
+
     private SonataAdminExtension $extension;
 
     protected function setUp(): void
@@ -250,7 +253,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $config['options']['sort_admins'] = true;
         unset($config['dashboard']['groups']);
 
-        $this->extension->load([$config], $this->container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $this->container);
 
         $this->compile();
 
@@ -270,7 +273,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->setUpContainer();
         $this->addAdminTagAttributes('sonata_post_admin', ['icon' => 'fas fa-folder', 'item_icon' => 'fas fa-pen']);
 
-        $this->extension->load([[]], $this->container);
+        $this->extension->load([self::SECURITY_CONFIG], $this->container);
         $this->compile();
 
         $group = $this->getAdminGroups()['sonata_group_one'];
@@ -285,7 +288,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $this->setUpContainer();
         $this->addAdminTagAttributes('sonata_post_admin', ['icon' => 'fas fa-folder']);
 
-        $this->extension->load([[]], $this->container);
+        $this->extension->load([self::SECURITY_CONFIG], $this->container);
         $this->compile();
 
         $group = $this->getAdminGroups()['sonata_group_one'];
@@ -299,7 +302,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     {
         $this->setUpContainer();
 
-        $this->extension->load([[
+        $this->extension->load([self::SECURITY_CONFIG, [
             'dashboard' => [
                 'groups' => [
                     'sonata_group_one' => [
@@ -335,7 +338,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $this->allowToResolveParameters();
 
-        $this->extension->load([$config], $this->container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $this->container);
         $this->compile();
 
         $adminGroups = $this->container->findDefinition('sonata.admin.pool')->getArgument(2);
@@ -410,7 +413,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             'route_params' => ['articleId' => 3],
         ];
 
-        $this->extension->load([$config], $this->container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $this->container);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('You can\'t use "on_top" option with multiple same name groups.');
@@ -442,7 +445,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             'roles' => ['ROLE_ONE'],
         ];
 
-        $this->extension->load([$config], $this->container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $this->container);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('You can\'t use "on_top" option with multiple same name groups.');
@@ -457,7 +460,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $config = $this->getConfig();
         $config['dashboard']['groups'] = [];
 
-        $this->extension->load([$config], $this->container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $this->container);
 
         $this->container
             ->register('sonata_report_one_admin')
@@ -477,7 +480,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $config = $this->getConfig();
         $config['dashboard']['groups'] = [];
 
-        $this->extension->load([$config], $this->container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $this->container);
 
         $this->container
             ->register('sonata_report_two_admin')
@@ -498,7 +501,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $config = $this->getConfig();
         $config['dashboard']['groups'] = [];
 
-        $this->extension->load([$config], $this->container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $this->container);
 
         $this->container
             ->register('sonata_document_one_admin')
@@ -527,7 +530,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $config = $this->getConfig();
         $config['dashboard']['groups'] = [];
 
-        $this->extension->load([$config], $this->container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $this->container);
 
         $this->container
             ->register('sonata_abstract_post_admin')
@@ -592,7 +595,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
             ->setClass(CustomAdmin::class)
             ->addTag(TaggedAdminInterface::ADMIN_TAG, ['model_class' => ReportTwo::class, 'group' => 'sonata_report_two_group', 'manager_type' => 'orm']);
 
-        $this->extension->load([$config], $this->container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $this->container);
 
         $this->compile();
 
@@ -614,7 +617,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
 
         $config = $this->getConfig();
 
-        $this->extension->load([$config], $this->container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $this->container);
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('The class Sonata\AdminBundle\Tests\DependencyInjection\Compiler\PostEntity has two admins sonata_post_admin and sonata_post_admin_2 with the "default" attribute set to true. Only one is allowed.');
@@ -633,7 +636,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $config = $this->getConfig();
         $config['dashboard']['groups'] = [];
 
-        $this->extension->load([$config], $this->container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $this->container);
 
         $priorities = [200, 100, 450, 3000, 620, 330];
         foreach ($priorities as $priority) {
@@ -666,7 +669,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $config = $this->getConfig();
         $config['dashboard']['groups'] = [];
 
-        $this->extension->load([$config], $this->container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $this->container);
 
         $this->container
             ->register('sonata_admin_1')
@@ -714,7 +717,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
         $config['options']['sort_admins'] = true;
         unset($config['dashboard']['groups']);
 
-        $this->extension->load([$config], $this->container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $this->container);
         $this->container->getDefinition('sonata.admin.pool')->setPublic(true);
 
         $this->compile();
@@ -775,6 +778,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
      * @return array<string, mixed>
      *
      * @phpstan-return array{
+     *     security: array{handler: string},
      *     dashboard: array{groups: array<string, array<string, mixed>>},
      *     default_admin_services: array{pager_type: string},
      *     templates: array{filter_theme: list<string>, form_theme: list<string>},
@@ -783,6 +787,7 @@ final class AddDependencyCallsCompilerPassTest extends AbstractCompilerPassTestC
     protected function getConfig(): array
     {
         return [
+            ...self::SECURITY_CONFIG,
             'dashboard' => [
                 'groups' => [
                     'sonata_group_one' => [
