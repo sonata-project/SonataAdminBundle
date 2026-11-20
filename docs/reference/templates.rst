@@ -167,12 +167,13 @@ can specify the templates to use in the ``Admin`` service definition:
             class: App\Admin\PostAdmin
             calls:
                 - [setTemplate, ['edit', 'PostAdmin/edit.html.twig']]
+                - [setTemplate, ['edit', 'PostAdmin/custom_theme/edit.html.twig', 'custom_theme']]
             tags:
                 - { name: sonata.admin, model_class: App\Entity\Post, manager_type: orm, group: 'Content', label: 'Post' }
 
 .. note::
 
-    A ``setTemplates(array $templates)`` (notice the plural) method also
+    A ``setTemplates(array $templates, string $theme = 'default')`` (notice the plural) method also
     exists, that allows you to set multiple templates at once.
 
 Changes made using the ``setTemplate()`` and ``setTemplates()`` methods
@@ -184,7 +185,7 @@ Finding configured templates
 ----------------------------
 Each ``Admin`` has a ``TemplateRegistry`` service connected to it that holds
 the templates registered through the configuration above. Through the method
-``getTemplate($name)`` of that class, you can access the templates set for
+``getTemplate($name, $theme = 'default')`` of that class, you can access the templates set for
 that ``Admin``. The ``TemplateRegistry`` is available through ``$this->getTemplateRegistry()``
 within the ``Admin``. Using the service container the template registries can
 be accessed outside an ``Admin``. Use the ``Admin`` code + ``.template_registry``
@@ -194,13 +195,13 @@ as the service ID (i.e. "app.admin.post" uses the Template Registry
 The ``TemplateRegistry`` service that holds the global templates can be accessed
 using the service ID "sonata.admin.global_template_registry".
 
-Within Twig templates, you can use the ``get_admin_template($name, $adminCode)``
+Within Twig templates, you can use the ``get_admin_template($name, $adminCode, $theme = 'default')``
 function to access the templates of the current ``Admin``, or the
-``get_global_template($name)`` function to access global templates.
+``get_global_template($name, $theme = 'default')`` function to access global templates.
 
 .. code-block:: html+twig
 
-    {% extends get_admin_template('base_list_field', admin.code) %}
+    {% extends get_admin_template('base_list_field', admin.code, 'default') %}
 
     {% block field %}
         {# ... #}
