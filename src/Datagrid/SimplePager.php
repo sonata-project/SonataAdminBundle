@@ -124,9 +124,14 @@ final class SimplePager extends Pager
 
     public function isDeterministic(): bool
     {
-        // The pager only fetches a limited window of results ahead, so `countResults()`
-        // is a lower bound as long as there are further pages. Once we reached the last
-        // page the window was not saturated and the count is exact.
-        return $this->isLastPage();
+        if (null === $this->thresholdCount) {
+            return true;
+        }
+
+        // The pager fetches a limited window of results ahead. The count is only a lower bound
+        // when this window is saturated, otherwise all the remaining results have been fetched.
+        $windowSize = $this->getMaxPerPage() * max(1, $this->threshold) + 1;
+
+        return $this->thresholdCount < $windowSize;
     }
 }

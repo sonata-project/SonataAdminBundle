@@ -61,8 +61,22 @@ final class SimplePagerTest extends TestCase
 
         static::assertSame(2, $this->pager->getLastPage());
 
-        // We're not knowing exactly the result number, at least 13 (the result found)
+        // The window (21) was not saturated, so 13 is the exact result number.
         static::assertSame(13, $this->pager->countResults());
+        static::assertTrue($this->pager->isDeterministic());
+    }
+
+    public function testInitSaturatedWindow(): void
+    {
+        $this->proxyQuery->expects(static::once())
+            ->method('execute')
+            ->willReturn(new ArrayCollection(array_fill(0, 21, new \stdClass())));
+
+        $this->pager->setQuery($this->proxyQuery);
+        $this->pager->init();
+
+        // We're not knowing exactly the result number, at least 21 (the result found)
+        static::assertSame(21, $this->pager->countResults());
         static::assertFalse($this->pager->isDeterministic());
     }
 

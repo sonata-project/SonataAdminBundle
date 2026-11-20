@@ -12,7 +12,7 @@ file that was distributed with this source code.
 {% extends '@SonataAdmin/Pager/base_results.html.twig' %}
 
 {% block num_results %}
-    {% if admin.datagrid.pager.lastPage != admin.datagrid.pager.page %}
+    {% if not sonata_pager_deterministic(admin.datagrid.pager) %}
         {{ 'list_results_count_prefix'|trans({}, 'SonataAdminBundle') }}
     {% endif %}
     {% trans with {'%count%': admin.datagrid.pager.countResults()} from 'SonataAdminBundle' %}list_results_count{% endtrans %}
@@ -22,7 +22,7 @@ file that was distributed with this source code.
 {% block num_pages %}
     {{ admin.datagrid.pager.page }}
     /
-    {% if admin.datagrid.pager.lastPage != admin.datagrid.pager.page %}
+    {% if not sonata_pager_deterministic(admin.datagrid.pager) %}
         ?
     {% else %}
         {{ admin.datagrid.pager.lastpage }}
