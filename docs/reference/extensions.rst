@@ -196,6 +196,45 @@ the methods `addExtension` and `removeExtension`::
         }
     }
 
+.. _extension_action_hooks:
+
+Action hooks
+------------
+
+The list, create, edit, delete and show actions of the ``CRUDController`` call the hooks
+``preList()``, ``preCreate()``, ``preEdit()``, ``preDelete()`` and ``preShow()`` of each extension.
+They are called after the access check and after the controller's own hook of the same name.
+Returning a response stops the action and sends that response instead, returning ``null`` lets
+the action continue. The first response wins, so if the controller or an extension with a higher
+priority returns one, the remaining extensions are not called.
+
+``preEdit()`` and ``preDelete()`` are called both when the form or the confirmation is displayed
+and when it is submitted. Batch actions and inline editing in the list don't go through these
+actions, use ``preBatchAction()`` and ``preUpdate()`` there.
+
+As an example, an extension that sends archived objects to the show page instead of the edit page::
+
+    namespace App\Admin\Extension;
+
+    use App\Entity\ArchivableInterface;
+    use Sonata\AdminBundle\Admin\AbstractAdminExtension;
+    use Sonata\AdminBundle\Admin\AdminInterface;
+    use Symfony\Component\HttpFoundation\RedirectResponse;
+    use Symfony\Component\HttpFoundation\Request;
+    use Symfony\Component\HttpFoundation\Response;
+
+    final class ArchivedAdminExtension extends AbstractAdminExtension
+    {
+        public function preEdit(AdminInterface $admin, Request $request, object $object): ?Response
+        {
+            if (!$object instanceof ArchivableInterface || !$object->isArchived()) {
+                return null;
+            }
+
+            return new RedirectResponse($admin->generateObjectUrl('show', $object));
+        }
+    }
+
 .. _Reorder fields:
 
 Reorder fields

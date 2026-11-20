@@ -20,15 +20,27 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
  *
  * NEXT_MAJOR: Uncomment the actual definition of below methods inside the interface and remove these annotations.
  *
- * @method void preBatchAction(AdminInterface $admin, string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements)
+ * @method void          preBatchAction(AdminInterface $admin, string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements)
+ * @method Response|null preList(AdminInterface $admin, Request $request)
+ * @method Response|null preCreate(AdminInterface $admin, Request $request, object $object)
+ * @method Response|null preEdit(AdminInterface $admin, Request $request, object $object)
+ * @method Response|null preDelete(AdminInterface $admin, Request $request, object $object)
+ * @method Response|null preShow(AdminInterface $admin, Request $request, object $object)
  *
- * @phpstan-method void preBatchAction(AdminInterface<T> $admin, string $actionName, ProxyQueryInterface<T> $query, array<mixed> &$idx, bool $allElements)
+ * @phpstan-method void          preBatchAction(AdminInterface<T> $admin, string $actionName, ProxyQueryInterface<T> $query, array<mixed> &$idx, bool $allElements)
+ * @phpstan-method Response|null preList(AdminInterface<T> $admin, Request $request)
+ * @phpstan-method Response|null preCreate(AdminInterface<T> $admin, Request $request, T $object)
+ * @phpstan-method Response|null preEdit(AdminInterface<T> $admin, Request $request, T $object)
+ * @phpstan-method Response|null preDelete(AdminInterface<T> $admin, Request $request, T $object)
+ * @phpstan-method Response|null preShow(AdminInterface<T> $admin, Request $request, T $object)
  *
  * @phpstan-template T of object
  */
@@ -142,6 +154,51 @@ interface AdminExtensionInterface
     // * @phpstan-param ProxyQueryInterface<T> $query
     // */
     // public function preBatchAction(AdminInterface $admin, string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements): void;
+
+    // NEXT_MAJOR: Uncomment the method definitions
+    // /**
+    // * Called by the list action after the access check. Returning a response stops the action and
+    // * sends that response instead.
+    // *
+    // * @phpstan-param AdminInterface<T> $admin
+    // */
+    // public function preList(AdminInterface $admin, Request $request): ?Response;
+    //
+    // /**
+    // * Called by the create action after the access check. Returning a response stops the action and
+    // * sends that response instead.
+    // *
+    // * @phpstan-param AdminInterface<T> $admin
+    // * @phpstan-param T $object
+    // */
+    // public function preCreate(AdminInterface $admin, Request $request, object $object): ?Response;
+    //
+    // /**
+    // * Called by the edit action after the access check, for showing and for submitting the form.
+    // * Returning a response stops the action and sends that response instead.
+    // *
+    // * @phpstan-param AdminInterface<T> $admin
+    // * @phpstan-param T $object
+    // */
+    // public function preEdit(AdminInterface $admin, Request $request, object $object): ?Response;
+    //
+    // /**
+    // * Called by the delete action after the access check, for the confirmation and for the delete
+    // * itself. Returning a response stops the action and sends that response instead.
+    // *
+    // * @phpstan-param AdminInterface<T> $admin
+    // * @phpstan-param T $object
+    // */
+    // public function preDelete(AdminInterface $admin, Request $request, object $object): ?Response;
+    //
+    // /**
+    // * Called by the show action after the access check. Returning a response stops the action and
+    // * sends that response instead.
+    // *
+    // * @phpstan-param AdminInterface<T> $admin
+    // * @phpstan-param T $object
+    // */
+    // public function preShow(AdminInterface $admin, Request $request, object $object): ?Response;
 
     /**
      * Get a chance to modify export fields.

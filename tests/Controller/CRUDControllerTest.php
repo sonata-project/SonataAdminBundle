@@ -19,6 +19,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use Sonata\AdminBundle\Admin\AbstractAdminExtension;
+use Sonata\AdminBundle\Admin\AdminExtensionInterface;
 use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Admin\Pool;
 use Sonata\AdminBundle\BCLayer\BCHelper;
@@ -2368,6 +2370,173 @@ final class CRUDControllerTest extends TestCase
         static::assertSame('preCreate called: 123456', $response->getContent());
     }
 
+    public function testPreListFromExtension(): void
+    {
+        $this->admin->expects(static::once())
+            ->method('checkAccess')
+            ->with(static::equalTo('list'));
+
+        $this->admin
+            ->method('getExtensions')
+            ->willReturn([$this->createPreHookExtension('preList', [$this->admin, $this->request], 'preList from extension')]);
+
+        $response = $this->controller->listAction($this->request);
+
+        static::assertSame('preList from extension', $response->getContent());
+    }
+
+    public function testPreCreateFromExtension(): void
+    {
+        $object = new Entity(123456);
+
+        $this->admin->expects(static::once())
+            ->method('checkAccess')
+            ->with(static::equalTo('create'));
+
+        $this->admin
+            ->method('getClass')
+            ->willReturn(Entity::class);
+
+        $this->admin
+            ->method('getNewInstance')
+            ->willReturn($object);
+
+        $this->admin
+            ->method('getExtensions')
+            ->willReturn([$this->createPreHookExtension('preCreate', [$this->admin, $this->request, $object], 'preCreate from extension')]);
+
+        $response = $this->controller->createAction($this->request);
+
+        static::assertSame('preCreate from extension', $response->getContent());
+    }
+
+    public function testPreEditFromExtension(): void
+    {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
+        $object = new Entity(123456);
+
+        $this->admin
+            ->method('getObject')
+            ->willReturn($object);
+
+        $this->admin->expects(static::once())
+            ->method('checkAccess')
+            ->with(static::equalTo('edit'), $object);
+
+        $this->admin
+            ->method('getExtensions')
+            ->willReturn([$this->createPreHookExtension('preEdit', [$this->admin, $this->request, $object], 'preEdit from extension')]);
+
+        $this->admin->expects(static::never())->method('getForm');
+
+        $response = $this->controller->editAction($this->request);
+
+        static::assertSame('preEdit from extension', $response->getContent());
+    }
+
+    public function testPreDeleteFromExtension(): void
+    {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
+        $object = new Entity(123456);
+
+        $this->admin
+            ->method('getObject')
+            ->willReturn($object);
+
+        $this->admin->expects(static::once())
+            ->method('checkAccess')
+            ->with(static::equalTo('delete'), $object);
+
+        $this->admin
+            ->method('getExtensions')
+            ->willReturn([$this->createPreHookExtension('preDelete', [$this->admin, $this->request, $object], 'preDelete from extension')]);
+
+        $this->admin->expects(static::never())->method('delete');
+
+        $response = $this->controller->deleteAction($this->request);
+
+        static::assertSame('preDelete from extension', $response->getContent());
+    }
+
+    public function testPreShowFromExtension(): void
+    {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
+        $object = new Entity(123456);
+
+        $this->admin
+            ->method('getObject')
+            ->willReturn($object);
+
+        $this->admin->expects(static::once())
+            ->method('checkAccess')
+            ->with(static::equalTo('show'), $object);
+
+        $this->admin
+            ->method('getExtensions')
+            ->willReturn([$this->createPreHookExtension('preShow', [$this->admin, $this->request, $object], 'preShow from extension')]);
+
+        $response = $this->controller->showAction($this->request);
+
+        static::assertSame('preShow from extension', $response->getContent());
+    }
+
+    public function testPreEditOfTheControllerComesBeforeExtensions(): void
+    {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
+        $object = new Entity(123456);
+
+        $this->admin
+            ->method('getObject')
+            ->willReturn($object);
+
+        $extension = $this->createMock(AbstractAdminExtension::class);
+        $extension->expects(static::never())->method('preEdit');
+
+        $this->admin
+            ->method('getExtensions')
+            ->willReturn([$extension]);
+
+        $controller = new PreCRUDController();
+        $controller->setContainer($this->container);
+        $controller->configureAdmin($this->request);
+
+        $response = $controller->editAction($this->request);
+
+        static::assertSame('preEdit called: 123456', $response->getContent());
+    }
+
+    public function testPreEditSkipsExtensionsWithoutTheHookOrWithoutResponse(): void
+    {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
+        $object = new Entity(123456);
+
+        $this->admin
+            ->method('getObject')
+            ->willReturn($object);
+
+        $notCalled = $this->createMock(AbstractAdminExtension::class);
+        $notCalled->expects(static::never())->method('preEdit');
+
+        $this->admin
+            ->method('getExtensions')
+            ->willReturn([
+                // Implements the interface only, so it has no preEdit() method yet.
+                static::createStub(AdminExtensionInterface::class),
+                $this->createPreHookExtension('preEdit', [$this->admin, $this->request, $object], null),
+                $this->createPreHookExtension('preEdit', [$this->admin, $this->request, $object], 'second extension'),
+                $notCalled,
+            ]);
+
+        $response = $this->controller->editAction($this->request);
+
+        static::assertSame('second extension', $response->getContent());
+    }
+
     public function testCreateAction(): void
     {
         $this->admin->expects(static::once())
@@ -4680,5 +4849,21 @@ final class CRUDControllerTest extends TestCase
                 })
             )
             ->willReturn($exists ? static function (): void {} : false);
+    }
+
+    /**
+     * @param list<mixed> $expectedArguments
+     *
+     * @return AbstractAdminExtension<object>&MockObject
+     */
+    private function createPreHookExtension(string $hook, array $expectedArguments, ?string $content): AbstractAdminExtension
+    {
+        $extension = $this->createMock(AbstractAdminExtension::class);
+        $extension->expects(static::once())
+            ->method($hook)
+            ->with(...$expectedArguments)
+            ->willReturn(null === $content ? null : new Response($content));
+
+        return $extension;
     }
 }

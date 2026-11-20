@@ -125,6 +125,7 @@ the number of duplicated code from SonataAdmin:
 
 These methods are called after checking the access rights and after retrieving the object
 from database. You can use them if you need to redirect user to some other page under certain conditions.
+Admin extensions can use the same hooks without a custom controller, see :ref:`extension_action_hooks`.
 
 Fields Definition
 -----------------

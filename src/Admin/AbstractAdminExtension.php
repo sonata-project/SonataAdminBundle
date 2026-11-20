@@ -20,6 +20,8 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -106,6 +108,55 @@ abstract class AbstractAdminExtension implements AdminExtensionInterface
      */
     public function preBatchAction(AdminInterface $admin, string $actionName, ProxyQueryInterface $query, array &$idx, bool $allElements): void
     {
+    }
+
+    // NEXT_MAJOR: Remove the PHPDoc block as the interface will then specify the types
+    /**
+     * @phpstan-param AdminInterface<T> $admin
+     */
+    public function preList(AdminInterface $admin, Request $request): ?Response
+    {
+        return null;
+    }
+
+    // NEXT_MAJOR: Remove the PHPDoc block as the interface will then specify the types
+    /**
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
+     */
+    public function preCreate(AdminInterface $admin, Request $request, object $object): ?Response
+    {
+        return null;
+    }
+
+    // NEXT_MAJOR: Remove the PHPDoc block as the interface will then specify the types
+    /**
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
+     */
+    public function preEdit(AdminInterface $admin, Request $request, object $object): ?Response
+    {
+        return null;
+    }
+
+    // NEXT_MAJOR: Remove the PHPDoc block as the interface will then specify the types
+    /**
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
+     */
+    public function preDelete(AdminInterface $admin, Request $request, object $object): ?Response
+    {
+        return null;
+    }
+
+    // NEXT_MAJOR: Remove the PHPDoc block as the interface will then specify the types
+    /**
+     * @phpstan-param AdminInterface<T> $admin
+     * @phpstan-param T $object
+     */
+    public function preShow(AdminInterface $admin, Request $request, object $object): ?Response
+    {
+        return null;
     }
 
     public function configureExportFields(AdminInterface $admin, array $fields): array

@@ -112,6 +112,16 @@ class CRUDController extends AbstractController
             return $preResponse;
         }
 
+        foreach ($this->admin->getExtensions() as $extension) {
+            // NEXT_MAJOR: Remove the if-statement around the call to `$extension->preList()`
+            if (method_exists($extension, 'preList')) {
+                $preResponse = $extension->preList($this->admin, $request);
+                if (null !== $preResponse) {
+                    return $preResponse;
+                }
+            }
+        }
+
         $listMode = BCHelper::getFromRequest($request, '_list_mode');
         if (\is_string($listMode) && \array_key_exists($listMode, $this->admin->getListModes())) {
             $this->admin->setListMode($listMode);
@@ -196,6 +206,16 @@ class CRUDController extends AbstractController
         $preResponse = $this->preDelete($request, $object);
         if (null !== $preResponse) {
             return $preResponse;
+        }
+
+        foreach ($this->admin->getExtensions() as $extension) {
+            // NEXT_MAJOR: Remove the if-statement around the call to `$extension->preDelete()`
+            if (method_exists($extension, 'preDelete')) {
+                $preResponse = $extension->preDelete($this->admin, $request, $object);
+                if (null !== $preResponse) {
+                    return $preResponse;
+                }
+            }
         }
 
         if (\in_array($request->getMethod(), [Request::METHOD_POST, Request::METHOD_DELETE], true)) {
@@ -284,6 +304,17 @@ class CRUDController extends AbstractController
         if (null !== $preResponse) {
             return $preResponse;
         }
+
+        foreach ($this->admin->getExtensions() as $extension) {
+            // NEXT_MAJOR: Remove the if-statement around the call to `$extension->preEdit()`
+            if (method_exists($extension, 'preEdit')) {
+                $preResponse = $extension->preEdit($this->admin, $request, $existingObject);
+                if (null !== $preResponse) {
+                    return $preResponse;
+                }
+            }
+        }
+
         $this->admin->setSubject($existingObject);
         $objectId = $this->admin->getNormalizedIdentifier($existingObject);
         \assert(null !== $objectId);
@@ -555,6 +586,16 @@ class CRUDController extends AbstractController
             return $preResponse;
         }
 
+        foreach ($this->admin->getExtensions() as $extension) {
+            // NEXT_MAJOR: Remove the if-statement around the call to `$extension->preCreate()`
+            if (method_exists($extension, 'preCreate')) {
+                $preResponse = $extension->preCreate($this->admin, $request, $newObject);
+                if (null !== $preResponse) {
+                    return $preResponse;
+                }
+            }
+        }
+
         $this->admin->setSubject($newObject);
 
         $form = $this->admin->getForm();
@@ -652,6 +693,16 @@ class CRUDController extends AbstractController
         $preResponse = $this->preShow($request, $object);
         if (null !== $preResponse) {
             return $preResponse;
+        }
+
+        foreach ($this->admin->getExtensions() as $extension) {
+            // NEXT_MAJOR: Remove the if-statement around the call to `$extension->preShow()`
+            if (method_exists($extension, 'preShow')) {
+                $preResponse = $extension->preShow($this->admin, $request, $object);
+                if (null !== $preResponse) {
+                    return $preResponse;
+                }
+            }
         }
 
         $this->admin->setSubject($object);
