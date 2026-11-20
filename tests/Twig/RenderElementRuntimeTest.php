@@ -1276,6 +1276,33 @@ final class RenderElementRuntimeTest extends TestCase
                 ['allowed_schemes' => ['skype']],
             ],
             [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> javascript:alert(1) </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                new class implements \Stringable {
+                    public function __toString(): string
+                    {
+                        return 'javascript:alert(1)';
+                    }
+                },
+                [],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                <a href="reports/export?time=12:00">reports/export?time=12:00</a>
+                </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                'reports/export?time=12:00',
+                [],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                <a href="files/name:part">files/name:part</a>
+                </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                'files/name:part',
+                [],
+            ],
+            [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="http://example.com">http://example.com</a>
                 </td>',
@@ -1802,6 +1829,23 @@ final class RenderElementRuntimeTest extends TestCase
             '<th>Data</th> <td><a href="tel:+41441234567">tel:+41441234567</a></td>',
             FieldDescriptionInterface::TYPE_URL,
             'tel:+41441234567',
+            ['safe' => false],
+        ];
+        yield [
+            '<th>Data</th> <td>javascript:alert(1)</td>',
+            FieldDescriptionInterface::TYPE_URL,
+            new class implements \Stringable {
+                public function __toString(): string
+                {
+                    return 'javascript:alert(1)';
+                }
+            },
+            ['safe' => false],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="reports/export?time=12:00">reports/export?time=12:00</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'reports/export?time=12:00',
             ['safe' => false],
         ];
         yield [
