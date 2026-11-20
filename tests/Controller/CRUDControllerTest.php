@@ -1422,6 +1422,63 @@ final class CRUDControllerTest extends TestCase
         static::assertSame('list', $response->getTargetUrl());
     }
 
+    public function testDeleteActionLockException(): void
+    {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
+        $object = new \stdClass();
+
+        $this->admin
+            ->method('getObject')
+            ->willReturn($object);
+
+        $this->admin
+            ->method('toString')
+            ->with($object)
+            ->willReturn('foo');
+
+        $this->admin->expects(static::once())
+            ->method('delete')
+            ->willThrowException(new LockException());
+
+        // Unlike model manager errors, a locked object is not rethrown in debug mode and not logged.
+        $this->parameterBag->set('kernel.debug', true);
+        $this->logger->expects(static::never())->method('error');
+
+        $this->expectTranslate('flash_delete_error', ['%name%' => 'foo'], 'SonataAdminBundle');
+
+        $this->request->setMethod(Request::METHOD_DELETE);
+        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+
+        $response = $this->controller->deleteAction($this->request);
+
+        static::assertInstanceOf(RedirectResponse::class, $response);
+        static::assertSame(['flash_delete_error'], $this->session->getFlashBag()->get('sonata_flash_error'));
+        static::assertSame('list', $response->getTargetUrl());
+    }
+
+    public function testDeleteActionAjaxLockException(): void
+    {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+
+        $this->admin
+            ->method('getObject')
+            ->willReturn(new \stdClass());
+
+        $this->admin->expects(static::once())
+            ->method('delete')
+            ->willThrowException(new LockException());
+
+        $this->request->setMethod(Request::METHOD_DELETE);
+        $this->request->request->set('_sonata_csrf_token', 'csrf-token-123_sonata.delete');
+        $this->request->headers->set('X-Requested-With', 'XMLHttpRequest');
+
+        $response = $this->controller->deleteAction($this->request);
+
+        static::assertSame(json_encode(['result' => 'error']), $response->getContent());
+        static::assertSame([], $this->session->getFlashBag()->all());
+    }
+
     public function testDeleteActionWithModelManagerExceptionCustomError(): void
     {
         $this->request->attributes->set($this->admin->getIdParameter(), 21);

@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Action;
 
 use Sonata\AdminBundle\BCLayer\BCHelper;
 use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
+use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformerResolverInterface;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
@@ -162,7 +163,12 @@ final class SetObjectFieldValueAction
         }
 
         \assert(\is_object($object));
-        $admin->update($object);
+
+        try {
+            $admin->update($object);
+        } catch (LockException) {
+            return new JsonResponse('The object is locked or was modified in the meantime.', Response::HTTP_CONFLICT);
+        }
 
         // render the widget
         $content = $this->renderElementRuntime->renderListElement($this->twig, $rootObject, $fieldDescription);

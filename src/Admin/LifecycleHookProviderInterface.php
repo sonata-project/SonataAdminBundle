@@ -45,6 +45,7 @@ interface LifecycleHookProviderInterface
 
     /**
      * @throws ModelManagerThrowable
+     * @throws LockException
      *
      * @phpstan-param T $object
      */

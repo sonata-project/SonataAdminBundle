@@ -19,6 +19,7 @@ use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Action\SetObjectFieldValueAction;
 use Sonata\AdminBundle\Admin\AdminInterface;
+use Sonata\AdminBundle\Exception\LockException;
 use Sonata\AdminBundle\FieldDescription\FieldDescriptionInterface;
 use Sonata\AdminBundle\Form\DataTransformerResolver;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
@@ -271,6 +272,37 @@ final class SetObjectFieldValueActionTest extends TestCase
 
         static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
         static::assertSame(json_encode("error1\nerror2"), $response->getContent());
+    }
+
+    public function testSetObjectFieldValueActionWhenTheObjectIsLocked(): void
+    {
+        $object = new Foo();
+        $request = new Request([
+            '_sonata_admin' => 'sonata.post.admin',
+            'objectId' => 42,
+            'field' => 'enabled',
+            'value' => 1,
+            'context' => 'list',
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
+
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
+        $this->admin->method('hasListFieldDescription')->with('enabled')->willReturn(true);
+        $this->admin->method('getListFieldDescription')->with('enabled')->willReturn($fieldDescription);
+        $this->admin->expects(static::once())->method('update')->with($object)->willThrowException(new LockException());
+        $this->validator->method('validate')->willReturn(new ConstraintViolationList([]));
+        $fieldDescription->method('getOption')->willReturnMap([
+            ['data_transformer', null, null],
+            ['editable', null, true],
+        ]);
+        $fieldDescription->method('getType')->willReturn('boolean');
+
+        $response = ($this->action)($request);
+
+        static::assertSame(Response::HTTP_CONFLICT, $response->getStatusCode());
+        static::assertSame(json_encode('The object is locked or was modified in the meantime.'), $response->getContent());
     }
 
     public function testSetObjectFieldEditableMultipleValue(): void
