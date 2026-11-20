@@ -260,10 +260,31 @@ final class GetShortObjectDescriptionActionTest extends TestCase
      */
     public static function provideGetShortObjectDescriptionActionGrantedByCases(): iterable
     {
-        yield ['show'];
-        yield ['edit'];
         yield ['list'];
         yield ['create'];
+        yield ['edit'];
+    }
+
+    public function testGetShortObjectDescriptionActionShowAccessIsNotEnough(): void
+    {
+        $request = new Request([
+            '_sonata_admin' => 'sonata.post.admin',
+            'objectId' => 42,
+            '_format' => 'json',
+        ]);
+        $this->requestStack->push($request);
+
+        $this->adminFetcher->method('get')->willReturn($this->admin);
+
+        $this->admin->method('getObject')->with(42)->willReturn(new \stdClass());
+        $this->admin->method('hasAccess')->willReturnCallback(
+            static fn (string $action): bool => 'show' === $action
+        );
+        $this->admin->expects(static::never())->method('toString');
+
+        $this->expectException(AccessDeniedException::class);
+
+        ($this->action)($request);
     }
 
     public function testGetShortObjectDescriptionActionSubRequestSkipsAccessCheck(): void
