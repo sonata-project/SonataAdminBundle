@@ -53,6 +53,7 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
         private $property,
         private bool $multiple = false,
         ?callable $toStringCallback = null,
+        private bool $strict = false,
     ) {
         if ('' === $property) {
             throw new InvalidArgumentException('The property must be non empty.');
@@ -87,7 +88,19 @@ final class ModelToIdPropertyTransformer implements DataTransformerInterface
                 throw new UnexpectedTypeException($value, 'int|string');
             }
 
-            return $this->modelManager->find($this->className, $value);
+            $model = $this->modelManager->find($this->className, $value);
+
+            // Without strict, an unknown identifier silently clears the association. Multiple values are
+            // always checked by the ModelsToArrayTransformer below.
+            if (null === $model && $this->strict) {
+                throw new TransformationFailedException(\sprintf(
+                    'Unable to find a model of class "%s" with the identifier "%s".',
+                    $this->className,
+                    $value
+                ));
+            }
+
+            return $model;
         }
 
         if (!\is_array($value)) {

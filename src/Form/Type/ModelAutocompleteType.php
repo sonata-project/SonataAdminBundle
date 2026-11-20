@@ -38,7 +38,14 @@ final class ModelAutocompleteType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addViewTransformer(new ModelToIdPropertyTransformer($options['model_manager'], $options['class'], $options['property'], $options['multiple'], $options['to_string_callback']), true);
+        $builder->addViewTransformer(new ModelToIdPropertyTransformer(
+            $options['model_manager'],
+            $options['class'],
+            $options['property'],
+            $options['multiple'],
+            $options['to_string_callback'],
+            $options['strict']
+        ), true);
 
         $builder->setAttribute('property', $options['property']);
         $builder->setAttribute('callback', $options['callback']);
@@ -106,6 +113,13 @@ final class ModelAutocompleteType extends AbstractType
                 ? $options['btn_translation_domain']
                 : $options['btn_catalogue'];
         $view->vars['btn_catalogue'] = $options['btn_catalogue'];
+
+        // When the submitted id could not be transformed (see the strict option), Symfony keeps the
+        // submitted string as view data. The widget expects the array of ids and labels returned by the
+        // transformer, and there is nothing to show for an unknown id anyway, so render it empty.
+        if (null !== $form->getTransformationFailure() && !\is_array($view->vars['value'])) {
+            $view->vars['value'] = [];
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -147,6 +161,7 @@ final class ModelAutocompleteType extends AbstractType
 
             // security
             'target_admin_access_action' => 'list',
+            'strict' => false,
 
             // CSS classes
             'container_css_class' => '',
@@ -165,6 +180,7 @@ final class ModelAutocompleteType extends AbstractType
         $resolver->setAllowedTypes('model_manager', ModelManagerInterface::class);
         $resolver->setAllowedTypes('class', 'string');
         $resolver->setAllowedTypes('property', ['string', 'array']);
+        $resolver->setAllowedTypes('strict', 'bool');
         $resolver->setDeprecated(
             'quiet_millis',
             'sonata-project/admin-bundle',

@@ -31,18 +31,20 @@ final class ModelReferenceType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addModelTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
+        $builder->addModelTransformer(new ModelToIdTransformer($options['model_manager'], $options['class'], $options['strict']));
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'compound' => false,
+            'strict' => false,
         ]);
 
         $resolver->setRequired(['model_manager', 'class']);
         $resolver->setAllowedTypes('model_manager', ModelManagerInterface::class);
         $resolver->setAllowedTypes('class', 'string');
+        $resolver->setAllowedTypes('strict', 'bool');
     }
 
     /**

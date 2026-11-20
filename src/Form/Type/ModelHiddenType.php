@@ -34,7 +34,7 @@ final class ModelHiddenType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']), true);
+            ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class'], $options['strict']), true);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -43,11 +43,13 @@ final class ModelHiddenType extends AbstractType
             'attr' => [
                 'hidden' => true,
             ],
+            'strict' => false,
         ]);
 
         $resolver->setRequired(['model_manager', 'class']);
         $resolver->setAllowedTypes('model_manager', ModelManagerInterface::class);
         $resolver->setAllowedTypes('class', 'string');
+        $resolver->setAllowedTypes('strict', 'bool');
     }
 
     /**
