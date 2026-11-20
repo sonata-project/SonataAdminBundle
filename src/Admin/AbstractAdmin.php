@@ -32,6 +32,7 @@ use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
+use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Util\Instantiator;
@@ -45,6 +46,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PropertyAccess\Exception\UninitializedPropertyException;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface as RoutingUrlGeneratorInterface;
+use Symfony\Component\Security\Acl\Domain\ObjectIdentity;
 use Symfony\Component\Security\Acl\Model\DomainObjectInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -447,8 +449,20 @@ abstract class AbstractAdmin extends BaseAbstractAdmin implements AdminInterface
             $extension->preRemove($this, $object);
         }
 
-        $this->getSecurityHandler()->deleteObjectSecurity($this, $object);
-        $this->getModelManager()->delete($object);
+        $securityHandler = $this->getSecurityHandler();
+
+        if ($securityHandler instanceof AclSecurityHandler) {
+            // Only remove the ACL once the object is really gone. Otherwise a failing delete, because
+            // of a foreign key constraint for example, leaves the object without its ACL. Generated
+            // identifiers are usually reset after the delete, so the object identity is resolved
+            // before, the same way AclSecurityHandler::deleteObjectSecurity() does it.
+            $objectIdentity = ObjectIdentity::fromDomainObject($object);
+            $this->getModelManager()->delete($object);
+            $securityHandler->deleteAcl($objectIdentity);
+        } else {
+            $securityHandler->deleteObjectSecurity($this, $object);
+            $this->getModelManager()->delete($object);
+        }
 
         $this->postRemove($object);
         foreach ($this->getExtensions() as $extension) {
