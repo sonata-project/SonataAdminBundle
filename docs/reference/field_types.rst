@@ -33,6 +33,7 @@ Fieldtype                                           Description
 
 Theses types accept an ``editable`` option to edit the value from within the list action.
 This is currently limited to scalar types (text, integer, url...) and choice types with association field.
+When a choice field has a ``choices`` option, only these values are accepted.
 
 .. note::
 
