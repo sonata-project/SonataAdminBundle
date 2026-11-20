@@ -37,14 +37,26 @@ The security part is managed by a ``SecurityHandler``, the bundle comes with 3 h
 - ``sonata.admin.security.handler.noop``: always returns true, can be used
   with the Symfony firewall
 
-The default value is ``sonata.admin.security.handler.noop``, if you want to
-change the default value you can set the ``security_handler`` to
-``sonata.admin.security.handler.acl`` or ``sonata.admin.security.handler.role``.
+Choose the handler with the ``sonata_admin.security.handler`` option:
+
+.. code-block:: yaml
+
+    # config/packages/sonata_admin.yaml
+
+    sonata_admin:
+        security:
+            handler: sonata.admin.security.handler.role
+
+If the option is not set, ``sonata.admin.security.handler.noop`` is used, which
+grants every admin action to everybody passing the firewall. Relying on this is
+deprecated since sonata-project/admin-bundle 4.x, the default value will change to
+``sonata.admin.security.handler.role`` in 5.0. Set the option explicitly, also if
+you want to keep the noop handler.
 
 To quickly secure an admin the role security can be used. It allows to specify
 the actions a user can do with the admin. The ACL security system is more advanced
 and allows to secure the objects. For people using the previous ACL
-implementation, you can switch the ``security_handler`` to the role security handler.
+implementation, you can switch the ``sonata_admin.security.handler`` option to the role security handler.
 
 Configuration
 ^^^^^^^^^^^^^

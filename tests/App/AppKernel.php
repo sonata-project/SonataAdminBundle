@@ -101,6 +101,10 @@ final class AppKernel extends Kernel
             'providers' => ['in_memory' => ['memory' => null]],
         ]);
 
+        $containerBuilder->loadFromExtension('sonata_admin', [
+            'security' => ['handler' => 'sonata.admin.security.handler.noop'],
+        ]);
+
         $containerBuilder->loadFromExtension('twig', [
             'default_path' => \sprintf('%s/templates', $this->getProjectDir()),
             'strict_variables' => true,

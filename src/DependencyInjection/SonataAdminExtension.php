@@ -143,6 +143,19 @@ final class SonataAdminExtension extends Extension
             $container->setAlias(AdminAclUserManagerInterface::class, 'sonata.admin.security.acl_user_manager');
         }
 
+        // NEXT_MAJOR: Remove this block, the default value of the option will be used instead.
+        if (null === $config['security']['handler']) {
+            @trigger_error(
+                'Not setting the "sonata_admin.security.handler" option is deprecated since'
+                .' sonata-project/admin-bundle 4.x. It falls back to "sonata.admin.security.handler.noop", which'
+                .' grants every admin action to everybody passing the firewall, and will default to'
+                .' "sonata.admin.security.handler.role" in 5.0. Set the option explicitly to keep the current behavior.',
+                \E_USER_DEPRECATED
+            );
+
+            $config['security']['handler'] = 'sonata.admin.security.handler.noop';
+        }
+
         $container->setAlias('sonata.admin.security.handler', $config['security']['handler']);
 
         switch ($config['security']['handler']) {

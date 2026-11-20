@@ -1,6 +1,24 @@
 UPGRADE 4.x
 ===========
 
+UPGRADE FROM 4.45 to 4.46
+=========================
+
+## Deprecated relying on the implicit noop security handler
+
+Not setting `sonata_admin.security.handler` is deprecated. It still falls back to
+`sonata.admin.security.handler.noop`, which grants every admin action to everybody passing the
+firewall, but the default value will change to `sonata.admin.security.handler.role` in 5.0.
+
+Set the option explicitly, also if you want to keep the current behavior:
+
+```yaml
+# config/packages/sonata_admin.yaml
+sonata_admin:
+    security:
+        handler: sonata.admin.security.handler.noop
+```
+
 UPGRADE FROM 4.41 to 4.42
 =========================
 

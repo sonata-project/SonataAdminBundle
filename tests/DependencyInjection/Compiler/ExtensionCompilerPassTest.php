@@ -48,6 +48,9 @@ use Twig\Environment;
 #[CoversMethod(ExtensionCompilerPass::class, 'process')]
 final class ExtensionCompilerPassTest extends TestCase
 {
+    // NEXT_MAJOR: Remove this constant, it only avoids the deprecation about the missing security handler.
+    private const SECURITY_CONFIG = ['security' => ['handler' => 'sonata.admin.security.handler.noop']];
+
     private SonataAdminExtension $extension;
 
     /**
@@ -69,7 +72,7 @@ final class ExtensionCompilerPassTest extends TestCase
 
     public function testAdminExtensionLoad(): void
     {
-        $this->extension->load([], $container = $this->getContainer());
+        $this->extension->load([self::SECURITY_CONFIG], $container = $this->getContainer());
 
         static::assertTrue($container->hasParameter(\sprintf('%s.extension.map', $this->root)));
         static::assertIsArray($extensionMap = $container->getParameter(\sprintf('%s.extension.map', $this->root)));
@@ -79,7 +82,7 @@ final class ExtensionCompilerPassTest extends TestCase
 
     public function testFlattenEmptyExtensionConfiguration(): void
     {
-        $this->extension->load([], $container = $this->getContainer());
+        $this->extension->load([self::SECURITY_CONFIG], $container = $this->getContainer());
         $extensionMap = $container->getParameter(\sprintf('%s.extension.map', $this->root));
 
         $method = new \ReflectionMethod(
@@ -108,7 +111,7 @@ final class ExtensionCompilerPassTest extends TestCase
     public function testFlattenExtensionConfiguration(): void
     {
         $config = $this->getConfig();
-        $this->extension->load([$config], $container = $this->getContainer());
+        $this->extension->load([self::SECURITY_CONFIG, $config], $container = $this->getContainer());
         $extensionMap = $container->getParameter(\sprintf('%s.extension.map', $this->root));
 
         $method = new \ReflectionMethod(
@@ -186,7 +189,7 @@ final class ExtensionCompilerPassTest extends TestCase
         ];
 
         $container = $this->getContainer();
-        $this->extension->load([$config], $container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $container);
 
         $extensionsPass = new ExtensionCompilerPass();
         $extensionsPass->process($container);
@@ -206,7 +209,7 @@ final class ExtensionCompilerPassTest extends TestCase
         ];
 
         $container = $this->getContainer();
-        $this->extension->load([$config], $container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $container);
 
         $extensionsPass = new ExtensionCompilerPass();
         $extensionsPass->process($container);
@@ -333,7 +336,7 @@ final class ExtensionCompilerPassTest extends TestCase
         ];
 
         $container = $this->getContainer();
-        $this->extension->load([$config], $container);
+        $this->extension->load([self::SECURITY_CONFIG, $config], $container);
 
         $extensionsPass = new ExtensionCompilerPass();
         $extensionsPass->process($container);
@@ -346,6 +349,7 @@ final class ExtensionCompilerPassTest extends TestCase
     protected function getConfig(): array
     {
         return [
+            ...self::SECURITY_CONFIG,
             'extensions' => [
                 'sonata_extension_global' => [
                     'global' => true,

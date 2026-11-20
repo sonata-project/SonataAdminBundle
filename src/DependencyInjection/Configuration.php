@@ -123,7 +123,7 @@ use Symfony\Component\Config\Definition\ConfigurationInterface;
  *         admin_permissions: list<string>,
  *         information: array<string, list<string>>,
  *         object_permissions: list<string>,
- *         handler: string,
+ *         handler: string|null,
  *         role_admin: string,
  *         role_super_admin: string,
  *     },
@@ -199,7 +199,14 @@ final class Configuration implements ConfigurationInterface
                     ->fixXmlConfig('admin_permission')
                     ->fixXmlConfig('object_permission')
                     ->children()
-                        ->scalarNode('handler')->defaultValue('sonata.admin.security.handler.noop')->end()
+                        // NEXT_MAJOR: Change the default value to 'sonata.admin.security.handler.role'.
+                        ->scalarNode('handler')
+                            ->defaultNull()
+                            ->info(
+                                'Not setting it is deprecated. It falls back to "sonata.admin.security.handler.noop",'
+                                .' which grants every action to everybody passing the firewall.'
+                            )
+                        ->end()
                         ->arrayNode('information')
                             ->useAttributeAsKey('id')
                             ->prototype('array')
