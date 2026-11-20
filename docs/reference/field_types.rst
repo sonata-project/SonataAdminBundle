@@ -270,6 +270,7 @@ Option                                  Description
 **route.parameters**                    array of route parameters (e.g. ``['type' => 'example', 'display' => 'full']``)
 **route.absolute**                      boolean value, create absolute or relative url address based on ``route.name`` and  ``route.parameters`` (default ``false``)
 **route.identifier_parameter_name**     parameter added to ``route.parameters``, its value is an object identifier (e.g. 'id') to create dynamic links based on rendered objects.
+**allowed_schemes**                     schemes a value may use to be rendered as link when neither ``url`` nor ``route`` is set (default ``['http', 'https', 'ftp', 'mailto', 'tel']``)
 ======================================  ==================================================================
 
 .. code-block:: php
@@ -324,6 +325,10 @@ Option                                  Description
 .. note::
 
     Do not use ``FieldDescriptionInterface::TYPE_URL`` type with ``addIdentifier()`` method, because it will create invalid nested URLs.
+
+When the value itself is used as link target, it is only rendered as link if it is a relative
+url or uses one of the ``allowed_schemes``. Other values, for example ``javascript:alert(1)``,
+are rendered as plain text, because they would run in the admin when clicked.
 
 ``FieldDescriptionInterface::TYPE_HTML``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
