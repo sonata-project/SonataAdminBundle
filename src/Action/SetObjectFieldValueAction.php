@@ -132,6 +132,10 @@ final class SetObjectFieldValueAction
         if ('' === $value) {
             $this->propertyAccessor->setValue($object, $propertyPath, null);
         } else {
+            if (!$this->isAvailableChoice($fieldDescription, $value)) {
+                return new JsonResponse('The value is not one of the available choices.', Response::HTTP_BAD_REQUEST);
+            }
+
             $dataTransformer = $this->resolver->resolve($fieldDescription, $admin->getModelManager());
 
             if ($dataTransformer instanceof DataTransformerInterface) {
@@ -161,12 +165,53 @@ final class SetObjectFieldValueAction
             return new JsonResponse(implode("\n", $messages), Response::HTTP_BAD_REQUEST);
         }
 
-        \assert(\is_object($object));
-        $admin->update($object);
+        // With a nested property path, $object is the related object that was changed. The admin, its
+        // extensions and the persistence events still expect the object managed by this admin.
+        $admin->update($rootObject);
 
         // render the widget
         $content = $this->renderElementRuntime->renderListElement($this->twig, $rootObject, $fieldDescription);
 
         return new JsonResponse($content, Response::HTTP_OK);
+    }
+
+    /**
+     * The list only offers the configured choices, so the submitted value has to be one of them too.
+     * Fields without a choices option, like associations, are left to their data transformer.
+     */
+    private function isAvailableChoice(FieldDescriptionInterface $fieldDescription, mixed $value): bool
+    {
+        if (!\in_array($fieldDescription->getType(), [FieldDescriptionInterface::TYPE_CHOICE, FieldDescriptionInterface::TYPE_ENUM], true)) {
+            return true;
+        }
+
+        $choices = $fieldDescription->getOption('choices');
+        if (!\is_array($choices) || [] === $choices) {
+            return true;
+        }
+
+        // Read the values the same way XEditableRuntime::getXEditableChoices() renders them.
+        $availableValues = [];
+        foreach ($choices as $key => $choice) {
+            if (\is_array($choice)) {
+                $choice = $choice['value'] ?? null;
+            } elseif ($choice instanceof \BackedEnum) {
+                $choice = $choice->value;
+            } else {
+                $choice = $key;
+            }
+
+            if (\is_scalar($choice)) {
+                $availableValues[] = (string) $choice;
+            }
+        }
+
+        foreach (\is_array($value) ? $value : [$value] as $item) {
+            if (!\is_scalar($item) || !\in_array((string) $item, $availableValues, true)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

@@ -273,6 +273,106 @@ final class SetObjectFieldValueActionTest extends TestCase
         static::assertSame(json_encode("error1\nerror2"), $response->getContent());
     }
 
+    public function testSetObjectFieldValueActionUpdatesTheRootObjectOfANestedField(): void
+    {
+        $bar = new Bar();
+        $object = new Baz();
+        $object->setBar($bar);
+        $request = new Request([
+            '_sonata_admin' => 'sonata.post.admin',
+            'objectId' => 42,
+            'field' => 'bar.enabled',
+            'value' => 1,
+            'context' => 'list',
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
+
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
+        $this->admin->method('hasListFieldDescription')->with('bar.enabled')->willReturn(true);
+        $this->admin->method('getListFieldDescription')->with('bar.enabled')->willReturn($fieldDescription);
+        $this->admin->expects(static::once())->method('update')->with($object);
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
+        $this->validator->method('validate')->with($bar)->willReturn(new ConstraintViolationList([]));
+        $fieldDescription->method('getOption')->willReturnMap([
+            ['data_transformer', null, null],
+            ['editable', null, true],
+        ]);
+        $fieldDescription->method('getType')->willReturn('boolean');
+        $fieldDescription->method('getAdmin')->willReturn($this->admin);
+        $fieldDescription->method('getTemplate')->willReturn('field_template');
+        $fieldDescription->method('getValue')->willReturn('some value');
+
+        $response = ($this->action)($request);
+
+        static::assertSame(Response::HTTP_OK, $response->getStatusCode());
+        static::assertTrue($bar->getEnabled());
+    }
+
+    /**
+     * @param array<mixed> $choices
+     */
+    #[DataProvider('provideSetObjectFieldValueActionWithChoicesCases')]
+    public function testSetObjectFieldValueActionWithChoices(array $choices, mixed $value, bool $multiple, bool $accepted): void
+    {
+        $object = new StatusMultiple();
+        $request = new Request([
+            '_sonata_admin' => 'sonata.post.admin',
+            'objectId' => 42,
+            'field' => 'status',
+            'value' => $value,
+            'context' => 'list',
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST, 'HTTP_X_REQUESTED_WITH' => 'XMLHttpRequest']);
+
+        $fieldDescription = static::createStub(FieldDescriptionInterface::class);
+
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->method('hasAccess')->with('edit', $object)->willReturn(true);
+        $this->admin->method('hasListFieldDescription')->with('status')->willReturn(true);
+        $this->admin->method('getListFieldDescription')->with('status')->willReturn($fieldDescription);
+        $this->admin->expects($accepted ? static::once() : static::never())->method('update')->with($object);
+        $this->templateRegistry->method('getTemplate')->with('base_list_field')->willReturn('admin_template');
+        $this->validator->method('validate')->willReturn(new ConstraintViolationList([]));
+        $fieldDescription->method('getOption')->willReturnMap([
+            ['choices', null, $choices],
+            ['data_transformer', null, null],
+            ['editable', null, true],
+            ['multiple', null, $multiple],
+        ]);
+        $fieldDescription->method('getType')->willReturn(FieldDescriptionInterface::TYPE_CHOICE);
+        $fieldDescription->method('getAdmin')->willReturn($this->admin);
+        $fieldDescription->method('getTemplate')->willReturn('field_template');
+        $fieldDescription->method('getValue')->willReturn('some value');
+
+        $response = ($this->action)($request);
+
+        if ($accepted) {
+            static::assertSame(Response::HTTP_OK, $response->getStatusCode());
+            static::assertSame($value, $object->status);
+        } else {
+            static::assertSame(Response::HTTP_BAD_REQUEST, $response->getStatusCode());
+            static::assertSame(json_encode('The value is not one of the available choices.'), $response->getContent());
+            static::assertSame([], $object->status);
+        }
+    }
+
+    /**
+     * @return iterable<string, array{array<mixed>, mixed, bool, bool}>
+     */
+    public static function provideSetObjectFieldValueActionWithChoicesCases(): iterable
+    {
+        $choices = ['draft' => 'Draft', 'published' => 'Published'];
+
+        yield 'available value' => [$choices, 'published', false, true];
+        yield 'unavailable value' => [$choices, 'admin', false, false];
+        yield 'integer keys' => [[1 => 'One', 2 => 'Two'], '2', false, true];
+        yield 'x-editable format, available' => [[['value' => 'a', 'text' => 'A']], 'a', false, true];
+        yield 'x-editable format, unavailable' => [[['value' => 'a', 'text' => 'A']], 'b', false, false];
+        yield 'multiple, all available' => [[1 => 'One', 2 => 'Two', 3 => 'Three'], ['1', '3'], true, true];
+        yield 'multiple, one unavailable' => [[1 => 'One', 2 => 'Two', 3 => 'Three'], ['1', '4'], true, false];
+    }
+
     public function testSetObjectFieldEditableMultipleValue(): void
     {
         $object = new StatusMultiple();
