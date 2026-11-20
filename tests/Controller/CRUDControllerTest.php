@@ -3081,6 +3081,48 @@ final class CRUDControllerTest extends TestCase
         static::assertSame([], $this->session->getFlashBag()->all());
     }
 
+    /**
+     * @param \Closure(CRUDController<object>, Request): Response $callAction
+     */
+    #[DataProvider('provideActionChecksParentChildAssociationCases')]
+    public function testActionChecksParentChildAssociation(\Closure $callAction): void
+    {
+        $this->request->attributes->set($this->admin->getIdParameter(), 21);
+        $this->request->attributes->set('parent_id', 42);
+
+        $object = new \stdClass();
+        $object->parent = new \stdClass();
+
+        $parentAdmin = $this->createMock(AdminInterface::class);
+        $parentAdmin->method('getIdParameter')->willReturn('parent_id');
+        $parentAdmin->method('getObject')->willReturn(new \stdClass());
+        $parentAdmin->method('toString')->willReturn('parentObject');
+
+        $this->admin->method('isAclEnabled')->willReturn(true);
+        $this->admin->method('getObject')->willReturn($object);
+        $this->admin->method('isChild')->willReturn(true);
+        $this->admin->method('getParent')->willReturn($parentAdmin);
+        $this->admin->method('getParentAssociationMapping')->willReturn('parent');
+        $this->admin->method('toString')->willReturn('childObject');
+        $this->admin->expects(static::never())->method('checkAccess');
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('There is no association between "parentObject" and "childObject"');
+
+        $callAction($this->controller, $this->request);
+    }
+
+    /**
+     * @return iterable<string, array{\Closure(CRUDController<object>, Request): Response}>
+     */
+    public static function provideActionChecksParentChildAssociationCases(): iterable
+    {
+        yield 'history' => [static fn (CRUDController $controller, Request $request): Response => $controller->historyAction($request)];
+        yield 'history view revision' => [static fn (CRUDController $controller, Request $request): Response => $controller->historyViewRevisionAction($request, 'fooRevision')];
+        yield 'history compare revisions' => [static fn (CRUDController $controller, Request $request): Response => $controller->historyCompareRevisionsAction($request, 'fooBaseRevision', 'fooCompareRevision')];
+        yield 'acl' => [static fn (CRUDController $controller, Request $request): Response => $controller->aclAction($request)];
+    }
+
     public function testHistoryActionAccessDenied(): void
     {
         $this->request->query->set('id', '123');
@@ -3691,9 +3733,13 @@ final class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', 123);
 
+        $object = new \stdClass();
+
+        $this->admin->method('getObject')->willReturn($object);
+
         $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with(static::equalTo('historyCompareRevisions'))
+            ->with('historyCompareRevisions', $object)
             ->willThrowException(new AccessDeniedException());
 
         $this->expectException(AccessDeniedException::class);
@@ -3705,9 +3751,7 @@ final class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', '123');
 
-        $this->admin->expects(static::once())
-            ->method('checkAccess')
-            ->with(static::equalTo('historyCompareRevisions'));
+        $this->admin->expects(static::never())->method('checkAccess');
 
         $this->admin->expects(static::once())
             ->method('getObject')
@@ -3862,11 +3906,11 @@ final class CRUDControllerTest extends TestCase
     {
         $this->request->query->set('id', '123');
 
+        $object = new \stdClass();
+
         $this->admin->expects(static::once())
             ->method('checkAccess')
-            ->with(static::equalTo('historyCompareRevisions'));
-
-        $object = new \stdClass();
+            ->with('historyCompareRevisions', $object);
 
         $this->admin->expects(static::once())
             ->method('getObject')

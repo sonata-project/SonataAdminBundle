@@ -15,6 +15,8 @@ namespace Sonata\AdminBundle\Tests\App;
 
 use Knp\Bundle\MenuBundle\KnpMenuBundle;
 use Sonata\AdminBundle\SonataAdminBundle;
+use Sonata\AdminBundle\Tests\App\Audit\BarAuditReader;
+use Sonata\AdminBundle\Tests\App\Model\Bar;
 use Sonata\BlockBundle\SonataBlockBundle;
 use Sonata\Doctrine\Bridge\Symfony\SonataDoctrineBundle;
 use Sonata\Form\Bridge\Symfony\SonataFormBundle;
@@ -24,6 +26,7 @@ use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Bundle\SecurityBundle\SecurityBundle;
 use Symfony\Bundle\TwigBundle\TwigBundle;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface;
@@ -52,7 +55,7 @@ final class AppKernel extends Kernel
 
     public function getCacheDir(): string
     {
-        return \sprintf('%scache', $this->getBaseDir());
+        return \sprintf('%scache/%s', $this->getBaseDir(), $this->environment);
     }
 
     public function getLogDir(): string
@@ -63,6 +66,23 @@ final class AppKernel extends Kernel
     public function getProjectDir(): string
     {
         return __DIR__;
+    }
+
+    protected function build(ContainerBuilder $container): void
+    {
+        if ('role_security' !== $this->environment) {
+            return;
+        }
+
+        // Enables the history routes of the bar admin. This has to happen after the bundle
+        // extension was loaded, which a configuration file cannot do.
+        $container->addCompilerPass(new class implements CompilerPassInterface {
+            public function process(ContainerBuilder $container): void
+            {
+                $container->getDefinition('sonata.admin.audit.manager')
+                    ->addMethodCall('setReader', [BarAuditReader::class, [Bar::class]]);
+            }
+        });
     }
 
     protected function configureRoutes(RoutingConfigurator $routes): void
@@ -108,6 +128,10 @@ final class AppKernel extends Kernel
         ]);
 
         $loader->load(\sprintf('%s/config/services.yml', $this->getProjectDir()));
+
+        if ('role_security' === $this->environment) {
+            $loader->load(\sprintf('%s/config/role_security.php', $this->getProjectDir()));
+        }
     }
 
     private function getBaseDir(): string

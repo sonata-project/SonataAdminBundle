@@ -677,6 +677,9 @@ class CRUDController extends AbstractController
     {
         $object = $this->assertObjectExists($request, true);
         \assert(null !== $object);
+
+        $this->checkParentChildAssociation($request, $object);
+
         $this->admin->checkAccess('history', $object);
 
         $objectId = $this->admin->getNormalizedIdentifier($object);
@@ -716,6 +719,9 @@ class CRUDController extends AbstractController
     {
         $object = $this->assertObjectExists($request, true);
         \assert(null !== $object);
+
+        $this->checkParentChildAssociation($request, $object);
+
         $this->admin->checkAccess('historyViewRevision', $object);
 
         $objectId = $this->admin->getNormalizedIdentifier($object);
@@ -764,10 +770,13 @@ class CRUDController extends AbstractController
      */
     public function historyCompareRevisionsAction(Request $request, string $baseRevision, string $compareRevision): Response
     {
-        $this->admin->checkAccess('historyCompareRevisions');
-
         $object = $this->assertObjectExists($request, true);
         \assert(null !== $object);
+
+        $this->checkParentChildAssociation($request, $object);
+
+        $this->admin->checkAccess('historyCompareRevisions', $object);
+
         $objectId = $this->admin->getNormalizedIdentifier($object);
         \assert(null !== $objectId);
 
@@ -870,6 +879,8 @@ class CRUDController extends AbstractController
 
         $object = $this->assertObjectExists($request, true);
         \assert(null !== $object);
+
+        $this->checkParentChildAssociation($request, $object);
 
         $this->admin->checkAccess('acl', $object);
 
