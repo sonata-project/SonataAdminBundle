@@ -32,7 +32,6 @@ use Sonata\AdminBundle\Object\MetadataInterface;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Sonata\AdminBundle\Security\Acl\Permission\AdminPermissionMap;
-use Sonata\AdminBundle\Security\Handler\AclSecurityHandler;
 use Sonata\AdminBundle\Security\Handler\AclSecurityHandlerInterface;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\AdminBundle\Util\Instantiator;
@@ -451,17 +450,16 @@ abstract class AbstractAdmin extends BaseAbstractAdmin implements AdminInterface
 
         $securityHandler = $this->getSecurityHandler();
 
-        if ($securityHandler instanceof AclSecurityHandler) {
-            // Only remove the ACL once the object is really gone. Otherwise a failing delete, because
-            // of a foreign key constraint for example, leaves the object without its ACL. Generated
-            // identifiers are usually reset after the delete, so the object identity is resolved
-            // before, the same way AclSecurityHandler::deleteObjectSecurity() does it.
+        // The security information is only removed once the object is really gone, so a failing delete
+        // (a foreign key constraint for example) keeps it.
+        if ($securityHandler instanceof AclSecurityHandlerInterface) {
+            // The ACL identity is built from the id, which Doctrine resets once the object is deleted.
             $objectIdentity = ObjectIdentity::fromDomainObject($object);
             $this->getModelManager()->delete($object);
             $securityHandler->deleteAcl($objectIdentity);
         } else {
-            $securityHandler->deleteObjectSecurity($this, $object);
             $this->getModelManager()->delete($object);
+            $securityHandler->deleteObjectSecurity($this, $object);
         }
 
         $this->postRemove($object);
