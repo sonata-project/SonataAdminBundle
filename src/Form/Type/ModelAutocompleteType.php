@@ -113,6 +113,13 @@ final class ModelAutocompleteType extends AbstractType
                 ? $options['btn_translation_domain']
                 : $options['btn_catalogue'];
         $view->vars['btn_catalogue'] = $options['btn_catalogue'];
+
+        // When the submitted id could not be transformed (see the strict option), Symfony keeps the
+        // submitted string as view data. The widget expects the array of ids and labels returned by the
+        // transformer, and there is nothing to show for an unknown id anyway, so render it empty.
+        if (null !== $form->getTransformationFailure() && !\is_array($view->vars['value'])) {
+            $view->vars['value'] = [];
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
