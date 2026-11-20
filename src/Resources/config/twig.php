@@ -19,7 +19,6 @@ use Sonata\AdminBundle\Twig\Extension\BreadcrumbsExtension;
 use Sonata\AdminBundle\Twig\Extension\CanonicalizeExtension;
 use Sonata\AdminBundle\Twig\Extension\GroupExtension;
 use Sonata\AdminBundle\Twig\Extension\IconExtension;
-use Sonata\AdminBundle\Twig\Extension\PagerExtension;
 use Sonata\AdminBundle\Twig\Extension\RenderElementExtension;
 use Sonata\AdminBundle\Twig\Extension\SecurityExtension;
 use Sonata\AdminBundle\Twig\Extension\SonataAdminExtension;
@@ -27,7 +26,6 @@ use Sonata\AdminBundle\Twig\Extension\TemplateRegistryExtension;
 use Sonata\AdminBundle\Twig\Extension\XEditableExtension;
 use Sonata\AdminBundle\Twig\GroupRuntime;
 use Sonata\AdminBundle\Twig\IconRuntime;
-use Sonata\AdminBundle\Twig\PagerRuntime;
 use Sonata\AdminBundle\Twig\RenderElementRuntime;
 use Sonata\AdminBundle\Twig\SecurityRuntime;
 use Sonata\AdminBundle\Twig\SonataAdminRuntime;
@@ -117,12 +115,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 param('sonata.admin.configuration.icon_prefixes'),
             ])
-
-        ->set('sonata.admin.twig.pager_extension', PagerExtension::class)
-            ->tag('twig.extension')
-
-        ->set('sonata.admin.twig.pager_runtime', PagerRuntime::class)
-            ->tag('twig.runtime')
 
         // NEXT_MAJOR: Remove the `args()` call.
         ->set('sonata.admin.twig.security_extension', SecurityExtension::class)
