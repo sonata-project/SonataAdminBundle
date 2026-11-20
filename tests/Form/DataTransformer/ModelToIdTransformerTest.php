@@ -18,6 +18,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Sonata\AdminBundle\Form\DataTransformer\ModelToIdTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 final class ModelToIdTransformerTest extends TestCase
 {
@@ -53,6 +54,37 @@ final class ModelToIdTransformerTest extends TestCase
     {
         yield [0];
         yield ['0'];
+    }
+
+    public function testReverseTransformUnknownIdentifier(): void
+    {
+        $transformer = new ModelToIdTransformer($this->modelManager, \stdClass::class);
+
+        $this->modelManager->method('find')->willReturn(null);
+
+        static::assertNull($transformer->reverseTransform('42'));
+    }
+
+    public function testReverseTransformUnknownIdentifierWhenStrict(): void
+    {
+        $transformer = new ModelToIdTransformer($this->modelManager, \stdClass::class, true);
+
+        $this->modelManager->method('find')->with(\stdClass::class, '42')->willReturn(null);
+
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage('Unable to find a model of class "stdClass" with the identifier "42".');
+
+        $transformer->reverseTransform('42');
+    }
+
+    public function testReverseTransformEmptyWhenStrict(): void
+    {
+        $transformer = new ModelToIdTransformer($this->modelManager, \stdClass::class, true);
+
+        $this->modelManager->expects(static::never())->method('find');
+
+        static::assertNull($transformer->reverseTransform(null));
+        static::assertNull($transformer->reverseTransform(''));
     }
 
     public function testReverseTransformEmpty(): void

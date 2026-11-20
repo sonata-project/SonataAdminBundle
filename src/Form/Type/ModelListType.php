@@ -53,7 +53,7 @@ final class ModelListType extends AbstractType
     {
         $builder
             ->resetViewTransformers()
-            ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class']));
+            ->addViewTransformer(new ModelToIdTransformer($options['model_manager'], $options['class'], $options['strict']));
     }
 
     /**
@@ -87,11 +87,13 @@ final class ModelListType extends AbstractType
             'btn_delete' => 'link_delete',
             'btn_catalogue' => 'SonataAdminBundle', // NEXT_MAJOR: Remove this option
             'btn_translation_domain' => 'SonataAdminBundle',
+            'strict' => false,
         ]);
 
         $resolver->setRequired(['model_manager', 'class']);
         $resolver->setAllowedTypes('model_manager', ModelManagerInterface::class);
         $resolver->setAllowedTypes('class', 'string');
+        $resolver->setAllowedTypes('strict', 'bool');
 
         $resolver->setDeprecated(
             'btn_catalogue',

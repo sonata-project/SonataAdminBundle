@@ -51,6 +51,22 @@ final class ModelReferenceTypeTest extends TypeTestCase
         static::assertTrue($form->isSynchronized());
     }
 
+    public function testSubmitUnknownIdentifierWhenStrict(): void
+    {
+        $form = $this->factory->create(
+            ModelReferenceType::class,
+            null,
+            [
+                'model_manager' => $this->modelManager,
+                'class' => 'My\Entity',
+                'strict' => true,
+            ]
+        );
+        $this->modelManager->expects(static::once())->method('find')->with('My\Entity', '42')->willReturn(null);
+        $form->submit('42');
+        static::assertFalse($form->isSynchronized());
+    }
+
     /**
      * @phpstan-return array<FormExtensionInterface>
      */

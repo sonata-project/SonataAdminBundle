@@ -38,7 +38,14 @@ final class ModelAutocompleteType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->addViewTransformer(new ModelToIdPropertyTransformer($options['model_manager'], $options['class'], $options['property'], $options['multiple'], $options['to_string_callback']), true);
+        $builder->addViewTransformer(new ModelToIdPropertyTransformer(
+            $options['model_manager'],
+            $options['class'],
+            $options['property'],
+            $options['multiple'],
+            $options['to_string_callback'],
+            $options['strict']
+        ), true);
 
         $builder->setAttribute('property', $options['property']);
         $builder->setAttribute('callback', $options['callback']);
@@ -147,6 +154,7 @@ final class ModelAutocompleteType extends AbstractType
 
             // security
             'target_admin_access_action' => 'list',
+            'strict' => false,
 
             // CSS classes
             'container_css_class' => '',
@@ -165,6 +173,7 @@ final class ModelAutocompleteType extends AbstractType
         $resolver->setAllowedTypes('model_manager', ModelManagerInterface::class);
         $resolver->setAllowedTypes('class', 'string');
         $resolver->setAllowedTypes('property', ['string', 'array']);
+        $resolver->setAllowedTypes('strict', 'bool');
         $resolver->setDeprecated(
             'quiet_millis',
             'sonata-project/admin-bundle',

@@ -46,6 +46,7 @@ final class ModelAutocompleteTypeTest extends TypeTestCase
         static::assertSame('Foo', $options['class']);
         static::assertSame('bar', $options['property']);
         static::assertNull($options['callback']);
+        static::assertFalse($options['strict']);
 
         static::assertSame('', $options['placeholder']);
         static::assertSame(3, $options['minimum_input_length']);

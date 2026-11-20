@@ -15,6 +15,7 @@ namespace Sonata\AdminBundle\Form\DataTransformer;
 
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 
 /**
  * @author Thomas Rabaix <thomas.rabaix@sonata-project.org>
@@ -31,11 +32,14 @@ final class ModelToIdTransformer implements DataTransformerInterface
     public function __construct(
         private ModelManagerInterface $modelManager,
         private string $className,
+        private bool $strict = false,
     ) {
     }
 
     /**
      * @param int|string|null $value
+     *
+     * @throws TransformationFailedException When strict and no model exists for the identifier
      *
      * @phpstan-return T|null
      */
@@ -45,7 +49,18 @@ final class ModelToIdTransformer implements DataTransformerInterface
             return null;
         }
 
-        return $this->modelManager->find($this->className, $value);
+        $model = $this->modelManager->find($this->className, $value);
+
+        // Without strict, an unknown identifier silently clears the association.
+        if (null === $model && $this->strict) {
+            throw new TransformationFailedException(\sprintf(
+                'Unable to find a model of class "%s" with the identifier "%s".',
+                $this->className,
+                $value
+            ));
+        }
+
+        return $model;
     }
 
     /**

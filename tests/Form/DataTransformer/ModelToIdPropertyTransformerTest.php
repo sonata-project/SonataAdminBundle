@@ -22,6 +22,7 @@ use Sonata\AdminBundle\Form\DataTransformer\ModelToIdPropertyTransformer;
 use Sonata\AdminBundle\Model\ModelManagerInterface;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\Foo;
 use Sonata\AdminBundle\Tests\Fixtures\Entity\FooArrayAccess;
+use Symfony\Component\Form\Exception\TransformationFailedException;
 use Symfony\Component\Form\Exception\UnexpectedTypeException;
 
 final class ModelToIdPropertyTransformerTest extends TestCase
@@ -57,6 +58,28 @@ final class ModelToIdPropertyTransformerTest extends TestCase
         static::assertNull($transformer->reverseTransform(''));
         static::assertNull($transformer->reverseTransform(12));
         static::assertSame($model, $transformer->reverseTransform(123));
+    }
+
+    public function testReverseTransformUnknownIdentifierWhenStrict(): void
+    {
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, null, true);
+
+        $this->modelManager->method('find')->with(Foo::class, 12)->willReturn(null);
+
+        $this->expectException(TransformationFailedException::class);
+        $this->expectExceptionMessage(\sprintf('Unable to find a model of class "%s" with the identifier "12".', Foo::class));
+
+        $transformer->reverseTransform(12);
+    }
+
+    public function testReverseTransformEmptyWhenStrict(): void
+    {
+        $transformer = new ModelToIdPropertyTransformer($this->modelManager, Foo::class, 'bar', false, null, true);
+
+        $this->modelManager->expects(static::never())->method('find');
+
+        static::assertNull($transformer->reverseTransform(null));
+        static::assertNull($transformer->reverseTransform(''));
     }
 
     /**

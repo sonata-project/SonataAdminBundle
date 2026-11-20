@@ -51,6 +51,7 @@ final class ModelListTypeTest extends TypeTestCase
         static::assertSame('link_delete', $options['btn_delete']);
         static::assertSame('SonataAdminBundle', $options['btn_catalogue']);
         static::assertSame('SonataAdminBundle', $options['btn_translation_domain']);
+        static::assertFalse($options['strict']);
     }
 
     public function testSubmitValidData(): void
@@ -67,5 +68,22 @@ final class ModelListTypeTest extends TypeTestCase
         $this->modelManager->expects(static::once())->method('find')->with('My\Entity', '42');
         $form->submit('42');
         static::assertTrue($form->isSynchronized());
+    }
+
+    public function testSubmitUnknownIdentifierWhenStrict(): void
+    {
+        $form = $this->factory->create(
+            ModelListType::class,
+            null,
+            [
+                'model_manager' => $this->modelManager,
+                'class' => 'My\Entity',
+                'strict' => true,
+            ]
+        );
+
+        $this->modelManager->expects(static::once())->method('find')->with('My\Entity', '42')->willReturn(null);
+        $form->submit('42');
+        static::assertFalse($form->isSynchronized());
     }
 }

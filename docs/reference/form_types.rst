@@ -154,6 +154,10 @@ The available options are:
   corresponding button. You can also specify a custom translation domain
   for these labels, which defaults to ``SonataAdminBundle``.
 
+``strict``
+  defaults to ``false``. When ``true``, submitting an identifier that does not
+  exist results in a form error. Otherwise the field is silently set to ``null``.
+
 .. note::
 
     For more info, see the storage-engine-specific form field definitions: `ORM`_ or `MongoDB`_
@@ -189,6 +193,10 @@ The available options are:
   The entity class managed by this field. Defaults to ``null``, but is actually
   calculated from the linked admin class. You usually should not need to set
   this manually.
+
+``strict``
+  defaults to ``false``. When ``true``, submitting an identifier that does not
+  exist results in a form error. Otherwise the field is silently set to ``null``.
 
 Sonata\\AdminBundle\\Form\\Type\\ModelAutocompleteType
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -331,6 +339,11 @@ The available options are:
 
 ``multiple``
   defaults to ``false``. Set to ``true``, if your field is in a many-to-many relation.
+
+``strict``
+  defaults to ``false``. When ``true``, submitting an identifier that does not
+  exist results in a form error. Otherwise the field is silently set to ``null``.
+  Multiple values always result in a form error for unknown identifiers.
 
 ``placeholder``
   defaults to "". Placeholder is shown when no item is selected.

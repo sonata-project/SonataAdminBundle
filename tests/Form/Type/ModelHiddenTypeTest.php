@@ -34,6 +34,7 @@ final class ModelHiddenTypeTest extends TypeTestCase
         static::assertInstanceOf(ModelManagerInterface::class, $options['model_manager']);
         static::assertSame($modelManager, $options['model_manager']);
         static::assertSame('\Foo', $options['class']);
+        static::assertFalse($options['strict']);
     }
 
     public function testGetBlockPrefix(): void
