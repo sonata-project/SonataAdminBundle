@@ -21,6 +21,7 @@ use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Environment;
 
 final class AppendFormFieldElementAction
@@ -34,6 +35,7 @@ final class AppendFormFieldElementAction
 
     /**
      * @throws NotFoundHttpException
+     * @throws AccessDeniedException
      */
     public function __invoke(Request $request): Response
     {
@@ -57,6 +59,13 @@ final class AppendFormFieldElementAction
             }
         } else {
             throw new BadRequestParamHttpException('objectId', ['string', 'int', 'null'], $objectId);
+        }
+
+        // The widget belongs to the create or edit form of this admin, so require the same access.
+        if (null === $objectId) {
+            $admin->checkAccess('create');
+        } else {
+            $admin->checkAccess('edit', $subject);
         }
 
         $admin->setSubject($subject);
