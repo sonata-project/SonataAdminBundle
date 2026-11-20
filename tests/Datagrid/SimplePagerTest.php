@@ -40,6 +40,34 @@ final class SimplePagerTest extends TestCase
     {
         $this->pager = new SimplePager(10, 2);
         $this->proxyQuery = $this->createMock(ProxyQueryInterface::class);
+
+        // Keep track of the result window, the pager inspects it to know whether the count is exact.
+        $firstResult = null;
+        $maxResults = null;
+        $this->proxyQuery
+            ->method('setFirstResult')
+            ->willReturnCallback(function (?int $value) use (&$firstResult): ProxyQueryInterface {
+                $firstResult = $value;
+
+                return $this->proxyQuery;
+            });
+        $this->proxyQuery
+            ->method('getFirstResult')
+            ->willReturnCallback(static function () use (&$firstResult): ?int {
+                return $firstResult;
+            });
+        $this->proxyQuery
+            ->method('setMaxResults')
+            ->willReturnCallback(function (?int $value) use (&$maxResults): ProxyQueryInterface {
+                $maxResults = $value;
+
+                return $this->proxyQuery;
+            });
+        $this->proxyQuery
+            ->method('getMaxResults')
+            ->willReturnCallback(static function () use (&$maxResults): ?int {
+                return $maxResults;
+            });
     }
 
     public function testInitNumPages(): void
@@ -61,8 +89,23 @@ final class SimplePagerTest extends TestCase
 
         static::assertSame(2, $this->pager->getLastPage());
 
-        // We're not knowing exactly the result number, at least 13 (the result found)
+        // The window (21) was not saturated, so 13 is the exact result number.
         static::assertSame(13, $this->pager->countResults());
+        static::assertTrue($this->pager->isDeterministic());
+    }
+
+    public function testInitSaturatedWindow(): void
+    {
+        $this->proxyQuery->expects(static::once())
+            ->method('execute')
+            ->willReturn(new ArrayCollection(array_fill(0, 21, new \stdClass())));
+
+        $this->pager->setQuery($this->proxyQuery);
+        $this->pager->init();
+
+        // We're not knowing exactly the result number, at least 21 (the result found)
+        static::assertSame(21, $this->pager->countResults());
+        static::assertFalse($this->pager->isDeterministic());
     }
 
     public function testInitOffset(): void
@@ -113,6 +156,7 @@ final class SimplePagerTest extends TestCase
 
         // We're knowing exactly the result number: 10 (first page) + 9 (this page)
         static::assertSame(19, $this->pager->countResults());
+        static::assertTrue($this->pager->isDeterministic());
     }
 
     public function testNoPagesPerConfig(): void
@@ -152,6 +196,83 @@ final class SimplePagerTest extends TestCase
         $this->pager->init();
         static::assertSame(1, $this->pager->getLastPage());
         static::assertSame(0, $this->pager->countResults());
+        static::assertTrue($this->pager->isDeterministic());
+    }
+
+    public function testIsNotDeterministicBeforeResultsAreFetched(): void
+    {
+        $this->pager->setQuery($this->proxyQuery);
+
+        static::assertFalse($this->pager->isDeterministic());
+    }
+
+    public function testIsNotDeterministicWithoutPagination(): void
+    {
+        $this->proxyQuery->expects(static::never())->method('execute');
+
+        $this->pager->setQuery($this->proxyQuery);
+        $this->pager->setMaxPerPage(0);
+        $this->pager->init();
+
+        static::assertFalse($this->pager->isDeterministic());
+    }
+
+    public function testIsNotDeterministicForEmptyOutOfRangePage(): void
+    {
+        $this->proxyQuery
+            ->method('execute')
+            ->willReturn([]);
+
+        $this->pager->setQuery($this->proxyQuery);
+        $this->pager->setPage(4);
+        $this->pager->init();
+
+        // We cannot know how many results there are, only that there are less than 30.
+        static::assertFalse($this->pager->isDeterministic());
+    }
+
+    public function testIsNotDeterministicAfterIncreasingThresholdOfSaturatedWindow(): void
+    {
+        $this->proxyQuery->expects(static::once())
+            ->method('execute')
+            ->willReturn(new ArrayCollection(array_fill(0, 21, new \stdClass())));
+
+        $this->pager->setQuery($this->proxyQuery);
+        $this->pager->init();
+
+        $this->pager->setThreshold(3);
+
+        static::assertFalse($this->pager->isDeterministic());
+    }
+
+    public function testIsNotDeterministicAfterIncreasingMaxPerPageOfSaturatedWindow(): void
+    {
+        $this->proxyQuery->expects(static::once())
+            ->method('execute')
+            ->willReturn(new ArrayCollection(array_fill(0, 21, new \stdClass())));
+
+        $this->pager->setQuery($this->proxyQuery);
+        $this->pager->init();
+
+        $this->pager->setMaxPerPage(20);
+
+        static::assertFalse($this->pager->isDeterministic());
+    }
+
+    public function testIsNotDeterministicAfterChangingPageOfFetchedWindow(): void
+    {
+        $this->proxyQuery->expects(static::once())
+            ->method('execute')
+            ->willReturn(new ArrayCollection(array_fill(0, 5, new \stdClass())));
+
+        $this->pager->setQuery($this->proxyQuery);
+        $this->pager->init();
+        static::assertTrue($this->pager->isDeterministic());
+
+        // The cached window belongs to the first page, `countResults()` is now derived from another offset.
+        $this->pager->setPage(2);
+
+        static::assertFalse($this->pager->isDeterministic());
     }
 
     public function testInitNoQuery(): void

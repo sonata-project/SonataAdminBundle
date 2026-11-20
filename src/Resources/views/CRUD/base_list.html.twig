@@ -184,7 +184,8 @@ file that was distributed with this source code.
                                             <label class="checkbox" for="{{ admin.uniqid }}_all_elements">
                                                 <input type="checkbox" name="all_elements" id="{{ admin.uniqid }}_all_elements">
                                                 {{ 'all_elements'|trans({}, 'SonataAdminBundle') }}
-                                                ({{ admin.datagrid.pager.countResults() }})
+                                                {# NEXT_MAJOR: Remove the `?? true` fallback, `PagerInterface::isDeterministic()` will be required. #}
+                                                ({% if not (admin.datagrid.pager.isDeterministic ?? true) %}{{ 'list_results_count_prefix'|trans({}, 'SonataAdminBundle') }} {% endif %}{{ admin.datagrid.pager.countResults() }})
                                             </label>
 
                                             <select name="action" style="width: auto; height: auto" class="form-control">
