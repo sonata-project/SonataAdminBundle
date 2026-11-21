@@ -250,6 +250,21 @@ class CRUDController extends AbstractController
                         'SonataAdminBundle'
                     )
                 );
+            } catch (LockException) {
+                // The object is locked, for example by an extension in preRemove(). That is not an
+                // error of the model manager, so nothing is logged.
+                if ($this->isXmlHttpRequest($request)) {
+                    return $this->renderJson(['result' => 'error'], Response::HTTP_OK, []);
+                }
+
+                $this->addFlash(
+                    'sonata_flash_error',
+                    $this->trans(
+                        'flash_delete_error',
+                        ['%name%' => $this->escapeHtml($objectName)],
+                        'SonataAdminBundle'
+                    )
+                );
             }
 
             return $this->redirectTo($request, $object);
