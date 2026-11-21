@@ -1208,6 +1208,101 @@ final class RenderElementRuntimeTest extends TestCase
                 ['hide_protocol' => true],
             ],
             [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> javascript:alert(1) </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                'javascript:alert(1)',
+                [],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> JaVaScRiPt:alert(1) </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                'JaVaScRiPt:alert(1)',
+                [],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> javascript:alert(1) </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                ' javascript:alert(1)',
+                [],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> java script:alert(1) </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                "java\nscript:alert(1)",
+                [],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> data:text/html;base64,PHNjcmlwdD4= </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                'data:text/html;base64,PHNjcmlwdD4=',
+                [],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> http://example.com </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                'http://example.com',
+                ['allowed_schemes' => ['https']],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                <a href="/relative/path?time=12:00">/relative/path?time=12:00</a>
+                </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                '/relative/path?time=12:00',
+                [],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                <a href="www.example.com">www.example.com</a>
+                </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                'www.example.com',
+                [],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                <a href="mailto:foo@example.com">mailto:foo@example.com</a>
+                </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                'mailto:foo@example.com',
+                [],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                <a href="skype:foo">skype:foo</a>
+                </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                'skype:foo',
+                ['allowed_schemes' => ['skype']],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345"> javascript:alert(1) </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                new class implements \Stringable {
+                    public function __toString(): string
+                    {
+                        return 'javascript:alert(1)';
+                    }
+                },
+                [],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                <a href="reports/export?time=12:00">reports/export?time=12:00</a>
+                </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                'reports/export?time=12:00',
+                [],
+            ],
+            [
+                '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
+                <a href="files/name:part">files/name:part</a>
+                </td>',
+                FieldDescriptionInterface::TYPE_URL,
+                'files/name:part',
+                [],
+            ],
+            [
                 '<td class="sonata-ba-list-field sonata-ba-list-field-url" objectId="12345">
                 <a href="http://example.com">http://example.com</a>
                 </td>',
@@ -1717,6 +1812,41 @@ final class RenderElementRuntimeTest extends TestCase
             FieldDescriptionInterface::TYPE_URL,
             'https://example.com',
             ['safe' => false, 'hide_protocol' => true],
+        ];
+        yield [
+            '<th>Data</th> <td>javascript:alert(1)</td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'javascript:alert(1)',
+            ['safe' => false],
+        ];
+        yield [
+            '<th>Data</th> <td>data:text/html;base64,PHNjcmlwdD4=</td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'data:text/html;base64,PHNjcmlwdD4=',
+            ['safe' => false],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="tel:+41441234567">tel:+41441234567</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'tel:+41441234567',
+            ['safe' => false],
+        ];
+        yield [
+            '<th>Data</th> <td>javascript:alert(1)</td>',
+            FieldDescriptionInterface::TYPE_URL,
+            new class implements \Stringable {
+                public function __toString(): string
+                {
+                    return 'javascript:alert(1)';
+                }
+            },
+            ['safe' => false],
+        ];
+        yield [
+            '<th>Data</th> <td><a href="reports/export?time=12:00">reports/export?time=12:00</a></td>',
+            FieldDescriptionInterface::TYPE_URL,
+            'reports/export?time=12:00',
+            ['safe' => false],
         ];
         yield [
             '<th>Data</th> <td><a href="http://example.com">http://example.com</a></td>',

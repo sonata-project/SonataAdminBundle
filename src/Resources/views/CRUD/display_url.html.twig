@@ -27,24 +27,43 @@ file that was distributed with this source code.
             {% endif %}
         {% else %}
             {# value is url #}
-            {% set url_address = value %}
+            {#
+                The value comes from the object, so it is only used as link target when it is a relative
+                url or uses one of the allowed schemes. Anything else (javascript:, data:, ...) would run
+                in the admin when clicked and is rendered as plain text instead. The value is converted to
+                a string first, so objects are checked the same way they end up in the href. A url is
+                relative when it has no colon, or when /, ? or # comes before the first one.
+            #}
+            {% set url_address = value ~ '' %}
+            {% set scheme = url_address|split(':', 2)|first|lower %}
+            {% set is_relative = ':' not in url_address or url_address matches '{^[^:/?#]*[/?#]}' %}
+            {% set has_allowed_scheme = scheme matches '{^[a-z][a-z0-9+.\\-]*$}'
+                and scheme in (allowed_schemes ?? ['http', 'https', 'ftp', 'mailto', 'tel']) %}
+
+            {% if not is_relative and not has_allowed_scheme %}
+                {% set url_address = null %}
+            {% endif %}
         {% endif %}
 
         {% if hide_protocol|default(false) %}
             {% set value = value|replace({'http://': '', 'https://': ''}) %}
         {% endif %}
 
-        <a
-            href="{{ url_address }}"
-        {%- for attribute, value in attributes|default([]) %}
-            {{ attribute }}="{{ value|escape('html_attr') }}"
-        {%- endfor -%}
-        >
+        {%- if url_address is not null -%}
+            <a
+                href="{{ url_address }}"
+            {%- for attribute, value in attributes|default([]) %}
+                {{ attribute }}="{{ value|escape('html_attr') }}"
+            {%- endfor -%}
+            >
+        {%- endif -%}
         {%- if safe|default(false) -%}
             {{- value|raw -}}
         {%- else -%}
             {{- value -}}
         {%- endif -%}
-        </a>
+        {%- if url_address is not null -%}
+            </a>
+        {%- endif -%}
     {% endif %}
 {% endapply -%}
