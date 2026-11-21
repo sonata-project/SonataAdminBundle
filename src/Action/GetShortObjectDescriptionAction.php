@@ -18,9 +18,11 @@ use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Environment;
 
 final class GetShortObjectDescriptionAction
@@ -28,11 +30,22 @@ final class GetShortObjectDescriptionAction
     public function __construct(
         private Environment $twig,
         private AdminFetcherInterface $adminFetcher,
+        private ?RequestStack $requestStack = null,
     ) {
+        // NEXT_MAJOR: Remove the deprecation and make the argument mandatory.
+        if (null === $requestStack) {
+            @trigger_error(\sprintf(
+                'Not passing an instance of %s as argument 3 of "%s()" is deprecated since'
+                .' sonata-project/admin-bundle 4.x and will throw an error in 5.0.',
+                RequestStack::class,
+                __METHOD__
+            ), \E_USER_DEPRECATED);
+        }
     }
 
     /**
      * @throws NotFoundHttpException
+     * @throws AccessDeniedException
      */
     public function __invoke(Request $request): Response
     {
@@ -64,6 +77,11 @@ final class GetShortObjectDescriptionAction
             }
         }
 
+        // The action shows details of the object, so direct requests need the show permission on it.
+        if (!$this->isSubRequest($request)) {
+            $admin->checkAccess('show', $object);
+        }
+
         if ('json' === BCHelper::getFromRequest($request, '_format')) {
             return new JsonResponse(['result' => [
                 'id' => $admin->id($object),
@@ -83,5 +101,22 @@ final class GetShortObjectDescriptionAction
         }
 
         throw new BadRequestHttpException('Invalid format');
+    }
+
+    /**
+     * The model list and the one-to-one/many-to-one association widgets render the description of
+     * the current value through a sub request. The user was already allowed to see the form that
+     * contains the value, so these sub requests must keep working even without any permission on
+     * the admin of the associated object.
+     */
+    private function isSubRequest(Request $request): bool
+    {
+        if (null === $this->requestStack) {
+            return false;
+        }
+
+        $mainRequest = $this->requestStack->getMainRequest();
+
+        return null !== $mainRequest && $mainRequest !== $request;
     }
 }
