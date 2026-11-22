@@ -11,6 +11,8 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
+use Sonata\AdminBundle\Tests\App\Admin\BarWithFooAdmin;
+use Sonata\AdminBundle\Tests\App\Model\Bar;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 
 /*
@@ -22,6 +24,16 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $containerConfigurator->extension('sonata_admin', [
         'security' => ['handler' => 'sonata.admin.security.handler.role'],
     ]);
+
+    // A bar admin whose edit form has the foo of the bar as model list field.
+    $containerConfigurator->services()
+        ->set('sonata_bar_with_foo_admin', BarWithFooAdmin::class)
+            ->tag('sonata.admin', [
+                'model_class' => Bar::class,
+                'manager_type' => 'test',
+                'model_manager' => 'sonata.admin.manager.bar',
+                'label' => 'Bar with foo',
+            ]);
 
     $containerConfigurator->extension('security', [
         // Every voter has to agree, so an object based voter can deny what a role grants.
@@ -54,6 +66,12 @@ return static function (ContainerConfigurator $containerConfigurator): void {
                         'bar_lister' => [
                             'password' => 'bar_lister',
                             'roles' => ['ROLE_SONATA_BAR_ADMIN_LIST'],
+                        ],
+                        // May edit bars in the admin with the foo model list field, but has no
+                        // permission on the foo admin.
+                        'bar_with_foo_editor' => [
+                            'password' => 'bar_with_foo_editor',
+                            'roles' => ['ROLE_SONATA_BAR_WITH_FOO_ADMIN_EDIT'],
                         ],
                     ],
                 ],

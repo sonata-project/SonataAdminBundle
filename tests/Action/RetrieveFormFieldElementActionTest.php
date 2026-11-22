@@ -123,7 +123,8 @@ final class RetrieveFormFieldElementActionTest extends TestCase
             'elementId' => 'element_collection',
         ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST]);
 
-        $this->admin->method('getNewInstance')->willReturn(new \stdClass());
+        // The new instance (and the alterNewInstance() hooks) must not run without create access.
+        $this->admin->expects(static::never())->method('getNewInstance');
         $this->admin->expects(static::once())
             ->method('checkAccess')
             ->with('create')

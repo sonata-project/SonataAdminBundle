@@ -109,6 +109,44 @@ final class HelperActionAccessTest extends WebTestCase
         self::assertStatusCode(Response::HTTP_FORBIDDEN, $client);
     }
 
+    public function testModelListWidgetShowsTheDescriptionWithoutPermissionOnTheTargetAdmin(): void
+    {
+        // The widget renders the description of the current foo through a sub request, which must work
+        // for a user who may edit the bar but has no permission on the foo admin.
+        $client = self::createClientAs('bar_with_foo_editor');
+        $crawler = $client->request(Request::METHOD_GET, '/admin/tests/app/bar-with-foo/test_id/edit');
+
+        self::assertStatusCode(Response::HTTP_OK, $client);
+        static::assertStringContainsString(
+            'Model\\Foo:',
+            $crawler->filter('.field-short-description .inner-field-short-description')->text()
+        );
+    }
+
+    public function testFormFieldElementOfANewObjectWithCreateAccess(): void
+    {
+        $client = self::createClientAs('foo_editor');
+        $client->request(Request::METHOD_GET, '/admin/core/get-form-field-element', [
+            '_sonata_admin' => 'sonata_foo_admin',
+            'uniqid' => self::UNIQID,
+            'elementId' => self::UNIQID.'_name',
+        ]);
+
+        self::assertStatusCode(Response::HTTP_OK, $client);
+    }
+
+    public function testFormFieldElementOfANewObjectWithoutCreateAccessIsDenied(): void
+    {
+        $client = self::createClientAs('bar_viewer');
+        $client->request(Request::METHOD_GET, '/admin/core/get-form-field-element', [
+            '_sonata_admin' => 'sonata_foo_admin',
+            'uniqid' => self::UNIQID,
+            'elementId' => self::UNIQID.'_name',
+        ]);
+
+        self::assertStatusCode(Response::HTTP_FORBIDDEN, $client);
+    }
+
     private static function createClientAs(string $username): KernelBrowser
     {
         $client = static::createClient(['environment' => 'role_security']);

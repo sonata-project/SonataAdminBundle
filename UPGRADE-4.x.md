@@ -4,6 +4,21 @@ UPGRADE 4.x
 UPGRADE FROM 4.45 to 4.46
 =========================
 
+## Permission checks in the helper actions
+
+The helper actions behind the admin widgets now check permissions:
+
+- `sonata_admin_retrieve_form_element` and `sonata_admin_append_form_element` need the `create`
+  permission of the admin without an `objectId`, and the `edit` permission on the object otherwise,
+  like the form they belong to.
+- `sonata_admin_short_object_information` needs the `show` permission on the object. Sub requests, which
+  the model list and association widgets use to render the description of their value, are not checked.
+  For the model list widget this means: users who may pick an item (`list`) but not view it get the id
+  instead of the description after picking it, until the form is reloaded.
+
+Passing no `RequestStack` to `GetShortObjectDescriptionAction` is deprecated. Without it, no permission
+is checked, like before.
+
 ## Deprecated relying on the implicit noop security handler
 
 Not setting `sonata_admin.security.handler` is deprecated. It still falls back to

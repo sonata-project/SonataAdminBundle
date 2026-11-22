@@ -279,6 +279,31 @@ final class GetShortObjectDescriptionActionTest extends TestCase
 
     // NEXT_MAJOR: Remove this test.
     #[IgnoreDeprecations]
+    public function testWithoutRequestStackAccessIsNotChecked(): void
+    {
+        $action = new GetShortObjectDescriptionAction($this->twig, $this->adminFetcher);
+
+        $request = new Request([
+            '_sonata_admin' => 'sonata.post.admin',
+            'objectId' => 42,
+            '_format' => 'json',
+        ]);
+        $object = new \stdClass();
+
+        $this->adminFetcher->method('get')->willReturn($this->admin);
+
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->expects(static::never())->method('checkAccess');
+        $this->admin->method('id')->with($object)->willReturn('42');
+        $this->admin->method('toString')->with($object)->willReturn('bar');
+
+        $response = $action($request);
+
+        static::assertSame('{"result":{"id":"42","label":"bar"}}', $response->getContent());
+    }
+
+    // NEXT_MAJOR: Remove this test.
+    #[IgnoreDeprecations]
     public function testConstructWithoutRequestStack(): void
     {
         $this->expectUserDeprecationMessage(\sprintf(

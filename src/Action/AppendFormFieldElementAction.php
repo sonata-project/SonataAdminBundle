@@ -45,8 +45,11 @@ final class AppendFormFieldElementAction
             throw new NotFoundHttpException($e->getMessage());
         }
 
+        // The widget belongs to the create or edit form of this admin, so require the same access,
+        // like the create and edit actions do before creating or binding the object.
         $objectId = BCHelper::getFromRequest($request, 'objectId');
         if (null === $objectId) {
+            $admin->checkAccess('create');
             $subject = $admin->getNewInstance();
         } elseif (\is_string($objectId) || \is_int($objectId)) {
             $subject = $admin->getObject($objectId);
@@ -57,15 +60,9 @@ final class AppendFormFieldElementAction
                     $admin->getClass()
                 ));
             }
+            $admin->checkAccess('edit', $subject);
         } else {
             throw new BadRequestParamHttpException('objectId', ['string', 'int', 'null'], $objectId);
-        }
-
-        // The widget belongs to the create or edit form of this admin, so require the same access.
-        if (null === $objectId) {
-            $admin->checkAccess('create');
-        } else {
-            $admin->checkAccess('edit', $subject);
         }
 
         $admin->setSubject($subject);

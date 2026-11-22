@@ -78,7 +78,7 @@ final class GetShortObjectDescriptionAction
         }
 
         // The action shows details of the object, so direct requests need the show permission on it.
-        if (!$this->isSubRequest($request)) {
+        if ($this->mustCheckAccess($request)) {
             $admin->checkAccess('show', $object);
         }
 
@@ -105,18 +105,23 @@ final class GetShortObjectDescriptionAction
 
     /**
      * The model list and the one-to-one/many-to-one association widgets render the description of
-     * the current value through a sub request. The user was already allowed to see the form that
-     * contains the value, so these sub requests must keep working even without any permission on
-     * the admin of the associated object.
+     * their value through a sub request. These sub requests are not checked, otherwise the form would
+     * break for users without any permission on the admin of the associated object.
+     *
+     * Note that the rendered value is not always the stored one: when a form is shown again after a
+     * submit, it is the submitted value. So this doesn't keep the labels of the associated admin away
+     * from somebody who can edit the form, it only checks direct requests.
      */
-    private function isSubRequest(Request $request): bool
+    private function mustCheckAccess(Request $request): bool
     {
+        // NEXT_MAJOR: Remove this, the request stack will be mandatory.
+        // Without the request stack sub requests can't be told apart, so keep the old behaviour.
         if (null === $this->requestStack) {
             return false;
         }
 
         $mainRequest = $this->requestStack->getMainRequest();
 
-        return null !== $mainRequest && $mainRequest !== $request;
+        return null === $mainRequest || $mainRequest === $request;
     }
 }
