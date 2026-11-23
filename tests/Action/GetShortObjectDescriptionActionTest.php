@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Sonata\AdminBundle\Tests\Action;
 
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
@@ -22,7 +23,9 @@ use Sonata\AdminBundle\Exception\BadRequestParamHttpException;
 use Sonata\AdminBundle\Request\AdminFetcherInterface;
 use Sonata\AdminBundle\Templating\MutableTemplateRegistry;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
@@ -34,6 +37,8 @@ final class GetShortObjectDescriptionActionTest extends TestCase
     private AdminFetcherInterface $adminFetcher;
 
     private Environment $twig;
+
+    private RequestStack $requestStack;
 
     private GetShortObjectDescriptionAction $action;
 
@@ -47,10 +52,12 @@ final class GetShortObjectDescriptionActionTest extends TestCase
         $this->twig = new Environment(new ArrayLoader(['short_object_description' => 'renderedTemplate']));
         $this->admin = $this->createMock(AdminInterface::class);
         $this->adminFetcher = static::createStub(AdminFetcherInterface::class);
+        $this->requestStack = new RequestStack();
 
         $this->action = new GetShortObjectDescriptionAction(
             $this->twig,
-            $this->adminFetcher
+            $this->adminFetcher,
+            $this->requestStack
         );
     }
 
@@ -197,5 +204,115 @@ final class GetShortObjectDescriptionActionTest extends TestCase
             $request->query->get('subclass'),
             'subclass query parameter should be restored at this stage'
         );
+    }
+
+    public function testGetShortObjectDescriptionActionAccessDenied(): void
+    {
+        $request = new Request([
+            '_sonata_admin' => 'sonata.post.admin',
+            'objectId' => 42,
+            '_format' => 'json',
+        ]);
+        $this->requestStack->push($request);
+        $object = new \stdClass();
+
+        $this->adminFetcher->method('get')->willReturn($this->admin);
+
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->method('checkAccess')->with('show', $object)
+            ->willThrowException(new AccessDeniedException());
+        $this->admin->expects(static::never())->method('toString');
+
+        $this->expectException(AccessDeniedException::class);
+
+        ($this->action)($request);
+    }
+
+    public function testGetShortObjectDescriptionActionChecksShowAccess(): void
+    {
+        $request = new Request([
+            '_sonata_admin' => 'sonata.post.admin',
+            'objectId' => 42,
+            '_format' => 'json',
+        ]);
+        $this->requestStack->push($request);
+        $object = new \stdClass();
+
+        $this->adminFetcher->method('get')->willReturn($this->admin);
+
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->expects(static::once())->method('checkAccess')->with('show', $object);
+        $this->admin->method('id')->with($object)->willReturn('42');
+        $this->admin->method('toString')->with($object)->willReturn('bar');
+
+        $response = ($this->action)($request);
+
+        static::assertSame('{"result":{"id":"42","label":"bar"}}', $response->getContent());
+    }
+
+    public function testGetShortObjectDescriptionActionSubRequestSkipsAccessCheck(): void
+    {
+        $templateRegistry = new MutableTemplateRegistry([
+            'short_object_description' => 'short_object_description',
+        ]);
+
+        $request = new Request([
+            '_sonata_admin' => 'sonata.post.admin',
+            'objectId' => 42,
+            '_format' => 'html',
+        ]);
+        $this->requestStack->push(new Request());
+        $this->requestStack->push($request);
+        $object = new \stdClass();
+
+        $this->adminFetcher->method('get')->willReturn($this->admin);
+
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->expects(static::never())->method('checkAccess');
+        $this->admin->method('toString')->with($object)->willReturn('bar');
+        $this->admin->method('getTemplateRegistry')->willReturn($templateRegistry);
+
+        $response = ($this->action)($request);
+
+        static::assertSame('renderedTemplate', $response->getContent());
+    }
+
+    // NEXT_MAJOR: Remove this test.
+    #[IgnoreDeprecations]
+    public function testWithoutRequestStackAccessIsNotChecked(): void
+    {
+        $action = new GetShortObjectDescriptionAction($this->twig, $this->adminFetcher);
+
+        $request = new Request([
+            '_sonata_admin' => 'sonata.post.admin',
+            'objectId' => 42,
+            '_format' => 'json',
+        ]);
+        $object = new \stdClass();
+
+        $this->adminFetcher->method('get')->willReturn($this->admin);
+
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->expects(static::never())->method('checkAccess');
+        $this->admin->method('id')->with($object)->willReturn('42');
+        $this->admin->method('toString')->with($object)->willReturn('bar');
+
+        $response = $action($request);
+
+        static::assertSame('{"result":{"id":"42","label":"bar"}}', $response->getContent());
+    }
+
+    // NEXT_MAJOR: Remove this test.
+    #[IgnoreDeprecations]
+    public function testConstructWithoutRequestStack(): void
+    {
+        $this->expectUserDeprecationMessage(\sprintf(
+            'Not passing an instance of %s as argument 3 of "%s::__construct()" is deprecated since'
+            .' sonata-project/admin-bundle 4.x and will throw an error in 5.0.',
+            RequestStack::class,
+            GetShortObjectDescriptionAction::class
+        ));
+
+        new GetShortObjectDescriptionAction($this->twig, $this->adminFetcher);
     }
 }

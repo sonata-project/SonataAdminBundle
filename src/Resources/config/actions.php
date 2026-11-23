@@ -61,6 +61,7 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             ->args([
                 service('twig'),
                 service('sonata.admin.request.fetcher'),
+                service('request_stack'),
             ])
 
         ->set('sonata.admin.action.set_object_field_value', SetObjectFieldValueAction::class)

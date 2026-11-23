@@ -21,6 +21,7 @@ use Symfony\Component\Form\FormRenderer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Environment;
 
 final class RetrieveFormFieldElementAction
@@ -34,6 +35,7 @@ final class RetrieveFormFieldElementAction
 
     /**
      * @throws NotFoundHttpException
+     * @throws AccessDeniedException
      */
     public function __invoke(Request $request): Response
     {
@@ -43,8 +45,11 @@ final class RetrieveFormFieldElementAction
             throw new NotFoundHttpException($e->getMessage());
         }
 
+        // The widget belongs to the create or edit form of this admin, so require the same access,
+        // like the create and edit actions do before creating or binding the object.
         $objectId = BCHelper::getFromRequest($request, 'objectId');
         if (null === $objectId) {
+            $admin->checkAccess('create');
             $subject = $admin->getNewInstance();
         } elseif (\is_string($objectId) || \is_int($objectId)) {
             $subject = $admin->getObject($objectId);
@@ -55,6 +60,7 @@ final class RetrieveFormFieldElementAction
                     $admin->getClass()
                 ));
             }
+            $admin->checkAccess('edit', $subject);
         } else {
             throw new BadRequestParamHttpException('objectId', ['string', 'int', 'null'], $objectId);
         }

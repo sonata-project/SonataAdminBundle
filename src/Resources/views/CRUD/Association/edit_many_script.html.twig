@@ -603,6 +603,13 @@ This code manages the many-to-[one|many] association field popup
                 dataType: 'html',
                 success: function(html) {
                     jQuery('#field_widget_{{ id }}').html(html);
+                },
+                error: function() {
+                    // For example without permission to see the description: show the selected id
+                    // instead of keeping the loading message forever.
+                    jQuery('#field_widget_{{ id }}').html(
+                        jQuery('<span class="inner-field-short-description"></span>').text(objectId)
+                    );
                 }
             });
 

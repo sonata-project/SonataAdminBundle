@@ -29,6 +29,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Twig\Environment;
 
 final class AppendFormFieldElementActionTest extends TestCase
@@ -95,6 +96,7 @@ final class AppendFormFieldElementActionTest extends TestCase
 
         $this->admin->method('getObject')->with(42)->willReturn($object);
         $this->admin->method('getClass')->willReturn($object::class);
+        $this->admin->expects(static::once())->method('checkAccess')->with('edit', $object);
         $this->admin->expects(static::once())->method('setSubject')->with($object);
         $this->admin->method('getFormTheme')->willReturn([]);
         $this->admin->method('getFormBuilder')->willReturn($formBuilder);
@@ -113,6 +115,47 @@ final class AppendFormFieldElementActionTest extends TestCase
 
         static::assertInstanceOf(Response::class, $response);
         static::assertSame('block', $response->getContent());
+    }
+
+    public function testChecksCreateAccessWithoutObjectId(): void
+    {
+        $request = new Request([
+            '_sonata_admin' => 'sonata.post.admin',
+            'elementId' => 'element_collection',
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST]);
+
+        // The new instance (and the alterNewInstance() hooks) must not run without create access.
+        $this->admin->expects(static::never())->method('getNewInstance');
+        $this->admin->expects(static::once())
+            ->method('checkAccess')
+            ->with('create')
+            ->willThrowException(new AccessDeniedException());
+        $this->admin->expects(static::never())->method('setSubject');
+
+        $this->expectException(AccessDeniedException::class);
+
+        ($this->action)($request);
+    }
+
+    public function testChecksEditAccessWithObjectId(): void
+    {
+        $object = new \stdClass();
+        $request = new Request([
+            '_sonata_admin' => 'sonata.post.admin',
+            'objectId' => 42,
+            'elementId' => 'element_collection',
+        ], [], [], [], [], ['REQUEST_METHOD' => Request::METHOD_POST]);
+
+        $this->admin->method('getObject')->with(42)->willReturn($object);
+        $this->admin->expects(static::once())
+            ->method('checkAccess')
+            ->with('edit', $object)
+            ->willThrowException(new AccessDeniedException());
+        $this->admin->expects(static::never())->method('setSubject');
+
+        $this->expectException(AccessDeniedException::class);
+
+        ($this->action)($request);
     }
 
     /**
