@@ -14,7 +14,9 @@
  */
 
 module.exports = {
-  parser: '@babel/eslint-parser',
+  parserOptions: {
+    ecmaVersion: 'latest',
+  },
   extends: ['airbnb-base', 'prettier'],
   env: {
     browser: true,
