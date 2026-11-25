@@ -24,10 +24,13 @@ interface MutableTemplateRegistryAwareInterface
 
     public function hasTemplateRegistry(): bool;
 
-    public function setTemplate(string $name, string $template): void;
+    // NEXT_MAJOR: Uncomment extra arg.
+    public function setTemplate(string $name, string $template/* , string $theme = TemplateRegistryInterface::DEFAULT_THEME */): void;
 
     /**
-     * @param array<string, string> $templates
+     * NEXT_MAJOR: Uncomment extra arg.
+     *
+     * @param array<string, string> $templates 'name' => 'file_path.html.twig'
      */
-    public function setTemplates(array $templates): void;
+    public function setTemplates(array $templates/* , string $theme = TemplateRegistryInterface::DEFAULT_THEME */): void;
 }
