@@ -653,7 +653,7 @@ final class AdminTest extends TestCase
 
         $s = new \stdClass();
 
-        static::assertNotSame('', $admin->toString($s));
+        static::assertSame(\sprintf('stdClass:%016x0000000000000000', spl_object_id($s)), $admin->toString($s));
 
         $s = new FooToString();
         static::assertSame('salut', $admin->toString($s));
@@ -1219,6 +1219,43 @@ final class AdminTest extends TestCase
 
         static::assertFalse($admin->isGranted('BAR', $entity3));
         static::assertFalse($admin->isGranted('BAR', $entity3));
+    }
+
+    #[DataProvider('provideIsGrantedDoesNotShareTheCacheBetweenObjectsWithTheSameIdentifierCases')]
+    public function testIsGrantedDoesNotShareTheCacheBetweenObjectsWithTheSameIdentifier(?string $identifier): void
+    {
+        $admin = new PostAdmin();
+        $modelManager = static::createStub(ModelManagerInterface::class);
+        $modelManager
+            ->method('getNormalizedIdentifier')
+            ->willReturn($identifier);
+
+        $admin->setModelManager($modelManager);
+
+        $entity1 = new \stdClass();
+        $entity2 = new \stdClass();
+
+        $securityHandler = $this->createMock(AclSecurityHandlerInterface::class);
+        $securityHandler
+            ->expects(static::exactly(2))
+            ->method('isGranted')
+            ->willReturnCallback(static fn (AdminInterface $adminIn, string $attributes, ?object $object = null): bool => $object === $entity1);
+
+        $admin->setSecurityHandler($securityHandler);
+
+        static::assertTrue($admin->isGranted('EDIT', $entity1));
+        static::assertFalse($admin->isGranted('EDIT', $entity2));
+        static::assertTrue($admin->isGranted('EDIT', $entity1));
+        static::assertFalse($admin->isGranted('EDIT', $entity2));
+    }
+
+    /**
+     * @return iterable<string, array{string|null}>
+     */
+    public static function provideIsGrantedDoesNotShareTheCacheBetweenObjectsWithTheSameIdentifierCases(): iterable
+    {
+        yield 'no identifier' => [null];
+        yield 'same identifier' => ['42'];
     }
 
     public function testSupportsPreviewMode(): void

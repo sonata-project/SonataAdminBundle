@@ -1580,7 +1580,7 @@ abstract class AbstractAdmin extends BaseAbstractAdmin implements AdminInterface
             );
         }
 
-        $objectRef = null !== $object ? \sprintf('/%s#%s', spl_object_hash($object), $this->id($object) ?? '') : '';
+        $objectRef = null !== $object ? \sprintf('/%d#%s', spl_object_id($object), $this->id($object) ?? '') : '';
         $key = md5(json_encode($name, \JSON_THROW_ON_ERROR).$objectRef);
 
         if (!\array_key_exists($key, $this->cacheIsGranted)) {
@@ -1674,7 +1674,7 @@ abstract class AbstractAdmin extends BaseAbstractAdmin implements AdminInterface
             $class = BCHelper::getClass($object);
         }
 
-        return \sprintf('%s:%s', $class, spl_object_hash($object));
+        return \sprintf('%s:%016x0000000000000000', $class, spl_object_id($object));
     }
 
     final public function supportsPreviewMode(): bool
